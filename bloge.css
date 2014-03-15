@@ -3,49 +3,13 @@ html {
 }
 
 body {
-	font-family: brandon-grotesque, 'Helvetica Neue', Helvetica, sans-serif;
-  font-size: 24px;
-  color: #eee;
+	font-family: pt-sans;
+  background-color: #eee;
 
-  background-color: #252528;
+  color: #404044;
   
   margin: 0;
   height: 100%;
-}
-
-svg#svgBoard {
-  border: 1px dotted rgba(224, 235, 255, 0.1);
-}
-
-.arrowboard {
-  background-color: transparent;
-}
-
-.node circle {
-  cursor: pointer;
-  stroke-width: 1.5px;
-	fill-opacity: 0.8;
-	stroke-opacity: 0.5;
-  fill: blue;
-}
-
-.node text {
-  text-rendering: geometricPrecision;
-  fill: #fff;
-
-/*
-  stroke: #fff;
-  stroke-width: 1px;
-  stroke-opacity: 0.9;
-  filter: url(#text-glow);
-*/  
-}
-
-
-.link {
-  fill: none;
-  stroke: #aaa;
-  opacity: 0.7;
 }
 
 .pane {
@@ -56,28 +20,35 @@ svg#svgBoard {
   min-width: 200px;
 }
 
-.collapsedPane {
-  width: 0;
-  min-height: 0px;
-}
-
-.collapsedPane #svgBoard {
-  width: 0;
-  min-height: 0px;
-}
-
-.expandedPane {
-  width: 92%;
-  min-width: 200px;
-}
-
 .textpane {
-  font-family: adelle, Georgia, serif;
-  background-color: #ffe;
-  color: #403838;
+  /*font-family: adelle;*/
+  font-size: 24px;
   margin-left: 8px;
   -webkit-border-radius: 0.4em;
   border-radius: 0.4em;
+
+  /*background-color: #eee;*/
+}
+
+.bloge .textpane {
+  width: 66%;
+  margin-top: 0.7em;
+  margin-bottom: 0.7em;
+  padding: 1em;
+}
+
+.bloge .title {
+  font-family: brandon-grotesque, 'Helvetica Neue', Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 40px;
+  text-transform: uppercase;
+}
+
+.bloge .stamps {
+  font-family: brandon-grotesque, 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 18px;
+  margin-top: 1em;
+  float: right;
 }
 
 .textpane a {
@@ -162,8 +133,8 @@ section {
   display: -webkit-flex;  /* NEW, Chrome 21+ */
   display: flex;          /* NEW: Opera 12.1, Firefox 22+ */
 
-  flex-direction: row;
-  -webkit-flex-direction: row;
+  flex-direction: column;
+  -webkit-flex-direction: column;
 
   flex-wrap: wrap;
   -webkit-flex-wrap: wrap;
@@ -179,7 +150,6 @@ section {
   justify-content: center;
 
   margin: 0;
-  height: 100%;
   width: 100% /* needed for Firefox */   
 }
 
