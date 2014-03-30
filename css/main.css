@@ -20,9 +20,23 @@ body, a {
   color: #171717;
 }
 
+a {
+  text-decoration: none;
+}
+
 a:hover {
   color: #ff8000;
-  text-decoration: underline;
+}
+
+a:link {
+  text-decoration: none;
+  font-weight: bold;
+  line-height: 32px;
+}
+
+a:visited {
+  color: hsla(132, 0%, 30%, 1);
+  font-weight: normal;
 }
 
 p {
@@ -208,9 +222,9 @@ footer .copy, footer .copy a {
 }
 
 .article.intro .content .more {
-  text-decoration: underline;
   font-weight: 700;
-  padding-left: 0.3em;
+  margin-left: 0.3em;
+  border-bottom: 1px dashed #777;
 }
 
 .article .content img {
@@ -293,7 +307,7 @@ footer .copy, footer .copy a {
 /* code styling */
 
 code {
-  font-family: 'Anonymous Pro', monospace;
+  font-family: 'Lucida Console', 'Anonymous Pro', monospace;
   font-size: 0.85em;
   color: #000;
 }
@@ -304,13 +318,6 @@ pre code {
 }
 
 p code {
-  padding: 0.1em 0.3em 0.2em;
-  border-radius: 0.3em;
-  position: relative;
-  top: -0.15em;
-  background: #444;
-  color: #fff;
-  white-space: nowrap;
 }
 
 /* syntax hl stuff */

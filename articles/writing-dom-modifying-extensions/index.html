@@ -13,20 +13,97 @@
   <body class="article-detail">
     <header class="header">
       <div class="content-wrap">
+        <!-- include author-->
         <h1>Writing Chrome Extensions and bookmarklets that mess with the DOM</h1>
-        <p class="author">Written by <span class="author"><a href="mailto:jimkang@gmail.com">Jim Kang</a></span>
-        </p>
+        <!-- p.author-->
+        <!--  | #{ "Written by " }-->
+        <!--  mixin author(page.metadata.author)-->
       </div>
     </header>
     <div id="content">
       <div class="content-wrap">
         <article class="article">
-          <section class="content"><p>Let’s say you want to mess with a web page that you didn’t author. You want to see the New York Times in Comic Sans. Or you want to only see the last letter of every paragraph in Ars Technica articles to see if there’s some secret message. Or perhaps something&nbsp;useful.</p>
+          <section class="content"><p>Let’s say you want to vandalize with a web page that you didn’t author. You want to see the New York Times in Comic Sans. Or you want to show only the last letter of every paragraph in the <a href="https://developer.apple.com/library/mac/documentation/UserExperience/Conceptual/AppleHIGuidelines/Intro/Intro.html"><span class="caps">HIG</span></a> to see if there’s some <a href="http://en.wikipedia.org/wiki/Bible_code">secret message</a>. Or perhaps you want to do something useful with the web&nbsp;page.</p>
 <p><span class="more"></span>
-One way to do this is open the developer tools in your browser and just start messing with stuff. But if you want to let everyone else mess with web pages in the way you were thinking, that won’t work. For quite a long time, people have been using Greasemonkey scripts to pass on the mischief to other Firefox&nbsp;users.</p>
-<p>On Chrome, the analogue to that is Chrome Extensions. Then, there’s also bookmarklets, which are a little less capable, but will work across all&nbsp;browsers.</p>
-<p>Here’s how’d you write a bookmarklet that alters the&nbsp;<span class="caps">DOM</span>.</p>
-<p><img src="/articles/writing-dom-modifying-extensions/banana.png" alt="a banana"></p>
+One way to do this is open the developer tools in your browser and directly change things in the <a href="https://developer.mozilla.org/en-US/docs/DOM"><span class="caps">DOM</span></a>. But if you want the world to also be able to do the same, you need to ship a program that does it. For quite a long time, people have been used <a href="https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/">Greasemonkey</a> scripts in Firefox deliver&nbsp;them.</p>
+<p>On Chrome, <a href="http://developer.chrome.com/extensions/index">Chrome extensions</a> do this. There’s also <a href="http://en.wikipedia.org/wiki/Bookmarklet">bookmarklets</a>, which are less capable but will work across all&nbsp;browsers.</p>
+<p>Here’s a look at what it takes to make a <span class="caps">DOM</span>-altering Chrome extension or bookmarklet. (If you know that what you want to do is make a bookmarklet, though, I recommend you just <a href="/articles/writing-dom-modifying-extensions/#contentscript">skip down to the content script and bookmarklet parts</a>.)</p>
+<h1>Extension&nbsp;structure</h1>
+
+<p>A Chrome extension is a package of JavaScript, <span class="caps">CSS</span>, and resource files. They’re balled up into a crx file on the Chrome Web Store, but in development, you can load an unpacked directory in <a href="chrome://extensions">chrome://extensions</a>.</p>
+<p>There’s a <a href="http://developer.chrome.com/extensions/manifest">manifest.json</a> that you need to fill out. Salient&nbsp;fields:</p>
+<pre><code>&quot;permissions&quot;: [
+  &quot;https://twitter.com/*&quot;
+],
+</code></pre><p>This tells Chrome that this extension will operate on pages that have URLs that begin with <code>https://twitter.com</code>.</p>
+<pre><code>&quot;browser_action&quot;: {
+    &quot;default_icon&quot;: {
+      &quot;19&quot;: &quot;onebyone_icon_19.png&quot;,
+      &quot;38&quot;: &quot;onebyone_icon_38.png&quot;
+    }
+  },
+</code></pre><p>If you specify a <code>browser_action</code> field, Chrome will put a button in the toolbar for you using the image files you specify. There’s a button click event your script can listen for. You can use this to do something when the user clicks your extension’s&nbsp;button.</p>
+<pre><code>&quot;background&quot;: {
+  &quot;scripts&quot;: [&quot;node_modules/scriptchain/scriptchain.js&quot;, &quot;background.js&quot;],
+  &quot;persistent&quot;: false
+},
+</code></pre><p>Here, we’re specifying the <a href="https://developer.chrome.com/extensions/background_pages">background scripts</a> we want to have at the ready to respond to user-instigated events. Usually, I have a background.js file which listens for clicks to the extension’s button, then executes scripts in the context of the active tab. Executing scripts in the context of the active tab is kinda like going to the web page you want to mess with, then running code in the JavaScript&nbsp;console.</p>
+<p>Background script&nbsp;example:</p>
+<pre><code>var scriptchain = createScriptChain(
+  [&#39;readability.js&#39;, &#39;parser.js&#39;, &#39;onebyone.js&#39;], null, false
+);
+
+chrome.browserAction.onClicked.addListener(function respondToClick(tab) {
+  scriptchain.loadChain();
+});
+</code></pre><p>It’s registering for the <code>chrome.browserAction.onClicked</code> event and responding to that event by calling <code>scriptchain.loadChain</code>. <a href="https://www.npmjs.org/package/scriptchain">scriptchain</a> is a helper I wrote that runs a list of scripts on the active tab in order. It’s a convenience, but alternatively, you can call <a href="http://developer.chrome.com/extensions/tabs#method-executeScript">chrome.tabs.executeScript</a> to run your scripts on the&nbsp;tab.</p>
+<p>To sum up, the flow of execution goes like&nbsp;this:</p>
+<ol>
+<li>User visits a page that is included in the manifest’s <code>permissions</code> property.</li>
+<li>Chrome loads the background scripts you specified in the manifest. One of them subscribes to the browser button click&nbsp;event.</li>
+<li>User clicks on the extension button in the Chrome&nbsp;toolbar.</li>
+<li>The background script gets the event and responds by executing a script in the context of the&nbsp;tab.</li>
+<li>That script does some cool stuff with the web page in the&nbsp;tab.</li>
+</ol>
+<p><a name="contentscript"></a></p>
+<h1>The content script: Actually doing stuff to the web page,&nbsp;finally</h1>
+
+<p>Once you’re finally executing code in the context of the web page, it’s a lot like being at a web page, opening the Web Inspector console, and running code. This is where you do your business, so to&nbsp;speak.</p>
+<p>Typically, you want to select <span class="caps">DOM</span> elements, read them and then change them or add to them or delete them. You may want to avoid including a big library like jQuery that abstracts that kind of thing in order to keep things light, especially if you’re going to be creating a bookmarklet version of your extension. Fortunately, the DOM API, while clunkier, is <a href="https://developer.mozilla.org/en-US/docs/Web/API/document.querySelectorAll">not really all that different</a> from the abstraction libraries these&nbsp;days.</p>
+<p>Here’s an example from <a href="http://jimkang.com/twittershuffle/">Twitter Shuffle</a>, an extension and bookmarklet I wrote to shuffle around tweets and their authors for some misattribution fun and confusion. (<a href="https://github.com/jimkang/twitter-shuffle-chrome-extension">The unabridged file is here.</a>)</p>
+<pre><code>((function shuffleTweets() {
+  ...
+
+  var tweetTexts = document.querySelectorAll(&#39;.tweet-text&#39;);
+  var tweetContents = [];
+  tweetTexts.forEach(function getContents(tweet) {
+    tweetContents.push(tweet.innerHTML);
+  });
+  var shuffledContents = shuffle(tweetContents);
+
+  tweetTexts.forEach(function replaceWithShuffled(tweetText, i) {
+    tweetText.innerHTML = shuffledContents[i];
+  });
+
+})());
+</code></pre><p>Here is where you’d do the thing you want to do with the web page. You could do anything here. It’s like a <a href="http://html5zombo.com/">Zombo.com</a> inside of that <a href="http://benalman.com/news/2010/11/immediately-invoked-function-expression/"><span class="caps">IIFE</span></a>.</p>
+<p><a name="bookmarkletize"></a></p>
+<h1>Bookmarkletize</h1>
+
+<p>So, how would this work as a bookmarklet? You just have get a bookmark created on your users’ browsers that has a <span class="caps">URL</span> that looks like&nbsp;this:</p>
+<pre><code>javascript:&lt;Your IIFE&gt;
+</code></pre><p>You can’t really tell most users “copy this code, then edit a bookmark and paste it into the <span class="caps">URL</span> field.” You need to create a web page that has a link that contains your code in the <code>href</code> and tell them to drag it to the bookmarks bar. Like&nbsp;this:</p>
+<pre><code>&lt;p&gt;Drag this to your bookmarks bar:&lt;/p&gt;      
+&lt;p&gt;
+  &lt;a class=&quot;bookmarklet&quot; href=&quot;javascript:&lt;Your IIFE&quot;&gt;Greatest Bookmarklet of All Time!&lt;/a&gt;
+&lt;/p&gt;
+</code></pre><p>It’d be great if bookmarklet installation could be even simpler (some people don’t have their bookmarks bar showing), but I think it’s the best we can do for&nbsp;now.</p>
+<p>To squeeze your <span class="caps">IIFE</span> into an <code>href</code>, you’ll need to crunch it down to one line Minification wouldn’t hurt, either. You can do it by hand, but I recommend your run it through <a href="https://github.com/mishoo/UglifyJS2">UglifyJS</a>. On a Mac, you do&nbsp;this:</p>
+<pre><code>uglifyjs yourcontentscript.js -m | pbcopy
+</code></pre><p>The minified code will be in your pasteboard. You can cmd+V it into your <code>href=&quot;javascript:&quot;</code>.</p>
+<h1>Why even bother with a Chrome extension,&nbsp;then?</h1>
+
+<p>Well, there’s stuff you can do in a Chrome extension that you can’t do in a bookmarklet. Chrome extensions are also easier to install. At least on Chrome. But yeah, if you know you don’t need any of that, just make a&nbsp;bookmarklet.</p>
 </section>
         </article>
       </div>
@@ -38,10 +115,19 @@ One way to do this is open the developer tools in your browser and just start me
 
         </section>
         <section class="copy">
-          <p>&copy; 2014 Jim &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          <p>&copy; 2014 Jim Kang &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
           </p>
         </section>
       </div>
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        
+        ga('create', 'UA-48753078-1', 'jimkang.com');
+        ga('send', 'pageview');
+      </script>
     </footer>
   </body>
 </html>
