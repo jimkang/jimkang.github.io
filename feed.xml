@@ -2,23 +2,23 @@
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Non-Stop Blog Shop</title>
-    <atom:link href="http://localhost:8080/feed.xml" rel="self" type="application/rss+xml"></atom:link>
-    <link>http://localhost:8080</link>
+    <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
+    <link>http://jimkang.com</link>
     <description>Blogging up some blogs, just for you.</description>
     <pubDate>Sat, 29 Mar 2014 20:00:00 -0400</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
     <item>
       <title>Writing Chrome Extensions and bookmarklets that mess with the DOM</title>
-      <link>http://localhost:8080/articles/writing-dom-modifying-extensions/</link>
+      <link>http://jimkang.com/articles/writing-dom-modifying-extensions/</link>
       <pubDate>Sat, 29 Mar 2014 20:00:00 -0400</pubDate>
-      <guid isPermaLink="true">http://localhost:8080/articles/writing-dom-modifying-extensions/</guid>
+      <guid isPermaLink="true">http://jimkang.com/articles/writing-dom-modifying-extensions/</guid>
       <author></author>
       <description>&lt;p&gt;Let’s say you want to vandalize with a web page that you didn’t author. You want to see the New York Times in Comic Sans. Or you want to show only the last letter of every paragraph in the &lt;a href=&quot;https://developer.apple.com/library/mac/documentation/UserExperience/Conceptual/AppleHIGuidelines/Intro/Intro.html&quot;&gt;HIG&lt;/a&gt; to see if there’s some &lt;a href=&quot;http://en.wikipedia.org/wiki/Bible_code&quot;&gt;secret message&lt;/a&gt;. Or perhaps you want to do something useful with the web page.&lt;/p&gt;
 &lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;
 One way to do this is open the developer tools in your browser and directly change things in the &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/DOM&quot;&gt;DOM&lt;/a&gt;. But if you want the world to also be able to do the same, you need to ship a program that does it. For quite a long time, people have been used &lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/&quot;&gt;Greasemonkey&lt;/a&gt; scripts in Firefox deliver them.&lt;/p&gt;
 &lt;p&gt;On Chrome, &lt;a href=&quot;http://developer.chrome.com/extensions/index&quot;&gt;Chrome extensions&lt;/a&gt; do this. There’s also &lt;a href=&quot;http://en.wikipedia.org/wiki/Bookmarklet&quot;&gt;bookmarklets&lt;/a&gt;, which are less capable but will work across all browsers.&lt;/p&gt;
-&lt;p&gt;Here’s a look at what it takes to make a DOM-altering Chrome extension or bookmarklet. (If you know that what you want to do is make a bookmarklet, though, I recommend you just &lt;a href=&quot;http://localhost:8080/articles/writing-dom-modifying-extensions/#contentscript&quot;&gt;skip down to the content script and bookmarklet parts&lt;/a&gt;.)&lt;/p&gt;
+&lt;p&gt;Here’s a look at what it takes to make a DOM-altering Chrome extension or bookmarklet. (If you know that what you want to do is make a bookmarklet, though, I recommend you just &lt;a href=&quot;http://jimkang.com/articles/writing-dom-modifying-extensions/#contentscript&quot;&gt;skip down to the content script and bookmarklet parts&lt;/a&gt;.)&lt;/p&gt;
 &lt;h1&gt;Extension structure&lt;/h1&gt;
 
 &lt;p&gt;A Chrome extension is a package of JavaScript, CSS, and resource files. They’re balled up into a crx file on the Chrome Web Store, but in development, you can load an unpacked directory in &lt;a href=&quot;chrome://extensions&quot;&gt;chrome://extensions&lt;/a&gt;.&lt;/p&gt;
