@@ -5,9 +5,18 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>Blogging up some blogs, just for you.</description>
-    <pubDate>Sat, 29 Mar 2014 20:00:00 -0400</pubDate>
+    <pubDate>Mon, 21 Apr 2014 20:00:00 -0400</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>How quadtrees work</title>
+      <link>http://jimkang.com/articles/quadtreevis/</link>
+      <pubDate>Mon, 21 Apr 2014 20:00:00 -0400</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/articles/quadtreevis/</guid>
+      <author></author>
+      <description>&lt;p&gt;An interactive explanation of quadtrees relate to spaces, with some details about D3’s implementation of the quadtree.&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Writing Chrome Extensions and bookmarklets that mess with the DOM</title>
       <link>http://jimkang.com/articles/writing-dom-modifying-extensions/</link>
