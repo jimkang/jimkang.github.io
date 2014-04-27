@@ -7,8 +7,17 @@
     <title>Non-Stop Blog Shop
     </title>
     <link rel="alternate" href="http://jimkang.com/feed.xml" type="application/rss+xml" title="Blogging up some blogs, just for you.">
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Anonymous+Pro:400,700,400italic,700italic|Merriweather:400,700,300">
     <link rel="stylesheet" href="/css/main.css">
+    <script>
+      (function(d) {
+        var config = {
+          kitId: 'med0yzx',
+          scriptTimeout: 3000
+        },
+        h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='//use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+      })(document);
+      
+    </script>
   </head>
   <body>
     <header class="header">
@@ -21,6 +30,17 @@
     </header>
     <div id="content">
       <div class="content-wrap">
+        <article class="article intro">
+          <header>
+            <p class="date"><span>27. April 2014</span></p>
+            <h2><a href="/articles/shirk-work-with-approvals/">Shirk a lot of work with Approvals</a>
+            </h2>
+          </header>
+          <section class="content"><p>Here’s an ugly thing I think you inevitably run into when writing tests: Having to specify tons and tons of reference values to which to compare test results. Then, wanting to kill&nbsp;yourself.</p>
+<p>
+            <p class="more"><a href="/articles/shirk-work-with-approvals/">more</a></p>
+          </section>
+        </article>
         <article class="article intro">
           <header>
             <p class="date"><span>22. April 2014</span></p>
@@ -48,9 +68,8 @@
       <div class="content-wrap">
         <div class="nav"><a href="/archive.html">« Archives</a>
         </div>
-        <section class="about"><p>If this page had infinite scroll, you wouldn’t see this. You’d scroll down, then some content would pop in, and this would move down. You are one lucky guy!</p>
-
-        </section>
+        <!--section.about-->
+        <!--  !=contents['about.md'].html-->
         <section class="copy">
           <p>&copy; 2014 Jim Kang &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
           </p>

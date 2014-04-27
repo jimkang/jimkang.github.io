@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Shirk a lot of work with Approvals - Non-Stop Blog Shop
+    </title>
+    <link rel="alternate" href="http://jimkang.com/feed.xml" type="application/rss+xml" title="Blogging up some blogs, just for you.">
+    <link rel="stylesheet" href="/css/main.css">
+    <script>
+      (function(d) {
+        var config = {
+          kitId: 'med0yzx',
+          scriptTimeout: 3000
+        },
+        h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='//use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+      })(document);
+      
+    </script>
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <!-- include author-->
+        <h1>Shirk a lot of work with Approvals</h1>
+        <!-- p.author-->
+        <!--  | #{ "Written by " }-->
+        <!--  mixin author(page.metadata.author)-->
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>Here’s an ugly thing I think you inevitably run into when writing tests: Having to specify tons and tons of reference values to which to compare test results. Then, wanting to kill&nbsp;yourself.</p>
+<p><span class="more"></span></p>
+<p>We use computers in part because they’re good at doing the same thing over and over again. Any person can multiply 9 x 9. (It’s 81.) <a href="https://www.youtube.com/watch?v=tUY1k7B7hgM#t=00m50s">A computer can multiply huge numbers.</a> In fact, they can do this <em>many</em> times per&nbsp;second.</p>
+<p>Amazing, but what is the by-product of all of this multiplication? Lots and lots of <a href="http://en.wikipedia.org/wiki/Product_(Mathematics)">products</a>, which, <strong>you</strong>, the programmer, must check for&nbsp;correctness.</p>
+<p>Although it’s likely that you are a multiplication developer doing big things in the multiplication space, for the sake of this post, let’s generalize this to non-multiplication programming. The program’s output need not be multiplication products; it could be, say, strings or&nbsp;objects.</p>
+<pre><code>var enormousArray = getBigData(ids);
+</code></pre><p>There’s a few ways of testing&nbsp;this:</p>
+<ol>
+<li><p>You could sample this&nbsp;array.</p>
+<pre><code> var firstBigDatum = {
+   id: &#39;kjasdflkadsjf&#39;,
+   age: 24,
+   SSN: &#39;098-876-5432&#39;,
+   weaknesses: [
+     &#39;bad left knee&#39;,
+     &#39;fear of crickets&#39;,
+     &#39;corgis&#39;,
+     &#39;not the greatest self-esteem&#39;,
+   ]
+ };
+
+ var lastBigDatum = {
+   id: &#39;iwermskldf&#39;,
+   age: 38,
+   SSN: &#39;876-54-321&#39;,
+   weaknesses: [
+     &#39;peanut allergy&#39;,
+     &#39;double-jointed in elbow (warning: also a strength)&#39;,
+     &#39;slow reader&#39;
+   ]
+ };
+
+ assert.deepEqual(firstBigDatum, enormousArray[0]);
+ assert.deepEqual(lastBigDatum, enormousArray[enormousArray.length - 1]);
+</code></pre><p>The problem with this is is that you have skipped testing elements <code>1</code> through <code>enormousArray.length - 2</code> of that array. That could be a lot of elements. Programmers are known to make mistakes while iterating, so it’s probably best to examine those elements, rather than sweeping them under the rug. (You might not have a big enough rug to do that,&nbsp;anyway.)</p>
+</li>
+<li><p>You could write rules that make “general” assertions against every element in the&nbsp;array.</p>
+<pre><code> enormousArray.forEach(function checkDatum(datum) {
+
+   assert.equal(typeof datum.id, &#39;string&#39;);
+   assert.equal(typeof datum.age, &#39;number&#39;);
+   assert.equal(typeof datum.SSN, &#39;string&#39;);
+   assert.equal(datum.SSN.length, 12);
+   assert.ok(Array.isArray(datum.weaknesses));
+   assert.ok(datum.weaknesses.length &gt; 0);
+
+   datum.weaknesses.forEach(function checkWeakness(weakness) {
+     assert.equal(weakness, &#39;string&#39;);
+     assert.ok(weakness.length &gt; 0);
+   });
+ });
+</code></pre><p>This is <span class="caps">OK</span>. It does make sure that many parts of every object in the array fall within certain bounds. Sometimes when the function being tested is not <a href="http://en.wikipedia.org/wiki/Deterministic_algorithm">deterministic</a>, this is the best you can do. If it is deterministic, though, you are leaving a lot of potential errors&nbsp;unchecked.</p>
+</li>
+<li><p>You could exhaustively check every element in the array. You will then know that the output is completely correct, without a doubt. If what you’re testing is deterministic, then this is the right thing to&nbsp;do.</p>
+<p>Unfortunately, this can be soul&nbsp;crushing.</p>
+<p>Doing this usually involves assembling a huge data file or series of data files that have the ‘golden’ data that the tests will compare to the program’s output. To get that golden data, your options are usually:
+<ol class="alpha">
+<li>
+ Hand assemble all of the data. This is&nbsp;unpleasant.
+</li>
+<li>
+ Copy the data, at least in part, from some reference, then massage it into shape. This is&nbsp;better.
+</li>
+<li>
+ Log the output of the program, then edit the output for correctness. This is usually the least work, but still a&nbsp;hassle.
+</li> 
+</ol>
+However, once you’ve done this, the program or some externality may change, invalidating the golden data. Then, you have to fix it all. If you have to do this each time something changes, <em>you may give up on testing it entirely</em>.</p>
+</li>
+</ol>
+<p><a href="https://github.com/approvals/Approvals.NodeJS">Approvals</a> automates option C. If you are using Node and Mocha, there’s basically <a href="https://github.com/approvals/Approvals.NodeJS/wiki/Mocha">two changes</a> you need to make to your test&nbsp;script:</p>
+<ol>
+<li><p>Add <code>require(&#39;approvals&#39;).mocha(__dirname + &#39;/where_you_keep_approval_files&#39;);</code>. This will set up a <code>beforeEach</code> hook that injects approvals methods like <code>verify</code> into each test&nbsp;closure.</p>
+</li>
+<li><p>Use <code>verify</code> or <code>verifyAsJSON</code> in test closures. e.g. <code>this.verifyAsJSON(enormousArray);</code></p>
+</li>
+</ol>
+<p><code>verify</code> will start compare whatever data you give it with a corresponding file that should contain a snapshot of that data from the last time you ran the test. If it’s the same, then the test passes. If it’s not, a diff app will be launched. In my case, it’s FileMerge.
+<img src="/articles/shirk-work-with-approvals/approvalsdiff.png" alt="diff image">
+This is your chance to review the differences. If the differences are valid (perhaps the result of a valid change in your program), you can accept them by saving over the approvals file with one that includes the changes. If they are not, you can keep the approvals file as it was, and the test will fail because it is the program that is wrong, not the approvals&nbsp;file.</p>
+<p><em>Approvals merges reviewing test errors &mdash; something you have to do anyway &mdash; and updating tests into one process.</em> That’s pretty smooth, I&nbsp;think.</p>
+<p>I’ve started writing a <a href="https://github.com/jimkang/reactivecell">reaction module</a> for <a href="http://en.wikipedia.org/wiki/Cellular_automaton">cellular automata</a>. (I don’t know what I’m doing yet, in case you’re wondering.) Cellular automata code usually acts on several cells over several iterations. Cell automata are usually deterministic, yet their states can keep changing even after many iterations. So, test-wise, the state of the cells after iteration 80 might be as worthy of examination as their state after iteration&nbsp;3.</p>
+<p>Checking that many sets of states was daunting, but with Approvals, I was at least able to <a href="https://github.com/jimkang/reactivecell/blob/master/tests/airtests.js#L105">easily record the output of 100 iterations</a>. I’m only testing with five cells in a cross layout right now, but I’ll be testing with much bigger formations of cells later. I’m not too worried about testing them (and later breaking those tests), thanks to this&nbsp;stuff.</p>
+<p>In large part, my test writing becomes&nbsp;this:</p>
+<p><img src="duff_inspection_clip.gif" alt="Fine, fine, mouse, fine, mouse, rat, syringe, fine" class="do-not-resize" width="160" height="118" style="margin-left: 0.1em"></img></p>
+<p>This whole post was written from the perspective of a Node developer writing in JavaScript, but there are Approval libraries for <a href="http://approvaltests.sourceforge.net/">a whole bunch of other languages</a>.</p>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/">« Full blog</a></div>
+        <!--section.about-->
+        <!--  !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2014 Jim Kang &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+        </section>
+      </div>
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        
+        ga('create', 'UA-49491163-1', 'jimkang.com');
+        ga('send', 'pageview');
+      </script>
+    </footer>
+  </body>
+</html>

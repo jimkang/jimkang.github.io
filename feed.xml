@@ -5,9 +5,103 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>Blogging up some blogs, just for you.</description>
-    <pubDate>Mon, 21 Apr 2014 20:00:00 -0400</pubDate>
+    <pubDate>Sat, 26 Apr 2014 20:00:00 -0400</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Shirk a lot of work with Approvals</title>
+      <link>http://jimkang.com/articles/shirk-work-with-approvals/</link>
+      <pubDate>Sat, 26 Apr 2014 20:00:00 -0400</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/articles/shirk-work-with-approvals/</guid>
+      <author></author>
+      <description>&lt;p&gt;Here’s an ugly thing I think you inevitably run into when writing tests: Having to specify tons and tons of reference values to which to compare test results. Then, wanting to kill yourself.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;We use computers in part because they’re good at doing the same thing over and over again. Any person can multiply 9 x 9. (It’s 81.) &lt;a href=&quot;https://www.youtube.com/watch?v=tUY1k7B7hgM#t=00m50s&quot;&gt;A computer can multiply huge numbers.&lt;/a&gt; In fact, they can do this &lt;em&gt;many&lt;/em&gt; times per second.&lt;/p&gt;
+&lt;p&gt;Amazing, but what is the by-product of all of this multiplication? Lots and lots of &lt;a href=&quot;http://en.wikipedia.org/wiki/Product_(Mathematics)&quot;&gt;products&lt;/a&gt;, which, &lt;strong&gt;you&lt;/strong&gt;, the programmer, must check for correctness.&lt;/p&gt;
+&lt;p&gt;Although it’s likely that you are a multiplication developer doing big things in the multiplication space, for the sake of this post, let’s generalize this to non-multiplication programming. The program’s output need not be multiplication products; it could be, say, strings or objects.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var enormousArray = getBigData(ids);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;There’s a few ways of testing this:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;You could sample this array.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; var firstBigDatum = {
+   id: &amp;#39;kjasdflkadsjf&amp;#39;,
+   age: 24,
+   SSN: &amp;#39;098-876-5432&amp;#39;,
+   weaknesses: [
+     &amp;#39;bad left knee&amp;#39;,
+     &amp;#39;fear of crickets&amp;#39;,
+     &amp;#39;corgis&amp;#39;,
+     &amp;#39;not the greatest self-esteem&amp;#39;,
+   ]
+ };
+
+ var lastBigDatum = {
+   id: &amp;#39;iwermskldf&amp;#39;,
+   age: 38,
+   SSN: &amp;#39;876-54-321&amp;#39;,
+   weaknesses: [
+     &amp;#39;peanut allergy&amp;#39;,
+     &amp;#39;double-jointed in elbow (warning: also a strength)&amp;#39;,
+     &amp;#39;slow reader&amp;#39;
+   ]
+ };
+
+ assert.deepEqual(firstBigDatum, enormousArray[0]);
+ assert.deepEqual(lastBigDatum, enormousArray[enormousArray.length - 1]);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The problem with this is is that you have skipped testing elements &lt;code&gt;1&lt;/code&gt; through &lt;code&gt;enormousArray.length - 2&lt;/code&gt; of that array. That could be a lot of elements. Programmers are known to make mistakes while iterating, so it’s probably best to examine those elements, rather than sweeping them under the rug. (You might not have a big enough rug to do that, anyway.)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;You could write rules that make “general” assertions against every element in the array.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; enormousArray.forEach(function checkDatum(datum) {
+
+   assert.equal(typeof datum.id, &amp;#39;string&amp;#39;);
+   assert.equal(typeof datum.age, &amp;#39;number&amp;#39;);
+   assert.equal(typeof datum.SSN, &amp;#39;string&amp;#39;);
+   assert.equal(datum.SSN.length, 12);
+   assert.ok(Array.isArray(datum.weaknesses));
+   assert.ok(datum.weaknesses.length &amp;gt; 0);
+
+   datum.weaknesses.forEach(function checkWeakness(weakness) {
+     assert.equal(weakness, &amp;#39;string&amp;#39;);
+     assert.ok(weakness.length &amp;gt; 0);
+   });
+ });
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This is OK. It does make sure that many parts of every object in the array fall within certain bounds. Sometimes when the function being tested is not &lt;a href=&quot;http://en.wikipedia.org/wiki/Deterministic_algorithm&quot;&gt;deterministic&lt;/a&gt;, this is the best you can do. If it is deterministic, though, you are leaving a lot of potential errors unchecked.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;You could exhaustively check every element in the array. You will then know that the output is completely correct, without a doubt. If what you’re testing is deterministic, then this is the right thing to do.&lt;/p&gt;
+&lt;p&gt;Unfortunately, this can be soul crushing.&lt;/p&gt;
+&lt;p&gt;Doing this usually involves assembling a huge data file or series of data files that have the ‘golden’ data that the tests will compare to the program’s output. To get that golden data, your options are usually:
+&lt;ol class=&quot;alpha&quot;&gt;
+&lt;li&gt;
+ Hand assemble all of the data. This is unpleasant.
+&lt;/li&gt;
+&lt;li&gt;
+ Copy the data, at least in part, from some reference, then massage it into shape. This is better.
+&lt;/li&gt;
+&lt;li&gt;
+ Log the output of the program, then edit the output for correctness. This is usually the least work, but still a hassle.
+&lt;/li&gt; 
+&lt;/ol&gt;
+However, once you’ve done this, the program or some externality may change, invalidating the golden data. Then, you have to fix it all. If you have to do this each time something changes, &lt;em&gt;you may give up on testing it entirely&lt;/em&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/approvals/Approvals.NodeJS&quot;&gt;Approvals&lt;/a&gt; automates option C. If you are using Node and Mocha, there’s basically &lt;a href=&quot;https://github.com/approvals/Approvals.NodeJS/wiki/Mocha&quot;&gt;two changes&lt;/a&gt; you need to make to your test script:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Add &lt;code&gt;require(&amp;#39;approvals&amp;#39;).mocha(__dirname + &amp;#39;/where_you_keep_approval_files&amp;#39;);&lt;/code&gt;. This will set up a &lt;code&gt;beforeEach&lt;/code&gt; hook that injects approvals methods like &lt;code&gt;verify&lt;/code&gt; into each test closure.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Use &lt;code&gt;verify&lt;/code&gt; or &lt;code&gt;verifyAsJSON&lt;/code&gt; in test closures. e.g. &lt;code&gt;this.verifyAsJSON(enormousArray);&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;code&gt;verify&lt;/code&gt; will start compare whatever data you give it with a corresponding file that should contain a snapshot of that data from the last time you ran the test. If it’s the same, then the test passes. If it’s not, a diff app will be launched. In my case, it’s FileMerge.
+&lt;img src=&quot;http://jimkang.com/articles/shirk-work-with-approvals/approvalsdiff.png&quot; alt=&quot;diff image&quot;&gt;
+This is your chance to review the differences. If the differences are valid (perhaps the result of a valid change in your program), you can accept them by saving over the approvals file with one that includes the changes. If they are not, you can keep the approvals file as it was, and the test will fail because it is the program that is wrong, not the approvals file.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Approvals merges reviewing test errors &amp;mdash; something you have to do anyway &amp;mdash; and updating tests into one process.&lt;/em&gt; That’s pretty smooth, I think.&lt;/p&gt;
+&lt;p&gt;I’ve started writing a &lt;a href=&quot;https://github.com/jimkang/reactivecell&quot;&gt;reaction module&lt;/a&gt; for &lt;a href=&quot;http://en.wikipedia.org/wiki/Cellular_automaton&quot;&gt;cellular automata&lt;/a&gt;. (I don’t know what I’m doing yet, in case you’re wondering.) Cellular automata code usually acts on several cells over several iterations. Cell automata are usually deterministic, yet their states can keep changing even after many iterations. So, test-wise, the state of the cells after iteration 80 might be as worthy of examination as their state after iteration 3.&lt;/p&gt;
+&lt;p&gt;Checking that many sets of states was daunting, but with Approvals, I was at least able to &lt;a href=&quot;https://github.com/jimkang/reactivecell/blob/master/tests/airtests.js#L105&quot;&gt;easily record the output of 100 iterations&lt;/a&gt;. I’m only testing with five cells in a cross layout right now, but I’ll be testing with much bigger formations of cells later. I’m not too worried about testing them (and later breaking those tests), thanks to this stuff.&lt;/p&gt;
+&lt;p&gt;In large part, my test writing becomes this:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;duff_inspection_clip.gif&quot; alt=&quot;Fine, fine, mouse, fine, mouse, rat, syringe, fine&quot; class=&quot;do-not-resize&quot; width=&quot;160&quot; height=&quot;118&quot; style=&quot;margin-left: 0.1em&quot;&gt;&lt;/img&gt;&lt;/p&gt;
+&lt;p&gt;This whole post was written from the perspective of a Node developer writing in JavaScript, but there are Approval libraries for &lt;a href=&quot;http://approvaltests.sourceforge.net/&quot;&gt;a whole bunch of other languages&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>How quadtrees work</title>
       <link>http://jimkang.com/articles/quadtreevis/</link>
