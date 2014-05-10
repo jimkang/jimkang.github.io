@@ -5,9 +5,29 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Sat, 26 Apr 2014 20:00:00 -0400</pubDate>
+    <pubDate>Fri, 09 May 2014 20:00:00 -0400</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Between 480,000 and 960,000</title>
+      <link>http://jimkang.com/articles/between-480000-and-960000/</link>
+      <pubDate>Fri, 09 May 2014 20:00:00 -0400</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/articles/between-480000-and-960000/</guid>
+      <author></author>
+      <description>&lt;p&gt;I’ve been working on a &lt;a href=&quot;https://github.com/jimkang/roguemap-parse-stream&quot;&gt;simple streaming parser&lt;/a&gt; for plain text maps. While writing the browser example (I originally wrote it for Node), I began to wonder if I could use the &lt;a href=&quot;https://github.com/substack/stream-handbook&quot;&gt;Power of Streaming&lt;/a&gt; to use it to render some really huge maps.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;
+I gave it a map file with about 16 million entities that were each to render to three SVG entities. After fiddling with each of the streams involved to make them respect backpressure, I was able to keep the browser responsive for a while while it rendered these entities. However, at some point, the page would inevitably become unresponsive and the tab would crash.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Who to blame?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;I stepped away from the JavaScript and made a huge static HTML file. It has 960,000 SVG &lt;code&gt;&amp;lt;g&amp;gt;&lt;/code&gt; elements, each containing a &lt;code&gt;&amp;lt;rect&amp;gt;&lt;/code&gt; and &lt;code&gt;&amp;lt;text&amp;gt;&lt;/code&gt; element.&lt;/p&gt;
+&lt;p&gt;Chrome 34.0.1847.131 quits on it (“Aw, Snap!” page) on a Mac running Mavericks with a 2.8 GHz Core i7 and 16 GB RAM. &lt;a href=&quot;https://dl.dropboxusercontent.com/u/263768/lotsofelements.html&quot;&gt;You can try it yourself.&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;(However, Chrome &lt;em&gt;will&lt;/em&gt; successfully load a page with 480,000 &lt;code&gt;&amp;lt;g&amp;gt;&lt;/code&gt;s!)&lt;/p&gt;
+&lt;p&gt;So, if you find yourself having to create this many elements via JavaScript, keep in mind that &lt;em&gt;the fans may scream because of sheer rendering stress, not necessarily because there’s something wrong with your code.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Streaming into a lagoon&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;I think there’s a lesson here about streaming as well. Streams are about processing data a manageable chunk at a time, but if you can’t dispose of those chunks after you’re done with them, those chunks pool up, and the chunk-at-a-time benefit of streams is negated. &lt;/p&gt;
+&lt;p&gt;In the situation I set up &amp;mdash; piping a huge text file to a parser stream, then piping the parsed tokens to a renderer &amp;mdash; streams of text were transformed into streams of token objects which were then transformed into SVG elements. But those SVG elements did not “pass through.” They piled up in the DOM, eating up memory.&lt;/p&gt;
+&lt;p&gt;Not every object benefits from being hit with a hammer, and some situations benefit less than others from having a streaming pattern applied.&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Shirk a lot of work with Approvals</title>
       <link>http://jimkang.com/articles/shirk-work-with-approvals/</link>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Between 480,000 and 960,000 - jimkang.com
+    </title>
+    <link rel="alternate" href="http://jimkang.com/feed.xml" type="application/rss+xml" title="It's dot com.">
+    <link rel="stylesheet" href="/css/main.css">
+    <script>
+      (function(d) {
+        var config = {
+          kitId: 'med0yzx',
+          scriptTimeout: 3000
+        },
+        h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='//use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+      })(document);
+      
+    </script>
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <!-- include author-->
+        <h1>Between 480,000 and 960,000</h1>
+        <!-- p.author-->
+        <!--  | #{ "Written by " }-->
+        <!--  mixin author(page.metadata.author)-->
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>I’ve been working on a <a href="https://github.com/jimkang/roguemap-parse-stream">simple streaming parser</a> for plain text maps. While writing the browser example (I originally wrote it for Node), I began to wonder if I could use the <a href="https://github.com/substack/stream-handbook">Power of Streaming</a> to use it to render some really huge&nbsp;maps.</p>
+<p><span class="more"></span>
+I gave it a map file with about 16 million entities that were each to render to three <span class="caps">SVG</span> entities. After fiddling with each of the streams involved to make them respect backpressure, I was able to keep the browser responsive for a while while it rendered these entities. However, at some point, the page would inevitably become unresponsive and the tab would&nbsp;crash.</p>
+<p><strong>Who to&nbsp;blame?</strong></p>
+<p>I stepped away from the JavaScript and made a huge static <span class="caps">HTML</span> file. It has 960,000 SVG <code>&lt;g&gt;</code> elements, each containing a <code>&lt;rect&gt;</code> and <code>&lt;text&gt;</code> element.</p>
+<p>Chrome 34.0.1847.131 quits on it (“Aw, Snap!” page) on a Mac running Mavericks with a 2.8 GHz Core i7 and 16 <span class="caps">GB</span> RAM. <a href="https://dl.dropboxusercontent.com/u/263768/lotsofelements.html">You can try it&nbsp;yourself.</a></p>
+<p>(However, Chrome <em>will</em> successfully load a page with 480,000 <code>&lt;g&gt;</code>s!)</p>
+<p>So, if you find yourself having to create this many elements via JavaScript, keep in mind that <em>the fans may scream because of sheer rendering stress, not necessarily because there’s something wrong with your&nbsp;code.</em></p>
+<p><strong>Streaming into a&nbsp;lagoon</strong></p>
+<p>I think there’s a lesson here about streaming as well. Streams are about processing data a manageable chunk at a time, but if you can’t dispose of those chunks after you’re done with them, those chunks pool up, and the chunk-at-a-time benefit of streams is&nbsp;negated. </p>
+<p>In the situation I set up &mdash; piping a huge text file to a parser stream, then piping the parsed tokens to a renderer &mdash; streams of text were transformed into streams of token objects which were then transformed into <span class="caps">SVG</span> elements. But those SVG elements did not “pass through.” They piled up in the DOM, eating up&nbsp;memory.</p>
+<p>Not every object benefits from being hit with a hammer, and some situations benefit less than others from having a streaming pattern&nbsp;applied.</p>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/">« Full blog</a></div>
+        <!--section.about-->
+        <!--  !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2014 Jim Kang &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+        </section>
+      </div>
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        
+        ga('create', 'UA-49491163-1', 'jimkang.com');
+        ga('send', 'pageview');
+      </script>
+    </footer>
+  </body>
+</html>
