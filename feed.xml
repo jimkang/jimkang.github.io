@@ -5,16 +5,52 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Fri, 09 May 2014 20:00:00 -0400</pubDate>
+    <pubDate>Sat, 17 May 2014 20:00:00 -0400</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
     <item>
       <title>Between 480,000 and 960,000</title>
       <link>http://jimkang.com/articles/between-480000-and-960000/</link>
-      <pubDate>Fri, 09 May 2014 20:00:00 -0400</pubDate>
+      <pubDate>Sat, 17 May 2014 20:00:00 -0400</pubDate>
       <guid isPermaLink="true">http://jimkang.com/articles/between-480000-and-960000/</guid>
       <author></author>
-      <description>&lt;p&gt;I’ve been working on a &lt;a href=&quot;https://github.com/jimkang/roguemap-parse-stream&quot;&gt;simple streaming parser&lt;/a&gt; for plain text maps. While writing the browser example (I originally wrote it for Node), I began to wonder if I could use the &lt;a href=&quot;https://github.com/substack/stream-handbook&quot;&gt;Power of Streaming&lt;/a&gt; to use it to render some really huge maps.&lt;/p&gt;
+      <description>&lt;style&gt;
+  .tagbox {
+    font-size: 32px;
+  }
+
+  .pipe {
+    fill: hsla(0, 100%, 0%, 0.0);
+    stroke-width: 1;
+    stroke: #888;
+  }
+
+  svg {
+    font-size: 20px;
+  }
+
+  svg text {
+    fill: #585858;
+  }
+
+  .station {
+    stroke: #777;
+    stroke-width: 3;
+    fill: #fff;
+  }
+
+  .station-label {
+    font-size: 24px;
+    text-align: center;
+    text-anchor: middle;
+  }
+
+  #block-layer text {
+    fill: hsl(0, 60%, 60%);
+  }
+&lt;/style&gt;
+
+&lt;p&gt;I’ve been working on a &lt;a href=&quot;https://github.com/jimkang/roguemap-parse-stream&quot;&gt;simple streaming parser&lt;/a&gt; for plain text maps. While writing the browser example (I originally wrote it for Node), I began to wonder if I could use the &lt;a href=&quot;https://github.com/substack/stream-handbook&quot;&gt;Power of Streaming&lt;/a&gt; to use it to render some really huge maps.&lt;/p&gt;
 &lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;
 I gave it a map file with about 16 million entities that were each to render to three SVG entities. After fiddling with each of the streams involved to make them respect backpressure, I was able to keep the browser responsive for a while while it rendered these entities. However, at some point, the page would inevitably become unresponsive and the tab would crash.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Who to blame?&lt;/strong&gt;&lt;/p&gt;
@@ -25,7 +61,69 @@ I gave it a map file with about 16 million entities that were each to render to 
 &lt;p&gt;&lt;strong&gt;Streaming into a lagoon&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;I think there’s a lesson here about streaming as well. Streams are about processing data a manageable chunk at a time, but if you can’t dispose of those chunks after you’re done with them, those chunks pool up, and the chunk-at-a-time benefit of streams is negated. &lt;/p&gt;
 &lt;p&gt;In the situation I set up &amp;mdash; piping a huge text file to a parser stream, then piping the parsed tokens to a renderer &amp;mdash; streams of text were transformed into streams of token objects which were then transformed into SVG elements. But those SVG elements did not “pass through.” They piled up in the DOM, eating up memory.&lt;/p&gt;
+&lt;p&gt;&lt;a name=&quot;stream-overload-diagram-anchor&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;svg width=&quot;800&quot; height=&quot;600&quot; id=&quot;stream-overload-diagram&quot;&gt;
+  &lt;defs&gt;
+    &lt;radialGradient id=&quot;sphere-gradient&quot;&gt;
+      &lt;stop offset=&quot;0&quot; stop-color=&quot;hsl(30, 100%, 80%)&quot;/&gt;
+      &lt;stop offset=&quot;0.75&quot; stop-color=&quot;hsl(20, 100%, 60%)&quot;&gt;
+        &lt;animate attributeName=&quot;offset&quot; values=&quot;0.75;0.9;0.75&quot; keySplines=&quot;0.1 0.8 0.2 1; 0.1 0.8 0.2 1; 0.1 0.8 0.2 1&quot; dur=&quot;4s&quot; repeatCount=&quot;indefinite&quot; /&gt;
+      &lt;/stop&gt;
+      &lt;stop offset=&quot;1&quot; stop-color=&quot;hsl(10, 100%, 50%)&quot;&gt;
+        &lt;animate attributeName=&quot;stop-color&quot; values=&quot;hsl(10, 100%, 50%);hsl(40, 100%, 70%);hsl(10, 100%, 50%)&quot; keySplines=&quot;0.1 0.8 0.2 1; 0.1 0.8 0.2 1; 0.1 0.8 0.2 1&quot; dur=&quot;4s&quot; repeatCount=&quot;indefinite&quot; /&gt;
+      &lt;/stop&gt;
+    &lt;/radialGradient&gt;
+
+    &lt;linearGradient id=&quot;pipe-gradient&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;100%&quot;, y2=&quot;0&quot;&gt;
+      &lt;stop offset=&quot;0&quot; stop-color=&quot;hsl(200, 100%, 10%)&quot; /&gt;
+      &lt;stop offset=&quot;0.5&quot; stop-color=&quot;hsl(180, 100%, 20%)&quot;&gt;
+        &lt;animate attributeName=&quot;offset&quot; values=&quot;0.5;0.9;0.5&quot; keySplines=&quot;0.1 0.8 0.2 1; 0.1 0.8 0.2 1; 0.1 0.8 0.2 1&quot; dur=&quot;10s&quot; repeatCount=&quot;indefinite&quot; /&gt;
+      &lt;/stop&gt;
+      &lt;stop offset=&quot;1&quot; stop-color=&quot;hsl(200, 100%, 30%)&quot;&gt;
+      &lt;/stop&gt;
+    &lt;/linearGradient&gt;
+  &lt;/defs&gt;
+  &lt;g class=&quot;background-layer&quot;&gt;
+  &lt;/g&gt;
+  &lt;g id=&quot;chunk-layer&quot;&gt;
+  &lt;/g&gt;
+  &lt;g id=&quot;static-layer&quot;&gt;
+    &lt;g&gt;
+      &lt;rect id=&quot;reader&quot; x=&quot;30&quot; y=&quot;300&quot; width=&quot;200&quot; height=&quot;120&quot; 
+      class=&quot;station&quot; /&gt;
+      &lt;text x=&quot;30&quot; dx=&quot;4.2em&quot; y=&quot;300&quot; dy=&quot;2.8em&quot; width=&quot;200&quot; class=&quot;station-label&quot;&gt;Internet requester&lt;/text&gt;
+    &lt;/g&gt;
+
+    &lt;g&gt;
+      &lt;path d=&quot; M 250 4
+                L 440 4
+                L 345 154
+                Z&quot;
+            class=&quot;station&quot;
+            id=&quot;parser&quot; x=&quot;250&quot; y=&quot;4&quot; width=&quot;100&quot; height=&quot;100&quot; /&gt;
+      &lt;text x=&quot;250&quot; y=&quot;4&quot; dx=&quot;4em&quot; dy=&quot;2.35em&quot; class=&quot;station-label&quot;&gt;Parser&lt;/text&gt;
+    &lt;/g&gt;
+
+    &lt;g&gt;
+      &lt;circle id=&quot;renderer&quot; x=&quot;525&quot; y=&quot;175&quot; width=&quot;150&quot; height=&quot;150&quot;
+      r=&quot;75&quot; cx=&quot;600&quot; cy=&quot;250&quot; class=&quot;station&quot;&gt;&lt;/circle&gt;
+      &lt;text x=&quot;525&quot; y=&quot;175&quot; dx=&quot;3.1em&quot; dy=&quot;2.25em&quot; class=&quot;station-label&quot;&gt;Renderer&lt;/text&gt;
+    &lt;/g&gt;
+  &lt;/g&gt;
+  &lt;g id=&quot;block-layer&quot;&gt;
+  &lt;/g&gt;
+
+&lt;/svg&gt;  
+
 &lt;p&gt;Not every object benefits from being hit with a hammer, and some situations benefit less than others from having a streaming pattern applied.&lt;/p&gt;
+&lt;script src=&quot;d3.v3.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;basicrequest.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;wordgetter.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;scrollwatcher.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;gravitybox.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;idmaker.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;mover.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;flowcontroller.js&quot;&gt;&lt;/script&gt;
 </description>
     </item>
     <item>
