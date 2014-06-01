@@ -234,7 +234,20 @@ footer .copy, footer .copy a {
 
 .article .content img {
   display: block;
+}
+
+.article .content .fit-to-width {
   width: 100%;
+}
+
+.center-img-zone .img-container {
+  display: flex;
+  justify-content: center;
+}
+
+.center-img-zone img {
+  margin-bottom: 1.52em;
+  margin-top: 1.52em;
 }
 
 .article .content img.do-not-resize {
