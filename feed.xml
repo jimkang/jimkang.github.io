@@ -5,9 +5,83 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Sat, 31 May 2014 20:00:00 -0400</pubDate>
+    <pubDate>Tue, 24 Jun 2014 20:00:00 -0400</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Rendering faster by hiding DOM elements instead of removing them</title>
+      <link>http://jimkang.com/articles/browser-disapproval-of-frequent-dom-removal/</link>
+      <pubDate>Tue, 24 Jun 2014 20:00:00 -0400</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/articles/browser-disapproval-of-frequent-dom-removal/</guid>
+      <author></author>
+      <description>&lt;p&gt;I have been working on a &lt;a href=&quot;https://github.com/jimkang/reactivecell&quot;&gt;cellular automaton&lt;/a&gt;. The latest thing I did with it was to make it run in the browser. (Before I was running it with Node.) That part was smooth, but when I hooked it up to some &lt;a href=&quot;https://github.com/jimkang/cellgridrenderer&quot;&gt;straightforward D3 rendering code&lt;/a&gt; to render each cell at each iteration, I ran into some trouble. It was sluggish once there were about 6000 cells out.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;D3 apps usually work around an &lt;a href=&quot;http://bost.ocks.org/mike/join/&quot;&gt;enter/update/exit&lt;/a&gt; loop. Each iteration, you tell D3 to “join” the data (an array of some sort) with the DOM (usually SVG) elements that represent them. D3 figures out:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Which data elements are not currently represented in the DOM&lt;/li&gt;
+&lt;li&gt;Which data elements are represented (but may need updating)&lt;/li&gt;
+&lt;li&gt;Which DOM elements represent data elements that no longer exist&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;It gives you the first and the last set as via &lt;code&gt;enter()&lt;/code&gt; and &lt;code&gt;exit()&lt;/code&gt;. Usually, you use the selection returned by &lt;code&gt;enter()&lt;/code&gt; to create new DOM elements to represent the new data, and you use &lt;code&gt;exit()&lt;/code&gt;‘s selection to remove DOM elements. That’s what I was doing.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; function renderCells(cells) {
+    var cellRenditions = tileRoot.selectAll(&amp;#39;.&amp;#39; + opts.cellClass)
+      .data(cells, a.id);
+
+    var newCellRenditions = cellRenditions.enter()
+      .append(&amp;#39;g&amp;#39;).classed(opts.cellClass, true);
+
+    newCellRenditions.append(&amp;#39;rect&amp;#39;).attr({
+      x: 0,
+      y: 0,
+      width: 1,
+      height: 1
+    });
+
+    if (opts.customizeCellRendition) {
+      cellRenditions.each(opts.customizeCellRendition);
+    }
+
+    cellRenditions.attr(&amp;#39;transform&amp;#39;, a.transform);
+
+    cellRenditions.exit().remove();
+  }
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I profiled some late iterations in Chrome DevTools to check out see where time was being spent in the code. Here’s what the flame graph for a single iteration’s rendering looked like:&lt;/p&gt;
+&lt;p&gt;&lt;img class=&quot;fit-to-width&quot; src=&quot;renderCells-profile-with-remove.png&quot; alt=&quot;Flame graph screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Rougly 80 ms was spent in &lt;code&gt;removeChild&lt;/code&gt;. The entire &lt;code&gt;renderCells&lt;/code&gt; call took 137 ms. So I thought, are &lt;code&gt;removeChild&lt;/code&gt; calls something I eliminate?&lt;/p&gt;
+&lt;p&gt;Removing DOM elements makes sense for a lot of visualizations. A datum could disappear after an interation and never appear again.&lt;/p&gt;
+&lt;p&gt;In a cellular automaton, all of the cells are in fixed positions. In my cellular automaton, only cells that do not match the profile of a “default cell” are tracked and rendered. Thus, a cell can “disappear” (become a default cell) in one iteration, and then “reappear” (become a cell that deviates from the default). So, I tried out &lt;a href=&quot;https://github.com/jimkang/cellgridrenderer/blob/master/fixedcellgridrenderer.js&quot;&gt;hiding exiting cells instead of removing them&lt;/a&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;function renderCells(cells) {
+  var cellRenditions = tileRoot.selectAll(&amp;#39;.&amp;#39; + opts.cellClass)
+    .data(cells, opts.idFunction);
+
+  var newCellRenditions = cellRenditions.enter()
+    .append(&amp;#39;g&amp;#39;).classed(opts.cellClass, true);
+
+  newCellRenditions
+    .append(&amp;#39;rect&amp;#39;).attr({
+      x: 0,
+      y: 0,
+      width: 1,
+      height: 1
+    })
+    .attr(&amp;#39;transform&amp;#39;, a.transform);
+
+  cellRenditions.attr(&amp;#39;opacity&amp;#39;, 1.0);
+
+  if (opts.customUpdate) {
+    opts.customUpdate(cellRenditions);
+  }
+
+  // Hide exited cells instead of removing.
+  cellRenditions.exit()
+    .attr(&amp;#39;opacity&amp;#39;, 0);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Here is the flame graph looked like after that change:&lt;/p&gt;
+&lt;p&gt;&lt;img class=&quot;fit-to-width&quot; src=&quot;renderCells-profile-without-remove.png&quot; alt=&quot;Flame graph screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Now &lt;code&gt;renderCells&lt;/code&gt; takes about 30 ms. Most of that time is now spent in the data join.&lt;/p&gt;
+&lt;p&gt;Ask your doctor if hiding instead of removing DOM elements in your app is right for you.&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Sunday Moseying</title>
       <link>http://jimkang.com/articles/sunday-moseying/</link>

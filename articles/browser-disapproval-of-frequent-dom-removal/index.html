@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Rendering faster by hiding DOM elements instead of removing them - jimkang.com
+    </title>
+    <link rel="alternate" href="http://jimkang.com/feed.xml" type="application/rss+xml" title="It's dot com.">
+    <link rel="stylesheet" href="/css/main.css">
+    <script>
+      (function(d) {
+        var config = {
+          kitId: 'med0yzx',
+          scriptTimeout: 3000
+        },
+        h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='//use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+      })(document);
+      
+    </script>
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <!-- include author-->
+        <h1>Rendering faster by hiding DOM elements instead of removing them</h1>
+        <!-- p.author-->
+        <!--  | #{ "Written by " }-->
+        <!--  mixin author(page.metadata.author)-->
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>I have been working on a <a href="https://github.com/jimkang/reactivecell">cellular automaton</a>. The latest thing I did with it was to make it run in the browser. (Before I was running it with Node.) That part was smooth, but when I hooked it up to some <a href="https://github.com/jimkang/cellgridrenderer">straightforward D3 rendering code</a> to render each cell at each iteration, I ran into some trouble. It was sluggish once there were about 6000 cells&nbsp;out.</p>
+<p><span class="more"></span></p>
+<p>D3 apps usually work around an <a href="http://bost.ocks.org/mike/join/">enter/update/exit</a> loop. Each iteration, you tell D3 to “join” the data (an array of some sort) with the <span class="caps">DOM</span> (usually SVG) elements that represent them. D3 figures&nbsp;out:</p>
+<ul>
+<li>Which data elements are not currently represented in the&nbsp;<span class="caps">DOM</span></li>
+<li>Which data elements are represented (but may need&nbsp;updating)</li>
+<li>Which <span class="caps">DOM</span> elements represent data elements that no longer&nbsp;exist</li>
+</ul>
+<p>It gives you the first and the last set as via <code>enter()</code> and <code>exit()</code>. Usually, you use the selection returned by <code>enter()</code> to create new <span class="caps">DOM</span> elements to represent the new data, and you use <code>exit()</code>‘s selection to remove <span class="caps">DOM</span> elements. That’s what I was&nbsp;doing.</p>
+<pre><code> function renderCells(cells) {
+    var cellRenditions = tileRoot.selectAll(&#39;.&#39; + opts.cellClass)
+      .data(cells, a.id);
+
+    var newCellRenditions = cellRenditions.enter()
+      .append(&#39;g&#39;).classed(opts.cellClass, true);
+
+    newCellRenditions.append(&#39;rect&#39;).attr({
+      x: 0,
+      y: 0,
+      width: 1,
+      height: 1
+    });
+
+    if (opts.customizeCellRendition) {
+      cellRenditions.each(opts.customizeCellRendition);
+    }
+
+    cellRenditions.attr(&#39;transform&#39;, a.transform);
+
+    cellRenditions.exit().remove();
+  }
+</code></pre><p>I profiled some late iterations in Chrome DevTools to check out see where time was being spent in the code. Here’s what the flame graph for a single iteration’s rendering looked&nbsp;like:</p>
+<p><img class="fit-to-width" src="renderCells-profile-with-remove.png" alt="Flame graph screenshot" /></p>
+<p>Rougly 80 ms was spent in <code>removeChild</code>. The entire <code>renderCells</code> call took 137 ms. So I thought, are <code>removeChild</code> calls something I&nbsp;eliminate?</p>
+<p>Removing <span class="caps">DOM</span> elements makes sense for a lot of visualizations. A datum could disappear after an interation and never appear&nbsp;again.</p>
+<p>In a cellular automaton, all of the cells are in fixed positions. In my cellular automaton, only cells that do not match the profile of a “default cell” are tracked and rendered. Thus, a cell can “disappear” (become a default cell) in one iteration, and then “reappear” (become a cell that deviates from the default). So, I tried out <a href="https://github.com/jimkang/cellgridrenderer/blob/master/fixedcellgridrenderer.js">hiding exiting cells instead of removing them</a>:</p>
+<pre><code>function renderCells(cells) {
+  var cellRenditions = tileRoot.selectAll(&#39;.&#39; + opts.cellClass)
+    .data(cells, opts.idFunction);
+
+  var newCellRenditions = cellRenditions.enter()
+    .append(&#39;g&#39;).classed(opts.cellClass, true);
+
+  newCellRenditions
+    .append(&#39;rect&#39;).attr({
+      x: 0,
+      y: 0,
+      width: 1,
+      height: 1
+    })
+    .attr(&#39;transform&#39;, a.transform);
+
+  cellRenditions.attr(&#39;opacity&#39;, 1.0);
+
+  if (opts.customUpdate) {
+    opts.customUpdate(cellRenditions);
+  }
+
+  // Hide exited cells instead of removing.
+  cellRenditions.exit()
+    .attr(&#39;opacity&#39;, 0);
+}
+</code></pre><p>Here is the flame graph looked like after that&nbsp;change:</p>
+<p><img class="fit-to-width" src="renderCells-profile-without-remove.png" alt="Flame graph screenshot" /></p>
+<p>Now <code>renderCells</code> takes about 30 ms. Most of that time is now spent in the data&nbsp;join.</p>
+<p>Ask your doctor if hiding instead of removing <span class="caps">DOM</span> elements in your app is right for&nbsp;you.</p>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/">« Full blog</a></div>
+        <!--section.about-->
+        <!--  !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2014 Jim Kang &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+          <p><a href='/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
+        </section>
+      </div>
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        
+        ga('create', 'UA-49491163-1', 'jimkang.com');
+        ga('send', 'pageview');
+      </script>
+    </footer>
+  </body>
+</html>
