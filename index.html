@@ -36,7 +36,7 @@
             <h2><a href="/articles/browser-disapproval-of-frequent-dom-removal/">Rendering faster by hiding DOM elements instead of removing them</a>
             </h2>
           </header>
-          <section class="content"><p>I have been working on a <a href="https://github.com/jimkang/reactivecell">cellular automaton</a>. The latest thing I did with it was to make it run in the browser. (Before I was running it with Node.) That part was smooth, but when I hooked it up to some <a href="https://github.com/jimkang/cellgridrenderer">straightforward D3 rendering code</a> to render each cell at each iteration, I ran into some trouble. It was sluggish once there were about 6000 cells&nbsp;out.</p>
+          <section class="content"><p>I know that <span class="caps">DOM</span> manipulation is expensive, but I’ve found it just doesn’t make a difference in a typical web app. (And of course, DOM manipulation can rarely be avoided entirely in graphically-oriented apps; it’s a matter of reducing the amount of DOM-touching that happens in those cases.) Recently, I ran into a case in which it <em>did</em> matter, <code>removeChild</code> in&nbsp;particular.</p>
 <p>
             <p class="more"><a href="/articles/browser-disapproval-of-frequent-dom-removal/">more</a></p>
           </section>
