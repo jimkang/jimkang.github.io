@@ -5,9 +5,32 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Tue, 24 Jun 2014 20:00:00 -0400</pubDate>
+    <pubDate>Sat, 28 Jun 2014 20:00:00 -0400</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Pink Overlord</title>
+      <link>http://jimkang.com/articles/pink-overlord/</link>
+      <pubDate>Sat, 28 Jun 2014 20:00:00 -0400</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/articles/pink-overlord/</guid>
+      <author></author>
+      <description>&lt;section class=&quot;center-img-zone&quot;&gt;
+
+&lt;p&gt;&lt;a class=&quot;img-container&quot; href=&quot;https://www.flickr.com/photos/ignignokt/14347670628&quot; title=&quot;Untitled by Jim, on Flickr&quot;&gt;&lt;img src=&quot;https://farm4.staticflickr.com/3849/14347670628_6a72091546_h.jpg&quot; width=&quot;800&quot; height=&quot;345&quot; alt=&quot;Trunk full of junk&quot;&gt;&lt;/a&gt;
+&lt;/section&gt;
+&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;section class=&quot;center-img-zone&quot;&gt;
+
+&lt;p&gt;&lt;a class=&quot;img-container&quot; href=&quot;https://www.flickr.com/photos/ignignokt/14347641729&quot; title=&quot;Untitled by Jim, on Flickr&quot;&gt;&lt;img src=&quot;https://farm4.staticflickr.com/3856/14347641729_6a14dd778f_h.jpg&quot; width=&quot;800&quot; height=&quot;600&quot; alt=&quot;Little Free Library&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&quot;img-container&quot; href=&quot;https://www.flickr.com/photos/ignignokt/14347795017&quot; title=&quot;Untitled by Jim, on Flickr&quot;&gt;&lt;img src=&quot;https://farm4.staticflickr.com/3842/14347795017_d967ad22af_h.jpg&quot; width=&quot;800&quot; height=&quot;600&quot; alt=&quot;Untitled&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&quot;img-container&quot; href=&quot;https://www.flickr.com/photos/ignignokt/14511123816&quot; title=&quot;Untitled by Jim, on Flickr&quot;&gt;&lt;img src=&quot;https://farm6.staticflickr.com/5492/14511123816_4075d62b68_h.jpg&quot; width=&quot;800&quot; height=&quot;600&quot; alt=&quot;Untitled&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&quot;img-container&quot; href=&quot;https://www.flickr.com/photos/ignignokt/14533267442&quot; title=&quot;Untitled by Jim, on Flickr&quot;&gt;&lt;img src=&quot;https://farm3.staticflickr.com/2915/14533267442_97acbe1949_h.jpg&quot; width=&quot;800&quot; height=&quot;450&quot; alt=&quot;Untitled&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&quot;img-container&quot; href=&quot;https://www.flickr.com/photos/ignignokt/14349198430&quot; title=&quot;Untitled by Jim, on Flickr&quot;&gt;&lt;img src=&quot;https://farm3.staticflickr.com/2916/14349198430_36f7ebe32c_h.jpg&quot; width=&quot;800&quot; height=&quot;600&quot; alt=&quot;Untitled&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&quot;img-container&quot; href=&quot;https://www.flickr.com/photos/ignignokt/14555963353&quot; title=&quot;Untitled by Jim, on Flickr&quot;&gt;&lt;img src=&quot;https://farm6.staticflickr.com/5595/14555963353_5897f4658c_h.jpg&quot; width=&quot;800&quot; height=&quot;600&quot; alt=&quot;Untitled&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/section&gt;
+&amp;nbsp;&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Rendering faster by hiding DOM elements instead of removing them</title>
       <link>http://jimkang.com/articles/browser-disapproval-of-frequent-dom-removal/</link>
