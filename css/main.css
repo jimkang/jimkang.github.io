@@ -421,6 +421,10 @@ ol.alpha {
 }
 
 @media (max-width: 690px) {
+  body {
+    font-size: 18px;
+  }
+
   .content-wrap {
     width: auto;
     padding: 0 1em;
@@ -429,7 +433,7 @@ ol.alpha {
     margin: 1em 0;
   }
   .header h1 {
-    font-size: 1.4em;
+    font-size: 1.0em;
     margin-bottom: 0.6em;
   }
   .header .description {
@@ -465,6 +469,15 @@ ol.alpha {
   }
   footer .about p {
     margin-bottom: 1em;
+  }
+
+  .center-img-zone .img-container {
+    display: inline-block;
+  }
+
+  .center-img-zone .img-container img {
+    width: 100%;
+    height: auto;
   }
 }
 
