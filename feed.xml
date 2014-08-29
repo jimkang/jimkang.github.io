@@ -5,9 +5,72 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Sun, 10  Aug 2014 20:00:00 -0400</pubDate>
+    <pubDate>Tue, 26  Aug 2014 20:00:00 -0400</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>When to fold on a unit test</title>
+      <link>http://jimkang.com/articles/when-to-fold-on-a-unit-test/</link>
+      <pubDate>Tue, 26  Aug 2014 20:00:00 -0400</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/articles/when-to-fold-on-a-unit-test/</guid>
+      <author></author>
+      <description>&lt;p&gt;Unit tests are snappy and reassuring. They’re an easy way to find out what’s wrong fast. However, not all code is amenable to unit testing. And so, you may find yourself bending over backwards to make your code amenable to unit testing. Oft times, this is good for your code. Other times, though, it contorts it in unhealthy ways.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;(This post is quite meandering, and in fact, changes viewpoints as it progresses. So, a warning: This is neither a handy how-to nor a tight manifesto.)&lt;/p&gt;
+&lt;p&gt;Unit tests are intended to test only a specific “unit” of code, like a method in an object or module. A unit test should only test one unit, not that unit’s dependencies. Thus, the unit is given mock versions of the dependencies to use, rather than the real versions. If you don’t do this, I’ve found that you end up with:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Hard-to-debug test failures in the case caused the behavior of a dependency or even worse, that of a dependency of a dependency of a dependency.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Redundant test targeting. More than one test will test the same code paths because of the implicit exercising of dependencies.&lt;/p&gt;
+&lt;p&gt;This might sound good, but it’s like having ten different people tell you that you’ve got dried toothpaste on your face. Better that you have one go-to guy for telling you that you have toothpaste on your face. The other nine guys, instead of telling you have toothpaste on your face and stopping, can instead tell you about other things, like that you forgot to wear pants.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Onerous test setups that often cannot be understood by looking at the test file only.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That’s why I now bother to mock things instead of running everything for real all the time. (If you can get away with it, it’s fine. I have, on a couple of projects.)&lt;/p&gt;
+&lt;p&gt;There’s times where it’s not worth it, though. Here’s one I ran into.&lt;/p&gt;
+&lt;p&gt;I’m starting an edit control maker called &lt;a href=&quot;https://github.com/jimkang/editize&quot;&gt;editize&lt;/a&gt;. It wraps a DOM element to create a control that modifies the element so that it’s editable at the appropriate times.&lt;/p&gt;
+&lt;p&gt;The control goes into edit mode when clicked or tapped and exits edit mode when the user clicks outside of the control &lt;em&gt;or&lt;/em&gt; when they hit the enter key. Clients of this control can specify an event handler that will be called when editing ends.&lt;/p&gt;
+&lt;p&gt;It’s easy to unit test the case in which editing exits via a click outside the control. DOM elements receive a &lt;code&gt;blur&lt;/code&gt; event when they lose focus. So, you can create a mock element like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;function createMockDOMElement() {
+  var blurEventListener;
+
+  return {
+    addEventListener: function mockAddEventListener(type, listener) {
+      if (type === &amp;#39;blur&amp;#39;) {
+        blurEventListener = listener;
+      }
+    },
+    mockBlur: function mockBlur() {
+      if (blurEventListener) {
+        blurEventListener();
+      }
+    }
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;And call &lt;code&gt;mockBlur&lt;/code&gt; to simulate a blur event, which will then call the control’s blur event listener. The test will verify that the control then calls the &lt;code&gt;endEdit&lt;/code&gt; event handler.&lt;/p&gt;
+&lt;p&gt;—&lt;/p&gt;
+&lt;p&gt;However, the other case is not as simple to mock: edit mode ending when the user hits the ‘Enter’ key . If I want to use a module like &lt;a href=&quot;https://github.com/jimkang/strokerouter&quot;&gt;strokerouter&lt;/a&gt; to listen for keystrokes, I then have to mock strokerouter. strokerouter, however, uses &lt;a href=&quot;http://d3js.org/&quot;&gt;D3&lt;/a&gt; to listen for events. It does not take D3 as a constructor argument (because that would be bizarre), so D3 would have to be mocked on the global scope. Either that, or strokerouter’s constructor would have to be modified to accept D3 as an argument.&lt;/p&gt;
+&lt;p&gt;Either way, the following methods and properties would need to be stubbed:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;d3.event.stopPropagation&lt;/li&gt;
+&lt;li&gt;d3.event.which&lt;/li&gt;
+&lt;li&gt;D3 selection object’s &lt;code&gt;on&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;D3 event trigger&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Certainly, that’s not a Herculean effort, but at that point, it is more of a test of &lt;code&gt;strokerouter&lt;/code&gt; than it is of the control. If you have to go this far, it’s not worth unit testing. You are going to get poor value for effort, and either the app code or test code is going to puzzle you the next time you look at it. Better to just use functional or manual tests to cover this.&lt;/p&gt;
+&lt;p&gt;&lt;h1&gt;BRAKE SCREECH&lt;/h1&gt;
+In the course of writing the last few paragraphs, I realized a couple of things:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;strokerouter shouldn’t use D3.&lt;/strong&gt; There’s no need for it. It uses it because it was extracted from &lt;a href=&quot;http://sprigot.com/&quot;&gt;Sprigot&lt;/a&gt;, which is built on D3, but there’s nothing particularly D3 about listening for keystrokes and calling event handlers.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;editized controls don’t need strokerouter at all.&lt;/strong&gt; It’s listening for one particular keyup event; there’s no complex keystroke routing going on here. Just setting up an event handler for the DOM element’s &lt;code&gt;keyup&lt;/code&gt; event is sufficient. And doing that makes the end-edit-via-enter case just as easy as the end-edit-via-clicking-outside case.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;OK, well, that was a U-turn of a post, but better to figure something out while writing than not at all.&lt;/p&gt;
+&lt;p&gt;I really have come across plenty of situations in which the cost of writing a unit test is higher than the value of unit testing it, though. It just happens that one I decided to examine was a false positive. [shrug!]&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Awaiting the Final Moment</title>
       <link>http://jimkang.com/articles/awaiting-the-final-moment/</link>

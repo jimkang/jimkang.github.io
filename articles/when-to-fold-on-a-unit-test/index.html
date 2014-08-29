@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width" initial-scale="1">
+    <title>When to fold on a unit test - jimkang.com
+    </title>
+    <link rel="alternate" href="http://jimkang.com/feed.xml" type="application/rss+xml" title="It's dot com.">
+    <link rel="stylesheet" href="/css/main.css">
+    <script>
+      (function(d) {
+        var config = {
+          kitId: 'med0yzx',
+          scriptTimeout: 3000
+        },
+        h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='//use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+      })(document);
+      
+    </script>
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <!-- include author-->
+        <h1>When to fold on a unit test</h1>
+        <!-- p.author-->
+        <!--  | #{ "Written by " }-->
+        <!--  mixin author(page.metadata.author)-->
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>Unit tests are snappy and reassuring. They’re an easy way to find out what’s wrong fast. However, not all code is amenable to unit testing. And so, you may find yourself bending over backwards to make your code amenable to unit testing. Oft times, this is good for your code. Other times, though, it contorts it in unhealthy&nbsp;ways.</p>
+<p><span class="more"></span></p>
+<p>(This post is quite meandering, and in fact, changes viewpoints as it progresses. So, a warning: This is neither a handy how-to nor a tight&nbsp;manifesto.)</p>
+<p>Unit tests are intended to test only a specific “unit” of code, like a method in an object or module. A unit test should only test one unit, not that unit’s dependencies. Thus, the unit is given mock versions of the dependencies to use, rather than the real versions. If you don’t do this, I’ve found that you end up&nbsp;with:</p>
+<ul>
+<li><p>Hard-to-debug test failures in the case caused the behavior of a dependency or even worse, that of a dependency of a dependency of a&nbsp;dependency.</p>
+</li>
+<li><p>Redundant test targeting. More than one test will test the same code paths because of the implicit exercising of&nbsp;dependencies.</p>
+<p>This might sound good, but it’s like having ten different people tell you that you’ve got dried toothpaste on your face. Better that you have one go-to guy for telling you that you have toothpaste on your face. The other nine guys, instead of telling you have toothpaste on your face and stopping, can instead tell you about other things, like that you forgot to wear&nbsp;pants.</p>
+</li>
+<li><p>Onerous test setups that often cannot be understood by looking at the test file&nbsp;only.</p>
+</li>
+</ul>
+<p>That’s why I now bother to mock things instead of running everything for real all the time. (If you can get away with it, it’s fine. I have, on a couple of&nbsp;projects.)</p>
+<p>There’s times where it’s not worth it, though. Here’s one I ran&nbsp;into.</p>
+<p>I’m starting an edit control maker called <a href="https://github.com/jimkang/editize">editize</a>. It wraps a <span class="caps">DOM</span> element to create a control that modifies the element so that it’s editable at the appropriate&nbsp;times.</p>
+<p>The control goes into edit mode when clicked or tapped and exits edit mode when the user clicks outside of the control <em>or</em> when they hit the enter key. Clients of this control can specify an event handler that will be called when editing&nbsp;ends.</p>
+<p>It’s easy to unit test the case in which editing exits via a click outside the control. <span class="caps">DOM</span> elements receive a <code>blur</code> event when they lose focus. So, you can create a mock element like&nbsp;this:</p>
+<pre><code>function createMockDOMElement() {
+  var blurEventListener;
+
+  return {
+    addEventListener: function mockAddEventListener(type, listener) {
+      if (type === &#39;blur&#39;) {
+        blurEventListener = listener;
+      }
+    },
+    mockBlur: function mockBlur() {
+      if (blurEventListener) {
+        blurEventListener();
+      }
+    }
+  }
+}
+</code></pre><p>And call <code>mockBlur</code> to simulate a blur event, which will then call the control’s blur event listener. The test will verify that the control then calls the <code>endEdit</code> event&nbsp;handler.</p>
+<p>—</p>
+<p>However, the other case is not as simple to mock: edit mode ending when the user hits the ‘Enter’ key . If I want to use a module like <a href="https://github.com/jimkang/strokerouter">strokerouter</a> to listen for keystrokes, I then have to mock strokerouter. strokerouter, however, uses <a href="http://d3js.org/">D3</a> to listen for events. It does not take D3 as a constructor argument (because that would be bizarre), so D3 would have to be mocked on the global scope. Either that, or strokerouter’s constructor would have to be modified to accept D3 as an&nbsp;argument.</p>
+<p>Either way, the following methods and properties would need to be&nbsp;stubbed:</p>
+<ul>
+<li>d3.event.stopPropagation</li>
+<li>d3.event.which</li>
+<li>D3 selection object’s <code>on</code></li>
+<li>D3 event&nbsp;trigger</li>
+</ul>
+<p>Certainly, that’s not a Herculean effort, but at that point, it is more of a test of <code>strokerouter</code> than it is of the control. If you have to go this far, it’s not worth unit testing. You are going to get poor value for effort, and either the app code or test code is going to puzzle you the next time you look at it. Better to just use functional or manual tests to cover&nbsp;this.</p>
+<p><h1><span class="caps">BRAKE</span>&nbsp;SCREECH</h1>
+In the course of writing the last few paragraphs, I realized a couple of&nbsp;things:</p>
+<ul>
+<li><p><strong>strokerouter shouldn’t use D3.</strong> There’s no need for it. It uses it because it was extracted from <a href="http://sprigot.com/">Sprigot</a>, which is built on D3, but there’s nothing particularly D3 about listening for keystrokes and calling event&nbsp;handlers.</p>
+</li>
+<li><p><strong>editized controls don’t need strokerouter at all.</strong> It’s listening for one particular keyup event; there’s no complex keystroke routing going on here. Just setting up an event handler for the <span class="caps">DOM</span> element’s <code>keyup</code> event is sufficient. And doing that makes the end-edit-via-enter case just as easy as the end-edit-via-clicking-outside&nbsp;case.</p>
+</li>
+</ul>
+<p><span class="caps">OK</span>, well, that was a U-turn of a post, but better to figure something out while writing than not at&nbsp;all.</p>
+<p>I really have come across plenty of situations in which the cost of writing a unit test is higher than the value of unit testing it, though. It just happens that one I decided to examine was a false positive.&nbsp;[shrug!]</p>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/">« Full blog</a></div>
+        <!--section.about-->
+        <!--  !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2014 Jim Kang &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+          <p><a href='/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
+        </section>
+      </div>
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        
+        ga('create', 'UA-49491163-1', 'jimkang.com');
+        ga('send', 'pageview');
+      </script>
+    </footer>
+  </body>
+</html>
