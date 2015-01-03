@@ -5,9 +5,67 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Sun, 07 Sep 2014 20:00:00 -0400</pubDate>
+    <pubDate>Sun, 11 Jan 2015 19:00:00 -0500</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>2014, Aspect A</title>
+      <link>http://jimkang.com/articles/2014-aspect-a/</link>
+      <pubDate>Sun, 11 Jan 2015 19:00:00 -0500</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/articles/2014-aspect-a/</guid>
+      <author></author>
+      <description>&lt;style&gt;
+li p {
+  margin-bottom: 0.5em;
+}
+
+li {
+  line-height: 1.3em;
+  padding-left: 0;
+}
+
+ul {
+  margin-top: 0.5em;
+}
+&lt;/style&gt;
+
+
+&lt;p&gt;This was very much a Life Year, one packed with Life Events. There was one root Life Event whose handlers emitted a million Life Subevents.&lt;/p&gt;
+&lt;p&gt;Katt and I had this guy:
+&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;section class=&quot;center-img-zone&quot;&gt;
+
+&lt;a class=&quot;img-container&quot; href=&quot;https://www.flickr.com/gp/ignignokt/Cvdies&quot;&gt;&lt;img src=&quot;https://farm8.staticflickr.com/7524/16083616772_db60f440aa_z.jpg&quot; width=&quot;480&quot; height=&quot;640&quot; alt=&quot;Anderson!&quot;&gt;&lt;/a&gt;
+&lt;/section&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p&gt;His name is Anderson. He’s a great guy. On his behalf, we:
+&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Found a deleaded apartment.&lt;/li&gt;
+&lt;li&gt;Moved.&lt;/li&gt;
+&lt;li&gt;Called and visited a ton of daycares.&lt;/li&gt;
+&lt;li&gt;Went to child birth classes.&lt;/li&gt;
+&lt;li&gt;Gave birth/supported birth-giving. (I did the support part, BTW.)&lt;/li&gt;
+&lt;li&gt;Went to the doctor a jillion times.&lt;/li&gt;
+&lt;li&gt;Got over baby bodily fluid revulsion.&lt;/li&gt;
+&lt;li&gt;Gave up sleeping in favor getting blasted by night screaming.&lt;/li&gt;
+&lt;li&gt;Fought bizarre and intense paranoia when leaving him at daycare.&lt;/li&gt;
+&lt;li&gt;Googled a lot of infant maladies.&lt;/li&gt;
+&lt;li&gt;Read a lot of &lt;a href=&quot;http://smile.amazon.com/Fuzzy-Bee-Friends-Cloth-Books/dp/0312491506/ref=sr_1_1?ie=UTF8&amp;qid=1420248331&amp;sr=8-1&amp;keywords=fuzzy+bee+and+friends&quot;&gt;Fuzzy Bee and Friends&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Partially on his behalf, we:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Established (relative) peace between our cats.&lt;/li&gt;
+&lt;li&gt;I changed jobs.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;We are on an ongoing journey to keep him alive (don’t worry, he’s not especially sick, other than an ear infection) and to develop his skills and power.&lt;/p&gt;
+&lt;p&gt;This endeavor has become rewarding far earlier than expected.&lt;/p&gt;
+&lt;p&gt;One, I’m simply amazed that he exists. I have never seen someone go from not existing to existing. When he was born, he crossed the line from theoretical to real as hell.&lt;/p&gt;
+&lt;p&gt;Two, he’s often happy, and when he is, it is far happier than any adult is even capable of being. You’d think that it’d be sad to be reminded of one’s emotional limitations, but nah, it’s more like witnessing a guy playing amazing guitar solos that you never could.&lt;/p&gt;
+&lt;p&gt;Well, that was meant to be a preface for a post where I talked about the projects I did this year. Bumping that to a future post.&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Walking with Anderson</title>
       <link>http://jimkang.com/articles/walking-with-anderson/</link>
@@ -83,7 +141,7 @@ So, we risked some major screaming and took Anderson out for a walk. He was very
 }
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;And call &lt;code&gt;mockBlur&lt;/code&gt; to simulate a blur event, which will then call the control’s blur event listener. The test will verify that the control then calls the &lt;code&gt;endEdit&lt;/code&gt; event handler.&lt;/p&gt;
 &lt;p&gt;—&lt;/p&gt;
-&lt;p&gt;However, the other case is not as simple to mock: edit mode ending when the user hits the ‘Enter’ key . If I want to use a module like &lt;a href=&quot;https://github.com/jimkang/strokerouter&quot;&gt;strokerouter&lt;/a&gt; to listen for keystrokes, I then have to mock strokerouter. strokerouter, however, uses &lt;a href=&quot;http://d3js.org/&quot;&gt;D3&lt;/a&gt; to listen for events. It does not take D3 as a constructor argument (because that would be bizarre), so D3 would have to be mocked on the global scope. Either that, or strokerouter’s constructor would have to be modified to accept D3 as an argument.&lt;/p&gt;
+&lt;p&gt;However, the other case is not as simple to mock: edit mode ending when the user hits the ‘Enter’ key . If I want to use a module like &lt;a href=&quot;https://github.com/jimkang/strokerouter&quot;&gt;strokerouter&lt;/a&gt; to listen for keystrokes, I then have to mock strokerouter. strokerouter, however, uses &lt;a href=&quot;http://d3js.org&quot;&gt;D3&lt;/a&gt; to listen for events. It does not take D3 as a constructor argument (because that would be bizarre), so D3 would have to be mocked on the global scope. Either that, or strokerouter’s constructor would have to be modified to accept D3 as an argument.&lt;/p&gt;
 &lt;p&gt;Either way, the following methods and properties would need to be stubbed:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;d3.event.stopPropagation&lt;/li&gt;
@@ -95,7 +153,7 @@ So, we risked some major screaming and took Anderson out for a walk. He was very
 &lt;p&gt;&lt;h1&gt;BRAKE SCREECH&lt;/h1&gt;
 In the course of writing the last few paragraphs, I realized a couple of things:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;strokerouter shouldn’t use D3.&lt;/strong&gt; There’s no need for it. It uses it because it was extracted from &lt;a href=&quot;http://sprigot.com/&quot;&gt;Sprigot&lt;/a&gt;, which is built on D3, but there’s nothing particularly D3 about listening for keystrokes and calling event handlers.&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;strokerouter shouldn’t use D3.&lt;/strong&gt; There’s no need for it. It uses it because it was extracted from &lt;a href=&quot;http://sprigot.com&quot;&gt;Sprigot&lt;/a&gt;, which is built on D3, but there’s nothing particularly D3 about listening for keystrokes and calling event handlers.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;p&gt;&lt;strong&gt;editized controls don’t need strokerouter at all.&lt;/strong&gt; It’s listening for one particular keyup event; there’s no complex keystroke routing going on here. Just setting up an event handler for the DOM element’s &lt;code&gt;keyup&lt;/code&gt; event is sufficient. And doing that makes the end-edit-via-enter case just as easy as the end-edit-via-clicking-outside case.&lt;/p&gt;
 &lt;/li&gt;

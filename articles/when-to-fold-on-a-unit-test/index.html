@@ -68,7 +68,7 @@
 }
 </code></pre><p>And call <code>mockBlur</code> to simulate a blur event, which will then call the control’s blur event listener. The test will verify that the control then calls the <code>endEdit</code> event&nbsp;handler.</p>
 <p>—</p>
-<p>However, the other case is not as simple to mock: edit mode ending when the user hits the ‘Enter’ key . If I want to use a module like <a href="https://github.com/jimkang/strokerouter">strokerouter</a> to listen for keystrokes, I then have to mock strokerouter. strokerouter, however, uses <a href="http://d3js.org/">D3</a> to listen for events. It does not take D3 as a constructor argument (because that would be bizarre), so D3 would have to be mocked on the global scope. Either that, or strokerouter’s constructor would have to be modified to accept D3 as an&nbsp;argument.</p>
+<p>However, the other case is not as simple to mock: edit mode ending when the user hits the ‘Enter’ key . If I want to use a module like <a href="https://github.com/jimkang/strokerouter">strokerouter</a> to listen for keystrokes, I then have to mock strokerouter. strokerouter, however, uses <a href="http://d3js.org">D3</a> to listen for events. It does not take D3 as a constructor argument (because that would be bizarre), so D3 would have to be mocked on the global scope. Either that, or strokerouter’s constructor would have to be modified to accept D3 as an&nbsp;argument.</p>
 <p>Either way, the following methods and properties would need to be&nbsp;stubbed:</p>
 <ul>
 <li>d3.event.stopPropagation</li>
@@ -80,7 +80,7 @@
 <p><h1><span class="caps">BRAKE</span>&nbsp;SCREECH</h1>
 In the course of writing the last few paragraphs, I realized a couple of&nbsp;things:</p>
 <ul>
-<li><p><strong>strokerouter shouldn’t use D3.</strong> There’s no need for it. It uses it because it was extracted from <a href="http://sprigot.com/">Sprigot</a>, which is built on D3, but there’s nothing particularly D3 about listening for keystrokes and calling event&nbsp;handlers.</p>
+<li><p><strong>strokerouter shouldn’t use D3.</strong> There’s no need for it. It uses it because it was extracted from <a href="http://sprigot.com">Sprigot</a>, which is built on D3, but there’s nothing particularly D3 about listening for keystrokes and calling event&nbsp;handlers.</p>
 </li>
 <li><p><strong>editized controls don’t need strokerouter at all.</strong> It’s listening for one particular keyup event; there’s no complex keystroke routing going on here. Just setting up an event handler for the <span class="caps">DOM</span> element’s <code>keyup</code> event is sufficient. And doing that makes the end-edit-via-enter case just as easy as the end-edit-via-clicking-outside&nbsp;case.</p>
 </li>
@@ -97,7 +97,7 @@ In the course of writing the last few paragraphs, I realized a couple of&nbsp;th
         <!--section.about-->
         <!--  !=contents['about.md'].html-->
         <section class="copy">
-          <p>&copy; 2014 Jim Kang &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          <p>&copy; 2015 Jim Kang &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
           </p>
           <p><a href='/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
         </section>
