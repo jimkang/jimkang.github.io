@@ -5,13 +5,105 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Sun, 11 Jan 2015 19:00:00 -0500</pubDate>
+    <pubDate>Sat, 03 Jan 2015 19:00:00 -0500</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
     <item>
+      <title>2014, Aspect B</title>
+      <link>http://jimkang.com/articles/2014-aspect-b/</link>
+      <pubDate>Sat, 03 Jan 2015 19:00:00 -0500</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/articles/2014-aspect-b/</guid>
+      <author></author>
+      <description>&lt;style&gt;
+li p {
+  margin-bottom: 0.5em;
+}
+
+li {
+  line-height: 1.3em;
+  padding-left: 0;
+}
+
+ul {
+  margin-top: 0.5em;
+}
+
+ul li ul li {
+  font-size: smaller
+}
+
+.aside {
+  border: 1px gray dotted;
+  font-size: smaller;
+  padding: 1em;
+  color: #777;
+}
+
+&lt;/style&gt;
+
+&lt;p&gt;While the year’s activities were &lt;a href=&quot;http://jimkang.com/articles/2014-aspect-a/&quot;&gt;dominated&lt;/a&gt; by Life Events, I did get some projects done. More than I did in 2013, I think. When I was looking at &lt;a href=&quot;https://gist.github.com/dariusk/aa4fc2da6f47eaed63db&quot;&gt;Darius’s list&lt;/a&gt;, I realized I couldn’t remember what I had done beyond the last three months. So, taking stock is a good idea.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Projects that were released in 2014. If a project has subprojects built to support it, they are listed under it.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://soundcloud.com/isilence/recovery&quot;&gt;Recovery&lt;/a&gt;. I can’t believe it, but this was the only song I wrote this year. I usually do two or three a year, except years in which I do albums. Maybe I’ll go for an album this year.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/jimkang/probable&quot;&gt;probable&lt;/a&gt;. A &lt;a href=&quot;http://nodejs.org/&quot;&gt;Node&lt;/a&gt; module that provides basic randomization utilities, as well as functions for making D&amp;amp;D-style random tables. Those have been handy in quite a few projects!&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://nonstopscrollshop.com/&quot;&gt;Non-Stop Scroll Shop&lt;/a&gt;. It’s your one-stop non-stop scroll shop! Products forever!&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;http://jimkang.com/reactivecell/example/liquid.html&quot;&gt;A browser-based cellular automaton&lt;/a&gt;. I had big, yet vague plans for building off of this, but I just kinda drifted away into Twitter bots. I’ll come back, though!&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/jimkang/reactivecell&quot;&gt;reactivecell&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/jimkang/cellseriesviewer&quot;&gt;cellseriesviewer&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/jimkang/roguemap-parse-stream&quot;&gt;roguemap-parse-stream&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/jimkang/cellgridrenderer&quot;&gt;cellgridrenderer&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/jimkang/cellmap&quot;&gt;cellmap&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;aside&quot;&gt;You may notice that a lot of modules go into most of my projects. This is because I’ve drifted into &lt;a href=&quot;http://substack.net/how_I_write_modules&quot;&gt;small module philosophy&lt;/a&gt;, and it has worked out really well for my projects. If you have to start and stop projects a lot, as I do, it really helps to be able to build in small, tangible units, rather than huge all-or-nothing colossuses.&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://jimkang.com/quadtreevis&quot;&gt;An interactive explanation of quadtrees&lt;/a&gt;. When I was building my cellular automaton, I wanted to try storing my cells in quadtrees to save space. It was then that I realized I wasn’t that clear on how quadtrees work, so I built this explanation. It was pretty well-received!&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/jimkang/quadtreevis&quot;&gt;quadtreevis&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/jimkang/quadtreetree&quot;&gt;quadtreetree&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/jimkang/quadtreemap&quot;&gt;quadtreemap&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/jimkang/one-at&quot;&gt;at&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://smidgeo.com/&quot;&gt;Smidgeo.com&lt;/a&gt;. Finally our cat’s corporation has a base on the web! GET! I still enjoy that CSS animation.&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/jimkang/scrollwatcher&quot;&gt;scrollwatcher&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/jimkang/gravitybox&quot;&gt;gravitybox&lt;/a&gt; - This powers the very busy &lt;a href=&quot;http://smidgeo.com/plan/&quot;&gt;Smidgital Digital Plan&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://twitter.com/godtributes&quot;&gt;@godtributes&lt;/a&gt;. This is a merciless generalization of the “BLOOD FOR THE BLOOD GOD!” meme. I wasn’t really into it until my friend &lt;a href=&quot;http://nynex.hydrogenproject.com/&quot;&gt;Matt&lt;/a&gt; said “GROWTH FOR THE GROWTH GOD!” in reference to House Republicans. Then, it clicked.&lt;/p&gt;
+&lt;p&gt;Likewise, bot has similarly clicked with far more people than I had expected! I think it might the most popular project I’ve put out there. I learned quite a lot about inconsistencies in pluralization in the English language, the Twitter REST API rate limits, and just how easy it is for a bot to unintentionally say horrific things.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/jimkang/iscool&quot;&gt;iscool&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/jimkang/canonicalizer&quot;&gt;canonicalizer&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/jimkang/chronicler&quot;&gt;chronicler&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/jimkang/emojisource&quot;&gt;emojisource&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/jimkang/nounfinder&quot;&gt;nounfinder&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/jimkang/wordnok&quot;&gt;wordnok&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Phoneme-based Node modules: &lt;a href=&quot;https://github.com/jimkang/homophonizer&quot;&gt;homophonizer&lt;/a&gt;, &lt;a href=&quot;https://github.com/jimkang/phonemenon&quot;&gt;phonemenon&lt;/a&gt;. Some of my future projects hinge on knowing what sounds like what what, and so, I’ve done a lot of playing around with phonemes. I need to harvest the fruit of these projects in 2015.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Translation bots: &lt;a href=&quot;https://twitter.com/a_chance_bot&quot;&gt;@a_chance_bot&lt;/a&gt;, &lt;a href=&quot;https://twitter.com/translatedbible&quot;&gt;@translatedbible&lt;/a&gt;, and &lt;a href=&quot;https://twitter.com/new_aeneid&quot;&gt;@new_aeneid&lt;/a&gt;. These are bots (working off of the &lt;a href=&quot;https://github.com/jimkang/lossyfortunes&quot;&gt;same app&lt;/a&gt;) that take some source quotation, then translates it to several non-English languages, then back to English. The results have been largely disappointing, though I am amused by at least one post from each of these bots a day.&lt;/p&gt;
+&lt;p&gt;I started this project after watching a &lt;a href=&quot;https://www.youtube.com/watch?v=-4Yp3j_jk8Q&quot;&gt;Leslie Lamport video&lt;/a&gt; and then wrote a &lt;a href=&quot;https://github.com/jimkang/lossyfortunes#specification&quot;&gt;rigorous specification&lt;/a&gt;, which I’ve never done before. That took a while. I also got a bikeshedding itch and made my own &lt;a href=&quot;https://github.com/jimkang/wardboss&quot;&gt;dependency injector&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In a sense, I made the classic mistake of investing too much engineering effort without first proving that doing so is worthwhile. However, I can also write this off as a chance to scratch some itches. On the whole, I still think I paid too much to do that.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/jimkang/conform-async&quot;&gt;conform-async&lt;/a&gt;. There’s not much to this module, but I end up using it a lot to keep peace between async-expecting code and sync code.&lt;/li&gt;
+&lt;li&gt;Rap bots: &lt;a href=&quot;https://twitter.com/rapgamemetaphor&quot;&gt;@rapgamemetaphor&lt;/a&gt; and &lt;a href=&quot;https://twitter.com/autocompleterap&quot;&gt;@autocompleterap&lt;/a&gt;. These bots amuse me on the regular. I have some further plans for them.&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/jimkang/autocompl&quot;&gt;autocompl&lt;/a&gt; - A module that gives you Google’s autocomplete suggestions for given strings.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://lonewolfandparenting.tumblr.com/&quot;&gt;Lone Wolf and Parenting&lt;/a&gt;. I’ve been rereading Lone Wolf and Cub, a great but flawed comic from the ‘70s. This time, the parent stuff jumps out at me a little more, and I’ve been highlighting amusing stuff on this Tumblr. It’s nice having a non-technology-driven project.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Projects that didn’t make it:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Massachusetts Childcare Search. While we were searching for daycare, I wanted a site that served the EEC data in a less painful way than the EEC web site. So, I &lt;a href=&quot;http://masschildcaredata.github.io/&quot;&gt;scraped the site for data&lt;/a&gt; and was planning to build an app that would use that data. Never got beyond the scraping.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/dariusk/NaNoGenMo-2014&quot;&gt;NaNoGenMo&lt;/a&gt;. I &lt;a href=&quot;https://github.com/jimkang/novelrrbot&quot;&gt;started building an engine&lt;/a&gt; for generating a novel, but I got stuck on trying define what an “event” in a novel is and how it could be represented simply. Might keep at this one.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I feel good about 2014 (the projects, not the world events), in light of all the other stuff that went on that year. As I do every year, in 2015, I want to be more careful about what I start and clearer on what I expect to get out of each project. And I want to do more with music and visualization again. And maybe finally write a game I enjoy.&lt;/p&gt;
+</description>
+    </item>
+    <item>
       <title>2014, Aspect A</title>
       <link>http://jimkang.com/articles/2014-aspect-a/</link>
-      <pubDate>Sun, 11 Jan 2015 19:00:00 -0500</pubDate>
+      <pubDate>Thu, 01 Jan 2015 19:00:00 -0500</pubDate>
       <guid isPermaLink="true">http://jimkang.com/articles/2014-aspect-a/</guid>
       <author></author>
       <description>&lt;style&gt;
