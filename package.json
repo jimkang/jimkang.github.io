@@ -1,0 +1,31 @@
+{
+  "name": "jimkang.github.io",
+  "version": "1.0.0",
+  "description": "World Wide Web Homepage",
+  "main": "index.js",
+  "dependencies": {
+    "accessor": "^1.0.1",
+    "basic-browser-request": "^2.0.3",
+    "d3-selection": "^0.7.0",
+    "lodash.curry": "^4.0.0",
+    "standard-bail": "^2.0.0",
+    "uglify-js": "^2.6.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Every once in a while, it's OK not to test.\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jimkang/jimkang.github.io.git"
+  },
+  "keywords": [
+    "worldwideweb"
+  ],
+  "author": "Jim Kang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jimkang/jimkang.github.io/issues"
+  },
+  "homepage": "https://github.com/jimkang/jimkang.github.io#readme"
+}

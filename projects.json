@@ -1,0 +1,44 @@
+[
+  {
+    "id": "godtributes",
+    "name": "@godtributes",
+    "links": [
+      ["https://twitter.com/godtributes/with_replies", "Twitter"]
+    ],
+    "sources": [
+      ["https://github.com/jimkang/godtributes", "Source on GitHub"]
+    ],
+    "metalinks": [
+    ],
+    "tags": [
+      "bot",
+      "language"
+    ],
+    "description": "BOTS FOR THE BOT GOD",
+    "date_unfurled": "2014-06-08",
+    "date_updated": "2015-02-26",
+    "done": "yes"
+  },
+  {
+    "id": "namedlevels",
+    "name": "Named Levels",
+    "links": [
+      "http://jimkang.com/namedlevels/#/class/library"
+    ],
+    "sources": [
+      ["https://github.com/jimkang/namedlevels-web", "Client-side source"],
+      ["https://github.com/jimkang/namedlevels-api", "API source"]
+    ],
+    "metalinks": [
+    ],
+    "tags": [
+      "language",
+      "web",
+      "bot"
+    ],
+    "description": "A 10th-level web site.",
+    "date_unfurled": "2015-04-03",
+    "date_updated": "2015-01-11",
+    "done": "yes"
+  }
+]
