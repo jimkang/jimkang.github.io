@@ -1,44 +1,109 @@
 [
   {
     "id": "godtributes",
-    "name": "@godtributes",
+    "name": "@GODTRIBUTES",
     "links": [
-      ["https://twitter.com/godtributes/with_replies", "Twitter"]
+      ["https://twitter.com/godtributes/with_replies", "On Twitter"]
     ],
     "sources": [
       ["https://github.com/jimkang/godtributes", "Source on GitHub"]
     ],
     "metalinks": [
+      ["http://iloveepoetry.com/?p=12002", "I ♥ E-Poetry essay"]
     ],
     "tags": [
       "bot",
       "language"
     ],
-    "description": "BOTS FOR THE BOT GOD",
+    "description": "Bot that makes demands for gods appropriately.",
     "date_unfurled": "2014-06-08",
-    "date_updated": "2015-02-26",
+    "date_updated": "2016-02-26",
     "done": "yes"
   },
   {
     "id": "namedlevels",
     "name": "Named Levels",
     "links": [
-      "http://jimkang.com/namedlevels/#/class/library"
+      ["http://jimkang.com/namedlevels/#/class/library", "Web app"],
+      ["https://twitter.com/namedlevels", "Twitter bot"]
     ],
     "sources": [
-      ["https://github.com/jimkang/namedlevels-web", "Client-side source"],
+      ["https://github.com/jimkang/namedlevels-web", "Browser app source"],
       ["https://github.com/jimkang/namedlevels-api", "API source"]
     ],
     "metalinks": [
+      ["https://www.metafilter.com/148572/MeFites-gain-1-hp-per-level-after-the-14th", "MetaFilter thread"]
     ],
     "tags": [
       "language",
       "web",
       "bot"
     ],
-    "description": "A 10th-level web site.",
+    "description": "1st Edition Advanced Dungeons & Dragons had a charming quirk in it. Every experience level for every class had a separate name. Named Levels is a web app that generates those names for any possible \"class\" you could think of.",
     "date_unfurled": "2015-04-03",
-    "date_updated": "2015-01-11",
+    "date_updated": "2016-01-11",
+    "done": "yes"
+  },
+
+  {
+    "id": "botinthestreet",
+    "name": "@botinthestreet",
+    "links": [
+      ["https://twitter.com/botinthestreet", "On Twitter"]
+    ],
+    "sources": [
+      ["https://github.com/jimkang/street-mode-sheet-mode", "Source on GitHub"]
+    ],
+    "metalinks": [
+    ],
+    "tags": [
+      "bot"
+    ],
+    "description": "This bot comes up with different ways to fill out the \"___ in the street but a ___ in the sheets\" snowclone (originating from \"a lady in the street but a freak in the sheets\").",
+    "date_unfurled": "2016-02-20",
+    "date_updated": "2016-02-20",
+    "done": "yes"
+  },
+
+  {
+    "id": "sprigot",
+    "name": "Sprigot",
+    "links": [
+      ["http://jimkang.com/sprigot/", "Sprigot"],
+      ["http://jimkang.com/sprigot/#/The-Disappearance-of-N/intro", "The Disappearance of N"],
+    ],
+    "sources": [
+      ["https://github.com/jimkang/sprigot-web", "Browser app source"],
+      ["https://github.com/jimkang/sprigot-api", "API source"]
+    ],
+    "metalinks": [
+    ],
+    "tags": [
+      "visualization"
+    ],
+    "description": "A tree-oriented way of visualizing branching documents written with D3 and Node.",
+    "date_unfurled": "2013-09-26",
+    "date_updated": "2015-09-02",
+    "done": "yes"
+  },
+
+  {
+    "id": "quadtreevis",
+    "name": "An interactive explanation of quadtrees.",
+    "links": [
+      ["http://jimkang.com/quadtreevis/", "An interactive explanation of quadtrees"]
+    ],
+    "sources": [
+      ["https://github.com/jimkang/quadtreevis", "Source"]
+    ],
+    "metalinks": [
+    ],
+    "tags": [
+      "visualization"
+    ],
+    "description": "When I was building my cellular automaton, I wanted to try storing my cells in quadtrees to save space. It was then that I realized I wasn’t that clear on how quadtrees work, so I built this explanation.",
+    "date_unfurled": "2014-04-14",
+    "date_updated": "2014-05-05",
     "done": "yes"
   }
 ]

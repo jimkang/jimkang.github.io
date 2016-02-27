@@ -19,7 +19,9 @@ var id = accessor();
 
 var name = accessor('name');
 var description = accessor('description');
+var links = accessor('links');
 var sources = accessor('sources');
+var metalinks = accessor('metalinks');
 var first = accessor('0');
 var second = accessor('1');
 
@@ -28,7 +30,7 @@ function identity(x) {
 }
 
 function primaryLink(d) {
-  return d.links[0];
+  return d.links[0][0];
 }
 
 function renderProjects(projectsData) {
@@ -44,23 +46,65 @@ function renderProjects(projectsData) {
   all.select('.name a').text(name).attr('href', primaryLink);
   all.select('.description').text(description);
 
-  var sourceListSel = all.select('.source-list');
-  var sourceItemsSel = sourceListSel.selectAll('.source-item').data(sources);
-  sourceItemsSel.exit().remove();
-  var allSourceItemSel = sourceItemsSel.enter().merge(sourceItemsSel);
-  allSourceItemSel.append('li').classed('source-item', true)
+  var linkSel = all.select('.links').selectAll('.link').data(links);
+  linkSel.enter().append('li').classed('link', true)
     .append('a').attr('href', first).text(second);
+
+  all.selectAll('.sources').each(
+    curry(updateArrayTree)(sources, 'sublist-section', 'Code:', false)
+  );
+  all.selectAll('.metalinks').each(
+    curry(updateArrayTree)(metalinks, 'sublist-section', 'Reviews:', false)
+  );
+}
+
+function updateArrayTree(rootAccessor, classBase, label, alwaysMakeList, d) {
+  var sel = d3.select(this);
+  sel.selectAll('*').remove();
+  var arrayData = rootAccessor(d);
+
+  if (arrayData.length > 1 || (arrayData.length > 0 && alwaysMakeList)) {
+    // sel.append('span').classed(classBase + '-label', true).text(label);
+    var listSel = sel.append('ul').classed(classBase + '-list', true);
+    var itemsSel = listSel.selectAll(classBase + '.-item').data(rootAccessor);
+    itemsSel.exit().remove();
+    var allItemsSel = itemsSel.enter().merge(itemsSel);
+    allItemsSel.append('li').classed(classBase + '-item', true)
+      .append('a').attr('href', first).text(second);
+  }
+  else if (arrayData.length > 0) {
+    sel.append('a').attr('href', arrayData[0][0]).text(arrayData[0][1]);
+  }
 }
 
 function addFieldsToProjects(projectSel) {
   projectSel.append('div').classed('name', true)
-    .append('a');
+    .append('a');//.classed('heading', true);
   
-  projectSel.append('div').classed('description', true);
+  var content = projectSel.append('div')
+    .classed('project-content', true)
+    .classed('textpane', true);
 
-  var sources = projectSel.append('div').classed('sources', true);
-  sources.append('span').classed('sources-label', true).text('Code:');
-  sources.append('ul').classed('source-list', true);
+  content.append('div')
+    .classed('description', true)
+    .classed('textcontent', true);
+
+  content.append('ul')
+    .classed('links', true)
+    .classed('textcontent', true);
+
+  var lists = content.append('div')
+    .classed('lists', true);
+
+  lists.append('div')
+    .classed('metalinks', true)
+    .classed('textcontent', true)
+    .classed('sublist-section', true);
+
+  lists.append('div')
+    .classed('sources', true)
+    .classed('textcontent', true)
+    .classed('sublist-section', true);
 }
 
 function sortByFieldDesc(field, a, b) {
