@@ -3,7 +3,7 @@
     "id": "godtributes",
     "name": "@GODTRIBUTES",
     "links": [
-      ["https://twitter.com/godtributes/with_replies", "On Twitter"]
+      ["https://twitter.com/godtributes/with_replies", "@godtributes"]
     ],
     "sources": [
       ["https://github.com/jimkang/godtributes", "Source on GitHub"]
@@ -47,9 +47,9 @@
 
   {
     "id": "botinthestreet",
-    "name": "@botinthestreet",
+    "name": "Bot in the street…",
     "links": [
-      ["https://twitter.com/botinthestreet", "On Twitter"]
+      ["https://twitter.com/botinthestreet", "@botinthestreet"]
     ],
     "sources": [
       ["https://github.com/jimkang/street-mode-sheet-mode", "Source on GitHub"]
@@ -89,7 +89,7 @@
 
   {
     "id": "quadtreevis",
-    "name": "An interactive explanation of quadtrees.",
+    "name": "Interactive quadtrees",
     "links": [
       ["http://jimkang.com/quadtreevis/", "An interactive explanation of quadtrees"]
     ],

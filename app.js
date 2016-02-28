@@ -75,6 +75,10 @@ function updateArrayTree(rootAccessor, classBase, label, alwaysMakeList, d) {
   else if (arrayData.length > 0) {
     sel.append('a').attr('href', arrayData[0][0]).text(arrayData[0][1]);
   }
+
+  if (arrayData.length > 0) {
+    sel.classed('squash', false);
+  }
 }
 
 function addFieldsToProjects(projectSel) {
@@ -99,12 +103,14 @@ function addFieldsToProjects(projectSel) {
   lists.append('div')
     .classed('metalinks', true)
     .classed('textcontent', true)
-    .classed('sublist-section', true);
+    .classed('sublist-section', true)
+    .classed('squash', true);
 
   lists.append('div')
     .classed('sources', true)
     .classed('textcontent', true)
-    .classed('sublist-section', true);
+    .classed('sublist-section', true)
+    .classed('squash', true);
 }
 
 function sortByFieldDesc(field, a, b) {
