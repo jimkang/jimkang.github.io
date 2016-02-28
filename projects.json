@@ -15,7 +15,8 @@
       "bot",
       "language"
     ],
-    "description": "Bot that makes demands for gods appropriately.",
+    "description": "A bot that posts tributes to befitting each god! It reads (and watches) its followers' tweets for inspiration. This is my most popular bot.",
+    "techinfo": "<b>@godtributes</b> is few Node processes. One maintains a database of what it has replied with and to whom and when it did it. Another is a proxy cache to the Wordnik API. Another generates the standalone tribute tweets. Yet another listens to a Twitter stream in real time and generates (or doesn't) tributes based on incoming tweets' text and images.",
     "date_unfurled": "2014-06-08",
     "date_updated": "2016-02-26",
     "done": "yes"
@@ -39,7 +40,8 @@
       "web",
       "bot"
     ],
-    "description": "1st Edition Advanced Dungeons & Dragons had a charming quirk in it. Every experience level for every class had a separate name. Named Levels is a web app that generates those names for any possible \"class\" you could think of.",
+    "description": "1st Edition Advanced Dungeons & Dragons had <a href=\"http://www.therobotsvoice.com/2009/04/the_12_most_insane_old_school_dungeons_dragons_rul.php\">a charming quirk</a> in it. Every experience level for every class had a different title. Named Levels is a web app that generates those names for any possible \"class\" you could think of.",
+    "techinfo": "The web app brings together the old and the new in a couple of ways. Obviously, 1st Edition AD&D and its design language are very old, and web apps are fairly new. Less obviously, since these experience tables are literally tables, it uses the long-maligned table tagged! However, in order to make it work with different window and device sizes, it uses the fairly new flexbox and media queries.",
     "date_unfurled": "2015-04-03",
     "date_updated": "2016-01-11",
     "done": "yes"
@@ -59,7 +61,7 @@
     "tags": [
       "bot"
     ],
-    "description": "This bot comes up with different ways to fill out the \"___ in the street but a ___ in the sheets\" snowclone (originating from \"a lady in the street but a freak in the sheets\").",
+    "description": "<p>This bot comes up with different ways to fill out the \"___ in the street but a ___ in the sheets\" snowclone (originating from \"a lady in the street but a freak in the sheets\").</p><p>It picks a random word, then pairs that word with an antonym, rhyme, or cross-reference from the Wordnik API. It seems like that may be too crude to work, but it turns out that the human mind tries pretty hard to connect the dots when it comes to many things, including innuendo.</p>",
     "date_unfurled": "2016-02-20",
     "date_updated": "2016-02-20",
     "done": "yes"
@@ -104,6 +106,88 @@
     "description": "When I was building my cellular automaton, I wanted to try storing my cells in quadtrees to save space. It was then that I realized I wasn’t that clear on how quadtrees work, so I built this explanation.",
     "date_unfurled": "2014-04-14",
     "date_updated": "2014-05-05",
+    "done": "yes"
+  },
+
+  {
+    "id": "backagain",
+    "name": "Back Again?",
+    "links": [
+      ["https://chrome.google.com/webstore/detail/back-again/kjponlihgeoeeppkmclokpbijdomjmfg", "Back Again?"]
+    ],
+    "sources": [
+      ["https://github.com/jimkang/backagain", "Source"]
+    ],
+    "metalinks": [
+      ["http://lifehacker.com/back-again-tracks-every-time-you-visit-a-site-1588729519", "Lifehacker review"]
+    ],
+    "tags": [
+      "utility"
+    ],
+    "description": "A Chrome extension that tells you how many times you've visited the page you're on, right in the button by the URL. Clicking the button gives you a graph showing how many times you've visited the page in the last week.",
+    "date_unfurled": "2013-11-18",
+    "date_updated": "2013-11-21",
+    "done": "yes"
+  },
+
+  {
+    "id": "nonstopscrollshop",
+    "name": "Non-Stop Scroll Shop",
+    "links": [
+      ["http://nonstopscrollshop.com/", "Non-Stop Scroll Shop!"]
+    ],
+    "sources": [
+    ],
+    "metalinks": [
+      ["http://algopop.tumblr.com/post/94244798558/non-stop-scroll-shop-by-ghost-crab-workshop-an", "#algopop review"]
+    ],
+    "tags": [
+      "web"
+    ],
+    "description": "Do you like products? Do you like scrolling? How about infinite scrolling? Well, then! Come on down to Non-Stop Scroll Shop where we'll always have something new for you…forever.",
+    "date_unfurled": "2014-02-25",
+    "date_updated": "2015-01-04",
+    "done": "yes"
+  },
+
+  {
+    "id": "smidgeo",
+    "name": "Smidgeo.com",
+    "links": [
+      ["http://smidgeo.com/", "Smidgeo.com"]
+    ],
+    "sources": [
+      ["https://github.com/smidgeo/smidgeo.github.io", "Source"]
+    ],
+    "metalinks": [
+    ],
+    "tags": [
+      "web"
+    ],
+    "description": "I took on a side contract to build my cat's corporation's web site. Smidgeo is a business built on growth, digital, social, disruption, a proprietary form of smart marketing known as Smidgeo Smarketing. The bottom line? Smidgeo GETS results.",
+    "techinfo": "I think the CSS for the animation of Smidgeo swooping in as you scroll is the greatest CSS I've ever done. Also, the animated business plan diagram came from <a href=\"http://jimkang.com/weblog/articles/between-480000-and-960000/\">a demonstration</a> I wrote about the futility of streaming in a certain situation.",
+    "date_unfurled": "2014-05-31",
+    "date_updated": "2015-05-31",
+    "done": "yes"
+  },
+
+  {
+    "id": "slack-gis",
+    "name": "Slack GIS",
+    "links": [
+      ["https://github.com/jimkang/slack-gis", "Google Images for Slack"]
+    ],
+    "sources": [
+    ],
+    "metalinks": [
+    ],
+    "tags": [
+      "web"
+    ],
+    "description": "I've written a little web service that lets you search Google Image Search from Slack. I've found it to be a good companion to giphy. Here's the code and instructions to set it up.",
+    "techinfo": "This project had two interesting problems: 1) Getting search results from Google is a moving target. I started out using a module that used Google's deprecated image search API, and one day, it just stopped working. I ended up writing my own scraper. 2) A lot of Google image search results point to dead images. When you're on Google itself, that's no big deal. You just move on to the next result. On Slack, it's far more disappointing, since you get only one search result. (Multiple results would be overwhelming.) For that reason, I added result auditing, which made it a slower – but still better – experience.",
+    "date_unfurled": "2015-09-30",
+    "date_updated": "2015-12-03",
     "done": "yes"
   }
 ]

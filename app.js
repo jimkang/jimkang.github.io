@@ -19,6 +19,7 @@ var id = accessor();
 
 var name = accessor('name');
 var description = accessor('description');
+var techinfo = accessor('techinfo');
 var links = accessor('links');
 var sources = accessor('sources');
 var metalinks = accessor('metalinks');
@@ -44,7 +45,9 @@ function renderProjects(projectsData) {
 
   var all = entered.merge(update);
   all.select('.name a').text(name).attr('href', primaryLink);
-  all.select('.description').text(description);
+  all.select('.description').html(description);
+
+  all.select('.techinfo').each(updateTechInfo);
 
   var linkSel = all.select('.links').selectAll('.link').data(links);
   linkSel.enter().append('li').classed('link', true)
@@ -81,6 +84,22 @@ function updateArrayTree(rootAccessor, classBase, label, alwaysMakeList, d) {
   }
 }
 
+function updateTechInfo(d) {
+  var sel = d3.select(this);
+  sel.selectAll('*').remove();
+
+  if (d.techinfo) {
+    sel.classed('squash', false);    
+    sel.append('a').text('➔ Technical information').on('click', revealTechinfo);
+  }
+}
+
+function revealTechinfo(d) {
+  var techinfoSel = d3.select(this.parentElement);
+  techinfoSel.selectAll('*').remove();
+  techinfoSel.html(d.techinfo);
+}
+
 function addFieldsToProjects(projectSel) {
   projectSel.append('div').classed('name', true)
     .append('a');//.classed('heading', true);
@@ -92,6 +111,11 @@ function addFieldsToProjects(projectSel) {
   content.append('div')
     .classed('description', true)
     .classed('textcontent', true);
+
+  content.append('div')
+    .classed('techinfo', true)
+    .classed('textcontent', true)
+    .classed('squash', true);
 
   content.append('ul')
     .classed('links', true)
