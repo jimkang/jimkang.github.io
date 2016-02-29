@@ -3,6 +3,7 @@ var projects = require('./projects.json');
 var accessor = require('accessor');
 var hydrateDates = require('./hydrate-dates');
 var curry = require('lodash.curry');
+var addFieldsToProjects = require('./render/add-fields-to-projects');
 
 var sb = require('standard-bail')({
   log: console.log
@@ -23,8 +24,14 @@ var techinfo = accessor('techinfo');
 var links = accessor('links');
 var sources = accessor('sources');
 var metalinks = accessor('metalinks');
+var dateUpdated = accessor('date_updated');
+var dateUnfurled = accessor('date_unfurled');
 var first = accessor('0');
 var second = accessor('1');
+
+function formatDateAccessor(theAccessor, d) {
+  return theAccessor(d).toLocaleDateString();
+}
 
 function identity(x) {
   return x;
@@ -52,6 +59,13 @@ function renderProjects(projectsData) {
   var linkSel = all.select('.links').selectAll('.link').data(links);
   linkSel.enter().append('li').classed('link', true)
     .append('a').attr('href', first).text(second);
+
+  all.selectAll('.dates .last-updated-field').text(
+    curry(formatDateAccessor)(dateUpdated)
+  );
+  all.selectAll('.dates .unfurled-field').text(
+    curry(formatDateAccessor)(dateUnfurled)
+  );
 
   all.selectAll('.sources').each(
     curry(updateArrayTree)(sources, 'sublist-section', 'Code:', false)
@@ -98,43 +112,6 @@ function revealTechinfo(d) {
   var techinfoSel = d3.select(this.parentElement);
   techinfoSel.selectAll('*').remove();
   techinfoSel.html(d.techinfo);
-}
-
-function addFieldsToProjects(projectSel) {
-  projectSel.append('div').classed('name', true)
-    .append('a');//.classed('heading', true);
-  
-  var content = projectSel.append('div')
-    .classed('project-content', true)
-    .classed('textpane', true);
-
-  content.append('div')
-    .classed('description', true)
-    .classed('textcontent', true);
-
-  content.append('div')
-    .classed('techinfo', true)
-    .classed('textcontent', true)
-    .classed('squash', true);
-
-  content.append('ul')
-    .classed('links', true)
-    .classed('textcontent', true);
-
-  var lists = content.append('div')
-    .classed('lists', true);
-
-  lists.append('div')
-    .classed('metalinks', true)
-    .classed('textcontent', true)
-    .classed('sublist-section', true)
-    .classed('squash', true);
-
-  lists.append('div')
-    .classed('sources', true)
-    .classed('textcontent', true)
-    .classed('sublist-section', true)
-    .classed('squash', true);
 }
 
 function sortByFieldDesc(field, a, b) {

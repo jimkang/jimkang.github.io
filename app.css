@@ -103,7 +103,8 @@ a:visited {
 
 .lists {
   display: flex;
-  flex-direction: row;  
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .sublist-section {
@@ -111,7 +112,7 @@ a:visited {
   padding-top: 0;
 }
 
-.sublist-section a {
+.sublist-section {
   font-size: smaller;
 }
 
@@ -121,6 +122,28 @@ a:visited {
 
 .techinfo a {
   cursor: pointer;
+}
+
+.dates {
+  display: flex;
+  flex-direction: row;
+  font-family: museo-sans, sans-serif;
+  font-size: 0.7em;
+  width: 95%;
+  margin-top: 0.5em;
+}
+
+.dates > span {
+  flex-grow: 2;
+}
+
+.updated-container {
+  align-self: flex-start;
+}
+
+.unfurled-container {
+  align-self: flex-end;
+  text-align: right;
 }
 
 .squash {
