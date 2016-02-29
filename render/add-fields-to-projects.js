@@ -1,7 +1,7 @@
 function addFieldsToProjects(projectSel) {
   projectSel.append('div').classed('name', true)
-    .append('a');//.classed('heading', true);
-  
+    .append('a');
+
   var content = projectSel.append('div')
     .classed('project-content', true)
     .classed('textpane', true);
@@ -15,7 +15,7 @@ function addFieldsToProjects(projectSel) {
     .classed('textcontent', true)
     .classed('squash', true);
 
-  content.append('ul')
+  content.append('div')
     .classed('links', true)
     .classed('textcontent', true);
 
@@ -35,9 +35,7 @@ function addFieldsToProjects(projectSel) {
     .classed('squash', true);
 
   var dateSel = projectSel.append('div')
-    .classed('dates', true)
-    // .classed('textcontent', true)
-    // .classed('sublist-section', true);
+    .classed('dates', true);
 
   var lastUpdatedSel = dateSel.append('span').classed('updated-container', true);
   lastUpdatedSel.append('span').text('Updated:');

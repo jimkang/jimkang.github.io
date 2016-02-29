@@ -97,8 +97,8 @@ a:visited {
 }
 
 .link {
-  margin-left: 1em;
-  margin-right: 1em;
+  padding-left: 0.6em;
+  padding-right: 0.6em;
 }
 
 .lists {

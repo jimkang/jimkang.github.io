@@ -9,13 +9,6 @@ var sb = require('standard-bail')({
   log: console.log
 });
 
-// var projects;
-
-// function saveProjects(projectJSONText) {
-//   projects = JSON.parse(renderProjectText);
-//   renderProjects(projects);
-// }
-
 var id = accessor();
 
 var name = accessor('name');
@@ -57,7 +50,7 @@ function renderProjects(projectsData) {
   all.select('.techinfo').each(updateTechInfo);
 
   var linkSel = all.select('.links').selectAll('.link').data(links);
-  linkSel.enter().append('li').classed('link', true)
+  linkSel.enter().append('div').classed('link', true)
     .append('a').attr('href', first).text(second);
 
   all.selectAll('.dates .last-updated-field').text(
@@ -81,7 +74,6 @@ function updateArrayTree(rootAccessor, classBase, label, alwaysMakeList, d) {
   var arrayData = rootAccessor(d);
 
   if (arrayData.length > 1 || (arrayData.length > 0 && alwaysMakeList)) {
-    // sel.append('span').classed(classBase + '-label', true).text(label);
     var listSel = sel.append('ul').classed(classBase + '-list', true);
     var itemsSel = listSel.selectAll(classBase + '.-item').data(rootAccessor);
     itemsSel.exit().remove();

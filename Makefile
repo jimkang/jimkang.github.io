@@ -10,3 +10,6 @@ build:
 
 run-production-style: build
 	python -m SimpleHTTPServer
+
+pushall: build
+	git push origin master
