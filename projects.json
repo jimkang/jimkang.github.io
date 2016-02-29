@@ -189,5 +189,107 @@
     "date_unfurled": "2015-09-30",
     "date_updated": "2015-12-03",
     "done": "yes"
+  },
+
+  {
+    "id": "contingencymsgs",
+    "name": "If you are reading this",
+    "links": [
+      ["https://twitter.com/contingencymsgs", "@contingencymsgs"]
+    ],
+    "sources": [
+      ["https://github.com/jimkang/if-you-are-reading-this", "Source"]
+    ],
+    "metalinks": [
+    ],
+    "tags": [
+      "bot"
+    ],
+    "description": "<a href=\"https://twitter.com/metroidbaby\">@metroidbaby</a>, <a href=\"https://twitter.com/notinventedhere\">@NotInventedHere</a>, and I built a Twitter bot that alerts you about various fictional emergency situations.",
+    "date_unfurled": "2015-11-30",
+    "date_updated": "2016-02-16",
+    "done": "yes"
+  },
+
+  {
+    "id": "monthlydamage",
+    "name": "Monthly Damage",
+    "links": [
+      ["http://jimkang.com/monthlydamage/", "Monthly Damage"]
+    ],
+    "sources": [
+      ["https://github.com/jimkang/monthlydamage", "Source"]
+    ],
+    "metalinks": [
+    ],
+    "tags": [
+      "web"
+    ],
+    "description": "Are you trying to buy a house? Well, if so, this tells you how much you'll have to pay each month for it, factoring in taxes and loan terms, so you can immediately find out if a house or condo is just too bonkers for you.",
+    "date_unfurled": "2015-10-30",
+    "date_updated": "2015-11-02",
+    "done": "yes"
+  },
+
+  {
+    "id": "autocompletejok",
+    "name": "knock knock [tab]",
+    "links": [
+      ["https://twitter.com/autocompletejok", "@autocompletejok"]
+    ],
+    "sources": [
+      ["https://github.com/jimkang/whosthereautocomplete", "Source"]
+    ],
+    "metalinks": [
+      ["http://qz.com/572763/the-best-twitter-bots-of-2015/", "The best Twitter bots of 2015 on Quartz"]
+    ],
+    "tags": [
+      "bot"
+    ],
+    "description": "This bot creates knock knock jokes by hitting up autocomplete on Google. This is perhaps the dumbest bot of all time. And yet! I am compelled to share <a href=\"https://twitter.com/autocompletejok/status/622711741139451904\">amazing</a> <a href=\"https://twitter.com/autocompletejok/status/623466717050748928\">jokes</a> <a href=\"https://twitter.com/autocompletejok/status/622077560684294145\">like these</a>.",
+    "date_unfurled": "2015-07-21",
+    "date_updated": "2015-08-31",
+    "done": "yes"
+  },
+
+  {
+    "id": "massdaycare",
+    "name": "Massachusetts daycare map",
+    "links": [
+      ["http://jimkang.com/massdaycare/", "Massachusetts Daycare Map"]
+    ],
+    "sources": [
+      ["https://github.com/jimkang/massdaycare", "Browser app"],
+      ["https://github.com/jimkang/daycare-provider-api", "API server"],
+      ["https://github.com/masschildcaredata/masschildcaredata.github.io", "Scrapers and data"]
+    ],
+    "metalinks": [],
+    "tags": ["web", "scraping"],
+    "description": "Work in progress. This is a map of daycare providers available in the state of Massachusetts. I built it because while daycare search was available from the Mass EEC, there was no map-driven way to browse the daycare available in an area.",
+    "techinfo": "The data gets to the user like so: A scraper gathers all of the data available from the Mass EEC site but clicking through hundreds of pages as if it was a user. That data undergoes several transforms, including geocoding and validation. Then, it is stored in a LevelDB database that the API server reads. The server streams the daycare provider data to the browser app, which requests it as the user pans over areas containing those providers. It caches them browser-side in an IndexedDB so that it can retrieve them quickly the next time the user uses the app.",
+    "date_updated": "2016-02-15",
+    "done": "no"
+  },
+
+  {
+    "id": "phonemelibraries",
+    "name": "Phoneme libraries",
+    "links": [
+      ["https://github.com/jimkang/phonemenon", "phonemenon"],
+      ["https://github.com/jimkang/word-phoneme-map", "word-phoneme-map"],
+      ["https://github.com/jimkang/phoneme-sequencer", "phoneme-sequencer"]
+    ],
+    "sources": [
+    ],
+    "metalinks": [
+    ],
+    "tags": [
+      "module",
+      "language"
+    ],
+    "description": "<p>Phonemenon is a library for phoneme manipulation and analysis. It's a set of functions that lets you do things like find out what syllables are in a word, how commonly certain syllables follow each other or how often given phonemes follow each other.</p><p>word-phoneme-map lets you look up words that correspond to phoneme sequences and look up phoneme sequences that correspond to words.</p><p>phoneme-sequencer stochastically completes a given partial phoneme sequence by using an analysis of real-world phoneme sequences.</p>",
+    "date_unfurled": "2014-10-02",
+    "date_updated": "2015-07-06",
+    "done": "yes"
   }
 ]
