@@ -5,9 +5,29 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Wed, 01 Apr 2015 20:00:00 -0400</pubDate>
+    <pubDate>Fri, 18 Mar 2016 20:00:00 -0400</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Freezable children</title>
+      <link>http://jimkang.com/weblog/articles/freezable-children/</link>
+      <pubDate>Fri, 18 Mar 2016 20:00:00 -0400</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/freezable-children/</guid>
+      <author></author>
+      <description>&lt;p&gt;I’m not much of writer of the fiction kind, but if I were, I’d take a crack at this premise:&lt;/p&gt;
+&lt;blockquote&gt;&lt;b&gt;In the future, humans have the ability and right to put their children into flawless suspended animation.&lt;/b&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;They can do this until their children accrete eighteen total years of “animated” age.&lt;/p&gt;
+&lt;p&gt;So, after a tiring day of childcare, parents freeze their kid and take the next day easy. They can then spend the next couple of days after that working on  projects. And maybe then they can bear down on their jobs, if that’s what they like to do.&lt;/p&gt;
+&lt;p&gt;All that time, they can chew over a puzzling day with the kid and come to a considered course of action. When they’re ready, they restore the kid and spend a day or with them, 100% engaged and untired!&lt;/p&gt;
+&lt;p&gt;As a result, some parents reach the age of 90 by the time their child is 18 in animated years. Parents more commonly die before their kids become adults. Groups of parents form tribes around whatever limit on suspension they’ve set for themselves. Economic and power disparities risie from the uneven distribution of the privilege of suspension. Paranoia grows about hidden physiological effects of suspension when, in truth, it &lt;i&gt;actually is perfect&lt;/i&gt;.&lt;/p&gt;
+&lt;p&gt;Then, there are the effects of adults suspending themselves simply because they don’t like their lives and hope that a few rolls of the dice will change things for the better.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;frostillicus.jpg&quot; alt=&quot;Behold: Frostillicus!&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;(Image courtesy of &lt;a href=&quot;https://frinkiac.com/caption/S09E17/238270&quot;&gt;Frinkiac&lt;/a&gt;.)&lt;/p&gt;
+&lt;p&gt;Writers, feel free to have at it!&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Simple inertial scrolling</title>
       <link>http://jimkang.com/weblog/articles/simple-inertial-scrolling-with-d3/</link>
