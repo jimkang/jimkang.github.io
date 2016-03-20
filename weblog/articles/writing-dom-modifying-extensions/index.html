@@ -7,7 +7,7 @@
     <title>Writing Chrome Extensions and bookmarklets that mess with the DOM - jimkang.com
     </title>
     <link rel="alternate" href="http://jimkang.com/feed.xml" type="application/rss+xml" title="It's dot com.">
-    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/weblog/css/main.css">
     <script>
       (function(d) {
         var config = {
@@ -36,7 +36,7 @@
 <p><span class="more"></span>
 One way to do this is open the developer tools in your browser and directly change things in the <a href="https://developer.mozilla.org/en-US/docs/DOM"><span class="caps">DOM</span></a>. But if you want the world to also be able to do the same, you need to ship a program that does it. For quite a long time, people have been used <a href="https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/">Greasemonkey</a> scripts in Firefox deliver&nbsp;them.</p>
 <p>On Chrome, <a href="http://developer.chrome.com/extensions/index">Chrome extensions</a> do this. There’s also <a href="http://en.wikipedia.org/wiki/Bookmarklet">bookmarklets</a>, which are less capable but will work across all&nbsp;browsers.</p>
-<p>Here’s a look at what it takes to make a <span class="caps">DOM</span>-altering Chrome extension or bookmarklet. (If you know that what you want to do is make a bookmarklet, though, I recommend you just <a href="/articles/writing-dom-modifying-extensions/#contentscript">skip down to the content script and bookmarklet parts</a>.)</p>
+<p>Here’s a look at what it takes to make a <span class="caps">DOM</span>-altering Chrome extension or bookmarklet. (If you know that what you want to do is make a bookmarklet, though, I recommend you just <a href="#contentscript">skip down to the content script and bookmarklet parts</a>.)</p>
 <h1>Extension&nbsp;structure</h1>
 
 <p>A Chrome extension is a package of JavaScript, <span class="caps">CSS</span>, and resource files. They’re balled up into a crx file on the Chrome Web Store, but in development, you can load an unpacked directory in <a href="chrome://extensions">chrome://extensions</a>.</p>
@@ -119,11 +119,11 @@ chrome.browserAction.onClicked.addListener(function respondToClick(tab) {
     </div>
     <footer>
       <div class="content-wrap">
-        <div class="nav"><a href="/">« Full blog</a></div>
+        <div class="nav"><a href="/weblog/">« Full blog</a></div>
         <!--section.about-->
         <!--  !=contents['about.md'].html-->
         <section class="copy">
-          <p>&copy; 2015 Jim Kang &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          <p>&copy; 2016 Jim Kang &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
           </p>
           <p><a href='/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
         </section>
