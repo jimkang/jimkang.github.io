@@ -1,5 +1,25 @@
 [
   {
+    "id": "getfromlibrary",
+    "name": "Get from Library!",
+    "links": [
+      ["http://jimkang.com/get-from-library", "Get from Library!"]
+    ],
+    "sources": [
+      ["https://github.com/jimkang/get-from-library", "Source on GitHub"]
+    ],
+    "metalinks": [
+    ],
+    "tags": [
+      "bot"
+    ],
+    "description": "A bookmarklet that cuts the friction between thinking you'd like to read a book and actually reading it.",
+    "date_unfurled": "2016-03-22",
+    "date_updated": "2016-03-22",
+    "done": "yes"
+  },
+
+  {
     "id": "godtributes",
     "name": "@GODTRIBUTES",
     "links": [
