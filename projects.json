@@ -154,7 +154,8 @@
     "id": "nonstopscrollshop",
     "name": "Non-Stop Scroll Shop",
     "links": [
-      ["http://nonstopscrollshop.com/", "Non-Stop Scroll Shop!"]
+      ["http://nonstopscrollshop.com/", "Non-Stop Scroll Shop!"],
+      ["https://twitter.com/nonstopscrshop/", "Non-Stop Scroll Bot"]
     ],
     "sources": [
     ],
@@ -166,7 +167,7 @@
     ],
     "description": "Do you like products? Do you like scrolling? How about infinite scrolling? Well, then! Come on down to Non-Stop Scroll Shop where we'll always have something new for you…forever.",
     "date_unfurled": "2014-02-25",
-    "date_updated": "2015-01-04",
+    "date_updated": "2016-04-15",
     "done": "yes"
   },
 
