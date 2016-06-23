@@ -5,9 +5,44 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Fri, 18 Mar 2016 20:00:00 -0400</pubDate>
+    <pubDate>Tue, 21 Jun 2016 20:00:00 -0400</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>How a bot (may) get caught in a (possible) Twitter hellban</title>
+      <link>http://jimkang.com/weblog/articles/twitter-bot-hellban/</link>
+      <pubDate>Tue, 21 Jun 2016 20:00:00 -0400</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/twitter-bot-hellban/</guid>
+      <author></author>
+      <description>&lt;p&gt;People were reporting to me that my bot, &lt;a href=&quot;https://twitter.com/linkfinds&quot;&gt;@linkfinds&lt;/a&gt;, was replying to them, and they were getting notifications, but when they went to check their mentions (the “Notifications” tab in web Twitter), the reply was not there. They could see the reply if they scrolled down in their timelines, however.&lt;/p&gt;
+&lt;p&gt;For them, it was a frustrating experience. They’d get a notification, then go to Notifications and couldn’t find anything.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;I read Twitter on the computer via Tweetbot for Mac. I did a few tests from there, and things seemed fine – replies to me showed up in my Tweetbot “Mentions” tab. I’ve been busy, so sadly, it slipped out of my focus.&lt;/p&gt;
+&lt;p&gt;Another wave of people brought it up, though, and I did check it out again, and I did see it happen on web Twitter and the iOS Tweetbot. Dant-dant-dah!&lt;/p&gt;
+&lt;p&gt;I did various experiments with setting reply-related in the bot’s reply &lt;a href=&quot;https://dev.twitter.com/rest/reference/post/statuses/update&quot;&gt;posts&lt;/a&gt;. Previously, it had just been setting the &lt;code&gt;in_reply_to_status_id_str&lt;/code&gt; field. I tried setting all of these in various combinations:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;in_reply_to_status_id
+in_reply_to_status_id_str
+in_reply_to_user_id
+in_reply_to_user_id_str
+in_reply_to_screen_name
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;None of this mattered; replies still did not show up in the mentions of those they were directed at. That makes sense since &lt;a href=&quot;https://twitter.com/godtributes&quot;&gt;@godtributes&lt;/a&gt;, &lt;a href=&quot;https://twitter.com/mountainkilwala&quot;&gt;@mountainkilwala&lt;/a&gt;, et al only set &lt;code&gt;in_reply_to_status_id_str&lt;/code&gt; or &lt;code&gt;in_reply_to_status_id&lt;/code&gt;, and their replies all show up in their addressees’ Notifications/Mentions.&lt;/p&gt;
+&lt;p&gt;Next, I tried running the bot with another account’s credentials. This made a difference. Replies from the bot via that account did show up in mentions. &lt;strong&gt;The problem was with the account itself.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;I do not know for certain why that account’s replies got filtered from the Twitter Notifications tab. However, I speculate that it has to do with it being tagged as a bot early on. When I created the account, I immediately did the OAuth dance to get a token, then used that token to post with the bot right away.&lt;/p&gt;
+&lt;p&gt;I then got an error message from the Twitter API explaining that the account had been disabled for “automated behavior”. At the Twitter web site, I was told I could reenable the account by adding a phone number and verifying it, so I did that.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Maybe&lt;/em&gt; at this point, the account was placed in some Twitter user segment whose replies are all filtered out of the Notifications tabs. Perhaps this is a sort of hellbanning that prevents spam bots from noticing that they are no longer reaching anyone.&lt;/p&gt;
+&lt;p&gt;Here’s some things that I &lt;em&gt;speculate&lt;/em&gt; could have lead to the account disabling and possible user segment tagging:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Posting via API before posting manually via web Twitter.&lt;/li&gt;
+&lt;li&gt;Posting before setting up a profile with a userpic.&lt;/li&gt;
+&lt;li&gt;Skipping entering a phone number during sign up.&lt;/li&gt;
+&lt;li&gt;Adding an app (to get the OAuth token) before setting up a profile with a userpic.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Again, I can’t prove that any of these things matter or that the original @linkfinds account was put in a special user segment are a result. All I can say to botmakers – or all Twitter users, really – is that &lt;em&gt;if your account gets disabled, after you reenable it, check that everything still works before proceeding&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;As for the Link Finding Things bot, I had no recourse but to move it to another account. So, I changed the original account’s username to &lt;a href=&quot;https://twitter.com/linkfinds_old&quot;&gt;@linkfinds_old&lt;/a&gt;, then created a new account with the username &lt;a href=&quot;https://twitter.com/linkfinds&quot;&gt;@linkfinds&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I tried to let people know that if they’re following @linkfinds_old, they need to follow &lt;a href=&quot;https://twitter.com/linkfinds&quot;&gt;@linkfinds&lt;/a&gt; instead. I know tons of people will miss that tweet, but it’s all that can be done.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;link-finds-mysteries.png&quot; alt=&quot;DOO DOO DOO DOO!&quot; width=&quot;100%&quot; /&gt;&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Freezable children</title>
       <link>http://jimkang.com/weblog/articles/freezable-children/</link>

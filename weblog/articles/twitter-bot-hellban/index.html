@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width" initial-scale="1">
+    <title>How a bot (may) get caught in a (possible) Twitter hellban - jimkang.com
+    </title>
+    <link rel="alternate" href="http://jimkang.com/feed.xml" type="application/rss+xml" title="It's dot com.">
+    <link rel="stylesheet" href="/weblog/css/main.css">
+    <script>
+      (function(d) {
+        var config = {
+          kitId: 'med0yzx',
+          scriptTimeout: 3000
+        },
+        h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='//use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+      })(document);
+      
+    </script>
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <!-- include author-->
+        <h1>How a bot (may) get caught in a (possible) Twitter hellban</h1>
+        <!-- p.author-->
+        <!--  | #{ "Written by " }-->
+        <!--  mixin author(page.metadata.author)-->
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>People were reporting to me that my bot, <a href="https://twitter.com/linkfinds">@linkfinds</a>, was replying to them, and they were getting notifications, but when they went to check their mentions (the “Notifications” tab in web Twitter), the reply was not there. They could see the reply if they scrolled down in their timelines,&nbsp;however.</p>
+<p>For them, it was a frustrating experience. They’d get a notification, then go to Notifications and couldn’t find&nbsp;anything.</p>
+<p><span class="more"></span></p>
+<p>I read Twitter on the computer via Tweetbot for Mac. I did a few tests from there, and things seemed fine – replies to me showed up in my Tweetbot “Mentions” tab. I’ve been busy, so sadly, it slipped out of my&nbsp;focus.</p>
+<p>Another wave of people brought it up, though, and I did check it out again, and I did see it happen on web Twitter and the iOS Tweetbot.&nbsp;Dant-dant-dah!</p>
+<p>I did various experiments with setting reply-related in the bot’s reply <a href="https://dev.twitter.com/rest/reference/post/statuses/update">posts</a>. Previously, it had just been setting the <code>in_reply_to_status_id_str</code> field. I tried setting all of these in various&nbsp;combinations:</p>
+<pre><code>in_reply_to_status_id
+in_reply_to_status_id_str
+in_reply_to_user_id
+in_reply_to_user_id_str
+in_reply_to_screen_name
+</code></pre><p>None of this mattered; replies still did not show up in the mentions of those they were directed at. That makes sense since <a href="https://twitter.com/godtributes">@godtributes</a>, <a href="https://twitter.com/mountainkilwala">@mountainkilwala</a>, et al only set <code>in_reply_to_status_id_str</code> or <code>in_reply_to_status_id</code>, and their replies all show up in their addressees’&nbsp;Notifications/Mentions.</p>
+<p>Next, I tried running the bot with another account’s credentials. This made a difference. Replies from the bot via that account did show up in mentions. <strong>The problem was with the account&nbsp;itself.</strong></p>
+<p>I do not know for certain why that account’s replies got filtered from the Twitter Notifications tab. However, I speculate that it has to do with it being tagged as a bot early on. When I created the account, I immediately did the OAuth dance to get a token, then used that token to post with the bot right&nbsp;away.</p>
+<p>I then got an error message from the Twitter <span class="caps">API</span> explaining that the account had been disabled for “automated behavior”. At the Twitter web site, I was told I could reenable the account by adding a phone number and verifying it, so I did&nbsp;that.</p>
+<p><em>Maybe</em> at this point, the account was placed in some Twitter user segment whose replies are all filtered out of the Notifications tabs. Perhaps this is a sort of hellbanning that prevents spam bots from noticing that they are no longer reaching&nbsp;anyone.</p>
+<p>Here’s some things that I <em>speculate</em> could have lead to the account disabling and possible user segment&nbsp;tagging:</p>
+<ul>
+<li>Posting via <span class="caps">API</span> before posting manually via web&nbsp;Twitter.</li>
+<li>Posting before setting up a profile with a&nbsp;userpic.</li>
+<li>Skipping entering a phone number during sign&nbsp;up.</li>
+<li>Adding an app (to get the OAuth token) before setting up a profile with a&nbsp;userpic.</li>
+</ul>
+<p>Again, I can’t prove that any of these things matter or that the original @linkfinds account was put in a special user segment are a result. All I can say to botmakers – or all Twitter users, really – is that <em>if your account gets disabled, after you reenable it, check that everything still works before proceeding</em>.</p>
+<p>As for the Link Finding Things bot, I had no recourse but to move it to another account. So, I changed the original account’s username to <a href="https://twitter.com/linkfinds_old">@linkfinds_old</a>, then created a new account with the username <a href="https://twitter.com/linkfinds">@linkfinds</a>.</p>
+<p>I tried to let people know that if they’re following @linkfinds_old, they need to follow <a href="https://twitter.com/linkfinds">@linkfinds</a> instead. I know tons of people will miss that tweet, but it’s all that can be&nbsp;done.</p>
+<p><img src="link-finds-mysteries.png" alt="DOO DOO DOO DOO!" width="100%" /></p>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/weblog/">« Full blog</a></div>
+        <!--section.about-->
+        <!--  !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2016 Jim Kang &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+          <p><a href='/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
+        </section>
+      </div>
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        
+        ga('create', 'UA-49491163-1', 'jimkang.com');
+        ga('send', 'pageview');
+      </script>
+    </footer>
+  </body>
+</html>
