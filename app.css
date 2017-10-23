@@ -4,9 +4,9 @@ html {
 
 body {
   font-family: futura, 'Helvetica Neue', sans-serif;
-  font-size: 24px;
-  color: #eee;
-  background-color: #252528;
+  font-size: 36px;
+  color: #252528;
+  background-color: white;
   margin: 0;
   height: 100%;
 }
@@ -14,140 +14,24 @@ body {
 ul {
   list-style-type: none;
   padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2em;
+}
+
+li {
+  margin-bottom: 0.8em;
 }
 
 a:link {
-  color: white;
+  color: black;
   text-decoration: none;
-  font-size: larger;
+  font-size: 1.5em;
 }
 
 a:visited {
-  color: hsla(0, 0%, 100%, 0.7);
-}
-
-#projects {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  padding: 0;
-  justify-content: center;
-}
-
-.textpane {
-  font-family: museo-sans, sans-serif;
-  font-size: 0.8em;
-
-  text-rendering: optimizeLegibility;
-  background-color: #ffe;
-  color: #403838;
-  border-radius: 1em;
-}
-
-.textpane a {
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.textpane a:link {
-  color: #e03020;
-}
-
-.textpane a:visited {
-  color: #346;
-}
-
-.textcontent {
-  font-weight: normal;
-  padding-left: 1.2em;
-  padding-right: 1em;
-  padding-top: 1em;
-  padding-bottom: 1em;
-}
-
-.name {
-  margin-bottom: 0.3em;
-  margin-top: 1em;
-  font-size: 1.5em;
-  text-transform: uppercase;
-}
-
-.project {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  margin-left: 0.5em;
-  margin-right: 0.5em;
-  max-width: 480px;
-}
-
-.project-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.description {
-  text-align: center;
-}
-
-.links {
-  display: flex;
-  flex-direction: row;
-}
-
-.link {
-  padding-left: 0.6em;
-  padding-right: 0.6em;
-}
-
-.lists {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-.sublist-section {
-  font-family: museo-sans, sans-serif;
-  padding-top: 0;
-}
-
-.sublist-section {
-  font-size: smaller;
-}
-
-.sublist-section-label {
-  font-size: smaller;
-}
-
-.techinfo a {
-  cursor: pointer;
-}
-
-.dates {
-  display: flex;
-  flex-direction: row;
-  font-family: museo-sans, sans-serif;
-  font-size: 0.7em;
-  width: 95%;
-  margin-top: 0.5em;
-}
-
-.dates > span {
-  flex-grow: 2;
-}
-
-.updated-container {
-  align-self: flex-start;
-}
-
-.unfurled-container {
-  align-self: flex-end;
-  text-align: right;
-}
-
-.squash {
-  display: none;
+  color: #252528;
 }
 
 @media all and (max-width: 320px) {
