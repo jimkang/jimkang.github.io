@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width" initial-scale="1">
+    <title>Platform-free bots - jimkang.com
+    </title>
+    <link rel="alternate" href="http://jimkang.com/feed.xml" type="application/rss+xml" title="It's dot com.">
+    <link rel="stylesheet" href="/weblog/css/main.css">
+    <script>
+      (function(d) {
+        var config = {
+          kitId: 'med0yzx',
+          scriptTimeout: 3000
+        },
+        h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='//use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+      })(document);
+      
+    </script>
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <!-- include author-->
+        <h1>Platform-free bots</h1>
+        <!-- p.author-->
+        <!--  | #{ "Written by " }-->
+        <!--  mixin author(page.metadata.author)-->
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>I’ve made <a href="https://twitter.com/deathmtn/lists/robotic-council-of-doom/members">several bots</a> over the years. They’re mostly Twitter bots. Some of them are throwaway larks, and some of them only work in the moment. If Twitter becomes too harmful to humanity to gift with free content, I’m <span class="caps">OK</span> with letting those go. However, there are many bots whose fate I want to keep in my own hands, rather than Twitter’s. To that end, I built a <a href="https://github.com/jimkang/static-web-archive-on-git">static site updater</a>.</p>
+<p><span class="more"></span></p>
+<h3>Motivation</h3>
+
+<p>For a long time, I’ve been bothered by concerns that that are often discussed in the bot community, such&nbsp;as:</p>
+<ul>
+<li>What if the company behind Twitter (or any other platform, really) goes out of&nbsp;business?</li>
+<li>What if people just stop using&nbsp;Twitter?</li>
+<li>What if Twitter just decides to ban your bot and not explain it? Or <a href="http://jimkang.com/weblog/articles/twitter-bot-hellban/">hellban it</a>?</li>
+<li>What if, in the future, <a href="https://www.wired.com/story/after-fcc-vote-net-neutrality-fight-moves-to-courts-congress/">internet access is hard to come by</a>?</li>
+<li>What if you want to find old tweets by your bot? This is notoriously difficult for any Twitter user right&nbsp;now.</li>
+</ul>
+<p>Twitter does have an archive request feature. You can request your account archives from right now by going to settings in the Twitter web app. However, this doesn’t give me much comfort&nbsp;because:</p>
+<ul>
+<li>The archives do not include images or video, which are the main medium of some&nbsp;bots.</li>
+<li>Under duress, I’m not sure you’ll be able to get the archives. When Vine shut down, I requested my archive. I got a notification that said the archiving process started, but it didn’t complete before the company and service shut down. I never got my&nbsp;archive.</li>
+<li>Twitter can stop offering the archives at any&nbsp;time.</li>
+</ul>
+<p>I could have my bots crosspost to Tumblr and Mastodon, and some do. The issue is that, although the eggs are now in multiple baskets, the baskets still have many of the same problems: various sorts of potential&nbsp;inaccessiblity</p>
+<p>There is something that is likely to last longer than any social media platform, though: <strong><span class="caps">HTML</span> &mdash; the nearly three-decades-old Hypertext Markup&nbsp;Language.</strong></p>
+<p><em>That</em> is the format I need my bots’ output to be in. I meant to  make them post to plain <span class="caps">HTML</span> for a while, but inertia is hard to&nbsp;fight.</p>
+<p>When Vine shut down, I had a Vine account that was very valuable to my extended family. So, I built a <a href="https://github.com/jimkang/off-brand-vine">service that handled simple video posting</a> on my own server. Doing this gave me some code I could reuse to finally make my platform-free bot&nbsp;archives.</p>
+<h3>How to use&nbsp;it</h3>
+
+<p><a href="https://github.com/jimkang/static-web-archive-on-git">static-web-archive-on-git</a> is a Node module that will maintain a static weblog for you. From the&nbsp;<span class="caps">README</span>:</p>
+<blockquote>The idea here is that you have a GitHub repo that is the source for a lightweight static weblog, and you have a program that you want to update it programmatically.</blockquote>
+
+<p>If you have a bot written in Node, it can take whatever it posts to Twitter or Mastodon (some text and an image or a video) and also post that to its static web archive by calling a&nbsp;function.</p>
+<p>By doing so, it will build an archive of the bot’s content &mdash; including media &mdash; that is <em>extremely portable</em>.</p>
+<p>It stores the html (the index pages and single-entry pages, classic weblog-style) in a GitHub repo. With this, you can do any of the&nbsp;following:</p>
+<ul>
+<li>Make the default branch of that repo <code>gh-pages</code> and <a href="https://pages.github.com">automatically get a working web site</a> at <code>your-username.github.io/repo-name</code>.</li>
+<li>Pull down the contents of that repo to some server you control that has a web server on it and serve it from&nbsp;there.</li>
+<li>Send the contents to the <a href="https://archive.org">Internet Archive</a>.</li>
+<li>Zip it all up and keep it wherever you think is safe and let future archaeologists find it. (If they have a thing that can read images and text, they’ll figure it out if they understand your language. If they have a thing that reads <span class="caps">HTML</span>, then they’ll be&nbsp;golden.)</li>
+</ul>
+<p>Whatever you do with your <span class="caps">HTML</span>, it won’t matter what Twitter&nbsp;does.</p>
+<p>I’ve already integrated it into my bot <a href="https://twitter.com/linkfinds">linkfinds</a>. Its archive is over at <a href="jimkang.com/linkfound/">jimkang.com/linkfound</a>. I’m going to try to get all of my bots posting to archives. I’m sure I’ll find bugs, but I’m fairly sure it’ll eventually work for most of&nbsp;them.</p>
+<h3>Limitations</h3>
+
+<p>There are quite a few limitations to this approach, many of which you may have&nbsp;noticed:</p>
+<ul>
+<li><p><strong>This only works for bots whose meaning can be divorced from a particular medium.</strong> Much of what people like about <a href="https://twitter.com/godtributes">godtributes</a>, for example, is how it responds to them. The lion’s share of its tweets are responses, and they are mostly only meaningful to the person it’s replying to. That cannot be captured through this kind of archiving, as it’s only part of the&nbsp;story.</p>
+</li>
+<li><p><strong>Archives cannot replicate the experience of bots dropping into your life by making tiny, occasional&nbsp;visits.</strong> </p>
+</li>
+<li><p><strong>The current implementation depends on another massive <span class="caps">VC</span>-funded company, GitHub.</strong> Like all companies in this position, it may not survive that long or may become too detrimental to the world to&nbsp;touch. </p>
+<p>The shutting-down concern is mitigated by the fact that it’s pretty easy to regularly and incrementally download the contents posted to GitHub (that’s what git is made&nbsp;for).</p>
+<p>If I need to get off of the platform because I want nothing to do with it, it is actually easy to remove the GitHub parts from <code>static-web-archive-on-git</code> and have it maintain a local archive of <span class="caps">HTML</span>&nbsp;files. </p>
+<ul>
+<li>This, however, comes with the trade-off that, should it mess up in a destructive way, everything could be lost. You would not be able to get everything back after an accidental wipe by reverting to a previous commit as you could with a git-backed archive.<br /><br /><ul>
+<li>However, this problem itself could be mitigated by backing the whole thing up&nbsp;regularly.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>It is Node-specific.</strong> At some point, I can plug this into a simple <span class="caps">REST</span> service so that any bot can use it, regardless of how it is built as long as it can make an http request. It’s not known if anyone really needs this yet, so I haven’t&nbsp;bothered.</p>
+</li>
+<li><p><strong>Updating the archive is slow</strong> because there are stalling <code>setTimeout</code> calls&nbsp;everywhere.</p>
+<p>Internally, the GitHub <span class="caps">API</span> makes updates via commits. <a href="https://developer.github.com/v3/repos/contents/#update-a-file">The update <span class="caps">REST</span> method</a> does not take a parent commit <span class="caps">SHA</span> because it figures out which one it should use on its own. Unfortunately, it also seems to respond to REST calls before it actually applies whatever commit it creates <em>across the board</em>.</p>
+<p>I’ve observed the following race&nbsp;condition:</p>
+<ul>
+<li>We send an http request for Update 1 via the <a href="https://developer.github.com/v3/repos/contents/#update-a-file">GitHub <span class="caps">API</span> update file method</a>.</li>
+<li>The Github <span class="caps">API</span> sends a response to Update 1 that indicates that it worked&nbsp;fine.</li>
+<li>Thinking that the branch is updated, we send a request for Update&nbsp;2.</li>
+<li>The GitHub <span class="caps">API</span> responds to Update 2 with an error status code (409), citing that it’s a commit based on a commit that is <strong>not</strong> the current tip of the&nbsp;branch.</li>
+</ul>
+<p>I don’t know what’s happening internally, but my guess is that a commit created for an <span class="caps">API</span> call does not propagate to all API servers by the time a response is sent back for that API call. e.g. Something like this is going&nbsp;on:</p>
+<ul>
+<li>Commit 0 is the tip of the branch on all GitHub&nbsp;machines.</li>
+<li>Update 1 is received by Machine A, and Commit 1 is created, using Commit 0 as a&nbsp;parent.</li>
+<li>Machine B applies Commit 1; Commit 1 is the tip of the branch on Machines B, D, and some other GitHub machines now, but not on Machine&nbsp;C.</li>
+<li>A response for Update 1 is sent back by some&nbsp;machine.</li>
+<li>Update 2 happens to be received by Machine C, which does not have the latest yet, and Commit 2 is created, using Commit 0 as the&nbsp;parent.</li>
+<li>Machine D attempts to apply Commit 2. Here, Commit 1 is the tip of the branch, so it&nbsp;fails.</li>
+<li>A response for Update 2 is sent back with an error message like <code>&quot;is at 1 but expected 0&quot;</code>.</li>
+</ul>
+<p>The above scenario is pure speculation, but the following is definitely true: <strong>Updates are not&nbsp;atomic.</strong></p>
+<p>The setTimeouts are an attempt to space out update calls in order to avoid these wrong-commit-parent clashes. They don’t always, but they do most of the time. I’ve used <a href="https://github.com/jimkang/off-brand-vine">this code</a> for about eight months as of 1/15/2018, and it’s mostly been fine, <span class="caps">FWIW</span>. Obviously, it’s not going to work out for extremely real-time-dependent archiving purposes,&nbsp;though.</p>
+</li>
+</ul>
+<hr />
+
+<p>Well, that’s it. May you enjoy being platform-free via one method or&nbsp;another!</p>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/weblog/">« Full blog</a></div>
+        <!--section.about-->
+        <!--  !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2018 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+          <p><a href='/weblog/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
+        </section>
+      </div>
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        
+        ga('create', 'UA-49491163-1', 'jimkang.com');
+        ga('send', 'pageview');
+      </script>
+    </footer>
+  </body>
+</html>

@@ -5,9 +5,101 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Fri, 13 Oct 2017 20:00:00 -0400</pubDate>
+    <pubDate>Sun, 14 Jan 2018 19:00:00 -0500</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Platform-free bots</title>
+      <link>http://jimkang.com/weblog/articles/platform-free-bots/</link>
+      <pubDate>Sun, 14 Jan 2018 19:00:00 -0500</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/platform-free-bots/</guid>
+      <author></author>
+      <description>&lt;p&gt;I’ve made &lt;a href=&quot;https://twitter.com/deathmtn/lists/robotic-council-of-doom/members&quot;&gt;several bots&lt;/a&gt; over the years. They’re mostly Twitter bots. Some of them are throwaway larks, and some of them only work in the moment. If Twitter becomes too harmful to humanity to gift with free content, I’m OK with letting those go. However, there are many bots whose fate I want to keep in my own hands, rather than Twitter’s. To that end, I built a &lt;a href=&quot;https://github.com/jimkang/static-web-archive-on-git&quot;&gt;static site updater&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;h3&gt;Motivation&lt;/h3&gt;
+
+&lt;p&gt;For a long time, I’ve been bothered by concerns that that are often discussed in the bot community, such as:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;What if the company behind Twitter (or any other platform, really) goes out of business?&lt;/li&gt;
+&lt;li&gt;What if people just stop using Twitter?&lt;/li&gt;
+&lt;li&gt;What if Twitter just decides to ban your bot and not explain it? Or &lt;a href=&quot;http://jimkang.com/weblog/articles/twitter-bot-hellban/&quot;&gt;hellban it&lt;/a&gt;?&lt;/li&gt;
+&lt;li&gt;What if, in the future, &lt;a href=&quot;https://www.wired.com/story/after-fcc-vote-net-neutrality-fight-moves-to-courts-congress/&quot;&gt;internet access is hard to come by&lt;/a&gt;?&lt;/li&gt;
+&lt;li&gt;What if you want to find old tweets by your bot? This is notoriously difficult for any Twitter user right now.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Twitter does have an archive request feature. You can request your account archives from right now by going to settings in the Twitter web app. However, this doesn’t give me much comfort because:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The archives do not include images or video, which are the main medium of some bots.&lt;/li&gt;
+&lt;li&gt;Under duress, I’m not sure you’ll be able to get the archives. When Vine shut down, I requested my archive. I got a notification that said the archiving process started, but it didn’t complete before the company and service shut down. I never got my archive.&lt;/li&gt;
+&lt;li&gt;Twitter can stop offering the archives at any time.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I could have my bots crosspost to Tumblr and Mastodon, and some do. The issue is that, although the eggs are now in multiple baskets, the baskets still have many of the same problems: various sorts of potential inaccessiblity&lt;/p&gt;
+&lt;p&gt;There is something that is likely to last longer than any social media platform, though: &lt;strong&gt;HTML &amp;mdash; the nearly three-decades-old Hypertext Markup Language.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;That&lt;/em&gt; is the format I need my bots’ output to be in. I meant to  make them post to plain HTML for a while, but inertia is hard to fight.&lt;/p&gt;
+&lt;p&gt;When Vine shut down, I had a Vine account that was very valuable to my extended family. So, I built a &lt;a href=&quot;https://github.com/jimkang/off-brand-vine&quot;&gt;service that handled simple video posting&lt;/a&gt; on my own server. Doing this gave me some code I could reuse to finally make my platform-free bot archives.&lt;/p&gt;
+&lt;h3&gt;How to use it&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/jimkang/static-web-archive-on-git&quot;&gt;static-web-archive-on-git&lt;/a&gt; is a Node module that will maintain a static weblog for you. From the README:&lt;/p&gt;
+&lt;blockquote&gt;The idea here is that you have a GitHub repo that is the source for a lightweight static weblog, and you have a program that you want to update it programmatically.&lt;/blockquote&gt;
+
+&lt;p&gt;If you have a bot written in Node, it can take whatever it posts to Twitter or Mastodon (some text and an image or a video) and also post that to its static web archive by calling a function.&lt;/p&gt;
+&lt;p&gt;By doing so, it will build an archive of the bot’s content &amp;mdash; including media &amp;mdash; that is &lt;em&gt;extremely portable&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;It stores the html (the index pages and single-entry pages, classic weblog-style) in a GitHub repo. With this, you can do any of the following:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Make the default branch of that repo &lt;code&gt;gh-pages&lt;/code&gt; and &lt;a href=&quot;https://pages.github.com&quot;&gt;automatically get a working web site&lt;/a&gt; at &lt;code&gt;your-username.github.io/repo-name&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Pull down the contents of that repo to some server you control that has a web server on it and serve it from there.&lt;/li&gt;
+&lt;li&gt;Send the contents to the &lt;a href=&quot;https://archive.org&quot;&gt;Internet Archive&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Zip it all up and keep it wherever you think is safe and let future archaeologists find it. (If they have a thing that can read images and text, they’ll figure it out if they understand your language. If they have a thing that reads HTML, then they’ll be golden.)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Whatever you do with your HTML, it won’t matter what Twitter does.&lt;/p&gt;
+&lt;p&gt;I’ve already integrated it into my bot &lt;a href=&quot;https://twitter.com/linkfinds&quot;&gt;linkfinds&lt;/a&gt;. Its archive is over at &lt;a href=&quot;jimkang.com/linkfound/&quot;&gt;jimkang.com/linkfound&lt;/a&gt;. I’m going to try to get all of my bots posting to archives. I’m sure I’ll find bugs, but I’m fairly sure it’ll eventually work for most of them.&lt;/p&gt;
+&lt;h3&gt;Limitations&lt;/h3&gt;
+
+&lt;p&gt;There are quite a few limitations to this approach, many of which you may have noticed:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;This only works for bots whose meaning can be divorced from a particular medium.&lt;/strong&gt; Much of what people like about &lt;a href=&quot;https://twitter.com/godtributes&quot;&gt;godtributes&lt;/a&gt;, for example, is how it responds to them. The lion’s share of its tweets are responses, and they are mostly only meaningful to the person it’s replying to. That cannot be captured through this kind of archiving, as it’s only part of the story.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Archives cannot replicate the experience of bots dropping into your life by making tiny, occasional visits.&lt;/strong&gt; &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;The current implementation depends on another massive VC-funded company, GitHub.&lt;/strong&gt; Like all companies in this position, it may not survive that long or may become too detrimental to the world to touch. &lt;/p&gt;
+&lt;p&gt;The shutting-down concern is mitigated by the fact that it’s pretty easy to regularly and incrementally download the contents posted to GitHub (that’s what git is made for).&lt;/p&gt;
+&lt;p&gt;If I need to get off of the platform because I want nothing to do with it, it is actually easy to remove the GitHub parts from &lt;code&gt;static-web-archive-on-git&lt;/code&gt; and have it maintain a local archive of HTML files. &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;This, however, comes with the trade-off that, should it mess up in a destructive way, everything could be lost. You would not be able to get everything back after an accidental wipe by reverting to a previous commit as you could with a git-backed archive.&lt;br /&gt;&lt;br /&gt;&lt;ul&gt;
+&lt;li&gt;However, this problem itself could be mitigated by backing the whole thing up regularly.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;It is Node-specific.&lt;/strong&gt; At some point, I can plug this into a simple REST service so that any bot can use it, regardless of how it is built as long as it can make an http request. It’s not known if anyone really needs this yet, so I haven’t bothered.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Updating the archive is slow&lt;/strong&gt; because there are stalling &lt;code&gt;setTimeout&lt;/code&gt; calls everywhere.&lt;/p&gt;
+&lt;p&gt;Internally, the GitHub API makes updates via commits. &lt;a href=&quot;https://developer.github.com/v3/repos/contents/#update-a-file&quot;&gt;The update REST method&lt;/a&gt; does not take a parent commit SHA because it figures out which one it should use on its own. Unfortunately, it also seems to respond to REST calls before it actually applies whatever commit it creates &lt;em&gt;across the board&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;I’ve observed the following race condition:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;We send an http request for Update 1 via the &lt;a href=&quot;https://developer.github.com/v3/repos/contents/#update-a-file&quot;&gt;GitHub API update file method&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;The Github API sends a response to Update 1 that indicates that it worked fine.&lt;/li&gt;
+&lt;li&gt;Thinking that the branch is updated, we send a request for Update 2.&lt;/li&gt;
+&lt;li&gt;The GitHub API responds to Update 2 with an error status code (409), citing that it’s a commit based on a commit that is &lt;strong&gt;not&lt;/strong&gt; the current tip of the branch.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I don’t know what’s happening internally, but my guess is that a commit created for an API call does not propagate to all API servers by the time a response is sent back for that API call. e.g. Something like this is going on:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Commit 0 is the tip of the branch on all GitHub machines.&lt;/li&gt;
+&lt;li&gt;Update 1 is received by Machine A, and Commit 1 is created, using Commit 0 as a parent.&lt;/li&gt;
+&lt;li&gt;Machine B applies Commit 1; Commit 1 is the tip of the branch on Machines B, D, and some other GitHub machines now, but not on Machine C.&lt;/li&gt;
+&lt;li&gt;A response for Update 1 is sent back by some machine.&lt;/li&gt;
+&lt;li&gt;Update 2 happens to be received by Machine C, which does not have the latest yet, and Commit 2 is created, using Commit 0 as the parent.&lt;/li&gt;
+&lt;li&gt;Machine D attempts to apply Commit 2. Here, Commit 1 is the tip of the branch, so it fails.&lt;/li&gt;
+&lt;li&gt;A response for Update 2 is sent back with an error message like &lt;code&gt;&amp;quot;is at 1 but expected 0&amp;quot;&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The above scenario is pure speculation, but the following is definitely true: &lt;strong&gt;Updates are not atomic.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;The setTimeouts are an attempt to space out update calls in order to avoid these wrong-commit-parent clashes. They don’t always, but they do most of the time. I’ve used &lt;a href=&quot;https://github.com/jimkang/off-brand-vine&quot;&gt;this code&lt;/a&gt; for about eight months as of 1/15/2018, and it’s mostly been fine, FWIW. Obviously, it’s not going to work out for extremely real-time-dependent archiving purposes, though.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;Well, that’s it. May you enjoy being platform-free via one method or another!&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Weird, but worth it</title>
       <link>http://jimkang.com/weblog/articles/weird-but-worth-it/</link>
