@@ -51,7 +51,7 @@
 &lt;li&gt;Zip it all up and keep it wherever you think is safe and let future archaeologists find it. (If they have a thing that can read images and text, they’ll figure it out if they understand your language. If they have a thing that reads HTML, then they’ll be golden.)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Whatever you do with your HTML, it won’t matter what Twitter does.&lt;/p&gt;
-&lt;p&gt;I’ve already integrated it into my bot &lt;a href=&quot;https://twitter.com/linkfinds&quot;&gt;linkfinds&lt;/a&gt;. Its archive is over at &lt;a href=&quot;jimkang.com/linkfound/&quot;&gt;jimkang.com/linkfound&lt;/a&gt;. I’m going to try to get all of my bots posting to archives. I’m sure I’ll find bugs, but I’m fairly sure it’ll eventually work for most of them.&lt;/p&gt;
+&lt;p&gt;I’ve already integrated it into my bot &lt;a href=&quot;https://twitter.com/linkfinds&quot;&gt;linkfinds&lt;/a&gt;. Its archive is over at &lt;a href=&quot;http://jimkang.com/linkfound/&quot;&gt;jimkang.com/linkfound&lt;/a&gt;. I’m going to try to get all of my bots posting to archives. I’m sure I’ll find bugs, but I’m fairly sure it’ll eventually work for most of them.&lt;/p&gt;
 &lt;h3&gt;Limitations&lt;/h3&gt;
 
 &lt;p&gt;There are quite a few limitations to this approach, many of which you may have noticed:&lt;/p&gt;
