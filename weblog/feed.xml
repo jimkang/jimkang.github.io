@@ -52,6 +52,28 @@
 &lt;/ul&gt;
 &lt;p&gt;Whatever you do with your HTML, it won’t matter what Twitter does.&lt;/p&gt;
 &lt;p&gt;I’ve already integrated it into my bot &lt;a href=&quot;https://twitter.com/linkfinds&quot;&gt;linkfinds&lt;/a&gt;. Its archive is over at &lt;a href=&quot;http://jimkang.com/linkfound/&quot;&gt;jimkang.com/linkfound&lt;/a&gt;. I’m going to try to get all of my bots posting to archives. I’m sure I’ll find bugs, but I’m fairly sure it’ll eventually work for most of them.&lt;/p&gt;
+&lt;p&gt;&lt;a name=&quot;archive-list&quot;&gt;
+&lt;strong&gt;Update, 1/31/2018:&lt;/strong&gt; So, I’ve set up archiving for most of my bots. It’s surprisingly nice to see them outside of the Twitter frame. The design is not complete for some of them, but they’re all functional. Check ‘em out:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://jimkang.com/linkfound/&quot;&gt;Link Finds&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://jimkang.com/ourmagickfuture/&quot;&gt;Our Magick Future&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://jimkang.com/hail-ants-archive/&quot;&gt;Hail Ants Bot&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://jimkang.com/memberfacts/&quot;&gt;Member Facts&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://jimkang.com/spaceweirdnessbot/&quot;&gt;Space Weirdness Bot&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://jimkang.com/bot-in-the-street/&quot;&gt;Bot in the Street&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://jimkang.com/improvebot/&quot;&gt;Improvebot&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://jimkang.com/demake-archive/&quot;&gt;Demake Bot&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://jimkang.com/pokemon-nypl-archive/&quot;&gt;Pokémon in the NYPL&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://jimkang.com/fuckingshakespeare/&quot;&gt;Fucking Shakespeare&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://jimkang.com/businesswords-archive/&quot;&gt;Business Words&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://jimkang.com/contingency-messages/&quot;&gt;Contingency Messages&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://jimkang.com/cleromancer/&quot;&gt;Cleromancer&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://jimkang.com/autocompletejok/&quot;&gt;Autocomplete Jokes&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://jimkang.com/monstersubtypes/&quot;&gt;Monster Subtypes&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://jimkang.com/autocompleterap-archive/&quot;&gt;Autocomplete Rap&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://jimkang.com/2020-candidates/&quot;&gt;2020 Candidate Bot&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://jimkang.com/godtributes-archive/&quot;&gt;GODTRIBUTES&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h3&gt;Limitations&lt;/h3&gt;
 
 &lt;p&gt;There are quite a few limitations to this approach, many of which you may have noticed:&lt;/p&gt;
