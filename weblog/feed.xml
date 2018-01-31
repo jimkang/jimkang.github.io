@@ -52,7 +52,7 @@
 &lt;/ul&gt;
 &lt;p&gt;Whatever you do with your HTML, it won’t matter what Twitter does.&lt;/p&gt;
 &lt;p&gt;I’ve already integrated it into my bot &lt;a href=&quot;https://twitter.com/linkfinds&quot;&gt;linkfinds&lt;/a&gt;. Its archive is over at &lt;a href=&quot;http://jimkang.com/linkfound/&quot;&gt;jimkang.com/linkfound&lt;/a&gt;. I’m going to try to get all of my bots posting to archives. I’m sure I’ll find bugs, but I’m fairly sure it’ll eventually work for most of them.&lt;/p&gt;
-&lt;p&gt;&lt;a name=&quot;archive-list&quot;&gt;
+&lt;p&gt;&lt;a name=&quot;archive-list&quot;&gt;&lt;/a&gt;
 &lt;strong&gt;Update, 1/31/2018:&lt;/strong&gt; So, I’ve set up archiving for most of my bots. It’s surprisingly nice to see them outside of the Twitter frame. The design is not complete for some of them, but they’re all functional. Check ‘em out:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;http://jimkang.com/linkfound/&quot;&gt;Link Finds&lt;/a&gt;&lt;/li&gt;
