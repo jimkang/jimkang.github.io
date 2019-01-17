@@ -5,9 +5,70 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Sun, 14 Jan 2018 19:00:00 -0500</pubDate>
+    <pubDate>Tue, 15 Jan 2019 19:00:00 -0500</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>How to make a tl;dr control</title>
+      <link>http://jimkang.com/weblog/articles/tldr-control/</link>
+      <pubDate>Tue, 15 Jan 2019 19:00:00 -0500</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/tldr-control/</guid>
+      <author></author>
+      <description>&lt;p&gt;A while back, a colleague at work pointed out a nifty tl;dr slider on the &lt;a href=&quot;https://parametric.press/&quot;&gt;Parametric Press site&lt;/a&gt;. You can move it all the way to the left to get the gist of the article. The further you move it to the right, the more words (and details) you’ll get.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;I took a peek to see how it was built, and it appears to be tied into &lt;a href=&quot;https://github.com/idyll-lang/idyll&quot;&gt;Idyll&lt;/a&gt;, which renders things with React. Most of it is implemented in a React component named Conditional which sets the style tag on a div to &lt;code&gt;display: none&lt;/code&gt; if some condition &amp;mdash; probably specified in each tag &amp;mdash; isn’t met.&lt;/p&gt;
+&lt;p&gt;Idyll looks neat, but what if you want to apply this to a simple web page that you don’t want to convert to it? What if, like me, you avoid React when possible?&lt;/p&gt;
+&lt;p&gt;Fortunately, the concept is really simple, which is the best kind of clever concept. I thought for a moment about building some kind of module so everyone that uses modules could add such a slider, but the best way to enable people to get this into their web app is to just explain it. A module would have to bend over backward to anticipate the varying conditions it might be used in. Whereas a person understanding the concept can easily apply it.&lt;/p&gt;
+&lt;p&gt;So, here it is:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;You put a slider on the page. (An input element with type &lt;code&gt;range&lt;/code&gt;.)&lt;/li&gt;
+&lt;li&gt;You add JS code that listens to change events from the slider and uses the values from the slider to modify the classes on the &lt;code&gt;body&lt;/code&gt; element. For example, if the user moves the slider to 3, then it adds the class &lt;code&gt;show-3&lt;/code&gt; to the body. Here’s an implementation:
+
+&lt;pre&gt;
+  var slider = document.getElementById(‘tldr-slider’);
+  slider.addEventListener(‘change’, onTLDRChange);
+
+  const maxLevel = +slider.max;
+
+  function onTLDRChange() {
+    updateTLDRClasses();
+  }
+
+  function updateTLDRClasses() {
+    const level = Math.round(slider.value);
+    for (var i = 0; i &amp;lt;= maxLevel; ++i) {
+      let className = “show-“ + i;
+      if (i &amp;lt;= level) {
+        document.body.classList.add(className);
+      } else {
+        document.body.classList.remove(className);
+      }
+    }
+  }
+
+  updateTLDRClasses();
+&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;You create a CSS class like &lt;code&gt;tldr&lt;/code&gt; that has the property &lt;code&gt;display: none&lt;/code&gt;. You put this class on every element that might possibly be hidden.&lt;/li&gt;
+
+&lt;li&gt;Also, you create CSS rules for each level of detail you plan to have. Each one will set their element to &lt;code&gt;display: block&lt;/code&gt; (or &lt;code&gt;flex&lt;/code&gt; or what have you).  The conditions they’ll look for is “the ‘level’ class is a child of the ‘show’ class.” For example:
+&lt;pre&gt;
+.show-2 .lvl-2 {
+  display: block;
+}&lt;/pre&gt;
+
+How the class is used:
+&lt;pre&gt;
+&amp;lt;div class=”tldr lvl-2”&amp;gt;Hey, this isn’t very important information! It will
+be hidden if the slider has a value of less than 2!&amp;lt;/div&amp;gt;
+&lt;/pre&gt;
+&lt;/li&gt;&lt;/ol&gt;
+
+&lt;p&gt;Now, when the user moves the slider to 2, &lt;code&gt;body&lt;/code&gt; will have  the classes &lt;code&gt;show-1&lt;/code&gt; and &lt;code&gt;show-2&lt;/code&gt;. An element that has the classes &lt;code&gt;tldr&lt;/code&gt; and &lt;code&gt;show-2&lt;/code&gt; will then satisfy the rule “child of show-2 that has the class lvl-2”, and display will be set to &lt;code&gt;block&lt;/code&gt; instead of the default &lt;code&gt;none&lt;/code&gt; (which comes from the &lt;code&gt;tldr&lt;/code&gt; class).&lt;/p&gt;
+&lt;p&gt;When the user moves the slider down to 1, &lt;code&gt;body&lt;/code&gt; will have  the class &lt;code&gt;show-1&lt;/code&gt;, and the condition for the above rule will no longer be met, so &lt;code&gt;display&lt;/code&gt;will stay &lt;code&gt;none&lt;/code&gt;, and the element won’t show.&lt;/p&gt;
+&lt;p&gt;So, knowing this, you’ll have something you can apply in any framework (or lack thereof), you’ll understand how it actually works, and it’ll be (negligibly) more performant because only one DOM element’s properties are being modified.&lt;/p&gt;
+&lt;p&gt;If you want a working example, I was looking at this so I could have a tl;dr control on my &lt;a href=&quot;http://jimkang.com/resume/&quot;&gt;resume site&lt;/a&gt;. You can use your browser’s dev tools to check it out or see the &lt;a href=&quot;http://github.com/jimkang/resume/&quot;&gt;source here&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Platform-free bots</title>
       <link>http://jimkang.com/weblog/articles/platform-free-bots/</link>
@@ -1017,7 +1078,7 @@ I gave it a map file with about 16 million entities that were each to render to 
       &lt;/stop&gt;
     &lt;/radialGradient&gt;
 
-    &lt;linearGradient id=&quot;pipe-gradient&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;100%&quot;, y2=&quot;0&quot;&gt;
+    &amp;lt;linearGradient id=”pipe-gradient” x1=”0” y1=”0” x2=”100%”, y2=”0”&amp;gt;
       &lt;stop offset=&quot;0&quot; stop-color=&quot;hsl(200, 100%, 10%)&quot; /&gt;
       &lt;stop offset=&quot;0.5&quot; stop-color=&quot;hsl(180, 100%, 20%)&quot;&gt;
         &lt;animate attributeName=&quot;offset&quot; values=&quot;0.5;0.9;0.5&quot; keySplines=&quot;0.1 0.8 0.2 1; 0.1 0.8 0.2 1; 0.1 0.8 0.2 1&quot; dur=&quot;10s&quot; repeatCount=&quot;indefinite&quot; /&gt;
@@ -1088,7 +1149,7 @@ I gave it a map file with about 16 million entities that were each to render to 
 &lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;
 One way to do this is open the developer tools in your browser and directly change things in the &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/DOM&quot;&gt;DOM&lt;/a&gt;. But if you want the world to also be able to do the same, you need to ship a program that does it. For quite a long time, people have been used &lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/&quot;&gt;Greasemonkey&lt;/a&gt; scripts in Firefox deliver them.&lt;/p&gt;
 &lt;p&gt;On Chrome, &lt;a href=&quot;http://developer.chrome.com/extensions/index&quot;&gt;Chrome extensions&lt;/a&gt; do this. There’s also &lt;a href=&quot;http://en.wikipedia.org/wiki/Bookmarklet&quot;&gt;bookmarklets&lt;/a&gt;, which are less capable but will work across all browsers.&lt;/p&gt;
-&lt;p&gt;Here’s a look at what it takes to make a DOM-altering Chrome extension or bookmarklet. (If you know that what you want to do is make a bookmarklet, though, I recommend you just &lt;a href=&quot;#contentscript&quot;&gt;skip down to the content script and bookmarklet parts&lt;/a&gt;.)&lt;/p&gt;
+&lt;p&gt;Here’s a look at what it takes to make a DOM-altering Chrome extension or bookmarklet. (If you know that what you want to do is make a bookmarklet, though, I recommend you just &lt;a href=&quot;http://jimkang.com/articles/writing-dom-modifying-extensions/#contentscript&quot;&gt;skip down to the content script and bookmarklet parts&lt;/a&gt;.)&lt;/p&gt;
 &lt;h1&gt;Extension structure&lt;/h1&gt;
 
 &lt;p&gt;A Chrome extension is a package of JavaScript, CSS, and resource files. They’re balled up into a crx file on the Chrome Web Store, but in development, you can load an unpacked directory in &lt;a href=&quot;chrome://extensions&quot;&gt;chrome://extensions&lt;/a&gt;.&lt;/p&gt;
@@ -1119,7 +1180,7 @@ chrome.browserAction.onClicked.addListener(function respondToClick(tab) {
 });
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;It’s registering for the &lt;code&gt;chrome.browserAction.onClicked&lt;/code&gt; event and responding to that event by calling &lt;code&gt;scriptchain.loadChain&lt;/code&gt;. &lt;a href=&quot;https://www.npmjs.org/package/scriptchain&quot;&gt;scriptchain&lt;/a&gt; is a helper I wrote that runs a list of scripts on the active tab in order. It’s a convenience, but alternatively, you can call &lt;a href=&quot;http://developer.chrome.com/extensions/tabs#method-executeScript&quot;&gt;chrome.tabs.executeScript&lt;/a&gt; to run your scripts on the tab.&lt;/p&gt;
 &lt;p&gt;To sum up, the flow of execution goes like this:&lt;/p&gt;
-&lt;ol&gt;
+&lt;ol start=&quot;0&quot;&gt;
 &lt;li&gt;User visits a page that is included in the manifest’s &lt;code&gt;permissions&lt;/code&gt; property.&lt;/li&gt;
 &lt;li&gt;Chrome loads the background scripts you specified in the manifest. One of them subscribes to the browser button click event.&lt;/li&gt;
 &lt;li&gt;User clicks on the extension button in the Chrome toolbar.&lt;/li&gt;

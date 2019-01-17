@@ -36,7 +36,7 @@
 <p><span class="more"></span>
 One way to do this is open the developer tools in your browser and directly change things in the <a href="https://developer.mozilla.org/en-US/docs/DOM"><span class="caps">DOM</span></a>. But if you want the world to also be able to do the same, you need to ship a program that does it. For quite a long time, people have been used <a href="https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/">Greasemonkey</a> scripts in Firefox deliver&nbsp;them.</p>
 <p>On Chrome, <a href="http://developer.chrome.com/extensions/index">Chrome extensions</a> do this. There’s also <a href="http://en.wikipedia.org/wiki/Bookmarklet">bookmarklets</a>, which are less capable but will work across all&nbsp;browsers.</p>
-<p>Here’s a look at what it takes to make a <span class="caps">DOM</span>-altering Chrome extension or bookmarklet. (If you know that what you want to do is make a bookmarklet, though, I recommend you just <a href="#contentscript">skip down to the content script and bookmarklet parts</a>.)</p>
+<p>Here’s a look at what it takes to make a <span class="caps">DOM</span>-altering Chrome extension or bookmarklet. (If you know that what you want to do is make a bookmarklet, though, I recommend you just <a href="/weblog/articles/writing-dom-modifying-extensions/#contentscript">skip down to the content script and bookmarklet parts</a>.)</p>
 <h1>Extension&nbsp;structure</h1>
 
 <p>A Chrome extension is a package of JavaScript, <span class="caps">CSS</span>, and resource files. They’re balled up into a crx file on the Chrome Web Store, but in development, you can load an unpacked directory in <a href="chrome://extensions">chrome://extensions</a>.</p>
@@ -67,7 +67,7 @@ chrome.browserAction.onClicked.addListener(function respondToClick(tab) {
 });
 </code></pre><p>It’s registering for the <code>chrome.browserAction.onClicked</code> event and responding to that event by calling <code>scriptchain.loadChain</code>. <a href="https://www.npmjs.org/package/scriptchain">scriptchain</a> is a helper I wrote that runs a list of scripts on the active tab in order. It’s a convenience, but alternatively, you can call <a href="http://developer.chrome.com/extensions/tabs#method-executeScript">chrome.tabs.executeScript</a> to run your scripts on the&nbsp;tab.</p>
 <p>To sum up, the flow of execution goes like&nbsp;this:</p>
-<ol>
+<ol start="0">
 <li>User visits a page that is included in the manifest’s <code>permissions</code> property.</li>
 <li>Chrome loads the background scripts you specified in the manifest. One of them subscribes to the browser button click&nbsp;event.</li>
 <li>User clicks on the extension button in the Chrome&nbsp;toolbar.</li>
@@ -123,7 +123,7 @@ chrome.browserAction.onClicked.addListener(function respondToClick(tab) {
         <!--section.about-->
         <!--  !=contents['about.md'].html-->
         <section class="copy">
-          <p>&copy; 2018 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          <p>&copy; 2019 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
           </p>
           <p><a href='/weblog/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
         </section>
