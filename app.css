@@ -5,8 +5,13 @@ html {
 body {
   font-family: futura, 'Helvetica Neue', sans-serif;
   font-size: 36px;
-  color: #252528;
-  background-color: white;
+  color: white;
+  background-color: black;
+  background-image: url(media/wily-website-me.jpg);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   margin: 0;
   height: 100%;
 }
@@ -25,13 +30,13 @@ li {
 }
 
 a:link {
-  color: black;
+  color: white;
   text-decoration: none;
   font-size: 1.5em;
 }
 
 a:visited {
-  color: #252528;
+  color: white;
 }
 
 @media all and (max-width: 320px) {
