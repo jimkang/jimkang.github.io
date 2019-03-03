@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width" initial-scale="1">
+    <title>Weasley debugging - jimkang.com
+    </title>
+    <link rel="alternate" href="http://jimkang.com/feed.xml" type="application/rss+xml" title="It's dot com.">
+    <link rel="stylesheet" href="/weblog/css/main.css">
+    <script>
+      (function(d) {
+        var config = {
+          kitId: 'med0yzx',
+          scriptTimeout: 3000
+        },
+        h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='//use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+      })(document);
+      
+    </script>
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <!-- include author-->
+        <h1>Weasley debugging</h1>
+        <!-- p.author-->
+        <!--  | #{ "Written by " }-->
+        <!--  mixin author(page.metadata.author)-->
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>Roughly 80% of the code in <a href="https://github.com/jimkang/play-audio-url">a module I just wrote</a> will never come into play. This is because I was debugging a problem in the manner of Ron Weasley blaming Snape for some evil at the beginning of a Harry Potter book.
+<br><br>
+In my case, Snape is the Safari web&nbsp;browser.</p>
+<p><span class="more"></span></p>
+<p>I’m predisposed to believing Safari is bizarre and the cause of many problems. When I hit an issue with it not allowing my web app to play audio though the other browsers did allow it, I started writing code before <a href="https://tvtropes.org/pmwiki/pmwiki.php/Main/MistakenForEvidence">making sure I knew the cause of a problem</a>.</p>
+<p>Yesterday, I said the purpose of the play-audio-url was&nbsp;this:</p>
+<blockquote>
+<p>Plays audio when it’s possible to play it via an HTMLAudioElement (as of 3/1/2019, this will work in Firefox and Chrome) and falls back to downloading the audio file and playing via an AudioContext if it can’t (as of 3/1/2019, Safari doesn’t allow HTMLAudioElement to play programmatically, even if the user has already clicked on the web&nbsp;page).</p>
+</blockquote>
+<p>The above is a lie, it turns&nbsp;out.</p>
+<p>I got there because I was trying to make <a href="http://jimkang.com/flame-buddy-sword-assistant/">Flame Buddy Sword Assistant</a> work on&nbsp;iOS.</p>
+<p><em>(Flame Buddy Sword Assistant is a web version of a magic sword from a D&amp;D game I’m running. In short, unlike most magic swords, Flame Buddy Sword Assistant isn’t there to serve the user; it’s there to deliver the user to another entity. It’s not unlike quite a few software and hardware products today. And so, while it does work as a sword (sometimes), it speaks a lot on the behalf of its providing&nbsp;entity.)</em></p>
+<p>From a technical perspective, it’s like an old-school Flash soundboard, but it operates under with modern web audio requirements and&nbsp;restrictions.</p>
+<p>One of the recent restrictions is that a web page cannot play audio unless the user has first interacted with the page. Ostensibly, this is for the benefit of the user, however, this restriction does not apply to certain “important” whitelisted sites. Google chooses these sites; there’s no open process for deciding who the autoplaying elite&nbsp;are.</p>
+<p>That one is not a problem for the app; I designed it so people would have to click to hear something from Flame Buddy Sword Assistant (the much more difficult alternative being having it recognize speech). And it worked fine on Firefox and Chrome. As you may recall, it did not work on Safari and Mobile&nbsp;Safari.</p>
+<p>I implemented audio playing by setting the <code>src</code> of an <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLAudioElement">HTMLAudioElement</a>, then calling the <code>play</code> method on the element. On Safari, when I call that method, the promise returned by that method fails with an error with the message <code>&quot;Operation not supported&quot;</code> and nothing&nbsp;more.</p>
+<p>I searched the web for that and got into all of these articles and discussions about autoplay policy in Safari. It turns out that ‘autoplay’ in these contexts <a href="https://developer.mozilla.org/en-US/docs/Web/Media/Autoplay_guide">includes all sorts of programmatic media playing</a>, not just stuff that plays when the page loads. I thought that, perhaps, Safari had misclassified my program as acting without&nbsp;interaction.</p>
+<p><span id="the-mistake">This is where I should have backed up and made sure this was indeed Safari’s issue but did&nbsp;not.</span> </p>
+<p>I saw that some people said that you could work around the perceived restriction by playing buffers in <code>AudioContext</code>. I was all, aw yea I’m gonna solve this problem that a lot of people have in a neat <span class="caps">NPM</span>&nbsp;package!</p>
+<p>I started <code>play-audio-url</code>. It would try the <code>HTMLAudioElement</code> to play a url (via the <code>Audio</code> <span class="caps">API</span>). If that failed, it would fall back to use <code>AudioContext</code> to do everything that <code>HTMLAudioElement</code> would&nbsp;do:</p>
+<ul>
+<li>Download the file at the given&nbsp;url</li>
+<li>Decode the file contents to an uncompressed audio&nbsp;buffer</li>
+<li>Play the audio buffer via an AudioContext and&nbsp;SourceNode.</li>
+<li>Provide means to stop&nbsp;playback</li>
+</ul>
+<p>It worked on Firefox, and then I tried it in&nbsp;Safari.</p>
+<p><em>Nothing&nbsp;played.</em></p>
+<p>Same error. <code>Operation not supported</code>!</p>
+<p>I found web pages talking about what formats Safari can understand. <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Supported_media_formats#Browser_compatibility">Here’s a table from Mozilla</a> that says that Safari does not support ogg files. My audio file was an ogg file. <strong><span class="caps">DANT</span> DANT&nbsp;DAH</strong></p>
+<p>I transcoded it to mp3. When I tried to play it, Safari <em>still</em> played&nbsp;static.</p>
+<p><em>(It was late in the evening now, though I hadn’t realized it at the time. I’m no longer accustomed to staying up late, as I have a miserable time doing kid stuff on low&nbsp;sleep.)</em></p>
+<p>After a bit of poking around, including some amusing console mucking like this&nbsp;&mdash;</p>
+<pre><code>&gt; (new Audio).canPlayType(&#39;audio/ogg&#39;)
+&quot;maybe&quot;
+</code></pre><p>&mdash; and trying out sample rate adjustments, I tried playing the file in a player outside of the browser. <em>The file actually contained all static.</em> I had messed up the transcoding. After encoding it as an mp3 correctly, Safari played it fine via the HTMLAudioElement without needing all of that fallback code at&nbsp;all.</p>
+<p>I don’t think I literally slapped my forehead, but I should&nbsp;have.</p>
+<p>If I had looked into file formats <a href="/weblog/articles/weasley-debugging/#the-mistake">way back here</a>, I would not have lost sight of the truth and simply converted my audio files to mp3 and solved the problem with no&nbsp;code.</p>
+<p>That sucked. Still, <code>play-audio-url</code> is a convenient, if inessential, shorthand for the stuff you have to do with <code>HTMLAudioElement</code>/<code>Audio</code> if you want to download and play an audio file. Also, I was able to brush up on WebAudio. Did you know that <code>stop</code> is no longer a method on&nbsp;AudioContext?</p>
+<p>(I’m also writing this post so that I feel like I’m wrenching more value out of the&nbsp;mistake.)</p>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/weblog/">« Full blog</a></div>
+        <!--section.about-->
+        <!--  !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2019 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+          <p><a href='/weblog/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
+        </section>
+      </div>
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        
+        ga('create', 'UA-49491163-1', 'jimkang.com');
+        ga('send', 'pageview');
+      </script>
+    </footer>
+  </body>
+</html>

@@ -5,9 +5,57 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Tue, 15 Jan 2019 19:00:00 -0500</pubDate>
+    <pubDate>Sat, 02 Mar 2019 19:00:00 -0500</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Weasley debugging</title>
+      <link>http://jimkang.com/weblog/articles/weasley-debugging/</link>
+      <pubDate>Sat, 02 Mar 2019 19:00:00 -0500</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/weasley-debugging/</guid>
+      <author></author>
+      <description>&lt;p&gt;Roughly 80% of the code in &lt;a href=&quot;https://github.com/jimkang/play-audio-url&quot;&gt;a module I just wrote&lt;/a&gt; will never come into play. This is because I was debugging a problem in the manner of Ron Weasley blaming Snape for some evil at the beginning of a Harry Potter book.
+&lt;br&gt;&lt;br&gt;
+In my case, Snape is the Safari web browser.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;I’m predisposed to believing Safari is bizarre and the cause of many problems. When I hit an issue with it not allowing my web app to play audio though the other browsers did allow it, I started writing code before &lt;a href=&quot;https://tvtropes.org/pmwiki/pmwiki.php/Main/MistakenForEvidence&quot;&gt;making sure I knew the cause of a problem&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Yesterday, I said the purpose of the play-audio-url was this:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Plays audio when it’s possible to play it via an HTMLAudioElement (as of 3/1/2019, this will work in Firefox and Chrome) and falls back to downloading the audio file and playing via an AudioContext if it can’t (as of 3/1/2019, Safari doesn’t allow HTMLAudioElement to play programmatically, even if the user has already clicked on the web page).&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The above is a lie, it turns out.&lt;/p&gt;
+&lt;p&gt;I got there because I was trying to make &lt;a href=&quot;http://jimkang.com/flame-buddy-sword-assistant/&quot;&gt;Flame Buddy Sword Assistant&lt;/a&gt; work on iOS.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;(Flame Buddy Sword Assistant is a web version of a magic sword from a D&amp;amp;D game I’m running. In short, unlike most magic swords, Flame Buddy Sword Assistant isn’t there to serve the user; it’s there to deliver the user to another entity. It’s not unlike quite a few software and hardware products today. And so, while it does work as a sword (sometimes), it speaks a lot on the behalf of its providing entity.)&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;From a technical perspective, it’s like an old-school Flash soundboard, but it operates under with modern web audio requirements and restrictions.&lt;/p&gt;
+&lt;p&gt;One of the recent restrictions is that a web page cannot play audio unless the user has first interacted with the page. Ostensibly, this is for the benefit of the user, however, this restriction does not apply to certain “important” whitelisted sites. Google chooses these sites; there’s no open process for deciding who the autoplaying elite are.&lt;/p&gt;
+&lt;p&gt;That one is not a problem for the app; I designed it so people would have to click to hear something from Flame Buddy Sword Assistant (the much more difficult alternative being having it recognize speech). And it worked fine on Firefox and Chrome. As you may recall, it did not work on Safari and Mobile Safari.&lt;/p&gt;
+&lt;p&gt;I implemented audio playing by setting the &lt;code&gt;src&lt;/code&gt; of an &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/HTMLAudioElement&quot;&gt;HTMLAudioElement&lt;/a&gt;, then calling the &lt;code&gt;play&lt;/code&gt; method on the element. On Safari, when I call that method, the promise returned by that method fails with an error with the message &lt;code&gt;&amp;quot;Operation not supported&amp;quot;&lt;/code&gt; and nothing more.&lt;/p&gt;
+&lt;p&gt;I searched the web for that and got into all of these articles and discussions about autoplay policy in Safari. It turns out that ‘autoplay’ in these contexts &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/Media/Autoplay_guide&quot;&gt;includes all sorts of programmatic media playing&lt;/a&gt;, not just stuff that plays when the page loads. I thought that, perhaps, Safari had misclassified my program as acting without interaction.&lt;/p&gt;
+&lt;p&gt;&lt;span id=&quot;the-mistake&quot;&gt;This is where I should have backed up and made sure this was indeed Safari’s issue but did not.&lt;/span&gt; &lt;/p&gt;
+&lt;p&gt;I saw that some people said that you could work around the perceived restriction by playing buffers in &lt;code&gt;AudioContext&lt;/code&gt;. I was all, aw yea I’m gonna solve this problem that a lot of people have in a neat NPM package!&lt;/p&gt;
+&lt;p&gt;I started &lt;code&gt;play-audio-url&lt;/code&gt;. It would try the &lt;code&gt;HTMLAudioElement&lt;/code&gt; to play a url (via the &lt;code&gt;Audio&lt;/code&gt; API). If that failed, it would fall back to use &lt;code&gt;AudioContext&lt;/code&gt; to do everything that &lt;code&gt;HTMLAudioElement&lt;/code&gt; would do:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Download the file at the given url&lt;/li&gt;
+&lt;li&gt;Decode the file contents to an uncompressed audio buffer&lt;/li&gt;
+&lt;li&gt;Play the audio buffer via an AudioContext and SourceNode.&lt;/li&gt;
+&lt;li&gt;Provide means to stop playback&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;It worked on Firefox, and then I tried it in Safari.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Nothing played.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Same error. &lt;code&gt;Operation not supported&lt;/code&gt;!&lt;/p&gt;
+&lt;p&gt;I found web pages talking about what formats Safari can understand. &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/HTML/Supported_media_formats#Browser_compatibility&quot;&gt;Here’s a table from Mozilla&lt;/a&gt; that says that Safari does not support ogg files. My audio file was an ogg file. &lt;strong&gt;DANT DANT DAH&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;I transcoded it to mp3. When I tried to play it, Safari &lt;em&gt;still&lt;/em&gt; played static.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;(It was late in the evening now, though I hadn’t realized it at the time. I’m no longer accustomed to staying up late, as I have a miserable time doing kid stuff on low sleep.)&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;After a bit of poking around, including some amusing console mucking like this &amp;mdash;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;gt; (new Audio).canPlayType(&amp;#39;audio/ogg&amp;#39;)
+&amp;quot;maybe&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&amp;mdash; and trying out sample rate adjustments, I tried playing the file in a player outside of the browser. &lt;em&gt;The file actually contained all static.&lt;/em&gt; I had messed up the transcoding. After encoding it as an mp3 correctly, Safari played it fine via the HTMLAudioElement without needing all of that fallback code at all.&lt;/p&gt;
+&lt;p&gt;I don’t think I literally slapped my forehead, but I should have.&lt;/p&gt;
+&lt;p&gt;If I had looked into file formats &lt;a href=&quot;http://jimkang.com/articles/weasley-debugging/#the-mistake&quot;&gt;way back here&lt;/a&gt;, I would not have lost sight of the truth and simply converted my audio files to mp3 and solved the problem with no code.&lt;/p&gt;
+&lt;p&gt;That sucked. Still, &lt;code&gt;play-audio-url&lt;/code&gt; is a convenient, if inessential, shorthand for the stuff you have to do with &lt;code&gt;HTMLAudioElement&lt;/code&gt;/&lt;code&gt;Audio&lt;/code&gt; if you want to download and play an audio file. Also, I was able to brush up on WebAudio. Did you know that &lt;code&gt;stop&lt;/code&gt; is no longer a method on AudioContext?&lt;/p&gt;
+&lt;p&gt;(I’m also writing this post so that I feel like I’m wrenching more value out of the mistake.)&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>How to make a tl;dr control</title>
       <link>http://jimkang.com/weblog/articles/tldr-control/</link>
