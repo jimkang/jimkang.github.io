@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width" initial-scale="1">
+    <title>Running your own email server (so you can have an automated mailing list) - jimkang.com
+    </title>
+    <link rel="alternate" href="http://jimkang.com/feed.xml" type="application/rss+xml" title="It's dot com.">
+    <link rel="stylesheet" href="/weblog/css/main.css">
+    <script>
+      (function(d) {
+        var config = {
+          kitId: 'med0yzx',
+          scriptTimeout: 3000
+        },
+        h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='//use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+      })(document);
+      
+    </script>
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <!-- include author-->
+        <h1>Running your own email server (so you can have an automated mailing list)</h1>
+        <!-- p.author-->
+        <!--  | #{ "Written by " }-->
+        <!--  mixin author(page.metadata.author)-->
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>Earlier this month, I needed to be able to send automated email in order to send <a href="https://tinyletter.com/bots">daily roundups</a> of stuff produced by my <a href="https://smidgeo.com/bots/">bots</a>. Most of the APIs I saw for sending lots of email was for mass marketing (with the kind of pricing and data policies you’d expect to come along with that). So, I thought, email is well-established<a href="/weblog/articles/running-your-own-email-server/#ps-email-history">*</a>, so it must be in reach of the common developer! I’ll just set up my own email server and mailing&nbsp;list.</p>
+<p>Well, you know how this is going to&nbsp;go.</p>
+<p><span class="more"></span></p>
+<h1 id="configuring-the-service-on-your-server">Configuring the service on your&nbsp;server</h1>
+<p>The mildest part of this undertaking was installing and configuring a mail transfer agent (<span class="caps">MTA</span>). The MTA is the thing that the mail clients send mail to and receive mail from. The MTA relays that mail to other MTAs, which eventually route the mail to its ultimate&nbsp;destination.</p>
+<p>On Ubuntu 18 (and probably earlier versions), postfix is installed by default. Installation&nbsp;done!</p>
+<p>The configuration file for it is at <code>/etc/postfix/main.cf</code>. I changed the following things in&nbsp;it:</p>
+<pre><code># Set the domain to your domain. My domain happens to be smidgeo.com.
+mydomain = smidgeo.com
+# Set your hostname to be on your domain.
+myhostname = mail.smidgeo.com
+# Tell postfix to use say that mail from here some from @$mydomain.
+myorigin = $mydomain
+# Send notification emails about all of these kinds of problems to root@$mydomain.
+notify_classes = resource, software, bounce, policy
+</code></pre><p>I then restarted postfix (<code>[sudo] service postfix restart</code>).</p>
+<p>I tested by sending mail from the server (I tried both <code>sendmail</code> and <code>mutt</code>) to an address on Fastmail. After a while, I guessed that it wasn’t going to make&nbsp;it.</p>
+<p>This is the most brutal problem with debugging mail stuff: Sending mail isn’t instantaneous, and you can’t tell how long is a reasonable time to wait to see if something failed. Sometimes mail doesn’t get to its destination for an hour, then makes it after&nbsp;that.</p>
+<p>Tailing the mail log before you send an email helps to at least verify that postfix got the mail.  <code>tail -f /var/log/mail.log</code>. A bunch of stuff will appear in the log if postfix gets your email and attempts to send it out. Sometimes, it’ll log that a relay rejected an email it sent, with a reason, which really&nbsp;helps!</p>
+<h1 id="setting-up-dns-so-that-your-mail-server-appears-proper">Setting up <span class="caps">DNS</span> so that your mail server appears&nbsp;proper</h1>
+<p>I had known about <span class="caps">MX</span> records, but I wasn’t sure how necessary they were. My mail wasn’t going through, so it looked like they were necessary. Referring to the DNS section of the <a href="https://www.c0ffee.net/blog/mail-server-guide/#overview">mail server guide</a>, I created the following&nbsp;records:</p>
+<ul>
+<li><code>A</code> record for the mail&nbsp;domain</li>
+<li><code>MX</code> record to point to the mail&nbsp;domain</li>
+<li><code>TXT</code> record that says <code>v=spf1 mx -all</code> (I don’t actually know what that&nbsp;means.)</li>
+</ul>
+<p>Over in my postfix config, I initially did not have a fully qualified…something. It was either <code>myhostname</code> or <code>myorigin</code>. As a result, I got a <code>mail.log</code> entry that let me know Fastmail had rejected my <span class="caps">MTA</span>’s&nbsp;email:</p>
+<pre><code>Jul 21 21:04:00 smallcatlabs-disruption-pod postfix/smtp[19654]: 42AE5DF3AD: to=jimkang@fastmail.com, relay=in1-smtp.messagingengine.com[66.111.4.72]:25, delay=1.1,delays=0.02/0.01/1.1/0.02, dsn=5.5.2, status=bounced (host in1-smtp.messagingengine.com[66.111.4.72] said: 504 5.5.2 root@smallcatlabs-disruption-pod: Sender address rejected: need fully-qualified address (in reply to RCPT TO command))
+</code></pre><p>Once I fully qualified the domain name, emails sent from my <span class="caps">MTA</span> were accepted by Fastmail’s&nbsp;relay!</p>
+<h1 id="the-next-barrier-gmail">The next barrier:&nbsp;Gmail</h1>
+<p>Since everyone’s on Gmail (actually one of the milder symptoms of the <a href="https://concentrationcrisis.openmarketsinstitute.org/">concentration crisis</a>), I then tested by sending to Gmail. Gmail bounced my email. <a href="https://support.google.com/mail/answer/81126#authentication">They have guidelines that give hints about why they bounce stuff.</a> The most likely reason was that I did not set up a reverse <span class="caps">DNS</span>&nbsp;record.</p>
+<p><a href="https://en.wikipedia.org/wiki/reverse_DNS_lookup">Reverse <span class="caps">DNS</span></a> is not a standard, and as far as I can tell, in practice, it’s only used to verify that a spammer is sending email using a hijacked domain. I had some trouble finding out how to set up a reverse <span class="caps">DNS</span> record. My domain registrar, Hover, told me they couldn’t do it and suggested other&nbsp;companies.</p>
+<p>I wanted to avoid something as disruptive as moving registrars, so I looked around a bit more on Duck Duck Go. Turns out that my virtual private server provider, Digital Ocean, provides reverse <span class="caps">DNS</span> for free. You just have to name your droplet (their branded term for a server instance) to match the domain&nbsp;name!</p>
+<h1 id="and-yet-another-several-rakes-to-step-on">And yet another several rakes to step&nbsp;on</h1>
+<p>With the reverse <span class="caps">DNS</span> record set up, Gmail stopped bouncing mail from my server. However, it also put it in the spam box 100% of the&nbsp;time.</p>
+<p><img src="/weblog/articles/running-your-own-email-server/sideshow-bob-next-rake.gif" alt="Sideshow Bob steps on the next rake"></p>
+<p>To get out of Gmail’s spam box, there are a few dozen suggestions on <a href="https://support.google.com/mail/answer/81126">Google’s sender guidelines page</a>, including using <span class="caps">DKIM</span>, SPF, and DMARC. Any one of those suggestions could have potentially taken days to implement, and there is no guarantee that following every one of them would get my emails out of the spam&nbsp;box.</p>
+<p>I’m not some kind of email superfan, so I decided to avoid getting into this&nbsp;world.</p>
+<p><img src="/weblog/articles/running-your-own-email-server/sideshow-bob-rakes.png" alt="More rakes for Sideshow Bob to step on"></p>
+<p>Since the mail issue was getting trust from Gmail, I decided to leverage someone else’s&nbsp;reputation.</p>
+<h1 id="tinyletter">TinyLetter</h1>
+<p><a href="https://tinyletter.com/">Tinyletter</a> is a mailing list service that I use for my <a href="https://tinyletter.com/jimkang">projects newsletter</a>. Tinyletter is a MailChimp product that Google already trusts. So, if I had something compose my bot emails and send email through TinyLetter, I could get that email through to my mailing list subscribers that are on&nbsp;Gmail.</p>
+<p>In addition to having a <span class="caps">UI</span> in which you can compose and send emails to your mailing list, TinyLetter provides a secret email. You can send a message to that email, then TinyLetter will post that message to your mailing&nbsp;list.</p>
+<p>The complication — for a fully automated mailing list — is that it requires you to confirm that you want to send the email. TinyLetter replies to your email with another email asking you to reply to that second email without changing the subject in order to send the first email to the mailing&nbsp;list.</p>
+<h1 id="auto-reply">Auto-reply</h1>
+<p>The first thing I needed to do to get auto-replies to these confirmation requests working was to actually be able to recieve mail at my server. Receiving email hadn’t worked, and I didn’t care. Well, now the time for caring was at&nbsp;hand.</p>
+<p>One more of of the following measures have fixed receiving email at my&nbsp;server:</p>
+<ul>
+<li>I opened port 25 to the world by running <code>ufw allow 25</code>. (I neglected to check whether it was closed before I ran this, so it may not have&nbsp;mattered.)</li>
+<li>Properly included my domain in <code>mydestination</code> in <code>/etc/postfix/mail.cf</code>. Before, I had mail.smidgeo.com, even though the mail is actually addressed to @smidgeo.com. It has to match the part after the @ in emails sent to the&nbsp;server.</li>
+</ul>
+<p>Next, I needed something to auto-reply to TinyLetter confirmation emails. I was hoping to not write something, so I checked out <code>vacation</code>, a nicely established simple Unix program for sending auto-replies that say the user is on&nbsp;vacation.</p>
+<p>After getting it to work, I found out you can’t (as far as I could tell) make it reply using the <code>Reply-To</code> field instead of the <code>From</code> field of the incoming&nbsp;message.</p>
+<p>This ended my <code>vacation</code> journey. TinyLetter confirmation emails come from some Mandrill remailer thing; sending your reply there does nothing. You have to send your reply to the email in the <code>Reply-To</code> field for TinyLetter to actually send the message to the mailing&nbsp;list.</p>
+<p>So, I added my own little <a href="https://github.com/jimkang/email-rss-sample/blob/master/respond-to-confirmation.js">auto-reply program</a> to <a href="https://github.com/jimkang/email-rss-sample">email-rss-sample</a>, my Node package for grabbing <span class="caps">RSS</span>, formatting the sampled entries into HTML email, then sending them via <code>sendmail</code>.</p>
+<p>I hooked it up to receive incoming mail through stdin by adding this line to my <code>.forward</code> file (people that went to college in the ‘90s may remember <code>.forward</code> files as text files you just put a single email&nbsp;into):</p>
+<pre><code>  \&lt;username that the program runs as&gt;, &quot;|&lt;location of this project on your server&gt;/respond-to-confirmation.js&quot;
+</code></pre><p>That pipes email for the user to the program, which checks various conditions, then shells out to sendmail to send a&nbsp;reply.</p>
+<h1 id="what-i-ended-up-with">What I ended up&nbsp;with</h1>
+<p>In the end, to email samples of what my bots did each day to a mailing list, I needed this&nbsp;system:</p>
+<p><img src="/weblog/articles/running-your-own-email-server/bot-email-system.svg" alt="Arrows pointing at lots of things involved in sending emails"></p>
+<p>In the diagram above, every box represents some sort of program. Every arrow is a communication between a program with another program, containing a payload. The payload could be an email message, an <span class="caps">RSS</span> feed, or text. Each communication has a number indicating the order in which it is&nbsp;executed.</p>
+<p>The part where <span class="caps">RSS</span> posts from my bots are sampled are formatted and assembled into an HTML summary is fairly straightforward and unit testable. Once we move on to the volleys of emails, things become less deterministic and&nbsp;controllable.</p>
+<p>All that said, it’s been working fine for about a week. <a href="https://tinyletter.com/bots">Sign up</a> if you want some art generated each day! I’ve only had to <a href="https://tinyletter.com/bots/letters/what-the-bots-are-apologizing-for-today">apolologize once</a> so&nbsp;far.</p>
+<p><br></p>
+<hr>
+
+<h1 id="-span-id-ps-email-history-p-s-why-i-thought-it-would-be-easy-span-"><span id="ps-email-history"><span class="caps">P.S.</span> Why I thought it would be&nbsp;easy</span></h1>
+<p>Email is a technology that has been around since nearly the beginning of the&nbsp;Internet. </p>
+<p>Here in 2019, <a href="https://morningconsult.com/2017/06/21/poll-gmail-dominates-email-use/">70% of people use either Gmail or Yahoo Mail</a>, at least according to that poll. But in the ‘90s (and before), email traffic was handled by servers run by a diverse group of institutions. If you went to a university, your email was likely received and relayed by some computers on campus. If you worked at a company, your work email probably also went through servers in your company’s buildings. ISPs (and there used to be many ISPs) each had their own email&nbsp;servers.</p>
+<p>This history made it seem like a stable technology that could be administered by someone with a 1999-level of technical understanding. Unfortunately, the spam wars (and maybe the consolidation of the control of email into very few hands), have made trust in email a much more complex&nbsp;issue.</p>
+<p>As a result, sending email from your own server, like so many things, is more or less out of the hands of a person that has a day job and a limited amount of time. It is the domain of large corporate aggregators that trust each&nbsp;other.</p>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/weblog/">« Full blog</a></div>
+        <!--section.about-->
+        <!--  !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2019 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+          <p><a href='/weblog/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
+        </section>
+      </div>
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        
+        ga('create', 'UA-49491163-1', 'jimkang.com');
+        ga('send', 'pageview');
+      </script>
+    </footer>
+  </body>
+</html>
