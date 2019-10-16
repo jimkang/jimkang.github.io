@@ -280,7 +280,7 @@
   }
 
   function onMouseUp(e) {
-    e.preventDefault();
+    //e.preventDefault(); // This prevents radio button clicking on Mobile Safari!
     dragging = false;
     //console.log('dragging', dragging);
     dragEl.classList.remove('selected');
