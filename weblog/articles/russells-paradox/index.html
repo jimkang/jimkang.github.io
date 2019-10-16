@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width" initial-scale="1">
+    <title>Russell's Paradox - jimkang.com
+    </title>
+    <link rel="alternate" href="http://jimkang.com/feed.xml" type="application/rss+xml" title="It's dot com.">
+    <link rel="stylesheet" href="/weblog/css/main.css">
+    <script>
+      (function(d) {
+        var config = {
+          kitId: 'med0yzx',
+          scriptTimeout: 3000
+        },
+        h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='//use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+      })(document);
+      
+    </script>
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <!-- include author-->
+        <h1>Russell's Paradox</h1>
+        <!-- p.author-->
+        <!--  | #{ "Written by " }-->
+        <!--  mixin author(page.metadata.author)-->
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>Back in 1902, mathematicians defined a set as&nbsp;follows:</p>
+<blockquote>
+<p>A collection of distinct objects, where an object can be anything, including a&nbsp;set.</p>
+</blockquote>
+<p>So, here are some sets under that&nbsp;definition:</p>
+<blockquote>
+<p>{ 4, 5, 6 }
+{ a, b, c, d }
+{ 8, a, 🌍, “The concept of <span class="caps">FOMO</span>”, 🤔&nbsp;}</p>
+</blockquote>
+<p>But&nbsp;also: </p>
+<blockquote>
+<p>A = { 0, 1, 2, A&nbsp;}</p>
+</blockquote>
+<p>Where A is a set that has the element A, which&nbsp;is…itself.</p>
+<p>For decades, mathematicians thought this was fine, until Bertrand Russell pointed out a&nbsp;paradox.</p>
+<p><span class="more"></span></p>
+<p><a href="https://en.wikipedia.org/wiki/Bertrand_Russell">Bertrand Russell</a> gave the label “extraordinary sets” to sets like A that refer to themselves. He called non-self-referential sets (like <code>{ 4, 5, 6}</code>) “ordinary sets”. It follows that every set must be&nbsp;either: </p>
+<ol>
+<li>Extraordinary</li>
+<li>Ordinary</li>
+</ol>
+<p>However! If you say that there is a set, S, that is a collection of <em>all ordinary sets</em>, is S ordinary or or is it&nbsp;extraordinary?</p>
+<p>The answer is that it is <strong>neither</strong>, which is why this is a paradox. Here’s a verbal explanation that looks at the two&nbsp;cases.</p>
+<ol>
+<li><strong>S is an ordinary set.</strong> Well, this can’t be right because if it “contains all ordinary sets”, and S is an ordinary set, then S contains S. If S contains S, S is a an extraordinary&nbsp;set.</li>
+<li><strong>S is an extraordinary set.</strong> An extraordinary set contains itself. But S is the set of all ordinary sets. If it contains itself, then it contains an extraordinary set. So, it cannot be both an extraordinary set and the set of all ordinary&nbsp;sets.</li>
+</ol>
+<p>So, yeah, it is&nbsp;neither.</p>
+<p>I had a bit of trouble getting this to sink in. I made this face 🤔 for quite a while. I think it would have helped me to think of it this&nbsp;way:</p>
+<h2 id="there-are-two-conditions-that-need-to-be-met-in-order-for-it-to-not-be-a-paradox-">There are two conditions that need to be met in order for it to <span class="caps">NOT</span> be a&nbsp;paradox.</h2>
+<ol>
+<li>S has to contain all ordinary sets, as&nbsp;defined.</li>
+<li>You have to designate S to be either extraordinary or ordinary, and that designation has to hold up. (If you say it’s ordinary, it has to be&nbsp;ordinary.)</li>
+</ol>
+<h2 id="there-are-two-things-you-can-change-to-see-if-you-can-meet-both-of-the-above-conditions-">There are two things you can change to see if you can meet both of the above&nbsp;conditions.</h2>
+<ol>
+<li>S can either contain itself or not contain&nbsp;itself.</li>
+<li>S can be designated as either extraordinary or&nbsp;ordinary.</li>
+</ol>
+<h1 id="work-it-out-for-yourself">Work it out for&nbsp;yourself</h1>
+<p>Below is a tool&nbsp;that:</p>
+<ol>
+<li>Lets you change the two things you can change. <strong>Click</strong> on “Ordinary” or “Extraordinary” to change the designation of S. <strong>Drag</strong> the “Reference to set S” inside and outside of the box that represents set&nbsp;S.</li>
+<li>Automaticaly evaluates the effects of your changes on the two&nbsp;conditions.</li>
+</ol>
+<style>
+  .centered-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #russell-experiment-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border-radius: 1em;
+    font-family: Ubuntu, roboto, noto, segoe ui, -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, arial, sans-serif;
+    position: relative;
+  }
+
+  #russell-experiment-container h1,h2,h3 {
+    font-family: Ubuntu, roboto, noto, segoe ui, -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, arial, sans-serif;
+  }
+
+  #russell-experiment-container h1 {
+    font-size: 1.2em;
+  }
+
+  #russell-experiment-container h2 {
+    font-size: 1em;
+  }
+
+  #sets-container {
+    width: 45%;
+    min-width: 15em;
+    border: 1px solid #666;
+    border-radius: 1em;
+    padding: 1em;
+  }
+
+  #evaluator-container {
+    width: 45%;
+    padding-right: 0.5em;
+    border-radius: 1em;
+  }
+
+  #set-s {
+    border: 8px solid hsl(310, 70%, 50%);
+    border-radius: 1em;
+    padding-bottom: 7em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    margin-bottom: 6em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #russell-experiment-container .controls {
+  }
+
+  #russell-experiment-container .controls ul {
+    list-style-type: none;
+    margin: 0;
+  }
+
+  #ref-s {
+    background-color: hsla(313.3, 80.8%, 67.3%, 0.8);
+    position: absolute;
+    cursor: pointer;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    border-radius: 0.5em;
+    border-color: hsl(300.5, 53.9%, 42.5%);
+    border-style: solid;
+    border-width: 4px;
+  }
+
+  #evaluator-container ul {
+     list-style-type: none;
+     margin: 0;
+  }
+
+  #evaluator-container li {
+    border-style: solid;
+    border-width: 4px;
+    border-radius: 0.5em;
+    padding: 1em;
+  }
+
+  #evaluator-container .verdict {
+    font-weight: 900;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  .condition {
+    border-color: #d22312; /* red, a little rusty */
+    opacity: 1;
+    transition: height 1s, opacity 1s, padding 1s;
+  }
+
+  #s-contains-all-ordinary-condition-second-pass {
+    height: 11em;
+  }
+
+  .condition-passed {
+    border-color: #29c16a; /* green */
+  }
+
+  .condition .reason {
+    font-style: italic;
+    font-size: 0.7em;
+    margin-top: 0.5em;
+  }
+
+  .aura {
+    box-shadow: 0 0 10px 4px hsla(310, 80%, 50%, 0.75);
+  }
+
+  #ref-s {
+    text-align: center;
+  }
+
+  #ref-s.selected {
+    border-style: dashed;
+  }
+
+  #s-contains-all-ordinary-condition-second-pass.hidden {
+    height: 0;
+    opacity: 0;
+    padding: 0;
+  }
+
+</style>
+
+<div id="russell-experiment-container">
+  <div id="sets-container">
+  <div id="set-s" class="centered-col">
+  <h1>Set&nbsp;S</h1>
+  <div class="set-element">
+    [ <em>{ 0, 1, 2 }</em>, <em>{ a, b, c }</em>, and all of the other ordinary sets ]
+  </div>
+  </div><!-- close set-s -->
+  <div class="controls centered-col">
+    <strong>Designate S as:</strong>
+    <form><ul>
+      <li><input id="set-designation-ordinary" type="radio" name="set-designation" checked><label for="set-designation-ordinary">Ordinary</label></li>
+      <li><input id="set-designation-extraordinary" type="radio" name="set-designation"><label for="set-designation-extraordinary">Extraordinary</label></li>
+    </ul></form>
+  </div>
+  </div><!-- close sets-container -->
+  <div id="evaluator-container" class="centered-col">
+    <h1>Condition&nbsp;checkers</h1>
+    <ul id="evaluator-list">
+      <li class="condition" id="s-contains-all-ordinary-condition">
+        <div class="description">S contains all ordinary sets per definition of S:</div>
+        <div class="verdict"><span class="caps">NO</span></div>
+        <div class="reason"></div>
+      </li>
+      <li class="condition" id="s-designation-condition">
+        <div class="description"></div>
+        <div class="verdict"><span class="caps">NO</span></div>
+        <div class="reason"></div>
+      </li>
+      <li class="condition hidden" id="s-contains-all-ordinary-condition-second-pass">
+        <div class="description"><em>[Second look]</em> S contains all ordinary sets per definition of S:</div>
+        <div class="verdict"><span class="caps">NO</span></div>
+        <div class="reason"></div>
+      </li>
+    </ul>
+  </div>
+  <div id="ref-s" draggable="true" style="left: 120px; top: 440px;">Reference to set S<br><em>(You can drag this.)</em></div>
+</div>
+
+<script>
+(function russell() {
+  var dragEl = document.getElementById('ref-s');
+  var setEl = document.getElementById('set-s');
+  var extraordinaryButton = document.getElementById(
+    'set-designation-extraordinary'
+  );
+  var ordinaryButton = document.getElementById('set-designation-ordinary');
+  var sContainsAllOrdinaryEl = document.getElementById(
+    's-contains-all-ordinary-condition'
+  );
+  var sDesignationHoldsUpEl = document.getElementById(
+    's-designation-condition'
+  );
+  var sContainsAllOrdinarySecondPassEl = document.getElementById(
+    's-contains-all-ordinary-condition-second-pass'
+  );
+
+  var dragging = false;
+
+  var lastPageX;
+  var lastPageY;
+
+  dragEl.addEventListener('mousedown', onMouseDown);
+  window.addEventListener('mouseup', onMouseUp);
+  window.addEventListener('mousemove', onMouseMove);
+
+  dragEl.addEventListener('touchstart', onMouseDown);
+  window.addEventListener('touchend', onMouseUp);
+  window.addEventListener('touchcancel', onMouseUp);
+  window.addEventListener('touchmove', onMouseMove);
+
+  extraordinaryButton.addEventListener('click', onSetDesignationClick);
+  ordinaryButton.addEventListener('click', onSetDesignationClick);
+
+  passStateFromUIToEvaluate();
+
+
+  function onMouseDown(e) {
+    e.preventDefault();
+    dragging = true;
+    //console.log('dragging', dragging);
+    dragEl.classList.add('selected');
+  }
+
+  function onMouseUp(e) {
+    e.preventDefault();
+    dragging = false;
+    //console.log('dragging', dragging);
+    dragEl.classList.remove('selected');
+    setEl.classList.remove('aura');
+
+    passStateFromUIToEvaluate();
+  }
+
+  function onMouseMove(e) {
+    //e.preventDefault();
+
+    if (!dragging) {
+      return;
+    }
+
+    //console.log('e.pageX', e.pageX);
+    if (lastPageX === undefined || lastPageY === undefined) {
+      lastPageX = e.pageX;
+      lastPageY = e.pageY;
+      return;
+    }
+
+    const deltaX = e.pageX - lastPageX;
+    const deltaY = e.pageY - lastPageY;
+
+    // Chop off 'px' from string.
+    const oldX = +dragEl.style.getPropertyValue('left').slice(0, -2);
+    const oldY = +dragEl.style.getPropertyValue('top').slice(0, -2);
+
+    const newX = oldX + deltaX;
+    const newY = oldY + deltaY;
+
+    /*
+    console.log(
+      'oldX',
+      oldX,
+      'oldY',
+      oldY,
+      'deltaX',
+      deltaX,
+      'deltaY',
+      deltaY,
+      'newX',
+      newX,
+      'newY',
+      newY
+    );
+    */
+
+    dragEl.style.setProperty('left', newX + 'px');
+    dragEl.style.setProperty('top', newY + 'px');
+
+    lastPageX = e.pageX;
+    lastPageY = e.pageY;
+
+    // Could optimize this with a flag instead of always changing class.
+    if (elOverlapsEl(dragEl, setEl)) {
+      setEl.classList.add('aura');
+    } else {
+      setEl.classList.remove('aura');
+    }
+  }
+
+  function onSetDesignationClick() {
+    passStateFromUIToEvaluate();
+  }
+
+  function passStateFromUIToEvaluate() {
+    evaluateConditions({
+      refIsInSet: elOverlapsEl(dragEl, setEl),
+      sDesignation: extraordinaryButton.checked ? 'extraordinary' : 'ordinary'
+    });
+  }
+
+  function evaluateConditions({ refIsInSet, sDesignation }) {
+    var sContainsAllOrdinarySets;
+    var containsReason;
+    var hideSecondPass = true;
+
+    if (sDesignation === 'ordinary') {
+      // If it's an ordinary set, in order for S to contain
+      // all ordinary sets, S has to contain itself!
+      sContainsAllOrdinarySets = refIsInSet;
+      containsReason = `Since S is ordinary, a set that contains all ordinary sets must contain S (an ordinary set). S does ${refIsInSet ? '' : 'NOT '}contain S.`;
+      hideSecondPass = !refIsInSet;
+    } else {
+      sContainsAllOrdinarySets = !refIsInSet;
+      containsReason = `Since S is extrardinary, a set that contains all ordinary sets (and ONLY ordinary sets) cannot contain S. S does ${refIsInSet ? '' : 'NOT '}contain S.`;
+    }
+
+    var sDesignationHoldsUp;
+    var sDesignationHoldsUpReason;
+
+    if (sDesignation === 'ordinary') {
+      sDesignationHoldsUp = !refIsInSet;
+      sDesignationHoldsUpReason = `Ordinary sets must not contain themselves. S does ${refIsInSet ? '' : 'NOT '}contain itself.`;
+    } else {
+      // If it is designated an extraordinary set, then
+      // it has to have a reference to itself.
+      sDesignationHoldsUp = refIsInSet;
+      sDesignationHoldsUpReason = `Extraordinary sets must contain themselves. S does ${refIsInSet ? '' : 'NOT '}contain itself.`;
+    }
+
+    const conditionTextHTML = `As you have designated it, S is an ${sDesignation} set (<strong>is${
+      sDesignation === 'ordinary' ? ' not' : ''
+    } </strong> an element of itself):`;
+
+    var sContainsAllOrdinarySetsSecondPass = sContainsAllOrdinarySets;
+    var containsSecondPassReason = containsReason;
+    // Reevaluate based on the discovery that S is extraordinary.
+    if (!hideSecondPass) {
+      const isExtraordinary = (sDesignation === 'ordinary' && !sDesignationHoldsUp) || (sDesignationHoldsUp === 'extraordinary' && sDesignationHoldsUp);
+      sContainsAllOrdinarySetsSecondPass = sContainsAllOrdinarySets && refIsInSet && !isExtraordinary;
+      containsSecondPassReason = `Upon finding that the designation of "${sDesignation}" ${sDesignationHoldsUp ? '<span class="caps">CAN</span> ' : 'CANNOT '} be true (see above), we now say that S is ${isExtraordinary ? 'extraordinary' : 'ordinary'}, so it does ${isExtraordinary ? 'NOT ' : ' '}contain only ordinary sets.`;
+    }
+
+    updateConditionEl({
+      verdict: sContainsAllOrdinarySets,
+      parent: sContainsAllOrdinaryEl,
+      reason: containsReason
+    });
+    updateConditionEl({
+      descriptionHTML: conditionTextHTML,
+      verdict: sDesignationHoldsUp,
+      parent: sDesignationHoldsUpEl,
+      reason: sDesignationHoldsUpReason
+    });
+
+    updateConditionEl({
+      hide: hideSecondPass,
+      verdict: sContainsAllOrdinarySetsSecondPass,
+      parent: sContainsAllOrdinarySecondPassEl,
+      reason: containsSecondPassReason
+    });
+  }
+
+  function updateConditionEl({ verdict, parent, descriptionHTML, reason, hide }) {
+    parent.classList[verdict ? 'add' : 'remove']('condition-passed');
+    if (descriptionHTML) {
+      let desc = document.querySelector(`#${parent.id} .description`);
+      if (desc) {
+        desc.innerHTML = descriptionHTML;
+      }
+    }
+    let verdictEl = document.querySelector(`#${parent.id} .verdict`);
+    if (verdictEl) {
+      // We don't make these all caps here because Wintersmith
+      // will convert it to <span class="caps"><span class="caps">YES</span></span>
+      verdictEl.textContent = verdict ? 'yes' : 'no';
+    }
+    let reasonEl = document.querySelector(`#${parent.id} .reason`);
+    if (reasonEl) {
+      reasonEl.textContent = reason;
+    }
+    parent.classList[hide ? 'add' : 'remove']('hidden');
+  }
+
+  function elOverlapsEl(el1, el2) {
+    var bounds1 = el1.getBoundingClientRect();
+    var bounds2 = el2.getBoundingClientRect();
+
+    var left1IsInsideEl2,
+      right1IsInsideEl2,
+      top1IsInsideEl2,
+      bottom1IsInsideEl2;
+
+    left1IsInsideEl2 = nIsInsideRange(
+      bounds1.left,
+      bounds2.left,
+      bounds2.right
+    );
+    if (!left1IsInsideEl2) {
+      right1IsInsideEl2 = nIsInsideRange(
+        bounds1.right,
+        bounds2.left,
+        bounds2.right
+      );
+    }
+
+    top1IsInsideEl2 = nIsInsideRange(bounds1.top, bounds2.top, bounds2.bottom);
+    if (!top1IsInsideEl2) {
+      bottom1IsInsideEl2 = nIsInsideRange(
+        bounds1.bottom,
+        bounds2.top,
+        bounds2.bottom
+      );
+    }
+
+    return (
+      (left1IsInsideEl2 || right1IsInsideEl2) &&
+      (top1IsInsideEl2 || bottom1IsInsideEl2)
+    );
+  }
+
+  function nIsInsideRange(n, lower, upper) {
+    return n >= lower && n <= upper;
+  }
+})();
+</script>
+
+<p><br>
+Go ahead and try out all of the possible combinations. I hope you’ll see that there’s no options that result in both the definition of S as the set of all ordinary sets being respected <em>and</em> S being either ordinary or&nbsp;extraordinary.</p>
+<p>(Due to me not coming to this concept with fresh eyes, I can’t really know for sure whether or not this will help you understand Russell’s Paradox. Please <a href="mailto:jimkang@fastmail.com">email me</a> and let me know if it does not or&nbsp;does!)</p>
+<p>If you’re wondering what they did about this paradox, eight years after he introduced the paradox, Russell proposed redefining sets so that mathematicians could continue with their work. Sets were redefined so that they could not include themselves. Collections that included themselves are now called <em>classes</em>.</p>
+<p>I learned about Russell’s Paradox from the excellent graph theory book <a href="https://www.goodreads.com/book/show/906275.Dots_And_Lines">Dots and Lines by Richard J. Trudeau</a>, which is <a href="https://www.abebooks.com/servlet/SearchResults?sts=t&cm_sp=SearchF-_-home-_-Results&kn=&an=richard+trudeau&tn=dots+and+lines&isbn=">~$5 used</a>!</p>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/weblog/">« Full blog</a></div>
+        <!--section.about-->
+        <!--  !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2019 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+          <p><a href='/weblog/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>
