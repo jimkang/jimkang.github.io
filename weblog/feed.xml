@@ -234,6 +234,7 @@
   &lt;div id=&quot;ref-s&quot; draggable=&quot;true&quot; style=&quot;left: 120px; top: 440px;&quot;&gt;Reference to set S&lt;br&gt;&lt;em&gt;(You can drag this.)&lt;/em&gt;&lt;/div&gt;
 &lt;/div&gt;
 
+&lt;p&gt;&lt;noscript&gt;(Folks reading this from RSS: There’s an interactive tool here, probably not displaying in your RSS reader. You have to click through to see it.)&lt;/noscript&gt;&lt;/p&gt;
 &lt;script&gt;
 (function russell() {
   var dragEl = document.getElementById('ref-s');
