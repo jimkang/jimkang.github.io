@@ -5,9 +5,179 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Thu, 10 Oct 2019 20:00:00 -0400</pubDate>
+    <pubDate>Sun, 29 Dec 2019 19:00:00 -0500</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>A long email about a lot of unfinished business</title>
+      <link>http://jimkang.com/weblog/articles/unfinished-business-2019/</link>
+      <pubDate>Sun, 29 Dec 2019 19:00:00 -0500</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/unfinished-business-2019/</guid>
+      <author></author>
+      <description>&lt;p&gt;&lt;em&gt;
+My &lt;a href=&quot;https://tinyletter.com/jimkang/letters/a-long-email-about-a-lot-of-unfinished-business&quot;&gt;latest&lt;/a&gt; &lt;a href=&quot;https://tinyletter.com/jimkang/&quot;&gt;newsletter&lt;/a&gt; is out. Even though it was partly composed of posts I originally put on &lt;a href=&quot;https://www.patreon.com/deathmtn&quot;&gt;Patreon&lt;/a&gt;, it still took a lot of writing (for me) to complete.&lt;/p&gt;
+&lt;p&gt;After reading it back, I realized that it has the tone of a year-end wrap-up. Since that is &lt;a href=&quot;https://remysharp.com/2019/12/31/my-2019&quot;&gt;what is happening with the bloggers&lt;/a&gt;, I figured I might as well post it here.&lt;/p&gt;
+&lt;p&gt;Plus, because it was so hard to finish, so I’m gonna drop it everywhere I can.)&lt;/p&gt;
+&lt;p&gt;With no further ado, here it is.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;I’ve snoozed this newsletter for months, nearly unconsciously. Every week, I’ve thought, “Oh, yeah, the newsletter!” Followed by, “Oh, I haven’t finished anything.”&lt;/p&gt;
+&lt;p&gt;But it’s been a while, so I gave it more thought before hitting snooze this time. While not much has shipped, a lot has been done, actually.&lt;/p&gt;
+&lt;p&gt;I have a fear that people only look at a thing once. It’s like that Eminem song about spaghetti: “What if you had one shot? To eat spaghetti. Would you eat the spaghetti? Or would you let it slip?! [Rapping begins]”&lt;/p&gt;
+&lt;p&gt;In actuality, I have no scientific evidence that people only give a project one shot. I know I’ve personally given my attention (the proverbial spaghetti) to unshipped projects multiple times, so maybe it’s worth letting it out re: the unfinished projects.&lt;/p&gt;
+&lt;p&gt;So here they are. I hope you have a lot of time to read (20 minutes, according to Read-o-meter?) because they’re a lot of them! (And of course, you can always skip all these words and just scroll through the animated gifs.)&lt;/p&gt;
+&lt;h1 id=&quot;slop-cube&quot;&gt;Slop Cube&lt;/h1&gt;
+&lt;p&gt;First, here is Slop Cube.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/unfinished-business-2019/cube--zxWlPNBN.png.gif&quot; alt=&quot;Slop Cube A&quot;&gt;&lt;/p&gt;
+&lt;p&gt;But these are also Slop Cube:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/unfinished-business-2019/cube--vwWWKfSy.png.gif&quot; alt=&quot;Slop Cube B&quot;&gt;
+&lt;img src=&quot;http://jimkang.com/articles/unfinished-business-2019/cube--sbsmdgLB.png.gif&quot; alt=&quot;Slop Cube C&quot;&gt;&lt;/p&gt;
+&lt;p&gt;You can check out more forms of Slop Cube here:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://jimkang.com/slopcube/&quot;&gt;https://jimkang.com/slopcube/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;A few months ago, I saw a drawing of a cube in &lt;a href=&quot;https://www.worldcat.org/title/language-of-vision/oclc/1073410062&quot;&gt;Gyorgy Kepes’s&lt;/a&gt; &lt;a href=&quot;https://www.alibris.com/Language-of-Vision-Gyorgy-Kepes/book/3738241?qsort=p&amp;amp;matches=62&quot;&gt;Language of Vision&lt;/a&gt; that added lines to the faces of cube to confuse the viewer’s sense of perspective.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/unfinished-business-2019/kepes-cube.jpg&quot; alt=&quot;Kepes cube&quot;&gt;&lt;/p&gt;
+&lt;p&gt;While drawing my own version, I was reminded that a cube in 2D is really:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;A hexagon&lt;/li&gt;
+&lt;li&gt;Three lines that each connect a point inside of the hexagon to every other vertex in the hexagon.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;(Try drawing that, and you’ll see what I mean.)&lt;/p&gt;
+&lt;p&gt;When the hexagon is irregular, the cube gets wobbly. You enter a sort of cube uncanny valley. I made this app/bot to explore it that valley.&lt;/p&gt;
+&lt;p&gt;For reasons I can’t articulate, I want Slop Cube to be a sort of “personal non-assistant”. So, I want it to have a personality that is also expressed in text and audio. The personality should be as imperfect as its looks. I don’t know how to map the visual form to words and sound, and I want to avoid having them all be independent of each other.&lt;/p&gt;
+&lt;p&gt;So, it’s just random imperfect cubes for now. You can see them via &lt;a href=&quot;http://jimkang.com/articles/unfinished-business-2019/jimkang.com/slopcube/&quot;&gt;web app&lt;/a&gt;, or this &lt;a href=&quot;https://smidgeo.com/bots/slopcube&quot;&gt;weblog&lt;/a&gt;, or &lt;a href=&quot;https://smidgeo.com/bots/slopcube/rss/index.rss&quot;&gt;RSS&lt;/a&gt;, or &lt;a href=&quot;https://tinyletter.com/bots&quot;&gt;email&lt;/a&gt;.&lt;/p&gt;
+&lt;h1 id=&quot;adventures-in-moif&quot;&gt;Adventures in Moif&lt;/h1&gt;
+&lt;p&gt;This next project is technically done, given that the user it was made for used it. But there’s more I want it to do.&lt;/p&gt;
+&lt;p&gt;It’s a dialogue adventure. I made it for a friend who recently had a baby and won’t be able to make it to D&amp;amp;D for quite some time. The idea is to let him still affect the game in a lightweight but hopefully meaningful way.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/unfinished-business-2019/moif-encounter.png&quot; alt=&quot;Moif encounter&quot;&gt;&lt;/p&gt;
+&lt;p&gt;The adventure consists of story beats. Each beat is consists of:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Some text and/or pictures that explains a situation&lt;/li&gt;
+&lt;li&gt;An opportunity for the player to to affect the situation, in the form of multiple choice or free text.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In a sense, it’s just a series of forms to fill out. But even ambitious games like King of Dragon Pass or the question rooms in Slay the Spire boil down to that.&lt;/p&gt;
+&lt;p&gt;The situations take place in the game world, and the player’s actions affect the next D&amp;amp;D session with the in-person players. For example, the players are currently in the &lt;a href=&quot;http://jimkang.com/articles/unfinished-business-2019/en.wikipedia.org/wiki/Temple_of_Elemental_Evil&quot;&gt;Temple of Elemental Evil&lt;/a&gt; (minor spoilers at that link) in our D&amp;amp;D game. An Item Mart (TM) kiosk appeared on the ground floor of the temple the last time they played. The Item Mart corporate scouts placed and stocked the kiosk based on the player’s consulting advice from the dialogue adventure.&lt;/p&gt;
+&lt;p&gt;It’s a form of co-design with the player who can’t play. My hope is that these will also fun in and of itself, though we’re not quite there yet.&lt;/p&gt;
+&lt;p&gt;You can play it here: &lt;a href=&quot;https://jimkang.com/moif/&quot;&gt;https://jimkang.com/moif/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;(Don’t worry; you can’t affect the D&amp;amp;D game because the player already played it.)&lt;/p&gt;
+&lt;p&gt;Like most of my game designs, it’s too heavily gated. Beats that I wanted to be played were needlessly locked behind random rolls or obscure choices. I think this comes from the concept of video games having secrets being seeded in my brain at an early age. That said, I think I can easily avoid this next time.&lt;/p&gt;
+&lt;p&gt;I may build adventures for NPCs in the game world that will also affect the main D&amp;amp;D game, so if you’re interested in playing one of them, let me know!&lt;/p&gt;
+&lt;p&gt;Some characters I have in mind for dialogue adventuring are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Jeumes, a Kuo-Toa (a kind of subterranean fish humanoid) who is not enthusiastic about the all-encompassing raiding culture of the Kuo-Toa. He was convinced to desert his post by the Worst Party (the player characters). He spent some time traveling the Worg Caverns with them, but Worst Party culture was alienating to him as well. He ghosted, then wandered off to the surface, getting entangled with other adventuring parties along the way.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;Ouistyn Cliaaagh, a dwarven cleric from a rival party of the PCs. He got sucked into hell during a climactic battle with a gigantic slime hive mind.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If I’m feeling ambitious, maybe I’ll make ones for:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Smigal, a brigand leader who the PCs magically locked into a room to die&lt;/li&gt;
+&lt;li&gt;A Time Squirrel, a member of a species of squirrel that can manipulate time&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;torn-edges&quot;&gt;Torn Edges&lt;/h2&gt;
+&lt;p&gt;In the process of making Moif, I dusted off this this ridiculous code to draw torn paper edges around a box on a web page. I’ve put it in its own module:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/jimkang/torn-edges&quot;&gt;https://github.com/jimkang/torn-edges&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;(A module is a way of packaging up code for other programs to use.)&lt;/p&gt;
+&lt;p&gt;torn-edges works by creating an SVG, then drawing four jagged paths (the peaks are random) in it, then dropping a &lt;code&gt;foreignObject&lt;/code&gt;element (AKA a piece of “regular”, non-SVG HTML) in the middle of them to house the content.&lt;/p&gt;
+&lt;h2 id=&quot;github-packages-vs-npm&quot;&gt;GitHub Packages vs. NPM&lt;/h2&gt;
+&lt;p&gt;It’s available in a GitHub Package, which involves a little more work to install than a package on NPM does. (You have to create an .npmrc in your package, basically.) If you want to use it and don’t understand GitHub Packages, let me know, and I can put it on NPM!&lt;/p&gt;
+&lt;p&gt;I tried out the GitHub Package Registry because NPM Inc.’s behavior has been unsavory lately, and I’ve read about &lt;a href=&quot;https://github.com/ceejbot/economics-of-package-management/blob/master/essay.md&quot;&gt;fundamental problems with its very nature&lt;/a&gt;. The GitHub Package Registry, though, is owned by Microsoft, whose unsavory behavior you already know about if you’re at least 30 years old.&lt;/p&gt;
+&lt;p&gt;In the situations in which you have to choose between Bad Institution A or Bad Institution B in order to make your stuff, I think the best you can do is &lt;a href=&quot;https://jimkang.com/weblog/articles/platform-free-bots/&quot;&gt;avoid gradually becoming inseparable from a single platform&lt;/a&gt; so you can move when it’s time to move. And you do that by proving every so often that your stuff is portable.&lt;/p&gt;
+&lt;p&gt;From a more street-level point of view: GitHub Packages have free private packages (packages you want to limit in availability), whereas NPM charges for those.&lt;/p&gt;
+&lt;h1 id=&quot;subways&quot;&gt;Subways&lt;/h1&gt;
+&lt;p&gt;Last year, my National Novel Generation Month book had some pages in it that &lt;a href=&quot;https://smidgeo.com/notes/deathmtn/deathmtn-asFFPZjc.html&quot;&gt;happened to look somewhat like subways&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Anderson (who was 4 at the time and is now 5) was really into those pages.&lt;/p&gt;
+&lt;p&gt;Since then, we got a book called &lt;a href=&quot;https://www.joycehesselberth.com/&quot;&gt;Mapping Sam&lt;/a&gt; that explains the concept of maps. There are a couple of pages with subways in them, and he always traces routes within the networks with his finger. We also have a poster of the MBTA subway system, and he does the same thing on it.&lt;/p&gt;
+&lt;p&gt;Anderson’s drawing happens in streaks. Sometimes, like now, he’s into it.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/unfinished-business-2019/train-drawing.jpg&quot; alt=&quot;Dual-perspective train!&quot;&gt;&lt;/p&gt;
+&lt;p&gt;There are also recurrent periods in which he’s really self-critical and avoids drawing because he’s not able to get what’s in his head onto the paper. The last time this happened, we eased back into it by drawing subways. Subways are great for this because we’re used to seeing abstractions of them that are simply colored lines. It’s not hard to make something that looks like a subway map, even when you get wild and have five-year-old line control.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/unfinished-business-2019/looping-subways.jpg&quot; alt=&quot;Looping subways&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Now I’m into drawing subways, too, so I’m making a web app that generates subway maps, that hopefully, can be printed and read like a book. Like Anderson’s subways, I’m shooting for fanciful yet somewhat realistic, but “somewhat realistic” by adult standards. For example, I want there to be bodies of water, and I want subways to sometimes cross them, but mostly avoid them, and I want coverage of the area to be reasonable. But if something visually satisfying happens that wouldn’t be in a real subway, I want to let that happen.&lt;/p&gt;
+&lt;p&gt;If I do this right, this will be one of those things where a fairly dry system of (colored curves, chosen randomly with some constraints) gets you to imagine things that are really vivid and big. I think that’s the best kind of art.&lt;/p&gt;
+&lt;p&gt;I’ve gotten as far generating what I feel are “reasonable-looking” bodies of water, picking some subway station locations, and finding a skeleton that connects them all. I’m now trying to make train lines using that skeleton as a guideline (and sometimes crossing gaps in the skeleton).&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/unfinished-business-2019/subway.gif&quot; alt=&quot;The layers of the subways&quot;&gt;&lt;/p&gt;
+&lt;h1 id=&quot;bonimation&quot;&gt;Bonimation&lt;/h1&gt;
+&lt;p&gt;Dem Bones is now animated.&lt;/p&gt;
+&lt;p&gt;I took a “wheels within wheels” approach to moving the bones around. If you think about it, a bone can only move by rotating on the joint to which is fixed. So, you can think of each bone being fixed to a wheel that rotates with its anchor joint in the center of the wheel, and the bones attached to that bone also being on a wheel.&lt;/p&gt;
+&lt;p&gt;It’s much easier to explain via this stop motion animation:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/unfinished-business-2019/stop-motion-bones.gif&quot; alt=&quot;Stop motion bones&quot;&gt;&lt;/p&gt;
+&lt;p&gt;I think this is an improvement over the still bones, but it’s still a little too predicable. I can place most of the skeletons in either one of two categories: Ornate bone clock or the part of the Fresh Prince of Bel-Air where he’s being spun around by the neighborhood “guys who were up to no good”.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/unfinished-business-2019/bones--wRlgHlbp.png.gif&quot; alt=&quot;Bone clock&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/unfinished-business-2019/bones--iOLCLMYS.png.gif&quot; alt=&quot;Spun by thugs&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Once in a while, you get this cool bouncing motion, though:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/unfinished-business-2019/bones--lwweIqkw.png.gif&quot; alt=&quot;Yo-yo&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Having some common force on bones across the hierarchy will probably help a lot, and that’s what I’ll do whenever I come back to it.&lt;/p&gt;
+&lt;p&gt;Dem Bones is available in “bot formats” (a &lt;a href=&quot;http://jimkang.com/articles/unfinished-business-2019/smidgeo.com/bots/dem-bones/&quot;&gt;weblog&lt;/a&gt;, in &lt;a href=&quot;https://smidgeo.com/bots/dem-bones/rss/index.rss&quot;&gt;RSS&lt;/a&gt;, and in &lt;a href=&quot;https://tinyletter.com/bots&quot;&gt;email&lt;/a&gt;), but I think it’s best experienced directly in the &lt;a href=&quot;http://jimkang.com/articles/unfinished-business-2019/jimkang.com/dem-bones/&quot;&gt;web app&lt;/a&gt;. When it has to be delivered as animated gif, as it does in the bot formats, it gets choppier because I have to limit the fidelity of the animated gif in order to not make the gif files even huger than they are. The few extra frames per second that it gets in the web app make them a little more alive.&lt;/p&gt;
+&lt;h1 id=&quot;workings&quot;&gt;Workings&lt;/h1&gt;
+&lt;p&gt;When you have a lot of things in progress and even more ideas you want to do, you can’t help but think, oh, I need a system to make sense of them all and which of the things is more worth doing than the others. I’ve tried to go at this multiple times, and deep down, I feel the answer is “there is no system, everything is random, get to be at peace with hacking at everything while embracing the inevitability of death without having done everything that would have been cool.”&lt;/p&gt;
+&lt;p&gt;Well, I’m shoving down that feeling and once again trying to solve it with technology, for the third time. (Maybe the fourth?)&lt;/p&gt;
+&lt;p&gt;One  of my problems with deciding which projects are worth working on and with fitting anything into a bigger picture is that the projects aren’t well-described by the simple categories of the sort you’d use on a Trello board.&lt;/p&gt;
+&lt;p&gt;I recently used a Miro board to list most of my projects. When I added category boxes, I became paralyzed.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/unfinished-business-2019/miro-board.png&quot; alt=&quot;Boxes and boxes&quot;&gt;&lt;/p&gt;
+&lt;p&gt;It was really hard to decide which boxes which projects should go into or even how to make the boxes overlap so that projects could be in as many boxes as made sense. And the number of projects I’d have to move around if another category box came into play was crushing.&lt;/p&gt;
+&lt;p&gt;But even a system in which a project can be tagged with unlimited categories is not sufficient.&lt;/p&gt;
+&lt;p&gt;You may have two projects that are both “audio”, and “game”, but one of them may involve a little music, while the other is 100% audio. One might be a video game, but another might involve game-like aspects that are just there for a non-game purpose. This is where numeric values can help.&lt;/p&gt;
+&lt;p&gt;And then, there are ways of describing a project that are inherently only describable on a continuum, like difficulty and doneness.&lt;/p&gt;
+&lt;p&gt;There is a decision method called the “Eisenhower Matrix” pushed by companies that, to me, seem like productivity hucksters. It’s named after Eisenhower because he said once said problems are either urgent or important. The “matrix” ignores the “or” part and says that urgency and importance are the two dimensions of a problem that you should map out onto a 2D plane. However, for me, the whole problem is figuring out what’s important, so this is of no help.&lt;/p&gt;
+&lt;p&gt;I think I may need something that maps projects by an arbitrary number of aspects, each with a numeric value. If you have two aspects, you can organize projects well in by mapping them in 2D. If you have three aspects, 3D might work (though I bet it’d ultimately be confusing). How do you map things that have 20 dimensions, though?&lt;/p&gt;
+&lt;p&gt;I think sticking to 2D and allowing users to define custom centers of gravity might work. For example, in my app (which I named “Workings” because I didn’t want to hold up making it while thinking of a good name), if you want to see which of your projects are closest to this set of aspects —&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Doneness: 1.0&lt;/li&gt;
+&lt;li&gt;Visual: 0.5&lt;/li&gt;
+&lt;li&gt;Augmenting: 1.0&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;— you create an “attractor” (a center of gravity) with those values and drop it where you like on the 2D plane. Then, projects closest to those values will move closest to that attractor. Projects only somewhat close to those values will move to be somewhat close in space.  And you can create and destroy as many attractors as you like.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/unfinished-business-2019/workings-demo.gif&quot; alt=&quot;Stuff moving around the Workings app&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Here’s a demo:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://vimeo.com/380371232&quot;&gt;https://vimeo.com/380371232&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;I fully acknowledge that I could build this app out completely and still not gain any insight. But I feel compelled to find out.&lt;/p&gt;
+&lt;h1 id=&quot;stations&quot;&gt;Stations&lt;/h1&gt;
+&lt;p&gt;To the larger point of using time well, even when I do know what’s important/satisfying/fun, I don’t always do it. I’ve observed lately, as millions have before me, that you tend to do whatever is easy to do.&lt;/p&gt;
+&lt;p&gt;When I unlock my computer, and there is a terminal tab open to a project directory, I often just start working on that project, even if I came to my computer intending to do something else. When I open Firefox to pay a bill, sometimes I just read whatever my RSS reader was already on.&lt;/p&gt;
+&lt;p&gt;We’ve had acrylic paints out on our table lately because we’ve been painting these amazingly detailed tabletop playsets that my friends gave me. Katt brought out some tiny canvases because she figured she might as well paint as long as we have the paints out. The other day, the paints and canvases were out, so I painted a picture of Bonus Cat:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/unfinished-business-2019/bonus-acrylics.jpg&quot; alt=&quot;Les Bons&quot;&gt;&lt;/p&gt;
+&lt;p&gt;(The accidental exaggeration of features makes him look way younger than he is.)&lt;/p&gt;
+&lt;p&gt;Not that that’s a masterwork or anything, but it is significant because I haven’t painted a painting in a year and a half. I would not have done this if all of that had not just been sitting out.&lt;/p&gt;
+&lt;p&gt;Dr. Wily, our other cat, has started to jump on top of the fridge. She was motivated to start as a result of noticing that my desk gave her a handy launching point. A few days ago, I took great pains to lower my desk by a foot, which I thought would ruin her launch point. But having established confidence by jumping from the previous location, &lt;a href=&quot;https://smidgeo.com/daily-mrrp/daily-mrrp-znlunjVd.html&quot;&gt;she can still do it&lt;/a&gt; (warning: the clash of slow motion and our weird kitchen lighting resulted in flashing lights in that video), despite the extra vertical foot.&lt;/p&gt;
+&lt;p&gt;This is how kindergarten and preschool work, except by design. Teachers figure out what activities would be enriching for kids, then they set up stations at tables with the equipment (and instruction) that make it easy to do them.&lt;/p&gt;
+&lt;p&gt;If teachers said “Oh, you want to paint, five-year-old? Well, then go into three different closets and get out paints, brushes, smocks, and paper,” the kids wouldn’t paint. The same goes for digging in sand, doing puzzles, conducting surveys, making things out of leaves, and all of the other things they do.&lt;/p&gt;
+&lt;p&gt;I’m trying something like this for myself. Part of it is easy (but also less powerful): At the end of the night, I leave the right terminal and browser tabs open for my future self. Setting up stations for physical activities is not as easy because I have to clear physical space for them.&lt;/p&gt;
+&lt;h1 id=&quot;stop-motion&quot;&gt;Stop motion&lt;/h1&gt;
+&lt;p&gt;Here’s my stop motion animation station.  I used it to make that manual Dem Bones animation:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/unfinished-business-2019/stop-motion-box.jpg&quot; alt=&quot;Box with hole&quot;&gt;&lt;/p&gt;
+&lt;p&gt;That’s it! It’s just a box that lets a lot of light in. It has a hole at the top to put the camera (my phone) on. The subject of the animation rests at the bottom of the box. It keeps the camera in the same place from shot to shot.&lt;/p&gt;
+&lt;p&gt;For the previous iteration of this thing, I recruited a lot of household objects:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/unfinished-business-2019/old-stop-motion-setup.jpg&quot; alt=&quot;Junk arranged to purpose&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Those household objects had to go back to their day jobs, though. While it was up, though, I used that setup to make a (simplified) dramatization of some events in the last D&amp;amp;D session (of which I still have to write a recap email, doh!). (I’d include it here, but it’s really large, so let me know if you want me to send it to you directly.)&lt;/p&gt;
+&lt;p&gt;Stop motion always looked like painstaking work to me, and it is if you are trying to create a movie-quality movie, but I’m finding it to be a satisfying and quick way to express some ideas without much fuss. Let me know if you’re interested in how you can do it. Mostly, it’s just taking a lot of pictures (with the camera in the same place), then running some commands to turn them into an animated gif.&lt;/p&gt;
+&lt;h1 id=&quot;infrastructure&quot;&gt;Infrastructure&lt;/h1&gt;
+&lt;p&gt;I kind of don’t want to write about my infrastructure thinking because I don’t have satisfying answers. However, I’m going to do so out of respect for the space it takes up in my brain (as well as in the cloud!).&lt;/p&gt;
+&lt;p&gt;All of my bots and weblogs use &lt;a href=&quot;https://github.com/jimkang/static-web-archive&quot;&gt;static-web-archive&lt;/a&gt;, which uses git to track incremental changes. Every new post is a series of commits. This makes it really easy to back it all up to the gigantic hard drive I have hooked up to my home Raspberry Pi. It’s also easy to revert changes when a bot produces something horrible and unforeseen.&lt;/p&gt;
+&lt;p&gt;However, it’s filling up the two little virtual computers in the cloud that I rent from Digital Ocean. These days, most people don’t use local hard drives for storage very often (this is called “block storage”) the way I do. Instead, they use object storage (e.g. Amazon S3, Digital Ocean Spaces) because it’s really cheap, even though writing to and reading from object storage is not as easy as writing to and reading from your local filesystem (block storage). One consequence of object storage not working like a local filesystem is that I wouldn’t be able to maintain contents with git.&lt;/p&gt;
+&lt;p&gt;But since bots keep on producing content all the time automatically, I need to do some combination of the following if I want things to continue for decades:&lt;/p&gt;
+&lt;p&gt;A) Pay for more block storage, which is relatively expensive.
+B) Modify static-web-archive to use block storage and give up the ability to easily revert to earlier versions. Backing up will be a touch harder, too.
+C) Just toss out old posts (meaning take them off the internet; they’ll always be on my home backup HD) every so often. I could put them on archive.org, I suppose.
+D) Move old posts to object storage while keeping current posts in block storage. (Ironically, old posts will probably be served faster because it’s easy to create CDNs for things in object storage.) I’ve looked into falling back to object storage from nginx (the web server I use), and it looks like that could work.
+E) Do B, but also support deleting individual posts and patching up indexes and RSS accordingly.&lt;/p&gt;
+&lt;p&gt;E is probably the correct way to go, but boy, am I not enthusiastic about separating the rendering of the index and RSS from the content creation in static-web-archive.&lt;/p&gt;
+&lt;p&gt;C is tempting, but I don’t want to create dead links and am not sure it will easy to map fallbacks to archive.org URLs.&lt;/p&gt;
+&lt;p&gt;Hopefully, I pick something before my virtual hard drives fill up.&lt;/p&gt;
+&lt;h1 id=&quot;handwriting&quot;&gt;Handwriting&lt;/h1&gt;
+&lt;p&gt;I’ve been physically writing in notebooks for over a year now. It decouples thinking from computers, which in turn makes thinking a calmer affair. It’s partly because it slows down thinking, which helps with the quality of thinking sometimes. Finally, it’s healthy to be intimately familiar with the idea that there’s more than one way to express oneself. You do not always have to type characters of text in horizontal rows.&lt;/p&gt;
+&lt;p&gt;That said, I’ve done it in a way that’s needlessly stressful for my hand.  I picked up the habit of handwriting in all caps in high school because that’s how we did it drafting class, and it looked cool. Well, now I’m feeling it when I try to write a lot of words quickly. So, I’ve been trying cursive. It’s awkward. My hand moves faster than my brain right now, so my writing tends to have these weird hovering spots in which my hand wanted to go somewhere, but my brain was all, “Hold on [looking up how to write a cursive Q in the manual]”.&lt;/p&gt;
+&lt;p&gt;I wrote around half of this newsletter in cursive before giving in to typing on a computer.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/unfinished-business-2019/handwritten-newsletter.jpg&quot; alt=&quot;Scribbles&quot;&gt;&lt;/p&gt;
+&lt;p&gt;When writing by hand, it’s easier to move forward without editing which is important for getting a draft done. Also, when you’re on a train, it’s a better experience than typing on your phone. (Provided you get a seat.) It will be even better when I get rid of the awkward microhesitating.&lt;/p&gt;
+&lt;p&gt;Also, I feel like I should mention that I’ve been playing the drums, and like handwriting, painting, and stop motion animation, it’s a non-typing thing that delivers the satisfaction while you’re doing it, not just after you’ve used to make something that you put in front of other people. This is really important for not burning out.&lt;/p&gt;
+&lt;p&gt;I have not been able to get access to the drums until now, at the age of 42. So, I understand if you can’t find a place to play a kit. But if you can, seize that opportunity! In lieu of that, I’ve found that table drumming is really good, too. Sometimes when I’m sitting around waiting for a kid to finish a meal, I quietly tap away, imagining I’m drumming.&lt;/p&gt;
+&lt;h1 id=&quot;2020&quot;&gt;2020&lt;/h1&gt;
+&lt;p&gt;Wouldn’t it be great if I finished Workings, then realized exactly what the most important things to work on were, then used kindergarten-style stations to get them all done, and they were really enriching and imagination-sparking for people?  We all know that’s unlikely, but I do think that some version of some part of that will happen, and I’m OK with that.&lt;/p&gt;
+&lt;p&gt;Thanks for reading this newsletter and the previous newsletters! And for reading letters at all! If you happen to have gotten a newsletter or blog that I might not know about, please let me know! I want to read your long(ish)form thoughts.&lt;/p&gt;
+&lt;p&gt;I don’t know a whole lot about what has gone on with most of you, but I hope you’ve been getting space to do things that are rewarding to you right now, and not just doing things that you have to do or feel you have to do for others or for your future self!  Or as I guess people usually say more succinctly: “Best wishes”&lt;/p&gt;
+&lt;p&gt;Jim&lt;/p&gt;
+&lt;p&gt;P.S. &lt;a href=&quot;https://smidgeo.com/bots/eyes-bot&quot;&gt;Eyes Bot&lt;/a&gt; &lt;a href=&quot;https://smidgeo.com/bots/eyes-bot/eyes-bot-gioqmUHU.html&quot;&gt;independently created a Pokémon&lt;/a&gt;! An internet friend pointed out to me that it is &lt;a href=&quot;https://bulbapedia.bulbagarden.net/wiki/Victreebel_(Pok%C3%A9mon&quot;&gt;Victreebel&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/unfinished-business-2019/eyes-vspiFRYw.jpg&quot; alt=&quot;Homemade Pokémon&quot;&gt;&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Russell's Paradox</title>
       <link>http://jimkang.com/weblog/articles/russells-paradox/</link>
