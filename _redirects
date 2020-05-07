@@ -1,4 +1,4 @@
-/observatory   observatory/ 301
+/observatory   /observatory/ 301
 /observatory/* https://observatory.netlify.app/:splat 200
 /observatory/app.css  https://observatory.netlify.app/app.css 200
 /observatory/index.js https://observatory.netlify.app/index.js 200
