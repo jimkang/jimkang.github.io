@@ -4,7 +4,7 @@ h1, h2, h3, h4, h5, h6, p, body, a, img, ul, ol, blockquote, pre {
 }
 
 body {
-  font-family: garamond, serif;
+  font-family: serif;
   font-size: 28px;
   line-height: 1.52;
   background-color: #fcfcfc;
@@ -55,13 +55,13 @@ pre {
 }
 
 h1 {
-  font-family: adobe-garamond-pro, garamond, serif;  
+  font-family: serif;
   font-size: 2em;
   margin-bottom: 1em;
 }
 
 h2 {
-  font-family: adobe-garamond-pro, garamond, serif;  
+  font-family: serif;
   font-size: 1.2em;
   font-weight: 400;
   line-height: 1.43;
@@ -69,7 +69,7 @@ h2 {
 }
 
 h3 {
-  font-family: adobe-garamond-pro, garamond, serif;  
+  font-family: serif;
   font-style: italic;
   text-align: center;
   font-weight: 400;
@@ -405,13 +405,21 @@ code.lang-markdown .bullet {
   color: #8959a8;
 }
 
-ol.alpha { 
-  list-style-type: upper-alpha; 
+ol.alpha {
+  list-style-type: upper-alpha;
 }
 
 .triforce {
   margin-left: auto;
   margin-right: auto;
+}
+
+.finding {
+  font-size: 1rem;
+  background-color: hsla(230, 50%, 20%, 0.075);
+  padding: 1em;
+  margin-bottom: 1em;
+  border-radius: 0.5em;
 }
 
 /* media queries */
@@ -483,4 +491,3 @@ ol.alpha {
     height: auto;
   }
 }
-

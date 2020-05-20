@@ -5,9 +5,18 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Mon, 04 May 2020 20:00:00 -0400</pubDate>
+    <pubDate>Mon, 18 May 2020 20:00:00 -0400</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Miscellaneous Findings I</title>
+      <link>http://jimkang.com/weblog/articles/miscellaneous-findings-001/</link>
+      <pubDate>Mon, 18 May 2020 20:00:00 -0400</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/miscellaneous-findings-001/</guid>
+      <author></author>
+      <description>&lt;p&gt;&lt;em&gt;This is a roundup of miscellaneous things that I’ve found out about (or have rediscovered).&lt;span class=&quot;more&quot;&gt;&lt;/span&gt; I take notes on findings regularly, and I put the findings that translate well to speech on my podcast, &lt;span style=&quot;text-decoration: underline&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://jimkang.com/smallfindings/&quot;&gt;Small Findings&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;. The rest (which are often technical findings), I put here. They’re not always written up for maximum comprehension as a blog post, but if anything is hard to understand, please &lt;a href=&quot;mailto:jimkang@fastmail.com&quot;&gt;email me&lt;/a&gt; if you need clarification.&lt;/em&gt;&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Small Findings</title>
       <link>http://jimkang.com/weblog/articles/small-findings/</link>
@@ -25,7 +34,7 @@
 
 &lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;
 You can listen to it via your preferred podcast player, via RSS, or you can just listen to it at that web site.&lt;/p&gt;
-&lt;p&gt;It started as a result of coming across &lt;a href=&quot;https://smidgeo.com/notes/deathmtn/deathmtn-moJDmYHj.html&quot;&gt;Zettelkasten&lt;/a&gt; via &lt;a href=&quot;https://github.com/ljcooke&quot;&gt;Liam&lt;/a&gt;. Zettelkasten is a way of taking notes that produces this big web of notes that you can easily walk to recall information. Its inventor was a German sociologist that was really productive. He worked with notecards instead of computers, which were unavailable for most of his career. Essentially, he created a wiki out of paper.&lt;/p&gt;
+&lt;p&gt;It started as a result of coming across Zettelkasten via &lt;a href=&quot;https://github.com/ljcooke&quot;&gt;Liam&lt;/a&gt;. Zettelkasten is a way of taking notes that produces this big web of notes that you can easily walk to recall information. Its inventor was a German sociologist that was really productive. He worked with notecards instead of computers, which were unavailable for most of his career. Essentially, he created a wiki out of paper.&lt;/p&gt;
 &lt;p&gt;I’ve tried and quit so many productivity methods over the years. It’s my version of adopting trendy diets or wacky workouts. However, it does seem to be sticking. I don’t really do the linking part of the Zettelkasten, perhaps at my own peril. I use tags, and I search those tags to find things.&lt;/p&gt;
 &lt;p&gt;A side effect of doing this is that I feel like I’m absorbing more information and have more information to share. So, I’m sharing it in podcast form! (Well, except for the technical stuff, which mostly does not translate well orally.)&lt;/p&gt;
 &lt;p&gt;It’s inspired by:&lt;/p&gt;
@@ -182,7 +191,7 @@ My &lt;a href=&quot;https://tinyletter.com/jimkang/letters/a-long-email-about-a-
 &lt;p&gt;In the situations in which you have to choose between Bad Institution A or Bad Institution B in order to make your stuff, I think the best you can do is &lt;a href=&quot;https://jimkang.com/weblog/articles/platform-free-bots/&quot;&gt;avoid gradually becoming inseparable from a single platform&lt;/a&gt; so you can move when it’s time to move. And you do that by proving every so often that your stuff is portable.&lt;/p&gt;
 &lt;p&gt;From a more street-level point of view: GitHub Packages have free private packages (packages you want to limit in availability), whereas NPM charges for those.&lt;/p&gt;
 &lt;h1 id=&quot;subways&quot;&gt;Subways&lt;/h1&gt;
-&lt;p&gt;Last year, my National Novel Generation Month book had some pages in it that &lt;a href=&quot;https://smidgeo.com/notes/deathmtn/deathmtn-asFFPZjc.html&quot;&gt;happened to look somewhat like subways&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Last year, my National Novel Generation Month book had some pages in it that [happened to look somewhat like subways.&lt;/p&gt;
 &lt;p&gt;Anderson (who was 4 at the time and is now 5) was really into those pages.&lt;/p&gt;
 &lt;p&gt;Since then, we got a book called &lt;a href=&quot;https://www.joycehesselberth.com/&quot;&gt;Mapping Sam&lt;/a&gt; that explains the concept of maps. There are a couple of pages with subways in them, and he always traces routes within the networks with his finger. We also have a poster of the MBTA subway system, and he does the same thing on it.&lt;/p&gt;
 &lt;p&gt;Anderson’s drawing happens in streaks. Sometimes, like now, he’s into it.&lt;/p&gt;
