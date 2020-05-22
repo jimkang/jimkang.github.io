@@ -118,7 +118,7 @@ hr {
 }
 
 .header .author {
-  font-family: 'Merriweather', serif;
+  font-family: serif;
   font-variant: small-caps;
   text-transform: lowercase;
   text-rendering: auto;
@@ -254,7 +254,7 @@ footer .copy, footer .copy a {
 }
 
 .more, .date {
-  font-family: 'Merriweather', serif;
+  font-family: serif;
   font-variant: small-caps;
   text-transform: lowercase;
   font-weight: 400;
@@ -303,7 +303,7 @@ footer .copy, footer .copy a {
 .archive .year-label,
 .archive .month-label{
   width: 4em;
-  font-family: 'Merriweather', serif;
+  font-family: serif;
   font-variant: small-caps;
   text-transform: lowercase;
   font-weight: 400;

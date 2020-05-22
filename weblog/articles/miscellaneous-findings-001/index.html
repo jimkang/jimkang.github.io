@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width" initial-scale="1">
+    <title>Miscellaneous Findings I - jimkang.com
+    </title>
+    <link rel="alternate" href="http://jimkang.com/feed.xml" type="application/rss+xml" title="It's dot com.">
+    <link rel="stylesheet" href="/weblog/css/main.css">
+  </head>
+  <body>
+    <header class="header">
+      <div class="content-wrap">
+        <!-- include author-->
+        <h1>Miscellaneous Findings I</h1>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p><em>This is a roundup of miscellaneous things that I’ve found out about (or have rediscovered).<span class="more"></span> I take notes on findings regularly, and I put the findings that translate well to speech on my podcast, <span style="text-decoration: underline"><strong><a href="https://jimkang.com/smallfindings/">Small Findings</a></strong></span>. The rest (which are often technical findings), I put here. They’re not always written up for maximum comprehension as a blog post, but if anything is hard to understand, please <a href="mailto:jimkang@fastmail.com">email me</a> if you need&nbsp;clarification.</em></p>
+</section>
+          <article class="finding">
+            <section class="content"><h1 id="coca-cola">Coca-cola</h1>
+<p><a href="https://d1io3yog0oux5.cloudfront.net/cocacolacompany/files/pages/cocacolacompany/db/761/description/Coca-Cola+Investor+Relations+-+Investor+FAQ+on+COVID-19+-+03.26.20v3.pdf">Coca-Cola</a> says in-premise (restaurant) sales are 40% of its&nbsp;industry.</p>
+<p>#business</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="darklang">Darklang</h1>
+<p>It’s a language and environment <em>and</em> deployment platform for writing backends. <a href="https://macwright.org/2020/03/29/dark.html">It has quite a few impressive future-of-programming style features</a> such&nbsp;as:</p>
+<ul>
+<li>Being able to re-run code execution traces with&nbsp;edits</li>
+<li>Knowledge of which functions have side effects and which&nbsp;don’t</li>
+<li>Live&nbsp;evaluation</li>
+</ul>
+<p>Fascinating.</p>
+<p><a href="https://darklang.com/language">However</a>:</p>
+<ul>
+<li>You cannot run Dark locally, nor anywhere other than on their&nbsp;servers.</li>
+<li>They promise that if they go out of business that they’ll open source Dark (but do not promise they’ll help you get that source&nbsp;running).</li>
+<li>They will do an automated conversion to Go or Node if you want to leave (no guarantees about how well it will&nbsp;work)</li>
+</ul>
+<p>#programming&nbsp;#business</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="netlify">Netlify</h1>
+<p>Recently I looked into Netlify because I’ve heard a lot of good things about it, and it appeared to be the rare <span class="caps">CDN</span> that gives access to logs, so you know what’s being delivered via the&nbsp;CDN.</p>
+<h2 id="what-is-netlify">What is&nbsp;Netlify</h2>
+<p>To back up a second, let’s talk about what Netlify is. Netlify is a hosting service that provides a way to deploy straight from wherever you keep your code to their <span class="caps">CDN</span>. It provides things to make this possible, like triggers that build your code on deploy. The ideal experience they’re trying to make happen is: You update the code for your static site or single-page app on your computer. Then, you push it to GitHub. Then, Netlify builds it and takes it to the CDN. Instant web site&nbsp;update.</p>
+<h2 id="gaps">Gaps</h2>
+<p>However, I learned that there are several things it doesn’t do. It’s not meant to be a replacement for a general-purpose&nbsp;<span class="caps">CDN</span>.</p>
+<p>For example, if you have your site and apps arranged like&nbsp;this:</p>
+<p>Home page: jimkang.com/
+App 1: jimkang.com/smallfindings
+App 2: jimkang.com/observatory
+Site 1:&nbsp;jimkang.com/weblog</p>
+<p>Let’s say you have a different GitHub repo for each one of those&nbsp;sites.</p>
+<p>Netlify does not support building subdirectories of a site via several different directories. You’d have to have an enormous monorepo containing&nbsp;everything.</p>
+<p>I’ve seen people recommend working around this&nbsp;by:</p>
+<ul>
+<li>Putting <code>coolgame</code> contents in a separate <code>coolgame</code> Netlify&nbsp;site.</li>
+<li><p>Creating a rewrite rule in <code>yourdomain.com</code>‘s <code>_redirects</code> Netlify file that rewrites /coolgame to <a href="https://coolgame.netlify.app">https://coolgame.netlify.app</a> so that when the browser asks form yourdomain.com/coolgame, it thinks it’s getting that, but Netlify actually serves <code>coolgame.netlify.app</code>.</p>
+<p>  /coolgame/* <a href="https://coolgame.netlify.app/:splat">https://coolgame.netlify.app/:splat</a>&nbsp;200</p>
+</li>
+</ul>
+<p>I’ve seen this&nbsp;recommended:</p>
+<ul>
+<li><a href="https://github.com/netlify/cli/issues/16#issuecomment-416698212">In a GitHub issue for the Netlify&nbsp;<span class="caps">CLI</span></a></li>
+<li>[A blog post about an hosting an app in a subdirectory of the promotional site about that&nbsp;app.]</li>
+</ul>
+<p>This doesn’t work when you go to <code>https://yourdomain.com/coolgame</code> without a trailing slash, though. You’ll get the right index.html, but all of the files it references that are expected to be in the same directory will be loaded from <code>yourdomain.com</code>, not <code>coolgame</code>. If you go to <code>https://yourdomain.com/coolgame/</code> with a trailing slash, it will load the referenced files from <code>coolgame</code>.</p>
+<p>If this was nginx, you could get around it by adding a redirect to go to the <span class="caps">URL</span> with a trailing&nbsp;slash.</p>
+<p>However, you can’t write a rule like that with <code>_redirects</code>. Their <span class="caps">CDN</span> nodes do URL normalization before the redirect rules are applied. So, the matching part of rules that use trailing slashes are the same as those that don’t. If you tried to match <code>/coolgame</code>, the rule would also match <code>/coolgame/</code>, resulting in an infinite&nbsp;redirect.</p>
+<p>Instead, their docs tell you about a <a href="https://docs.netlify.com/routing/redirects/redirect-options/#trailing-slash">Pretty URLs setting</a>, which is supposed to forward clients to the trailing slash version of the <span class="caps">URL</span>, but it appears to not work at&nbsp;all.</p>
+<p>I’ve seen someone recommend adding <span class="caps">JS</span> to every page that’s in a subdirectory to redirect to ‘/‘, but that’s dozens of pages for&nbsp;me.</p>
+<p>Apparently, even if you decided to use subdomains instead of subdirectories to avoid this problem, but <a href="https://medium.com/free-code-camp/how-to-host-a-git-repository-on-a-subdomain-with-netlify-b8afb5fca96e">it’s not meant to do that, either</a>.</p>
+<p>It also <a href="https://blog.codaxy.com/a-short-journey-through-the-world-of-static-web-hosts-193c9b0dca0e">does not want you to use a “naked” domain</a> — e.g. it like something.yourdomain.com, but will only support yourdomain.com if your <span class="caps">DNS</span> provider supports ALIAS records. For me, this is a&nbsp;showstopper.</p>
+<h2 id="dev-experience">Dev&nbsp;experience</h2>
+<p>Netlify, the web app you use to configure your Netlify sites, is Chrome-first. If you drag a folder onto <code>Want to deploy a new site without connecting to Git?
+Drag and drop your site folder here</code>, it’ll crash the Firefox&nbsp;tab.</p>
+<p><a href="https://smidgeo.nyc3.cdn.digitaloceanspaces.com/misc/scrolling-in-netlify-docs.mp4">Bizarre stuff happens when you try to scroll through their docs site in Firefox. Every so often, it’ll just jump back while you scroll&nbsp;down.</a></p>
+<h2 id="what-s-good-though-">What’s good,&nbsp;though?</h2>
+<p>The deploys are indeed fast. The experience is probably great if you have a single site on there or can use something.netlify.app&nbsp;URLs.</p>
+<p>If there is indeed no other <span class="caps">CDN</span> that will let you get at access logs, maybe I will end up biting the bullet and going with&nbsp;Netlify.</p>
+<p>#hosting #rewrite #proxy #business&nbsp;#internet</p>
+</section>
+          </article>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/weblog/">« Full blog</a></div>
+        <!--section.about-->
+        <!--  !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2020 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+          <p><a href='/weblog/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>

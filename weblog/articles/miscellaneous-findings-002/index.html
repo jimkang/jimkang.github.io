@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width" initial-scale="1">
+    <title>Miscellaneous Findings II - jimkang.com
+    </title>
+    <link rel="alternate" href="http://jimkang.com/feed.xml" type="application/rss+xml" title="It's dot com.">
+    <link rel="stylesheet" href="/weblog/css/main.css">
+  </head>
+  <body>
+    <header class="header">
+      <div class="content-wrap">
+        <!-- include author-->
+        <h1>Miscellaneous Findings II</h1>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p><em>This is a roundup of miscellaneous things that I’ve found out about (or have rediscovered).<span class="more"></span> I take notes on findings regularly, and I put the findings that translate well to speech on my podcast, <span style="text-decoration: underline"><strong><a href="https://jimkang.com/smallfindings/">Small Findings</a></strong></span>. The rest (which are often technical findings), I put here. They’re not always written up for maximum comprehension as a blog post, but if anything is hard to understand, please <a href="mailto:jimkang@fastmail.com">email me</a> if you need&nbsp;clarification.</em></p>
+</section>
+          <article class="finding">
+            <section class="content"><h1 id="extracting-audio-from-a-video">Extracting audio from a&nbsp;video</h1>
+<pre><code>ffmpeg -i undefined.ogv -vn -acodec copy out.ogg
+</code></pre><p>Another&nbsp;example:</p>
+<pre><code>ffmpeg -i unfortunate-day.mov -vn -acodec copy out.aac
+</code></pre><p><code>-vn</code> tells ffmpeg to skip video in the output.
+<code>-acodec</code> tells it to set the audio codec in the output, so that players know how to play it.
+<code>copy</code> tells it to copy the output to the following&nbsp;file.</p>
+<p>You can’t have it convert the audio format while it’s extracting the audio as far as I know. If the audio stream is encoded as ogg, then you can extract ogg. If it’s encoded as <span class="caps">AAC</span>, then you can extract&nbsp;AAC.</p>
+<p>#audio #video&nbsp;#ffmpeg</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="converting-video-formats">Converting video&nbsp;formats</h1>
+<p>In many cases, it’s sufficient to just pass filenames with different file extensions to ffmpeg, like&nbsp;this:</p>
+<pre><code>ffmpeg -i in.ogv out.mp4
+</code></pre><p>It will use the container format corresponding to the file extensions to pick appropriate default encoders. (e.g. libx264 and aac for&nbsp;mp4)</p>
+<p>See&nbsp;also:</p>
+<ul>
+<li><a href="/weblog/articles/miscellaneous-findings-002/findings/2020-04-13----04:17__ffmpeg_too_many_packets_error.md">Too many packets&nbsp;error</a></li>
+</ul>
+<p>#ffmpeg</p>
+<p>#formats</p>
+<p>#video</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="extracting-a-still-from-a-video">Extracting a still from a&nbsp;video</h1>
+<p>Use ffmpeg with the <code>-frames:v 1</code> switch to tell it to grab a single frome and a jpg filename as the output to tell it to write it to an image&nbsp;file.</p>
+<p>You can add <code>-ss &lt;seconds into the video&gt;</code> to tell it where in the video to get the frame from. You can specify jpeg quality <code>-qscale:v &lt;2-31&gt;</code>, with 2 being the highest&nbsp;quality.</p>
+<p>Example:</p>
+<pre><code>ffmpeg -ss 0 -i source-images/Video\ Apr\ 17,\ 5\ 49\ 56\ PM.mov -qscale:v 4 -frames:v 1 output.jpg
+</code></pre><p>Links:
+-
+  name: Stack Overflow
+  url: <a href="https://stackoverflow.com/questions/10225403/how-can-i-extract-a-good-quality-jpeg-image-from-an-h264-video-file-with-ffmpeg">https://stackoverflow.com/questions/10225403/how-can-i-extract-a-good-quality-jpeg-image-from-an-h264-video-file-with-ffmpeg</a></p>
+<p>#video</p>
+<p>#editing</p>
+<p>#ffmpeg</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="-too-many-packets-ffmpeg-error">“Too many packets” ffmpeg&nbsp;error</h1>
+<p>When ffmpeg says “Too many packets buffered for output stream 0:1”, it means it literally. You can <a href="https://stackoverflow.com/questions/49686244/ffmpeg-too-many-packets-buffered-for-output-stream-01">increase the buffer size with this switch</a>:</p>
+<pre><code>-max_muxing_queue_size 1024
+</code></pre><p>(Substitute the size you need.) After that, it may be able to buffer all of the&nbsp;packets.</p>
+<p>That argument needs to go before the output file in the command, though, or there will be complaints. This works, for example, but it won’t work if you put <code>max_muxing_queue_size</code> before&nbsp;-i.</p>
+<pre><code>ffmpeg -i demo.ogv -max_muxing_queue_size 1024 demo.mp4 
+</code></pre><p>#video</p>
+<p>#ffmpeg</p>
+<p>#command</p>
+<p>#error</p>
+</section>
+          </article>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/weblog/">« Full blog</a></div>
+        <!--section.about-->
+        <!--  !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2020 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+          <p><a href='/weblog/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>
