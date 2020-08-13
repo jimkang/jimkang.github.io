@@ -5,9 +5,165 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Wed, 29 Jul 2020 20:00:00 -0400</pubDate>
+    <pubDate>Wed, 12  Aug 2020 20:00:00 -0400</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Svelte impressions</title>
+      <link>http://jimkang.com/weblog/articles/svelte-impressions/</link>
+      <pubDate>Wed, 12  Aug 2020 20:00:00 -0400</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/svelte-impressions/</guid>
+      <author></author>
+      <description>&lt;p&gt;Here’s a short (30-minute) talk I gave about SvetleJS.
+&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;h2 id=&quot;where-i-m-coming-from&quot;&gt;Where I’m coming from&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;(Or, if you don’t want me to end with a preposition: From whence I come)&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Generally, I eschew JavaScript frameworks. I have had jobs that centered around Backbone and Angular and spent a couple quarters working on an app written in React.&lt;/p&gt;
+&lt;p&gt;I’ve come to prefer the use of specific libraries that solve specific problems, like &lt;code&gt;d3-shape&lt;/code&gt; and the like, rather than frameworks that define the structure of the application. I think that &amp;mdash; unless it is an extremely trivial app &amp;mdash; the developer should think through the structure themselves and the app will benefit.&lt;/p&gt;
+&lt;p&gt;I first tried Svelte a couple of years ago, when I worked on a project that my colleague &lt;a href=&quot;http://www.alizaaufrichtig.com/&quot;&gt;Aliza&lt;/a&gt; had started in Svelte. I was struck by how little I had to know about it to be productive. After the project ended, though, I didn’t really think that much more about it.&lt;/p&gt;
+&lt;p&gt;A few months ago, I started trying Svelte. Today, I gave a talk to some colleagues about it. Here’s the notes. (They’re terse in order to encourage me to actually talk, so if you need any clarifications, email me! &lt;a href=&quot;mailto:jimkang@fastmail.com&quot;&gt;jimkang@fastmail.com&lt;/a&gt;)&lt;/p&gt;
+&lt;h1 id=&quot;the-talk&quot;&gt;The talk&lt;/h1&gt;
+&lt;h2 id=&quot;how-svelte-started&quot;&gt;How Svelte started&lt;/h2&gt;
+&lt;p&gt;About four years ago, Rich Harris at the NYT built the Svelte framework for the NYT audience. Interactivity was necessary for a lot of their features, but any code on their web pages had to be small. It had to work with a vast general audience’s browsers and network connections.&lt;/p&gt;
+&lt;h2 id=&quot;philosophy&quot;&gt;Philosophy&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Compiler does the work, not the user’s computer&lt;ul&gt;
+&lt;li&gt;No runtime, just generated code&lt;/li&gt;
+&lt;li&gt;Usually very small&lt;ul&gt;
+&lt;li&gt;React’s runtime is about 140K alone&lt;/li&gt;
+&lt;li&gt;Svelte apps I’ve built are consistently around 60K&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Code mostly looks like normal HTML, CSS, and JavaScript&lt;/li&gt;
+&lt;li&gt;Doesn’t try to stop the developer from doing things, for the most part&lt;ul&gt;
+&lt;li&gt;Feels like it respects developers&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;how-to-use-svelte&quot;&gt;How to use Svelte&lt;/h2&gt;
+&lt;h3 id=&quot;svelte-has-components-&quot;&gt;Svelte has components.&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;They feel more like mini-web-pages than like components in React or directives in Angular. They’re not unlike Rails partials.&lt;/li&gt;
+&lt;li&gt;A component can have JS, CSS, and HTML.&lt;ul&gt;
+&lt;li&gt;But they don’t have to have all of those things. You can have a component with just HTML.&lt;/li&gt;
+&lt;li&gt;People who are comfortable with HTML and CSS but not with JS can help work on your app.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;If you want just JS, you can just write a standard ES6 module and import it into the component you want to use it in.&lt;/li&gt;
+&lt;li&gt;You can have just one component if you don’t like components.&lt;ul&gt;
+&lt;li&gt;You can have that one component import modules that render a bunch of DOM elements.&lt;/li&gt;
+&lt;li&gt;Touching the DOM from JS is not forbidden. It’s fine.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Compiling components yields:&lt;ul&gt;
+&lt;li&gt;JS functions that insert and remove your HTML, as appropriate.&lt;/li&gt;
+&lt;li&gt;Scoped CSS. That is, CSS selectors that go under a randomly named class that’s applied to the component’s DOM element.&lt;ul&gt;
+&lt;li&gt;That way, the CSS from this component does not affect sibling or parent DOM elements.&lt;/li&gt;
+&lt;li&gt;It &lt;em&gt;does not&lt;/em&gt; write everything into a &lt;code&gt;style&lt;/code&gt; attribute. So, your CSS is still respected. You can still have global CSS if it makes sense to organize things that way.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;The components are DOM-oriented. If you have an app that is mostly non-visual code, the components don’t help you that much.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;reactivity&quot;&gt;Reactivity&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;No virtual DOM diffs. Direct updates of specific stuff that needs to be updated.&lt;ul&gt;
+&lt;li&gt;The stuff that needs to be updated is determined at compile time, not when a user clicks on something.&lt;/li&gt;
+&lt;li&gt;Popular reason for this is performance.&lt;ul&gt;
+&lt;li&gt;This isn’t important to me, personally.&lt;ul&gt;
+&lt;li&gt;I don’t care about performance until there is a noticeable problem.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;However, I do care about programs doing too much stuff.&lt;ul&gt;
+&lt;li&gt;The more stuff there is, the more that can go wrong, and the more you have to inspect when it does go wrong.&lt;/li&gt;
+&lt;li&gt;Solve problems with no code if possible, or super reliable code, like HTML with no JS.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;what-does-it-generate-&quot;&gt;What does it generate?&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Example: &lt;a href=&quot;https://jimkang.com/superflip/&quot;&gt;A simple animated gif maker&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://jimkang.com/articles/svelte-impressions/example-svelte-bundle.js&quot;&gt;Scroll through unminified bundle as you talk about the code&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Svelte utils&lt;ul&gt;
+&lt;li&gt;Very plain and straightforward&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Component code&lt;ul&gt;
+&lt;li&gt;There’s a single &lt;code&gt;current_component&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;There’s a list of callbacks to call after various events.  - There’s a schedule_update to schedule flush() (and therefore update()) calls.&lt;ul&gt;
+&lt;li&gt;Uses a resolved promise’s then() to schedule.&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://blog.strongbrew.io/what-are-schedulers-in-rxjs/&quot;&gt;Promise &lt;code&gt;then&lt;/code&gt; callbacks are run as microtasks&lt;/a&gt;, which go before the macrotasks (which &lt;code&gt;setTimeout&lt;/code&gt; callbacks are run as).&lt;/li&gt;
+&lt;li&gt;Svelte itself doesn’t use &lt;code&gt;setTimeout&lt;/code&gt; AFAIK, so it probably intends component updates to go before user setTimeouts.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;There’s a list of dirty components. The dirty components are the ones that need to be updated.&lt;ul&gt;
+&lt;li&gt;Updating means to:&lt;ul&gt;
+&lt;li&gt;Run pre-update callbacks&lt;/li&gt;
+&lt;li&gt;Reset the dirty flag on the component.&lt;/li&gt;
+&lt;li&gt;Render the fragment (call the fragments &lt;code&gt;update&lt;/code&gt; method)&lt;ul&gt;
+&lt;li&gt;Creates components for &lt;code&gt;each&lt;/code&gt; objects&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Queue up the post-render callbacks for the component&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;init() is when components are mounted. It will call components mount() methods, which will actually create the DOM elements for the component.&lt;/li&gt;
+&lt;li&gt;Generated component code is much more readable than most framework code IMO&lt;ul&gt;
+&lt;li&gt;Not unlike code you’d write yourself&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Modules&lt;ul&gt;
+&lt;li&gt;node_modules&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;User modules&lt;/li&gt;
+&lt;li&gt;User components&lt;ul&gt;
+&lt;li&gt;The &lt;code&gt;m&lt;/code&gt; function (mount) creates the DOM elements for the component. Looks like a series of &lt;code&gt;insert&lt;/code&gt; and &lt;code&gt;append&lt;/code&gt; calls, plus mount calls to subcomponents.&lt;ul&gt;
+&lt;li&gt;These are all also what you’d expect.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;rollup&quot;&gt;Rollup&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;An independent app bundler also started by Rich Harris.&lt;/li&gt;
+&lt;li&gt;The tree-shaking is incredible and easy. It’s what actually makes your app small.&lt;/li&gt;
+&lt;li&gt;Worth using all the time, even without Svelte.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;when-should-you-use-svelte-&quot;&gt;When should you use Svelte?&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;If your app doesn’t do much with the DOM, not worth it.&lt;ul&gt;
+&lt;li&gt;Updated a large mostly-audio-and-network only app to use Rollup, but not Svelte. Got about 80% smaller!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;There are some apps I see out there that could just be HTML, CSS, and JS in a &lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt; tag. Those should be just that.&lt;/li&gt;
+&lt;li&gt;If you have an app that already does DOM stuff and works fine. Don’t rewrite. Stop rewriting things in newer frameworks in general, don’t spend your life that way, you won’t live forever.&lt;ul&gt;
+&lt;li&gt;Definitely try Rollup, though.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Part of the reason I tried Svelte again is that, if I look for a job as a web developer, I need to be able to point to some framework&lt;ul&gt;
+&lt;li&gt;Hiring managers will think you are crazy if you say “frameworks are unnecessary for many of the situations they are used in”. Your foot won’t get in the door&lt;/li&gt;
+&lt;li&gt;That said, Svelte isn’t popular&lt;/li&gt;
+&lt;li&gt;Funny surprise to me: Svelte’s value for me ends up being purely technical in the end&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
     <item>
       <title>Miscellaneous Findings III: Unix text tricks</title>
       <link>http://jimkang.com/weblog/articles/miscellaneous-findings-003-unix-text-tricks/</link>

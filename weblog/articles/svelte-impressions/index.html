@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width" initial-scale="1">
+    <title>Svelte impressions - jimkang.com
+    </title>
+    <link rel="alternate" href="http://jimkang.com/feed.xml" type="application/rss+xml" title="It's dot com.">
+    <link rel="stylesheet" href="/weblog/css/main.css">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <!-- include author-->
+        <h1>Svelte impressions</h1>
+        <!-- p.author-->
+        <!--  | #{ "Written by " }-->
+        <!--  mixin author(page.metadata.author)-->
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>Here’s a short (30-minute) talk I gave about SvetleJS.
+<span class="more"></span></p>
+<h2 id="where-i-m-coming-from">Where I’m coming&nbsp;from</h2>
+<p><em>(Or, if you don’t want me to end with a preposition: From whence I&nbsp;come)</em></p>
+<p>Generally, I eschew JavaScript frameworks. I have had jobs that centered around Backbone and Angular and spent a couple quarters working on an app written in&nbsp;React.</p>
+<p>I’ve come to prefer the use of specific libraries that solve specific problems, like <code>d3-shape</code> and the like, rather than frameworks that define the structure of the application. I think that &mdash; unless it is an extremely trivial app &mdash; the developer should think through the structure themselves and the app will&nbsp;benefit.</p>
+<p>I first tried Svelte a couple of years ago, when I worked on a project that my colleague <a href="http://www.alizaaufrichtig.com/">Aliza</a> had started in Svelte. I was struck by how little I had to know about it to be productive. After the project ended, though, I didn’t really think that much more about&nbsp;it.</p>
+<p>A few months ago, I started trying Svelte. Today, I gave a talk to some colleagues about it. Here’s the notes. (They’re terse in order to encourage me to actually talk, so if you need any clarifications, email me! <a href="mailto:jimkang@fastmail.com">jimkang@fastmail.com</a>)</p>
+<h1 id="the-talk">The&nbsp;talk</h1>
+<h2 id="how-svelte-started">How Svelte&nbsp;started</h2>
+<p>About four years ago, Rich Harris at the <span class="caps">NYT</span> built the Svelte framework for the NYT audience. Interactivity was necessary for a lot of their features, but any code on their web pages had to be small. It had to work with a vast general audience’s browsers and network&nbsp;connections.</p>
+<h2 id="philosophy">Philosophy</h2>
+<ul>
+<li>Compiler does the work, not the user’s computer<ul>
+<li>No runtime, just generated&nbsp;code</li>
+<li>Usually very small<ul>
+<li>React’s runtime is about 140K&nbsp;alone</li>
+<li>Svelte apps I’ve built are consistently around&nbsp;60K</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Code mostly looks like normal <span class="caps">HTML</span>, CSS, and&nbsp;JavaScript</li>
+<li>Doesn’t try to stop the developer from doing things, for the most part<ul>
+<li>Feels like it respects&nbsp;developers</li>
+</ul>
+</li>
+</ul>
+<h2 id="how-to-use-svelte">How to use&nbsp;Svelte</h2>
+<h3 id="svelte-has-components-">Svelte has&nbsp;components.</h3>
+<ul>
+<li>They feel more like mini-web-pages than like components in React or directives in Angular. They’re not unlike Rails&nbsp;partials.</li>
+<li>A component can have <span class="caps">JS</span>, CSS, and HTML.<ul>
+<li>But they don’t have to have all of those things. You can have a component with just&nbsp;<span class="caps">HTML</span>.</li>
+<li>People who are comfortable with <span class="caps">HTML</span> and CSS but not with JS can help work on your&nbsp;app.</li>
+</ul>
+</li>
+<li>If you want just <span class="caps">JS</span>, you can just write a standard ES6 module and import it into the component you want to use it&nbsp;in.</li>
+<li>You can have just one component if you don’t like components.<ul>
+<li>You can have that one component import modules that render a bunch of <span class="caps">DOM</span>&nbsp;elements.</li>
+<li>Touching the <span class="caps">DOM</span> from JS is not forbidden. It’s&nbsp;fine.</li>
+</ul>
+</li>
+<li>Compiling components yields:<ul>
+<li><span class="caps">JS</span> functions that insert and remove your HTML, as&nbsp;appropriate.</li>
+<li>Scoped <span class="caps">CSS</span>. That is, CSS selectors that go under a randomly named class that’s applied to the component’s DOM element.<ul>
+<li>That way, the <span class="caps">CSS</span> from this component does not affect sibling or parent DOM&nbsp;elements.</li>
+<li>It <em>does not</em> write everything into a <code>style</code> attribute. So, your <span class="caps">CSS</span> is still respected. You can still have global CSS if it makes sense to organize things that&nbsp;way.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>The components are <span class="caps">DOM</span>-oriented. If you have an app that is mostly non-visual code, the components don’t help you that&nbsp;much.</li>
+</ul>
+<h2 id="reactivity">Reactivity</h2>
+<ul>
+<li>No virtual <span class="caps">DOM</span> diffs. Direct updates of specific stuff that needs to be updated.<ul>
+<li>The stuff that needs to be updated is determined at compile time, not when a user clicks on&nbsp;something.</li>
+<li>Popular reason for this is performance.<ul>
+<li>This isn’t important to me, personally.<ul>
+<li>I don’t care about performance until there is a noticeable&nbsp;problem.</li>
+</ul>
+</li>
+<li>However, I do care about programs doing too much stuff.<ul>
+<li>The more stuff there is, the more that can go wrong, and the more you have to inspect when it does go&nbsp;wrong.</li>
+<li>Solve problems with no code if possible, or super reliable code, like <span class="caps">HTML</span> with no&nbsp;JS.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="what-does-it-generate-">What does it&nbsp;generate?</h2>
+<ul>
+<li>Example: <a href="https://jimkang.com/superflip/">A simple animated gif&nbsp;maker</a></li>
+<li><a href="/weblog/articles/svelte-impressions/example-svelte-bundle.js">Scroll through unminified bundle as you talk about the&nbsp;code</a></li>
+<li>Svelte utils<ul>
+<li>Very plain and&nbsp;straightforward</li>
+</ul>
+</li>
+<li>Component code<ul>
+<li>There’s a single <code>current_component</code>.</li>
+<li>There’s a list of callbacks to call after various events.  - There’s a schedule_update to schedule flush() (and therefore update()) calls.<ul>
+<li>Uses a resolved promise’s then() to schedule.<ul>
+<li><a href="https://blog.strongbrew.io/what-are-schedulers-in-rxjs/">Promise <code>then</code> callbacks are run as microtasks</a>, which go before the macrotasks (which <code>setTimeout</code> callbacks are run&nbsp;as).</li>
+<li>Svelte itself doesn’t use <code>setTimeout</code> <span class="caps">AFAIK</span>, so it probably intends component updates to go before user&nbsp;setTimeouts.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>There’s a list of dirty components. The dirty components are the ones that need to be updated.<ul>
+<li>Updating means to:<ul>
+<li>Run pre-update&nbsp;callbacks</li>
+<li>Reset the dirty flag on the&nbsp;component.</li>
+<li>Render the fragment (call the fragments <code>update</code> method)<ul>
+<li>Creates components for <code>each</code> objects</li>
+</ul>
+</li>
+<li>Queue up the post-render callbacks for the&nbsp;component</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>init() is when components are mounted. It will call components mount() methods, which will actually create the <span class="caps">DOM</span> elements for the&nbsp;component.</li>
+<li>Generated component code is much more readable than most framework code <span class="caps">IMO</span><ul>
+<li>Not unlike code you’d write&nbsp;yourself</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Modules<ul>
+<li>node_modules</li>
+</ul>
+</li>
+<li>User&nbsp;modules</li>
+<li>User components<ul>
+<li>The <code>m</code> function (mount) creates the <span class="caps">DOM</span> elements for the component. Looks like a series of <code>insert</code> and <code>append</code> calls, plus mount calls to subcomponents.<ul>
+<li>These are all also what you’d&nbsp;expect.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="rollup">Rollup</h2>
+<ul>
+<li>An independent app bundler also started by Rich&nbsp;Harris.</li>
+<li>The tree-shaking is incredible and easy. It’s what actually makes your app&nbsp;small.</li>
+<li>Worth using all the time, even without&nbsp;Svelte.</li>
+</ul>
+<h2 id="when-should-you-use-svelte-">When should you use&nbsp;Svelte?</h2>
+<ul>
+<li>If your app doesn’t do much with the <span class="caps">DOM</span>, not worth it.<ul>
+<li>Updated a large mostly-audio-and-network only app to use Rollup, but not Svelte. Got about 80%&nbsp;smaller!</li>
+</ul>
+</li>
+<li>There are some apps I see out there that could just be <span class="caps">HTML</span>, CSS, and JS in a <code>&lt;script&gt;</code> tag. Those should be just&nbsp;that.</li>
+<li>If you have an app that already does <span class="caps">DOM</span> stuff and works fine. Don’t rewrite. Stop rewriting things in newer frameworks in general, don’t spend your life that way, you won’t live forever.<ul>
+<li>Definitely try Rollup,&nbsp;though.</li>
+</ul>
+</li>
+<li>Part of the reason I tried Svelte again is that, if I look for a job as a web developer, I need to be able to point to some framework<ul>
+<li>Hiring managers will think you are crazy if you say “frameworks are unnecessary for many of the situations they are used in”. Your foot won’t get in the&nbsp;door</li>
+<li>That said, Svelte isn’t&nbsp;popular</li>
+<li>Funny surprise to me: Svelte’s value for me ends up being purely technical in the&nbsp;end</li>
+</ul>
+</li>
+</ul>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/weblog/">« Full blog</a></div>
+        <!--section.about-->
+        <!--  !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2020 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+          <p><a href='/weblog/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>
