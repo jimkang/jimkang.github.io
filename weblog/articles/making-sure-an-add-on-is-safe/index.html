@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width" initial-scale="1">
+    <title>Making sure a Firefox add-on is safe - jimkang.com
+    </title>
+    <link rel="alternate" href="http://jimkang.com/feed.xml" type="application/rss+xml" title="It's dot com.">
+    <link rel="stylesheet" href="/weblog/css/main.css">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <!-- include author-->
+        <h1>Making sure a Firefox add-on is safe</h1>
+        <!-- p.author-->
+        <!--  | #{ "Written by " }-->
+        <!--  mixin author(page.metadata.author)-->
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>A big problem with installing a Firefox add-on or <a href="https://jimkang.com/weblog/articles/writing-dom-modifying-extensions/">Chrome</a> extension is that you have no idea what it&nbsp;does.</p>
+<p>You only know what it <em>says</em> it does, and you know what permissions you grant it, but the permissions are broad. A lot of add-ons require “Access data for all websites” in order to work. The add-on could be doing anything with that&nbsp;data.</p>
+<p><span class="more"></span>
+Sometimes, the add-on page will link to its source on a web site. That’s all well and good, but <em>how do you know that that’s the same source that’s running</em> in the installed&nbsp;add-on?</p>
+<hr>
+
+<p>This is the process I went through to verify that <a href="https://addons.mozilla.org/en-US/firefox/addon/don-t-fuck-with-paste/">Don’t Fuck with Paste</a> does what it says and no&nbsp;more.</p>
+<p>(Don’t Fuck with Paste is an add-on that prevents web sites from inserting garbage into your clipboard when you copy something and stops web sites from preventing you from pasting into&nbsp;fields.)</p>
+<ol>
+<li>Go to the cited page with the source and make sure it’s <span class="caps">OK</span>. Don’t Fuck with Paste is refreshingly straightforward. <a href="https://github.com/aaronraimist/DontFuckWithPaste/blob/master/content.js#L2">It adds an event handler for <code>copy</code>, <code>cut</code>, and <code>paste</code></a> that cancels all subsequent event handlers for those events. (Based on the fact that this add-on works, I’m guessing that add-ons get the chance to add event handlers before the page&nbsp;does.)</li>
+<li>Install the add-on. Make sure that you turn “Allow automatic updates off”. If you don’t, then anything that you’ve verified as safe can be replaced with something completely at any&nbsp;time.</li>
+<li>Go to <code>about:support</code> in&nbsp;Firefox.</li>
+<li>Note the Profile Directory, and open that directory in the terminal or your file&nbsp;navigator.</li>
+<li>Go to the <code>extensions</code> subdirectory of the Profile&nbsp;Directory.</li>
+<li>Unzip the <code>xpi</code> file corresponding to your add-on. In my case, I ran: <code>unzip DontFuckWithPaste@raim.ist.xpi -d tmp</code></li>
+<li>Look at the unzipped files. It should match the source. If it doesn’t match the source, it’s probably not safe because the author isn’t being honest (maybe accidentally) about what’s being shipped. You can examine it more closely to see if the differences are harmless if you want,&nbsp;though.</li>
+</ol>
+<p>In the case of Don’t Fuck with Paste, the actual add-on code matched the published source. Now, I feel that my clipboard is protected and thing protecting my clipboard isn’t a danger even worse than the threats to my&nbsp;clipboard.</p>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/weblog/">« Full blog</a></div>
+        <!--section.about-->
+        <!--  !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2020 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+          <p><a href='/weblog/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>
