@@ -5,9 +5,35 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Wed, 12  Aug 2020 20:00:00 -0400</pubDate>
+    <pubDate>Mon, 07 Sep 2020 20:00:00 -0400</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Making sure a Firefox add-on is safe</title>
+      <link>http://jimkang.com/weblog/articles/making-sure-an-add-on-is-safe/</link>
+      <pubDate>Mon, 07 Sep 2020 20:00:00 -0400</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/making-sure-an-add-on-is-safe/</guid>
+      <author></author>
+      <description>&lt;p&gt;A big problem with installing a Firefox add-on or &lt;a href=&quot;https://jimkang.com/weblog/articles/writing-dom-modifying-extensions/&quot;&gt;Chrome&lt;/a&gt; extension is that you have no idea what it does.&lt;/p&gt;
+&lt;p&gt;You only know what it &lt;em&gt;says&lt;/em&gt; it does, and you know what permissions you grant it, but the permissions are broad. A lot of add-ons require “Access data for all websites” in order to work. The add-on could be doing anything with that data.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;
+Sometimes, the add-on page will link to its source on a web site. That’s all well and good, but &lt;em&gt;how do you know that that’s the same source that’s running&lt;/em&gt; in the installed add-on?&lt;/p&gt;
+&lt;hr&gt;
+
+&lt;p&gt;This is the process I went through to verify that &lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/don-t-fuck-with-paste/&quot;&gt;Don’t Fuck with Paste&lt;/a&gt; does what it says and no more.&lt;/p&gt;
+&lt;p&gt;(Don’t Fuck with Paste is an add-on that prevents web sites from inserting garbage into your clipboard when you copy something and stops web sites from preventing you from pasting into fields.)&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Go to the cited page with the source and make sure it’s OK. Don’t Fuck with Paste is refreshingly straightforward. &lt;a href=&quot;https://github.com/aaronraimist/DontFuckWithPaste/blob/master/content.js#L2&quot;&gt;It adds an event handler for &lt;code&gt;copy&lt;/code&gt;, &lt;code&gt;cut&lt;/code&gt;, and &lt;code&gt;paste&lt;/code&gt;&lt;/a&gt; that cancels all subsequent event handlers for those events. (Based on the fact that this add-on works, I’m guessing that add-ons get the chance to add event handlers before the page does.)&lt;/li&gt;
+&lt;li&gt;Install the add-on. Make sure that you turn “Allow automatic updates off”. If you don’t, then anything that you’ve verified as safe can be replaced with something completely at any time.&lt;/li&gt;
+&lt;li&gt;Go to &lt;code&gt;about:support&lt;/code&gt; in Firefox.&lt;/li&gt;
+&lt;li&gt;Note the Profile Directory, and open that directory in the terminal or your file navigator.&lt;/li&gt;
+&lt;li&gt;Go to the &lt;code&gt;extensions&lt;/code&gt; subdirectory of the Profile Directory.&lt;/li&gt;
+&lt;li&gt;Unzip the &lt;code&gt;xpi&lt;/code&gt; file corresponding to your add-on. In my case, I ran: &lt;code&gt;unzip DontFuckWithPaste@raim.ist.xpi -d tmp&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Look at the unzipped files. It should match the source. If it doesn’t match the source, it’s probably not safe because the author isn’t being honest (maybe accidentally) about what’s being shipped. You can examine it more closely to see if the differences are harmless if you want, though.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;In the case of Don’t Fuck with Paste, the actual add-on code matched the published source. Now, I feel that my clipboard is protected and thing protecting my clipboard isn’t a danger even worse than the threats to my clipboard. At least as of &lt;strong&gt;2020-09-08 (September 9, 2020&lt;/strong&gt;&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Svelte impressions</title>
       <link>http://jimkang.com/weblog/articles/svelte-impressions/</link>
