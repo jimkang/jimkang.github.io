@@ -5,9 +5,154 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Mon, 07 Sep 2020 20:00:00 -0400</pubDate>
+    <pubDate>Sun, 15 Nov 2020 19:00:00 -0500</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Autocorrelation</title>
+      <link>http://jimkang.com/weblog/articles/autocorrelation/</link>
+      <pubDate>Sun, 15 Nov 2020 19:00:00 -0500</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/autocorrelation/</guid>
+      <author></author>
+      <description>&lt;p&gt;&lt;em&gt;I tried to explain this process on my podcast, Small Findings, but I found that it was just way too hard to do without showing numbers. So, instead, I went through an audio analogy for the process on the podcast and moved the math explanation here.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;I looked into autocorrelation a few weeks ago. My friend &lt;a href=&quot;https://blog.hughrawlinson.me/&quot;&gt;Hugh&lt;/a&gt; introduced it to me as a way to detect repeating patterns in words and sounds.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;style&gt;
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+td,th {
+  border: 1px solid #666;
+  padding: 0.25em;
+}
+&lt;/style&gt;
+
+&lt;p&gt;There are several autocorrelation algorithms, but like the book &lt;a href=&quot;http://www.whyyouhearwhatyouhear.com/&quot;&gt;Why You Hear What You Hear&lt;/a&gt; says, most people have an innate sense of autocorrelation. They can predict the recurrence of choruses in pop songs. In a city with a grid system, they can tell how often cross streets come up when walking a long way.&lt;/p&gt;
+&lt;p&gt;Given an explicit mathematical process, computers can do this, too. They can also go further and can pick out patterns in domains that are beyond human comprehension, like space radiation or subsecond changes in air pressure.&lt;/p&gt;
+&lt;p&gt;Now that we know &lt;em&gt;why&lt;/em&gt; we want to autocorrelate, we can get back to what it is. The “auto” part means “self” rather than “automatic”. So it’s not automatic correlation, it’s self-correlation.&lt;/p&gt;
+&lt;p&gt;It’s finding out where a list of numbers lines up with itself.&lt;/p&gt;
+&lt;p&gt;&lt;hr&gt;
+To get a sense of how it’s supposed to work before we get into any numbers, try listening to this audio clip:&lt;/p&gt;
+&lt;audio src=&quot;autocorrelation-example-1.mp3&quot; controls&gt;&lt;/audio&gt;
+
+&lt;p&gt;You probably notice a pattern that repeats every three beats.&lt;/p&gt;
+&lt;p&gt;&lt;hr&gt;
+Now, let’s overlay that clip with a copy of itself that is delayed by one beat.&lt;/p&gt;
+&lt;audio src=&quot;autocorrelation-example-2.mp3&quot; controls&gt;&lt;/audio&gt;
+
+&lt;p&gt;You can probably hear that those aren’t very well-coordinated.&lt;/p&gt;
+&lt;p&gt;&lt;hr&gt;
+Here’s the original overlaid with a copy delayed by two beats.&lt;/p&gt;
+&lt;audio src=&quot;autocorrelation-example-3.mp3&quot; controls&gt;&lt;/audio&gt;
+
+&lt;p&gt;Again, not that correlated.&lt;/p&gt;
+&lt;p&gt;&lt;hr&gt;
+Here’s the original overlaid with a copy delayed by three beats.&lt;/p&gt;
+&lt;audio src=&quot;autocorrelation-example-4.mp3&quot; controls &gt;&lt;/audio&gt;
+
+&lt;p&gt;Now, I imagine that sounds fairly correlated to you! Almost like the original clip itself&lt;b&gt;&lt;a href=&quot;http://jimkang.com/articles/autocorrelation/#footnote&quot;&gt;*&lt;/a&gt;&lt;/b&gt;.&lt;/p&gt;
+&lt;p&gt;So, we’d say that the signal is very correlated with itself at a lag of 3, indicating that it’s likely that there is a pattern that repeats every three beats.&lt;/p&gt;
+&lt;p&gt;&lt;hr&gt;
+Now, let’s do the same thing, except with numbers, like these:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;1 2 3 1 2 3 1 2 3
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We can overlay that with a copy of itself at a lag of 1 like so:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;1 2 3 1 2 3 1 2 3
+  1 2 3 1 2 3 1 2 3
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;You can see intuitively that (given the scale) 2 doesn’t correlate with the 1 under it, 3 doesn’t correlate with 2, etc. A computer can’t see that, though. Instead, it can:&lt;/p&gt;
+&lt;h3 id=&quot;1-calculate-the-difference-between-each-number-in-the-signal-and-the-average-of-the-signal-b-a-href-footnote-2-a-b-&quot;&gt;1) Calculate the difference between each number in the signal and the average of the signal. &lt;b&gt;&lt;a href=&quot;#footnote-2&quot;&gt;**&lt;/a&gt;&lt;/b&gt;&lt;/h3&gt;
+&lt;p&gt;The average is:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;(1 + 2 + 3 + 1 + 2 + 3 + 1 + 2 + 3)/9 = 2
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;When we subtract 2 from each number in the signal, we get:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;-1 +0 +1 -1 +0 +1 -1 +0 +1
+   -1 +0 +1 -1 +0 +1 -1 +0 +1
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&quot;2-multiply-the-vertical-pairs-to-see-how-well-a-number-in-the-signal-correlates-with-the-corresponding-number-in-the-offset-signal-&quot;&gt;2) Multiply the vertical pairs to see how well a number in the signal correlates with the corresponding number in the offset signal.&lt;/h3&gt;
+&lt;p&gt;(We’ll ignore numbers that don’t have a correspondent in the other signal for this example.)&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;   +0 +1 -1 +0 +1 -1 +0 +1
+    x  x  x  x  x  x  x  x
+   -1 +0 +1 -1 +0 +1 -1 +0
+   _______________________
+   +0 +0 -1 +0 +0 -1 +0 +0
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;If the pairs of numbers are both on the same side of the average (greater than 2 or less than two), we’ll get a positive value, which indicates a positive correlation. If they’re on opposite sides of the average, we’ll get a negative value because those two numbers are negatively correlated.&lt;/p&gt;
+&lt;h3 id=&quot;3-average-those-together-to-get-a-correlation-score-for-the-lag&quot;&gt;3) Average those together to get a correlation score for the lag&lt;/h3&gt;
+&lt;p&gt;Here is our score for a lag of 1:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;(0 + 0 + -1 + 0 + 0 + -1 + 0 + 0)/8 = -0.25
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;To save precious web page space, I’m not going to go through getting the scores for a lag of 2. I’ll just tell it to you: &lt;strong&gt;-0.4286&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;We’ll go through the process for offset = 3, though. Here’s the original lined up with a copy that lags by 3:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;1 2 3 1 2 3 1 2 3
+      1 2 3 1 2 3 1 2 3
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Differences with the average:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;-1 +0 +1 -1 +0 +1 -1 +0 +1
+         -1 +0 +1 -1 +0 +1 -1 +0 +1
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Correlation values:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;__ __ __ +1 +0 +1 +1 +0 +1 __ __ __
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The score for this is:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;(1 + 0 + 1 + 1 + 0 + 1)/6 = 0.66
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Lag scores table:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;code&gt;Lag&lt;/code&gt;&lt;/th&gt;
+&lt;th&gt;&lt;code&gt;Score&lt;/code&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;1&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;-0.25&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;2&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;-0.42&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;3&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;+0.46&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The score for a lag of 3 (0.66) is higher than the score for a lag of 1 (-0.25) and higher than the score for a lag of 2 (-0.4286), and all of the other lags except lag = 0 (you can calculate them to check). So, the computer can say the signal most correlates with itself at lag = 3 and guess that there is a pattern every three numbers in that signal.&lt;/p&gt;
+&lt;hr&gt;
+
+&lt;p&gt;That is one way to calculate autocorrelation, but it is too slow for many of the signal processing situations you might want to use it in. There are many other faster ways, but &lt;a href=&quot;https://etudes.tibonihoo.net/literate_musing/autocorrelations.html&quot;&gt;this way involving the Fourier transform&lt;/a&gt; is explained by Thibauld Nion using Python.&lt;/p&gt;
+&lt;p&gt;I followed along with his post in a &lt;a href=&quot;https://github.com/jimkang/autoc/blob/main/meta/autoc-test.ipynb&quot;&gt;Jupyter notebook&lt;/a&gt; and &lt;a href=&quot;https://github.com/jimkang/autoc&quot;&gt;implemented this way of calculating autocorrelation in JavaScript&lt;/a&gt;. An &lt;a href=&quot;https://github.com/MaximilianBuegler/node-autocorrelation&quot;&gt;earlier Node package&lt;/a&gt; did the same, but I implemented it anyway in order to understand it better and to feel more confident about it.&lt;/p&gt;
+&lt;hr&gt;
+
+&lt;p&gt;&lt;a id=&quot;footnote&quot;&gt;&lt;b&gt;*&lt;/b&gt; I added a tiny bit more lag when overlaying the copy of the clip here, for dramatic effect. If I had overlaid it exactly at three beats, it would sound just like the original clip, except louder, and you’d be like, huh?&lt;/p&gt;
+&lt;p&gt;&lt;a id=&quot;footnote-2&quot;&gt;&lt;b&gt;**&lt;/b&gt; This step in which you subtract the average is called “centering the signal” and isn’t strictly necessary, I think.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Take home tests</title>
+      <link>http://jimkang.com/weblog/articles/take-home-tests/</link>
+      <pubDate>Mon, 05 Oct 2020 20:00:00 -0400</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/take-home-tests/</guid>
+      <author></author>
+      <description>&lt;p&gt;I’m currently &lt;a href=&quot;https://jimkang.com/resume/&quot;&gt;looking at potential new jobs&lt;/a&gt; and started talking to a company that looked like it had potential. They asked me to do a take home test to prove that I was worth interviewing. Ultimately, I said no to that.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;In a take home test for programming positions, the employer gives the candidate instructions to write one or more programs. The amount of time required to write it varies, but is usually over an hour. In this case, the company wanted me to spend four hours on their test.&lt;/p&gt;
+&lt;p&gt;This is common in the developer labor market right now. Employers use them, ostensibly, to establish a baseline of competency.&lt;/p&gt;
+&lt;p&gt;At the company that I work for currently, this is done by asking developers like me to conduct 50-minute video call interviews. This way, the employer can evaluate baseline technical competence, but the candidate can also ask questions and get a sense of the company. Of course, this costs the company money in the form of developer time. If an employer is not willing to spend that money, take home tests may look appealing to them.&lt;/p&gt;
+&lt;h2 id=&quot;invisible-goalposts&quot;&gt;Invisible goalposts&lt;/h2&gt;
+&lt;p&gt;I have had a previous poor experience with a take home test. After two nontechnical talks with people at a company, I was given a take home test. I assumed this was the tech screen, and that no one would expect a candidate to work exhaustively on code they can’t use for anything else, for no money.&lt;/p&gt;
+&lt;p&gt;So, I made something that definitively met the objective requirements stated in the test, then stopped coding. I explained the pros and cons of my decisions and sent it in.&lt;/p&gt;
+&lt;p&gt;The company took a long time to evaluate it. Apparently, they had differing opinions among themselves, and thus, went back and forth a lot on it. (This, by the way, is a sign that the employer did not create any sort of rubric for evaluating this test. Without a rubric, an evaluation of a test just becomes developers doing a Rorschach test of sorts.)&lt;/p&gt;
+&lt;p&gt;In the end, I was wrong about it being a tech screen, and because one of my solutions did not perform in constant time, I was eliminated.&lt;/p&gt;
+&lt;p&gt;Here’s what I wrote to them:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;For your future candidates, I think it would be a good idea if you were clearer in the problem description that a constant time tracking solution is actually what you want and that you will not continue in the process if you don’t provide that. It says “Whatever solution you choose, please note its performance characteristics in your README” and leaves it at that. People that can’t spend that much time on a take home test will likely just deliver something that meets the explicit criteria, assuming it is the equivalent of a tech screen and leave it at that. I appreciate the great amount of consideration that your team put in, however. Good luck in your search!&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;A friend of mine recently had a similar experience with a different company. They told him not to spend too much time on the take home test they gave him and downplayed the significance. Then, after he sent them a working test that did what the employer, they told him his test was not polished enough.&lt;/p&gt;
+&lt;h2 id=&quot;free-labor&quot;&gt;Free labor&lt;/h2&gt;
+&lt;p&gt;Four hours is hard for me to come by these days. I initially said I’d try to fit the test in, but a week later, I realized four hours was going to cost me, and there were so many ways I could end up with nothing to show for it.&lt;/p&gt;
+&lt;p&gt;In past eras in which I had fewer obligations on my time, I probably would have done the test without a second thought. But what I should have done is respect myself and think about what else I could do with that time. From writing code on one of your own projects to playing with your kid to going on a hike, there are many, many choices that have a higher expected value than doing a take home test for a company. Take home tests have no value other than getting you a chance to interview with that company. (And in most cases, the value of that chance is unknown; you can do the test and find out the company is terrible or that they’re not willing to pay what you’re willing to work for.)&lt;/p&gt;
+&lt;p&gt;Of course, all of this only applies if you have other opportunities. If I had no job and few prospects, I’m sure I would keep my mouth shut and try to jump over all sorts of unreasonable hurdles.&lt;/p&gt;
+&lt;p&gt;I am privileged enough to be able to look elsewhere if I say no to a take home test. And I think the responsible thing to do with that privilege is to let employers know that it’s not a good idea to make candidates work for free and under opaque judgment.&lt;/p&gt;
+&lt;h2 id=&quot;a-not-so-easy-no&quot;&gt;A not-so-easy no&lt;/h2&gt;
+&lt;p&gt;A week after I told this employer that I’d see if I could find four hours for their test, they asked me again about it. I realized I wouldn’t find that time any time soon without sacrificing something more important and was forced to corporealize a concrete position about this issue.&lt;/p&gt;
+&lt;p&gt;I decided I was against take home tests in this form. But I found it surprisingly hard to tell the company no. I hesitated to write the email, fearing that I’d look arrogant.&lt;/p&gt;
+&lt;p&gt;But why don’t companies ever fear looking arrogant when asking people to labor for free?&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Making sure a Firefox add-on is safe</title>
       <link>http://jimkang.com/weblog/articles/making-sure-an-add-on-is-safe/</link>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width" initial-scale="1">
+    <title>Autocorrelation - jimkang.com
+    </title>
+    <link rel="alternate" href="http://jimkang.com/feed.xml" type="application/rss+xml" title="It's dot com.">
+    <link rel="stylesheet" href="/weblog/css/main.css">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <!-- include author-->
+        <h1>Autocorrelation</h1>
+        <!-- p.author-->
+        <!--  | #{ "Written by " }-->
+        <!--  mixin author(page.metadata.author)-->
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p><em>I tried to explain this process on my podcast, Small Findings, but I found that it was just way too hard to do without showing numbers. So, instead, I went through an audio analogy for the process on the podcast and moved the math explanation&nbsp;here.</em></p>
+<p>I looked into autocorrelation a few weeks ago. My friend <a href="https://blog.hughrawlinson.me/">Hugh</a> introduced it to me as a way to detect repeating patterns in words and&nbsp;sounds.</p>
+<p><span class="more"></span></p>
+<style>
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+td,th {
+  border: 1px solid #666;
+  padding: 0.25em;
+}
+</style>
+
+<p>There are several autocorrelation algorithms, but like the book <a href="http://www.whyyouhearwhatyouhear.com/">Why You Hear What You Hear</a> says, most people have an innate sense of autocorrelation. They can predict the recurrence of choruses in pop songs. In a city with a grid system, they can tell how often cross streets come up when walking a long&nbsp;way.</p>
+<p>Given an explicit mathematical process, computers can do this, too. They can also go further and can pick out patterns in domains that are beyond human comprehension, like space radiation or subsecond changes in air&nbsp;pressure.</p>
+<p>Now that we know <em>why</em> we want to autocorrelate, we can get back to what it is. The “auto” part means “self” rather than “automatic”. So it’s not automatic correlation, it’s&nbsp;self-correlation.</p>
+<p>It’s finding out where a list of numbers lines up with&nbsp;itself.</p>
+<p><hr>
+To get a sense of how it’s supposed to work before we get into any numbers, try listening to this audio&nbsp;clip:</p>
+<audio src="autocorrelation-example-1.mp3" controls></audio>
+
+<p>You probably notice a pattern that repeats every three&nbsp;beats.</p>
+<p><hr>
+Now, let’s overlay that clip with a copy of itself that is delayed by one&nbsp;beat.</p>
+<audio src="autocorrelation-example-2.mp3" controls></audio>
+
+<p>You can probably hear that those aren’t very&nbsp;well-coordinated.</p>
+<p><hr>
+Here’s the original overlaid with a copy delayed by two&nbsp;beats.</p>
+<audio src="autocorrelation-example-3.mp3" controls></audio>
+
+<p>Again, not that&nbsp;correlated.</p>
+<p><hr>
+Here’s the original overlaid with a copy delayed by three&nbsp;beats.</p>
+<audio src="autocorrelation-example-4.mp3" controls ></audio>
+
+<p>Now, I imagine that sounds fairly correlated to you! Almost like the original clip itself<b><a href="/weblog/articles/autocorrelation/#footnote">*</a></b>.</p>
+<p>So, we’d say that the signal is very correlated with itself at a lag of 3, indicating that it’s likely that there is a pattern that repeats every three&nbsp;beats.</p>
+<p><hr>
+Now, let’s do the same thing, except with numbers, like&nbsp;these:</p>
+<pre><code>1 2 3 1 2 3 1 2 3
+</code></pre><p>We can overlay that with a copy of itself at a lag of 1 like&nbsp;so:</p>
+<pre><code>1 2 3 1 2 3 1 2 3
+  1 2 3 1 2 3 1 2 3
+</code></pre><p>You can see intuitively that (given the scale) 2 doesn’t correlate with the 1 under it, 3 doesn’t correlate with 2, etc. A computer can’t see that, though. Instead, it&nbsp;can:</p>
+<h3 id="1-calculate-the-difference-between-each-number-in-the-signal-and-the-average-of-the-signal-b-a-href-footnote-2-a-b-">1) Calculate the difference between each number in the signal and the average of the signal. <b><a href="#footnote-2">**</a></b></h3>
+<p>The average&nbsp;is:</p>
+<pre><code>(1 + 2 + 3 + 1 + 2 + 3 + 1 + 2 + 3)/9 = 2
+</code></pre><p>When we subtract 2 from each number in the signal, we&nbsp;get:</p>
+<pre><code>-1 +0 +1 -1 +0 +1 -1 +0 +1
+   -1 +0 +1 -1 +0 +1 -1 +0 +1
+</code></pre><h3 id="2-multiply-the-vertical-pairs-to-see-how-well-a-number-in-the-signal-correlates-with-the-corresponding-number-in-the-offset-signal-">2) Multiply the vertical pairs to see how well a number in the signal correlates with the corresponding number in the offset&nbsp;signal.</h3>
+<p>(We’ll ignore numbers that don’t have a correspondent in the other signal for this&nbsp;example.)</p>
+<pre><code>   +0 +1 -1 +0 +1 -1 +0 +1
+    x  x  x  x  x  x  x  x
+   -1 +0 +1 -1 +0 +1 -1 +0
+   _______________________
+   +0 +0 -1 +0 +0 -1 +0 +0
+</code></pre><p>If the pairs of numbers are both on the same side of the average (greater than 2 or less than two), we’ll get a positive value, which indicates a positive correlation. If they’re on opposite sides of the average, we’ll get a negative value because those two numbers are negatively&nbsp;correlated.</p>
+<h3 id="3-average-those-together-to-get-a-correlation-score-for-the-lag">3) Average those together to get a correlation score for the&nbsp;lag</h3>
+<p>Here is our score for a lag of&nbsp;1:</p>
+<pre><code>(0 + 0 + -1 + 0 + 0 + -1 + 0 + 0)/8 = -0.25
+</code></pre><p>To save precious web page space, I’m not going to go through getting the scores for a lag of 2. I’ll just tell it to you: <strong>-0.4286</strong>.</p>
+<p>We’ll go through the process for offset = 3, though. Here’s the original lined up with a copy that lags by&nbsp;3:</p>
+<pre><code>1 2 3 1 2 3 1 2 3
+      1 2 3 1 2 3 1 2 3
+</code></pre><p>Differences with the&nbsp;average:</p>
+<pre><code>-1 +0 +1 -1 +0 +1 -1 +0 +1
+         -1 +0 +1 -1 +0 +1 -1 +0 +1
+</code></pre><p>Correlation&nbsp;values:</p>
+<pre><code>__ __ __ +1 +0 +1 +1 +0 +1 __ __ __
+</code></pre><p>The score for this&nbsp;is:</p>
+<pre><code>(1 + 0 + 1 + 1 + 0 + 1)/6 = 0.66
+</code></pre><p>Lag scores&nbsp;table:</p>
+<table>
+<thead>
+<tr>
+<th><code>Lag</code></th>
+<th><code>Score</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>1</code></td>
+<td><code>-0.25</code></td>
+</tr>
+<tr>
+<td><code>2</code></td>
+<td><code>-0.42</code></td>
+</tr>
+<tr>
+<td><code>3</code></td>
+<td><code>+0.46</code></td>
+</tr>
+</tbody>
+</table>
+<p>The score for a lag of 3 (0.66) is higher than the score for a lag of 1 (-0.25) and higher than the score for a lag of 2 (-0.4286), and all of the other lags except lag = 0 (you can calculate them to check). So, the computer can say the signal most correlates with itself at lag = 3 and guess that there is a pattern every three numbers in that&nbsp;signal.</p>
+<hr>
+
+<p>That is one way to calculate autocorrelation, but it is too slow for many of the signal processing situations you might want to use it in. There are many other faster ways, but <a href="https://etudes.tibonihoo.net/literate_musing/autocorrelations.html">this way involving the Fourier transform</a> is explained by Thibauld Nion using&nbsp;Python.</p>
+<p>I followed along with his post in a <a href="https://github.com/jimkang/autoc/blob/main/meta/autoc-test.ipynb">Jupyter notebook</a> and <a href="https://github.com/jimkang/autoc">implemented this way of calculating autocorrelation in JavaScript</a>. An <a href="https://github.com/MaximilianBuegler/node-autocorrelation">earlier Node package</a> did the same, but I implemented it anyway in order to understand it better and to feel more confident about&nbsp;it.</p>
+<hr>
+
+<p><a id="footnote"><b>*</b> I added a tiny bit more lag when overlaying the copy of the clip here, for dramatic effect. If I had overlaid it exactly at three beats, it would sound just like the original clip, except louder, and you’d be like,&nbsp;huh?</p>
+<p><a id="footnote-2"><b>**</b> This step in which you subtract the average is called “centering the signal” and isn’t strictly necessary, I&nbsp;think.</p>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/weblog/">« Full blog</a></div>
+        <!--section.about-->
+        <!--  !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2020 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+          <p><a href='/weblog/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>
