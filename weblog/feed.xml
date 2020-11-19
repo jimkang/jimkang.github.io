@@ -14,7 +14,7 @@
       <pubDate>Sun, 15 Nov 2020 19:00:00 -0500</pubDate>
       <guid isPermaLink="true">http://jimkang.com/weblog/articles/autocorrelation/</guid>
       <author></author>
-      <description>&lt;p&gt;&lt;em&gt;I tried to explain this process on my podcast, Small Findings, but I found that it was just way too hard to do without showing numbers. So, instead, I went through an audio analogy for the process on the podcast and moved the math explanation here.&lt;/em&gt;&lt;/p&gt;
+      <description>&lt;p&gt;&lt;em&gt;I tried to explain this process on my &lt;a href=&quot;https://jimkang.com/smallfindings/episodes/100000-hot-dogs&quot;&gt;podcast&lt;/a&gt;, Small Findings, but I found that it was just way too hard to do without showing numbers. So, instead, I went through an audio analogy for the process on the podcast and moved the math explanation here.&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;I looked into autocorrelation a few weeks ago. My friend &lt;a href=&quot;https://blog.hughrawlinson.me/&quot;&gt;Hugh&lt;/a&gt; introduced it to me as a way to detect repeating patterns in words and sounds.&lt;/p&gt;
 &lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
 &lt;style&gt;
