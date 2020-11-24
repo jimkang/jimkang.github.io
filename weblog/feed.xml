@@ -5,9 +5,27 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Sun, 15 Nov 2020 19:00:00 -0500</pubDate>
+    <pubDate>Mon, 23 Nov 2020 19:00:00 -0500</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>The Spirits of the Founding Fathers</title>
+      <link>http://jimkang.com/weblog/articles/founding-fathers/</link>
+      <pubDate>Mon, 23 Nov 2020 19:00:00 -0500</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/founding-fathers/</guid>
+      <author></author>
+      <description>&lt;p&gt;In the novel &lt;u&gt;Things Fall Apart&lt;/u&gt;, the people in village of Umuofia practice ancestor worship. When it is time for a trial to settle a dispute between two villagers, judges come out dressed as the spirits of the mythical founders of the clan, complete with smoke rising from their masks. Their true identities are obscured, and they are addressed as the spirits they portray.
+&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Here in the present day United States, a lot of people are fanatical about the founding fathers. They believe we should decide current issues as the founding fathers would have decided, in spite of inconvenient logical consequences. For example, the founding fathers — who lived over 200 years ago — would most certainly bar women, including Amy Coney Barrett, from the Supreme Court.&lt;/p&gt;
+&lt;p&gt;The people who scream about the founding fathers are often angry and brandish weapons in public. Obviously, the right thing to do is to appease them. And I believe the best way to do that is this: &lt;strong&gt;A law requiring the &lt;abbr title=&quot;Supreme Court of the United States&quot;&gt;SCOTUS&lt;/abbr&gt; to cosplay as the ghosts of the founding fathers.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;The Chief Justice must dress and speak as George Washington, except with an oversized head that has a little fog machine in it. The other justices (of all genders, if they’re still allowed on the court) can decide among themselves who will play Adams, Jefferson, Hamilton, and the others. (We might have to go as far down the list as John Quincy Adams.)&lt;/p&gt;
+&lt;p&gt;This is it! This is the way forward! This is living our beliefs, or at least the beliefs of the most belligerent among us!&lt;/p&gt;
+&lt;hr&gt;
+
+
+&lt;p&gt;&lt;em&gt;Yes, that’s really it. That’s the blog post. You can close the tab now.&lt;/em&gt;&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Autocorrelation</title>
       <link>http://jimkang.com/weblog/articles/autocorrelation/</link>
