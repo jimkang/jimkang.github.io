@@ -5,9 +5,19 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Sat, 28 Nov 2020 19:00:00 -0500</pubDate>
+    <pubDate>Thu, 10 Dec 2020 19:00:00 -0500</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Miscellaneous Findings IV: Web odds and ends</title>
+      <link>http://jimkang.com/weblog/articles/miscellaneous-findings-004/</link>
+      <pubDate>Thu, 10 Dec 2020 19:00:00 -0500</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/miscellaneous-findings-004/</guid>
+      <author></author>
+      <description>&lt;p&gt;For this round of Miscellaneous Findings, we have a few web dev odds and ends.&lt;br /&gt;&lt;br /&gt;
+&lt;em&gt;This is a roundup of miscellaneous things that I’ve found out about (or have rediscovered).&lt;span class=&quot;more&quot;&gt;&lt;/span&gt; I take notes on findings regularly, and I put the findings that translate well to speech on my podcast, &lt;span style=&quot;text-decoration: underline&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://jimkang.com/smallfindings/&quot;&gt;Small Findings&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;. The rest (which are often technical findings), I put here. They’re not always written up for maximum comprehension as a blog post, but if anything is hard to understand, please &lt;a href=&quot;mailto:jimkang@fastmail.com&quot;&gt;email me&lt;/a&gt; if you need clarification.&lt;/em&gt;&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Things Fall Apart and King of the Hill</title>
       <link>http://jimkang.com/weblog/articles/things-fall-apart/</link>

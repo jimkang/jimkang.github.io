@@ -7,7 +7,7 @@ body {
 }
 
 .content-wrap {
-  width: 34em;
+  width: 34rem;
   margin: 0 auto;
 }
 
@@ -34,21 +34,21 @@ a:visited {
 }
 
 p {
-  margin-bottom: 1.52em;
+  margin-bottom: 1.52rem;
 }
 
 pre {
-  font-size: 0.9em;
+  font-size: 0.9rem;
   overflow: auto;
   background: #fff;
   border: 1px dashed #d2d2d2;
-  border-radius: 0.25em;
-  margin-bottom: 1.8em;
-  padding: 1em;
+  border-radius: 0.25rem;
+  margin-bottom: 1.8rem;
+  padding: 1rem;
 }
 
 h1 {
-  margin-bottom: 1em;
+  margin-bottom: 1rem;
 }
 
 .logo h1 {
@@ -57,12 +57,12 @@ h1 {
 
 h2 {
   line-height: 1.43;
-  margin-bottom: 1.35em;
+  margin-bottom: 1.35rem;
 }
 
 h3 {
-  margin-top: 1.8em;
-  margin-bottom: 0.8em;
+  margin-top: 1.8rem;
+  margin-bottom: 0.8rem;
 }
 
 ol, ul {
@@ -70,12 +70,12 @@ ol, ul {
 }
 
 li {
-  margin-bottom: 0.5em;
+  margin-bottom: 0.5rem;
 }
 
 blockquote {
-  margin: 1.2em 3em;
-  padding-left: 1em;
+  margin: 1.2em 3rem;
+  padding-left: 1rem;
   font-style: italic;
 }
 
@@ -89,7 +89,7 @@ hr {
 /* page header */
 
 .header {
-  margin: 3em 0 4em;
+  margin: 3em 0 4rem;
 }
 
 .header h1 {
@@ -113,14 +113,14 @@ hr {
 }
 
 .header .description {
-  font-size: 1.2em;
+  font-size: 1.2rem;
   font-style: italic;
   text-align: center;
-  margin-top: -0.3em;
+  margin-top: -0.3rem;
 }
 
 body.article-detail > header {
-  margin-bottom: 3em;
+  margin-bottom: 3rem;
 }
 
 /* page footer */
@@ -131,39 +131,39 @@ footer {
 
 footer .nav {
   text-align: center;
-  margin-top: 5em;
-  margin-bottom: 3.5em;
+  margin-top: 5rem;
+  margin-bottom: 3.5rem;
 }
 
 footer a {
-  font-size: 1.2em;
+  font-size: 1.2rem;
   text-decoration: none;
   font-style: normal;
 }
 
 footer .nav a {
-  padding: 0 0.5em;
+  padding: 0 0.5rem;
 }
 
 footer .about {
   border-top: 1px dashed #d2d2d2;
-  padding: 2.2em 3em;
-  font-size: 0.7em;
+  padding: 2.2em 3rem;
+  font-size: 0.7rem;
   -webkit-column-count: 3;
   -moz-column-count: 3;
   -ms-column-count: 3;
   column-count: 3;
-  -webkit-column-gap: 2em;
-  -moz-column-gap: 2em;
-  -ms-column-gap: 2em;
-  column-gap: 2em;
+  -webkit-column-gap: 2rem;
+  -moz-column-gap: 2rem;
+  -ms-column-gap: 2rem;
+  column-gap: 2rem;
 }
 
 footer .copy {
   text-align: center;
-  font-size: 0.7em;
+  font-size: 0.7rem;
   font-style: italic;
-  margin-top: 1em;
+  margin-top: 1rem;
 }
 
 footer .copy, footer .copy a {
@@ -173,7 +173,7 @@ footer .copy, footer .copy a {
 /* article */
 
 .article {
-  margin: 3em 3em 4em 1em;
+  margin: 3em 3em 4em 1rem;
 }
 
 .article header {
@@ -192,13 +192,13 @@ footer .copy, footer .copy a {
 
 .article header .date {
   text-align: center;
-  font-size: 0.8em;
-  margin-top: -0.7em;
+  font-size: 0.8rem;
+  margin-top: -0.7rem;
 }
 
 .article header .date span {
   background-color: #fcfcfc;
-  padding: 0 0.7em;
+  padding: 0 0.7rem;
 }
 
 .article.intro .content p {
@@ -207,7 +207,7 @@ footer .copy, footer .copy a {
 
 .article.intro .content .more {
   font-weight: 700;
-  margin-left: 0.3em;
+  margin-left: 0.3rem;
   border-bottom: 1px dashed #777;
 }
 
@@ -230,7 +230,7 @@ footer .copy, footer .copy a {
 }
 
 .article h1 {
-  font-size: 2em;
+  font-size: 2rem;
 }
 
 .more, .date {
@@ -244,16 +244,16 @@ footer .copy, footer .copy a {
 /* archive */
 
 .archive {
-  width: 32em;
-  margin: 5em auto 6em;
-  padding-left: 2em;
+  width: 32rem;
+  margin: 5em auto 6rem;
+  padding-left: 2rem;
 }
 
 .archive h2 {
-  font-size: 2em;
+  font-size: 2rem;
   margin: 0;
-  margin-left: 6.1em;
-  margin-bottom: 0.5em;
+  margin-left: 6.1rem;
+  margin-bottom: 0.5rem;
 }
 
 .archive a, .archive span{
@@ -273,14 +273,14 @@ footer .copy, footer .copy a {
 }
 
 .archive a {
-  width: 21em;
-  text-indent: 1em;
+  width: 21rem;
+  text-indent: 1rem;
   white-space: nowrap;
 }
 
 .archive .year-label,
 .archive .month-label{
-  width: 4em;
+  width: 4rem;
   font-variant: small-caps;
   text-transform: lowercase;
   font-weight: 400;
@@ -290,7 +290,7 @@ footer .copy, footer .copy a {
 }
 
 .archive .month-label {
-  width: 7em;
+  width: 7rem;
 }
 
 .archive ul {
@@ -306,7 +306,7 @@ footer .copy, footer .copy a {
 
 code {
   font-family: 'Lucida Console', 'Anonymous Pro', monospace;
-  font-size: 0.75em;
+  font-size: 0.75rem;
   color: #000;
 }
 
@@ -394,9 +394,13 @@ ol.alpha {
 .finding {
   font-size: 1rem;
   background-color: hsla(230, 50%, 20%, 0.075);
-  padding: 1em;
-  margin-bottom: 1em;
-  border-radius: 0.5em;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+}
+
+.finding h1 {
+  margin-top: 0;
 }
 
 /* media queries */
@@ -415,20 +419,20 @@ ol.alpha {
 
   .content-wrap {
     width: auto;
-    padding: 0 1em;
+    padding: 0 1rem;
   }
   .header {
     margin: 1em 0;
   }
   .header h1 {
-    font-size: 1.0em;
-    margin-bottom: 0.6em;
+    font-size: 1.0rem;
+    margin-bottom: 0.6rem;
   }
   .header .description {
-    font-size: 1em;
+    font-size: 1rem;
   }
   .article {
-    margin: 1em 0 2.5em;
+    margin: 1em 0 2.5rem;
   }
   .archive {
     width: 80%;
@@ -448,15 +452,15 @@ ol.alpha {
   }
   footer .about {
     padding: 0;
-    font-size: 0.9em;
-    padding-top: 1.6em;
+    font-size: 0.9rem;
+    padding-top: 1.6rem;
     -webkit-column-count: 1;
     -moz-column-count: 1;
     -ms-column-count: 1;
     column-count: 1;
   }
   footer .about p {
-    margin-bottom: 1em;
+    margin-bottom: 1rem;
   }
 
   .center-img-zone .img-container {
