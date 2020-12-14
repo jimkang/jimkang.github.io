@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width" initial-scale="1">
+    <title>Miscellaneous Findings V: Internet - jimkang.com
+    </title>
+    <link rel="alternate" href="http://jimkang.com/feed.xml" type="application/rss+xml" title="It's dot com.">
+    <link rel="stylesheet" href="/weblog/css/main.css">
+  </head>
+  <body>
+    <header class="header">
+      <div class="content-wrap">
+        <!-- include author-->
+        <h1>Miscellaneous Findings V: Internet</h1>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>For this round of Miscellaneous Findings, we have things related to the internet, mostly the doings of servers.<br /><br />
+<em>This is a roundup of miscellaneous things that I’ve found out about (or have rediscovered).<span class="more"></span> I take notes on findings regularly, and I put the findings that translate well to speech on my podcast, <span style="text-decoration: underline"><strong><a href="https://jimkang.com/smallfindings/">Small Findings</a></strong></span>. The rest (which are often technical findings), I put here. They’re not always written up for maximum comprehension as a blog post, but if anything is hard to understand, please <a href="mailto:jimkang@fastmail.com">email me</a> if you need&nbsp;clarification.</em></p>
+</section>
+          <article class="finding">
+            <section class="content"><h1 id="web-site-delivery-speed">Web site delivery&nbsp;speed</h1>
+<p>You can easily find out how fast your web page loads (and how fast it becomes usable) to your own computer by simply loading your web page in your browser. Sadly, most people aren’t loading your web page from your computer. So, you need to find oUt how it loads on other computers&nbsp;somehow.</p>
+<h2 id="testing-web-page-speed">Testing web page&nbsp;speed</h2>
+<p>Tools for finding out how fast a web page can be loaded and used throughout the&nbsp;world:</p>
+<ul>
+<li><a href="https://developers.google.com/speed/pagespeed/">PageSpeed Insights</a> for speed that doesn’t factor in user&nbsp;location.</li>
+<li><a href="https://geopeeker.com/">GeoPeeker</a> to get a sense for how things load in other parts of the world.<ul>
+<li>It often doesn’t work at all,&nbsp;though.</li>
+</ul>
+</li>
+<li><a href="https://shotsherpa.com/adventure/">There is ShotSherpa</a>, but it doesn’t give you load&nbsp;times.</li>
+<li><a href="https://www.geoscreenshot.com/">GeoScreenshot</a> gets times, but it’s a little harder to see.<ul>
+<li>No Africa in&nbsp;there.</li>
+</ul>
+</li>
+<li><a href="https://addyosmani.com/blog/puppeteer-recipes/#measuring-memory-leaks">Puppeteer scripts to measure&nbsp;performance</a></li>
+</ul>
+<h2 id="cdn-performance"><span class="caps">CDN</span>&nbsp;performance</h2>
+<p>Conventional wisdom says that if you want better global performance, you should just get a&nbsp;<span class="caps">CDN</span>.</p>
+<p>CDNs are mostly expensive. Netlify is cheap but <a href="https://jimkang.com/weblog/articles/miscellaneous-findings-001/">has other costs</a>.</p>
+<h3 id="comparison-of-load-times-single-server-vs-cdn">Comparison of load times: single server vs.&nbsp;<span class="caps">CDN</span></h3>
+<p>The home page at jimkang.com is served from a single conventional server. I put a copy of it on Netlify so that it could be served via Netlify’s <span class="caps">CDN</span>. Then, I compared the conventional and CDN load times from clients around the world, using&nbsp;GeoScreenshot.</p>
+<p>This was only run once and without looking hard for possible confounding factors, so it’s an anecdote, not incontrovertible proof. Just take it as directional information worth digging into more&nbsp;deeply.</p>
+<p>Netlify <span class="caps">CDN</span> version: <a href="https://naughty-dijkstra-3087c7.netlify.app/">https://naughty-dijkstra-3087c7.netlify.app/</a></p>
+<p>Normal version: <a href="https://jimkang.com">https://jimkang.com</a></p>
+<p>On GeoScreenshot, load times in&nbsp;seconds:</p>
+<table>
+<thead>
+<tr>
+<th>Location</th>
+<th>Netlify</th>
+<th>Regular</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="caps">UK</span></td>
+<td>1.69</td>
+<td>1.19</td>
+</tr>
+<tr>
+<td>Germany</td>
+<td>1.94</td>
+<td>0.95</td>
+</tr>
+<tr>
+<td>Canada</td>
+<td>2.28</td>
+<td>2.56</td>
+</tr>
+<tr>
+<td>India</td>
+<td>3.06</td>
+<td>3.40</td>
+</tr>
+<tr>
+<td><span class="caps">US</span></td>
+<td>2.46</td>
+<td>1.46</td>
+</tr>
+<tr>
+<td>China</td>
+<td>2.72</td>
+<td>3.75</td>
+</tr>
+<tr>
+<td>Australia</td>
+<td>6.34</td>
+<td>5.67</td>
+</tr>
+</tbody>
+</table>
+<p>The <span class="caps">CDN</span> was faster in Canada, India, and China in this run, but not anywhere else. (I couldn’t get African or South American location in there,&nbsp;unfortunately.)</p>
+<h4 id="heavier-site">Heavier&nbsp;site</h4>
+<p>In this set of load time comparisons, I used Observatory, a large <span class="caps">JS</span>- and data-heavy web&nbsp;app.</p>
+<p>Netlify version: <a href="https://observatory.netlify.app/">https://observatory.netlify.app/</a></p>
+<p>Normal version: <a href="https://jimkang.com/observatory/">https://jimkang.com/observatory/</a></p>
+<table>
+<thead>
+<tr>
+<th>Location</th>
+<th>Netlify</th>
+<th>Regular</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="caps">UK</span></td>
+<td>1.34</td>
+<td>0.86</td>
+</tr>
+<tr>
+<td>Germany</td>
+<td>1.47</td>
+<td>0.76</td>
+</tr>
+<tr>
+<td>Canada</td>
+<td>3.69</td>
+<td>3.68</td>
+</tr>
+<tr>
+<td>India</td>
+<td>3.84</td>
+<td>3.96</td>
+</tr>
+<tr>
+<td><span class="caps">US</span></td>
+<td>37.82</td>
+<td>46.61</td>
+</tr>
+<tr>
+<td>China</td>
+<td>60+</td>
+<td>28.68</td>
+</tr>
+<tr>
+<td>Australia</td>
+<td>8.46</td>
+<td>7.68</td>
+</tr>
+</tbody>
+</table>
+<p>The <span class="caps">CDN</span> was faster in India and the US in this run, but not anywhere&nbsp;else.</p>
+<p>So, CDNs don’t always make a difference. To be clear, I’m not saying they’re some sort of scam; they usually make a big difference when serving media files. They’re not a silver bullet it all situations, though. Definitely test before shelling out&nbsp;cash.</p>
+<p>Reducing your page size, however, is a <em>very</em> reliable way to improve your global load&nbsp;times.</p>
+<p>#web #usability&nbsp;#performance</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="boardman-oregon">Boardman,&nbsp;Oregon</h1>
+<p>If you see traffic from Boardman, Oregon in your server logs, keep in mind that there are at least <a href="https://www.oregonlive.com/silicon-forest/2015/02/amazon_plans_up_to_11_more_ore.html">four Amazon data centers</a> at Port of Morrow in Oregon, which is near&nbsp;Boardman.</p>
+<p>#oregon&nbsp;#web-traffic</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="ncat">ncat</h1>
+<p><code>ncat</code> is a command that can be used to watch network connections and pass requests to a script to&nbsp;respond!</p>
+<p>For example, this would pass http requests to <code>respond.sh</code>:</p>
+<pre><code>ncat -e respond.sh -kl 80
+</code></pre><p><code>respond.sh</code> can then use <code>read</code> to put stdin into a variable (e.g. <code>read -r request _</code>) then write the http response to&nbsp;stdout.</p>
+<p>It’s minimum viable web&nbsp;server!</p>
+<p><a href="https://github.com/izabera/ynaas/blob/master/ynaas">Single-serving site maker that serves subdomains&nbsp;dynamically</a></p>
+<p>#unix #command #network&nbsp;#bash</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="playwright">Playwright</h1>
+<p>Playwright, a headless browser runner, like Puppeteer, might “just work” on a laptop, as it did for me. But it does have a lot of dependencies, which might not be there, as it was in the case of my <span class="caps">VPS</span>&nbsp;instance.</p>
+<p><a href="https://github.com/microsoft/playwright/blob/master/docs/docker/Dockerfile.bionic">Here’s a list of the&nbsp;dependencies.</a></p>
+<pre><code># 2. Install WebKit dependencies
+RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
+    libwoff1 \
+    libopus0 \
+    libwebp6 \
+    libwebpdemux2 \
+    libenchant1c2a \
+    libgudev-1.0-0 \
+    libsecret-1-0 \
+    libhyphen0 \
+    libgdk-pixbuf2.0-0 \
+    libegl1 \
+    libnotify4 \
+    libxslt1.1 \
+    libevent-2.1-6 \
+    libgles2 \
+    libvpx5
+
+# 3. Install gstreamer and plugins to support video playback in WebKit.
+RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
+    libgstreamer-gl1.0-0 \
+    libgstreamer-plugins-bad1.0-0 \
+    gstreamer1.0-plugins-good
+
+# 4. Install Chromium dependencies
+RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
+    libnss3 \
+    libxss1 \
+    libasound2 \
+    fonts-noto-color-emoji
+
+# 5. Install Firefox dependencies
+RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
+    libdbus-glib-1-2 \
+    libxt6
+
+# 6. Install ffmpeg to bring in audio and video codecs necessary for playing videos in Firefox.
+RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
+    ffmpeg
+
+# 7. Add user so we don&#39;t need --no-sandbox in Chromium
+RUN groupadd -r pwuser &amp;&amp; useradd -r -g pwuser -G audio,video pwuser \
+    &amp;&amp; mkdir -p /home/pwuser/Downloads \
+    &amp;&amp; chown -R pwuser:pwuser /home/pwuser
+
+# 8. (Optional) Install XVFB if there&#39;s a need to run browsers in headful mode
+RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
+    xvfb
+</code></pre><p>#automation #browser&nbsp;#configuration</p>
+</section>
+          </article>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/weblog/">« Full blog</a></div>
+        <!--section.about-->
+        <!--  !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2020 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+          <p><a href='/weblog/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>

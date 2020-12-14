@@ -5,9 +5,19 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Thu, 10 Dec 2020 19:00:00 -0500</pubDate>
+    <pubDate>Sun, 13 Dec 2020 19:00:00 -0500</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Miscellaneous Findings V: Internet</title>
+      <link>http://jimkang.com/weblog/articles/miscellaneous-findings-005/</link>
+      <pubDate>Sun, 13 Dec 2020 19:00:00 -0500</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/miscellaneous-findings-005/</guid>
+      <author></author>
+      <description>&lt;p&gt;For this round of Miscellaneous Findings, we have things related to the internet, mostly the doings of servers.&lt;br /&gt;&lt;br /&gt;
+&lt;em&gt;This is a roundup of miscellaneous things that I’ve found out about (or have rediscovered).&lt;span class=&quot;more&quot;&gt;&lt;/span&gt; I take notes on findings regularly, and I put the findings that translate well to speech on my podcast, &lt;span style=&quot;text-decoration: underline&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://jimkang.com/smallfindings/&quot;&gt;Small Findings&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;. The rest (which are often technical findings), I put here. They’re not always written up for maximum comprehension as a blog post, but if anything is hard to understand, please &lt;a href=&quot;mailto:jimkang@fastmail.com&quot;&gt;email me&lt;/a&gt; if you need clarification.&lt;/em&gt;&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Miscellaneous Findings IV: Web odds and ends</title>
       <link>http://jimkang.com/weblog/articles/miscellaneous-findings-004/</link>
@@ -71,19 +81,8 @@
       <author></author>
       <description>&lt;p&gt;&lt;em&gt;I tried to explain this process on my &lt;a href=&quot;https://jimkang.com/smallfindings/episodes/100000-hot-dogs&quot;&gt;podcast&lt;/a&gt;, Small Findings, but I found that it was just way too hard to do without showing numbers. So, instead, I went through an audio analogy for the process on the podcast and moved the math explanation here.&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;I looked into autocorrelation a few weeks ago. My friend &lt;a href=&quot;https://blog.hughrawlinson.me/&quot;&gt;Hugh&lt;/a&gt; introduced it to me as a way to detect repeating patterns in words and sounds.&lt;/p&gt;
-&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
-&lt;style&gt;
-table {
-  border-spacing: 0;
-  border-collapse: collapse;
-}
-td,th {
-  border: 1px solid #666;
-  padding: 0.25em;
-}
-&lt;/style&gt;
-
-&lt;p&gt;There are several autocorrelation algorithms, but like the book &lt;a href=&quot;http://www.whyyouhearwhatyouhear.com/&quot;&gt;Why You Hear What You Hear&lt;/a&gt; says, most people have an innate sense of autocorrelation. They can predict the recurrence of choruses in pop songs. In a city with a grid system, they can tell how often cross streets come up when walking a long way.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;
+There are several autocorrelation algorithms, but like the book &lt;a href=&quot;http://www.whyyouhearwhatyouhear.com/&quot;&gt;Why You Hear What You Hear&lt;/a&gt; says, most people have an innate sense of autocorrelation. They can predict the recurrence of choruses in pop songs. In a city with a grid system, they can tell how often cross streets come up when walking a long way.&lt;/p&gt;
 &lt;p&gt;Given an explicit mathematical process, computers can do this, too. They can also go further and can pick out patterns in domains that are beyond human comprehension, like space radiation or subsecond changes in air pressure.&lt;/p&gt;
 &lt;p&gt;Now that we know &lt;em&gt;why&lt;/em&gt; we want to autocorrelate, we can get back to what it is. The “auto” part means “self” rather than “automatic”. So it’s not automatic correlation, it’s self-correlation.&lt;/p&gt;
 &lt;p&gt;It’s finding out where a list of numbers lines up with itself.&lt;/p&gt;
