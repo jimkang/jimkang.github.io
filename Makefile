@@ -10,5 +10,5 @@ prettier:
 
 sync:
 	rsync -a $(HOMEDIR)/ $(USER)@$(SERVER):/$(DOMAINDIR) --exclude node_modules/ \
+    --exclude .git \
 		--omit-dir-times --no-perms
-
