@@ -1,0 +1,315 @@
+/* Cardo for headers. */
+
+@font-face {
+  font-family: 'Cardo';
+  src: url('Cardo-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen {
+  html {
+    /*
+    background-color: #414141;
+    */
+  }
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    max-width: 50em;
+    padding: 10mm;
+    margin: auto;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    background-color: hsl(35,55%,90%);
+    border: solid 1px #e0cba5;
+    border-radius: 4px;
+    box-shadow: 5px 5px 1px hsla(0, 0%, 0%, 0.3);
+  }
+}
+
+/* Setup for when we actually print it. */
+@media print {
+  body {
+    background-color: #ccc;
+  }
+
+  .pagebreak {
+    display: none;
+    page-break-before: always;
+    page-break-after: always;
+  }
+}
+
+body {
+  font-size: 12pt;
+  line-height: 1.4em;
+
+  --bgtan: #F7F2E5;
+  --titlered: #58180D;
+  --undergold: #C9AD6A;
+  --uppergold: #B89A67;
+  --puregold: #E69A28;
+  --monstertan: #FDF1DC;
+  --monstertandark: #F0DBB5;
+  --monstertanlighter: #F0E1C5;
+  --commentgreen: #E0E5C1;
+  --itemtablepink: #E9CDC2;
+  --rulered: #9C2B1B;
+  --darkline: #533;
+}
+
+h1 {
+  margin-top: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.2em;
+  color: var(--titlered);
+  font-variant-caps: small-caps;
+  font-family: 'Cardo', serif;
+  margin-bottom: 0.1em;
+  page-break-after: avoid;
+}
+h1 {
+  margin-bottom: 0.3em;
+}
+h3 {
+  border-bottom: 2px solid var(--undergold);
+}
+
+/* Indent any paragraph after first */
+p + p {
+  text-indent: 1em;
+}
+p {
+  margin-top: 0;
+  /*text-align: justify;*/
+}
+
+/*
+  Tables with even-odd alternate coloured rows.
+  First column is centered, rest is left aligned.
+*/
+table {
+  border-collapse: collapse;
+  margin: auto;
+  width: 100%;
+  font-family: sans-serif;
+}
+table tr,
+table th,
+table td {
+  border: 0;
+  padding: 1ex;
+  text-align: left;
+  font-size: 0.9em;
+}
+table th {
+  vertical-align: bottom;
+}
+table td {
+  vertical-align: top;
+}
+tr:nth-child(even) {
+  background: var(--monstertandark);
+}
+th:nth-child(1),
+td:nth-child(1) {
+  text-align: center;
+  font-weight: bold;
+}
+
+table#wall-table {
+}
+#wall-table td:nth-child(1) {
+  font-weight: normal;
+}
+#wall-table td {
+  text-align: center;
+  border: solid 4px #6d1214;
+}
+
+blockquote {
+  margin: 1em 0;
+  width: 100%;
+  font-style: italic;
+}
+blockquote[cite]:after,
+blockquote cite:before {
+  content: "— " attr(cite);
+}
+blockquote[cite]:after,
+blockquote cite {
+  display: block;
+  text-align: right;
+  font-style: normal;
+}
+
+/* List with dots aligned to the rest of the text. */
+ul {
+  margin: 0.5em 0;
+  padding-left: 1.2em;
+}
+
+li {
+  margin-bottom: 0.5em;
+}
+
+dl {
+  padding-left: 1.2em;
+}
+dt {
+  font-weight: bold;
+}
+
+/* Drop Caps, ie. that fancy big first letter of chapters. */
+.dropcap:first-letter {
+  /*initial-letter: 2;*/
+  float: left;
+  font-size: 4em;
+  line-height: 1em;
+  padding-right: 0.2em;
+  font-family: 'Georgia', cursive;
+}
+
+/* Alternative manual colour and aligning. */
+h3.blue-head {
+  text-align: right;
+  color: #668fad;
+  border-bottom: 2px solid #668fad;
+  line-height: 100%;
+}
+
+label.table-header {
+  font-size: 105%;
+  font-weight: bold;
+  margin-top: 0.5em;
+  margin-bottom: 1em;
+  display: inline-block;
+  font-family: sans-serif;
+}
+
+.opening-flavour {
+  margin-top: 0.2em;
+  margin-bottom: 0.3em;
+  font-style: italic;
+}
+
+.readaloud,
+.sidenote {
+  padding: 1.5ex;
+  margin: 0.8em 0 0.8em 0;
+  font-family: sans-serif;
+  line-height: 170%;
+  font-size: 11pt;
+}
+.readaloud {
+  background: #e4d0bf;
+  border: solid var(--rulered);
+  border-width: 0 2px;
+}
+.sidenote {
+  background: #e8dfd6;
+  border: solid #000;
+  border-width: 2px 0;
+}
+
+.sidenote h1,
+.sidenote h2,
+.sidenote h3,
+.sidenote h4,
+.sidenote h5,
+.sidenote h6 {
+  margin-top: 0;
+  color: #000;
+  font-family: sans-serif;
+}
+
+.two-columns {
+  column-count: 2;
+  column-gap: 1cm;
+  column-width: 10em;
+}
+
+.whole-page {
+  column-span: all;
+}
+
+a:link, a:visited {
+  color: var(--titlered);
+}
+
+.box-list, li > ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.box-list > li {
+  background-color: var(--monstertandark);
+  padding: 1em;
+  border-radius: 4px;
+}
+
+.box-list table {
+  background-color: var(--monstertanlighter);
+}
+
+.box-list h3 {
+  margin-top: 0;
+}
+
+ol.steps {
+  padding-left: 2ex;
+}
+
+.steps ul {
+  list-style-type: disc;
+  padding-left: 1em;
+}
+
+hr {
+  border: none;
+  border-top: 2px solid var(--darkline);
+  overflow: visible;
+  text-align: center;
+  height: 5px;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+img {
+  border-radius: 4px;
+}
+
+.items > li {
+  display: flex;
+  flex-direction: column;
+}
+
+.items img {
+  width: 10em;
+  align-self: center;
+}
+
+.char-list img {
+  width: 100%;
+}
+
+.char-list,.items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20em, 1fr));
+  grid-gap: 1rem;
+}
+
+#wand {
+  grid-row-start: 3;
+  grid-row-end: 6;
+}
