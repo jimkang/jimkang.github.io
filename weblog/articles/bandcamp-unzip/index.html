@@ -25,7 +25,7 @@
           <section class="content"><p>Here’s a script that’s handy for unzipping stuff you download from Bandcamp.
 <span class="more"></span></p>
 <p>Bandcamp gives you zip files that contain no directory structure. So, the files just unzip to whatever directory you’re in. I have found that to get messy, and I now like an <code>artist-dir/album-dir</code> structure, like I’m in the year&nbsp;2000.</p>
-<p>Here’s a script I wrote to unzip Bandcamp zip files into such a&nbsp;structure.</p>
+<p>Here’s a script I wrote to unzip Bandcamp zip files into such a structure. It uses the naming scheme of the zip file (<code>&lt;artist name&gt;</code>-<code>&lt;album name&gt;</code>) to determine the appropriate directory&nbsp;names.</p>
 <pre><code>#!/bin/bash
 
 for file in *.zip
