@@ -15,7 +15,8 @@
       <guid isPermaLink="true">http://jimkang.com/weblog/articles/web-creating-usability/</guid>
       <author></author>
       <description>&lt;p&gt;People have been writing software for quite a long time, so natually, there are some amazing, rock-solid old tools out there, like &lt;a href=&quot;https://bost.ocks.org/mike/make/&quot;&gt;make&lt;/a&gt; and &lt;a href=&quot;https://en.wikipedia.org/wiki/Rsync&quot;&gt;rsync&lt;/a&gt;. This extends to diagramming software.&lt;/p&gt;
-&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;style&gt;img { max-width: 100%; }&lt;/style&gt;
 For years, I’ve used &lt;a href=&quot;https://graphviz.org/&quot;&gt;Graphviz&lt;/a&gt; (created &lt;a href=&quot;https://en.wikipedia.org/wiki/Graphviz&quot;&gt;“before 1991”&lt;/a&gt;), which lets you write a little declarative program that says what nodes connect to what. Then, you run a compiler that makes the diagram. It figures out for you exactly where the circles (or boxes or other shapes) and lines and labels should go.&lt;/p&gt;
 &lt;p&gt;Here’s an example program:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;digraph {
