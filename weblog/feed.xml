@@ -42,6 +42,128 @@ for file in *.zip
 </description>
     </item>
     <item>
+      <title>The web actually breathing usability into old tools</title>
+      <link>http://jimkang.com/weblog/articles/web-creating-usability/</link>
+      <pubDate>Wed, 17 Feb 2021 19:00:00 -0500</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/web-creating-usability/</guid>
+      <author></author>
+      <description>&lt;p&gt;People have been writing software for quite a long time, so natually, there are some amazing, rock-solid old tools out there, like &lt;a href=&quot;https://bost.ocks.org/mike/make/&quot;&gt;make&lt;/a&gt; and &lt;a href=&quot;https://en.wikipedia.org/wiki/Rsync&quot;&gt;rsync&lt;/a&gt;. This extends to diagramming software.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;
+For years, I’ve used &lt;a href=&quot;https://graphviz.org/&quot;&gt;Graphviz&lt;/a&gt; (created &lt;a href=&quot;https://en.wikipedia.org/wiki/Graphviz&quot;&gt;“before 1991”&lt;/a&gt;), which lets you write a little declarative program that says what nodes connect to what. Then, you run a compiler that makes the diagram. It figures out for you exactly where the circles (or boxes or other shapes) and lines and labels should go.&lt;/p&gt;
+&lt;p&gt;Here’s an example program:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;digraph {
+  graph [fontsize=12, fontname=Ubuntu, penwidth=3];
+  node [fontsize=12, fontname=Ubuntu, shape=circle];
+  edge [fontsize=12, fontname=Ubuntu];
+  nodesep=3;
+  overlap=false;
+  root=onEstablishPilesContainer;
+  dim=4;
+  mode=ipsep;
+  sep=0.4
+
+  // Persisters
+  PilesPersister;
+  PilesPersister -&amp;gt; DeckStore [label=&amp;quot;setPart&amp;quot;];
+  PilesPersister -&amp;gt; DeckStore [label=&amp;quot;get&amp;quot;];
+  deckIdsPersister -&amp;gt; localStorage [label=&amp;quot;setItem&amp;quot;];
+  thingPersister -&amp;gt; localStorage [label=&amp;quot;setItem&amp;quot;];
+
+  subgraph cluster_stores {
+    label=&amp;quot;Stores&amp;quot;;
+    bgcolor=&amp;quot;#fde725&amp;quot;;
+    DeckCollectionStore;
+    DeckStore [shape=doublecircle];
+    activeDeckIdentifier;
+    PileCollectionStore;
+    PileStore [shape=doublecircle];
+  }
+
+  subgraph cluster_responders {
+    label=&amp;quot;Responders&amp;quot;;
+    bgcolor=&amp;quot;#a5db36&amp;quot;;
+
+    onDeckCollectionChange;
+    onDeckChange [shape=doublecircle];
+    onPileCollectionChange;
+    onPileChange [shape=doublecircle];
+    onEstablishPilesContainer [shape=doublecircle];
+
+    DeckCollectionStore -&amp;gt; onDeckCollectionChange;
+    DeckCollectionStore -&amp;gt; deckIdsPersister [label=&amp;quot;write&amp;quot;];
+    activeDeckIdentifier -&amp;gt; onDeckCollectionChange;
+    DeckStore -&amp;gt; onDeckChange;
+    DeckStore -&amp;gt; thingPersister [style=dashed, label=&amp;quot;write&amp;quot;];
+    PileCollectionStore -&amp;gt; onPileCollectionChange;
+    PileStore -&amp;gt; onPileChange;
+    PileStore -&amp;gt; thingPersister [style=dashed, label=&amp;quot;write&amp;quot;];
+    PileCollectionStore -&amp;gt; PilesPersister [style=dashed, label=&amp;quot;write&amp;quot;]
+  }
+
+  subgraph cluster_renderers {
+    label=&amp;quot;Renderers&amp;quot;;
+    bgcolor=&amp;quot;#54c568&amp;quot;;
+
+    RenderDeckCollection;
+    RenderDeck [shape=doublecircle];
+    RenderPileCollection;
+    RenderPile [shape=doublecircle];
+
+    onDeckCollectionChange -&amp;gt; RenderDeckCollection;
+    onDeckChange -&amp;gt; RenderDeck;
+    RenderDeck -&amp;gt; onEstablishPilesContainer [style=dashed, label=&amp;quot;(one-time)&amp;quot;];
+    onEstablishPilesContainer -&amp;gt; RenderPileCollection;
+    onEstablishPilesContainer -&amp;gt; RenderPile;
+
+    onPileCollectionChange -&amp;gt; RenderPileCollection;
+    onPileChange -&amp;gt; RenderPile;
+  }
+
+  subgraph cluster_updaters {
+    label=&amp;quot;Updaters&amp;quot;;
+    bgcolor=&amp;quot;#22a884&amp;quot;;
+
+    addDeck;
+    addPile;
+    addDeck -&amp;gt; DeckCollectionStore;
+    addPile -&amp;gt; PileCollectionStore [label=&amp;quot;add&amp;quot;];
+    RenderDeckCollection -&amp;gt; addDeck [style=dashed];
+    RenderDeck -&amp;gt; activeDeckIdentifier [style=dashed, label=&amp;quot;setPart&amp;quot;];
+    RenderDeck -&amp;gt; DeckStore [style=dashed, label=&amp;quot;setPart&amp;quot;];
+    RenderDeck -&amp;gt; DeckStore [style=dashed, label=&amp;quot;del&amp;quot;];
+    RenderDeck -&amp;gt; DeckCollectionStore [style=dashed, label=&amp;quot;remove&amp;quot;];
+    RenderPileCollection -&amp;gt; addPile [style=dashed];
+    RenderPile -&amp;gt; PileCollectionStore [style=dashed, label=&amp;quot;remove&amp;quot;];
+    RenderPile -&amp;gt; PileStore [style=dashed, label=&amp;quot;del&amp;quot;];
+    RenderPile -&amp;gt; PileStore [style=dashed, label=&amp;quot;setPart&amp;quot;];
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;That produces this diagram:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/web-creating-usability/machines.png&quot; alt=&quot;Graphviz diagram&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Despite knowing Graphviz, I started that diagram drawing it by hand on an e-ink tablet because I’ve been trying lately do stuff away from the computer as much as possible. It was easier than doing it in the likes of Visio or LucidChart, but every change to the subject of the diagram meant a painful redrawing of the layout. I’m diagramming my app for the purpose of finding problems and ways to reduce the complexity, so being able to update the diagram easily is important. With Graphviz, updating is usually a matter of editing a line or two, then running &lt;code&gt;neato&lt;/code&gt; or &lt;code&gt;dot&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;This afternoon, I found &lt;a href=&quot;http://www.mcternan.me.uk/mscgen/&quot;&gt;Mscgen&lt;/a&gt;, a tool specifically for making sequence diagrams. It’s inspired by Graphviz and is more recent (2011), yet is still a command line tool.&lt;/p&gt;
+&lt;h2 id=&quot;secret-room-for-improvement&quot;&gt;Secret room for improvement&lt;/h2&gt;
+&lt;p&gt;Both of these turn out to have browser ports: &lt;a href=&quot;https://dreampuf.github.io/GraphvizOnline/&quot;&gt;GraphvizOnline&lt;/a&gt; and &lt;a href=&quot;https://mscgen.js.org/?lang=msgenny&quot;&gt;mscgen_js&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I think I saw that GraphvizOnline existed years before, but I dismissed it as some Emscripten stunt. Only after stumbling on it again recently did I realize how powerful it is. It and mscgen_js make two simple additions to their respective original programs:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;They put a code editor side-by-side with the program output.&lt;/li&gt;
+&lt;li&gt;They run the diagram compiler whenever you stop typing and update the image next to the code.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The result is that you can see changes as you try them. With GraphvizOnline, you can even flip through the different compilers (e.g. the one for hierarchies, the one for cyclic graphs, the one for ring diagrams) in a select control. It’s like flipping through Photoshop blending modes and watching the images update.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/web-creating-usability/graphviz-online.png&quot; alt=&quot;Graphviz Online showing code and diagram, side by side&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Without these web apps, you have to edit the diagram code in your text editor, then run a command in the terminal, then look at a separate image-viewing app. It’s a long loop, but it’s not so bad that I wiped sweat from my brow and thought “There’s gotta be a better way!” But when these web apps cut that loop down to “edit the code”, they exploded Graphviz and Mscgen up into a new plane of extreme usability.&lt;/p&gt;
+&lt;h2 id=&quot;javascript-is-good-sometimes-&quot;&gt;JavaScript is good, sometimes.&lt;/h2&gt;
+&lt;p&gt;There is a lot said lately about there being too many apps on the web, and rightly so. You do not need JavaScript, much less a React, Vue, or Angular app, for a web page that is publishing information or even for many forms. There is a case to be made for a &lt;a href=&quot;https://macwright.com/2020/08/22/clean-starts-for-the-web.html&quot;&gt;document-oriented web&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Despite their overapplication, web apps have their place. How else could have these web apps have been made?&lt;/p&gt;
+&lt;p&gt;Well, they could have been made by wrapping the C core of the original code with GUI code for all of the platforms that web browsers support: GTK, Cocoa, Cocoa Touch, MFC (or whatever is state-of-the-art on Windows these days &amp;mdash; WPF?), and several others.&lt;/p&gt;
+&lt;p&gt;Then, they would have to be distributed to each platform. Buy an Apple Developer Program license, do some certificate obtaining and signing, get into some app stores maybe? Once those hurdles are leapt, the developers would deal with reports that it doesn’t work on particular variants or configurations of OSes.&lt;/p&gt;
+&lt;p&gt;This, by the way, is why I empathize with complaints about Electron apps taking up a ton of memory yet still think it’s good that it exists.&lt;/p&gt;
+&lt;p&gt;Big companies like Salesforce (who now make Slack) and Microsoft (who make VS Code) can actually afford to make a native version of their apps for every platform. (Though attempts to herd them all could lead back to either a large and inefficient shared core or &lt;a href=&quot;https://en.wikipedia.org/wiki/Chromium_Embedded_Framework#Applications_using_CEF&quot;&gt;something similar to Electron&lt;/a&gt;.) But that would cost money, which these corporations have plenty of, and Milton Friedman said that corporations’ sole responsibility is to maximize profit. (And as we all know, Milton Friedman is a god-pharaoh that compels all from his sarcophagus underneath the University of Chicago.)&lt;/p&gt;
+&lt;p&gt;For smaller companies and indie developers, it’s hard to imagine better alternatives, except perhaps offline web apps (which aren’t easy for a lot of users to wrap their heads around &amp;mdash; the association between the web and internet connections is strong) or tying themselves to a specific platform.&lt;/p&gt;
+&lt;p&gt;I guess all I’m saying is: Web browsers are (sadly?) the closest we’ve ever gotten to a universal app platform, so I hope we can cut away their many excesses and abuses while keeping that part.&lt;/p&gt;
+</description>
+    </item>
+    <item>
       <title>D&amp;D with a kid</title>
       <link>http://jimkang.com/weblog/articles/dnd-with-a-kid/</link>
       <pubDate>Mon, 15 Feb 2021 19:00:00 -0500</pubDate>
@@ -55,17 +177,17 @@ for file in *.zip
 &lt;p&gt;What follows in this post, though, is a recap of the playthrough of that module.&lt;/p&gt;
 &lt;h2 id=&quot;recap&quot;&gt;Recap&lt;/h2&gt;
 
-&lt;p&gt;Last Tuesday, we had a snow day, Anderson did not go to school, and we spent all day inside with no plan. Those days can be exhausting. And the next day after that was another day of from school. So, I decided we needed a plan for that day, and that plan was D&amp;amp;D.&lt;/p&gt;
+&lt;p&gt;Last Tuesday, we had a snow day, R. did not go to school, and we spent all day inside with no plan. Those days can be exhausting. And the next day after that was another day of from school. So, I decided we needed a plan for that day, and that plan was D&amp;amp;D.&lt;/p&gt;
 &lt;p&gt;My normal grown-up D&amp;amp;D group, as you might expect, has not played since the start of the pandemic. So, why not exercise some &lt;abbr title=&quot;Dungeon Mastering; conducting a D&amp;D game&quot;&gt;DMing&lt;/abbr&gt; skills? I know my friend James has run D&amp;amp;D for his kid, and although I think he’s in third or fourth grade, it went well. I’ve been listening to the &lt;a href=&quot;https://anchor.fm/thoughteater&quot;&gt;Thought Eater podcast&lt;/a&gt; lately, and, Froth, the host, mentions that he plays one of the Star Wars RPGs with his family.&lt;/p&gt;
-&lt;p&gt;So, while Anderson and Katt worked on a light-up Lego-like project, I sketched out an adventure that morning, scrouged for props to use in the game, then ran the adventure after lunch.&lt;/p&gt;
-&lt;p&gt;The adventure is built around this yellow monster, Zoom, who Anderson got years ago as a party favor at some birthday party. He’s built a Magnatile house for him and the other finger puppet monsters and has built a small legendarium around them over the last few years. Zoom is the &lt;abbr title=&quot;Player character&quot;&gt;PC&lt;/abbr&gt;.&lt;/p&gt;
+&lt;p&gt;So, while R. and Katt worked on a light-up Lego-like project, I sketched out an adventure that morning, scrouged for props to use in the game, then ran the adventure after lunch.&lt;/p&gt;
+&lt;p&gt;The adventure is built around this yellow monster, Zoom, who R. got years ago as a party favor at some birthday party. He’s built a Magnatile house for him and the other finger puppet monsters and has built a small legendarium around them over the last few years. Zoom is the &lt;abbr title=&quot;Player character&quot;&gt;PC&lt;/abbr&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/dnd-with-a-kid/monster-family.jpg&quot; alt=&quot;Zoom, WOM, and Betty&quot;&gt;&lt;/p&gt;
 &lt;p&gt;Since playing a role-playing game involves a lot of things that are new to a kid already, I wanted to keep things as tangible as possible. So, I sourced physical objects to represent every object in the game. (In my regular grown-up game, we use largely abstract pieces on a grid mat to clarify character positions and don’t represent other objects.)&lt;/p&gt;
 &lt;p&gt;The rooms in the dungeon were represented with these really nice Dwarven Forge tiles (that were meant to be floors in cottages) that my D&amp;amp;D group got for me a few years ago. I only had two door pieces, so when there were more than two doors in a room, I had to say “pretend this is another door” which turned out to be fine.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/dnd-with-a-kid/pom-pom-dungeon/tiles.jpg&quot; alt=&quot;Tiles&quot;&gt;&lt;/p&gt;
 &lt;p&gt;I started a character sheet that just had Zoom’s name, the fact that he was a Level 1 Monster, that he can fly for a round once per day, and the six attributes: Strength, Dexterity (“how good you are at controlling your body”), Constitution (“how healthy you are”), Intelligence (“how good you are at solving problems”, Wisdom (“how good you are at making good decisions”), Charisma (“how good you are at getting other people to listen to you”). I had him roll &lt;abbr title=&quot;3 six-sided dice&quot;&gt;3d6&lt;/abbr&gt; for each, add them together, then write them down. The nice thing about players with no expectations is that ability score penalties are no big deal to them.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/dnd-with-a-kid/pom-pom-dungeon/character-sheet.jpg&quot; alt=&quot;Zoom&amp;#39;s character sheet&quot;&gt;&lt;/p&gt;
-&lt;p&gt;I kicked off the adventure proper by throwing a paper airplane to Zoom. Anderson unfolded it without any hints and found a letter from &lt;abbr title=&quot;Winged Orange Monster&quot;&gt;WOM&lt;/abbr&gt; (a fellow finger puppet monster). WOM wrote that he was captured by the Pom Pom Monster who wanted his &lt;abbr title=&quot;Pom poms are colorful little cotton-ball-like things&quot;&gt;pom pom&lt;/abbr&gt;. WOM was being flown to the Pom Pom Dungeon as he wrote. He pled for help from Zoom.&lt;/p&gt;
+&lt;p&gt;I kicked off the adventure proper by throwing a paper airplane to Zoom. R. unfolded it without any hints and found a letter from &lt;abbr title=&quot;Winged Orange Monster&quot;&gt;WOM&lt;/abbr&gt; (a fellow finger puppet monster). WOM wrote that he was captured by the Pom Pom Monster who wanted his &lt;abbr title=&quot;Pom poms are colorful little cotton-ball-like things&quot;&gt;pom pom&lt;/abbr&gt;. WOM was being flown to the Pom Pom Dungeon as he wrote. He pled for help from Zoom.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/dnd-with-a-kid/pom-pom-dungeon/reading-note.jpg&quot; alt=&quot;Letter from WOM&quot;&gt;&lt;/p&gt;
 &lt;p&gt;Any time I design an adventure for anyone of any age, I get this fear that the hook is going to be ignored. The PCs can always “whatever” the call to adventure, which happened to me a few times in my high school days. When this happens, you’ve got to come up with a way on the spot to get them to what you’ve designed.&lt;/p&gt;
 &lt;p&gt;Thankfully, this didn’t happen. Zoom went straight from the Monster House to Pom Pom Dungeon and went in.&lt;/p&gt;
@@ -76,34 +198,34 @@ for file in *.zip
 &lt;li&gt;A goon telling Pig-Will that he’d beat him up if he didn’t give up the pom pom to the Pom Pom Monster.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;(The creatures I term “goons” here are goblin/orc sorts of creatures.)&lt;/p&gt;
-&lt;p&gt;I asked Anderson what he wanted Zoom to do. Surprisingly, he had an answer right away&amp;mdash;to bite the goon. He moved Zoom right up to the goon figure to chomp. That’s when I introduced the concept of turns. When more than one creature wants to do something in this game, we roll initiative to decide who gets to do their thing first.&lt;/p&gt;
-&lt;p&gt;I moved Zoom back to the entrance, then we rolled initiative. Anderson won. I said he could move once and do one other thing, then it would be the other guys’ turns. He made his attack roll. (I gave out the opponent’s AC so we could get some greater than/less than/equal to practice in.) Because I decided that bites do 1d3 damage, I had to present the awkward explanation of how we don’t actually have a three-sided die, and so here is how we use a six-sided die to emulate one. (It turned out to not be that hard to understand.)&lt;/p&gt;
-&lt;p&gt;Zoom took some damage in that battle. I explained that if his hit points got subtracted all the way down to zero, that Zoom would get knocked out, and the enemies might drag him outside of the dungeon and then he’d have to start all over again. Anderson made no reaction. He had Zoom continue the biting until the goon was knocked out. (It doesn’t make sense that biting would knock a guy out instead of killing him, but we both accepted it.)&lt;/p&gt;
-&lt;p&gt;Then, Zoom picked up the stick. I was surprised that Anderson had him ask Pig-Will “What’s going on?” relieving me of having to hint heavily that he should talk to &lt;abbr title=&quot;Non-player character&quot;&gt;NPC&lt;/abbr&gt;s. But now that I think about it, it’s the first thing Anderson asks every time he joins a Zoom (the video meeting service) call.&lt;/p&gt;
+&lt;p&gt;I asked R. what he wanted Zoom to do. Surprisingly, he had an answer right away&amp;mdash;to bite the goon. He moved Zoom right up to the goon figure to chomp. That’s when I introduced the concept of turns. When more than one creature wants to do something in this game, we roll initiative to decide who gets to do their thing first.&lt;/p&gt;
+&lt;p&gt;I moved Zoom back to the entrance, then we rolled initiative. R. won. I said he could move once and do one other thing, then it would be the other guys’ turns. He made his attack roll. (I gave out the opponent’s AC so we could get some greater than/less than/equal to practice in.) Because I decided that bites do 1d3 damage, I had to present the awkward explanation of how we don’t actually have a three-sided die, and so here is how we use a six-sided die to emulate one. (It turned out to not be that hard to understand.)&lt;/p&gt;
+&lt;p&gt;Zoom took some damage in that battle. I explained that if his hit points got subtracted all the way down to zero, that Zoom would get knocked out, and the enemies might drag him outside of the dungeon and then he’d have to start all over again. R. made no reaction. He had Zoom continue the biting until the goon was knocked out. (It doesn’t make sense that biting would knock a guy out instead of killing him, but we both accepted it.)&lt;/p&gt;
+&lt;p&gt;Then, Zoom picked up the stick. I was surprised that R. had him ask Pig-Will “What’s going on?” relieving me of having to hint heavily that he should talk to &lt;abbr title=&quot;Non-player character&quot;&gt;NPC&lt;/abbr&gt;s. But now that I think about it, it’s the first thing R. asks every time he joins a Zoom (the video meeting service) call.&lt;/p&gt;
 &lt;p&gt;Pig-Will told him that the Pom Pom Monster and the goons had raided Pom Pom Town. They captured both pom poms and citizens and took them to Pom Pom Dungeon. Pig-Will thanked Zoom for the rescue, then walked out of the dungeon with his pom pom.&lt;/p&gt;
 &lt;p&gt;(I didn’t know what pom poms were before this year. They’re basically colorful cotton balls.)&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/dnd-with-a-kid/pom-pom-dungeon/pom-poms.jpg&quot; alt=&quot;Pom poms&quot;&gt;&lt;/p&gt;
 &lt;p&gt;The next encounter was in a room with a fireplace in which I had hidden a golden fire helmet (which of course would grant protection against fire). There was a stone and a ladder going to the next floor.&lt;/p&gt;
-&lt;p&gt;Anderson did get the stone, but then immediately took the exit to the next floor. I actually have no idea why I thought someone who had never played D&amp;amp;D would think to inspect a fireplace.&lt;/p&gt;
-&lt;p&gt;In general, Anderson was very much into exits from rooms. Every time I mentioned an exit, he’d say, “I’ll go in there!” Then, I’d say, “But wait, there’s more!”&lt;/p&gt;
+&lt;p&gt;R. did get the stone, but then immediately took the exit to the next floor. I actually have no idea why I thought someone who had never played D&amp;amp;D would think to inspect a fireplace.&lt;/p&gt;
+&lt;p&gt;In general, R. was very much into exits from rooms. Every time I mentioned an exit, he’d say, “I’ll go in there!” Then, I’d say, “But wait, there’s more!”&lt;/p&gt;
 &lt;p&gt;I only had four pre-designed rooms. &lt;a href=&quot;http://jimkang.com/articles/dnd-with-a-kid/pom-pom-dungeon/index.html#encounter-random&quot;&gt;All of the other rooms were generated during play by rolling&lt;/a&gt; on five tables: one for the shape of the room, the number of exits, the kinds of exits, the items in the room, and the NPCs in the room. The &lt;abbr title=&quot;First Edition Advanced Dungeons and Dragons&quot;&gt;1E AD&amp;amp;D&lt;/abbr&gt; Dungeon Master’s Guide had an appendix about generating random dungeons. I always thought that would make the game a bit more playful for the DM, if at the cost of a less well-designed dungeon. Here, I wasn’t exactly sure what a well-designed dungeon would be, so I gave it a shot.&lt;/p&gt;
 &lt;p&gt;With a player that is interested in covering the map quickly, it got a bit frantic, but fortunately, for whatever reason, he waited patiently while I rolled. (He did try to peek behind my screen a bunch of times, though.)&lt;/p&gt;
 &lt;p&gt;A level down, he ran into a goon and &lt;a href=&quot;http://jimkang.com/articles/dnd-with-a-kid/pom-pom-dungeon/index.html#wooper&quot;&gt;Wooper&lt;/a&gt;. The goon was trying to take Wooper’s pom pom. Zoom pushed the goon down a hole to the level below, and lost a bit more &lt;abbr title=&quot;Hit points&quot;&gt;hp&lt;/abbr&gt; in the process. Then, he helped clueless Wooper back up the ladder and guided him all the way back to the entrance of the dungeon.&lt;/p&gt;
-&lt;p&gt;As they went by the fireplace, I couldn’t resist having Wooper&amp;mdash;as out of character as it was&amp;mdash;mention that there was something odd about the fireplace. That heavy-handed clue had no effect; Anderson was singularly focused on escorting Wooper out.&lt;/p&gt;
-&lt;p&gt;On his way back into the dungeon, he ran into another goon, who bonked away the last of Zoom’s hit points. He passed out and woke up in a &lt;a href=&quot;http://jimkang.com/articles/dnd-with-a-kid/pom-pom-dungeon/index.html#jail&quot;&gt;jail room&lt;/a&gt; with all of his stuff gone. The stuff consisted of a stick, a stone, and I think maybe a pom pom, but Anderson felt it was consequential.&lt;/p&gt;
+&lt;p&gt;As they went by the fireplace, I couldn’t resist having Wooper&amp;mdash;as out of character as it was&amp;mdash;mention that there was something odd about the fireplace. That heavy-handed clue had no effect; R. was singularly focused on escorting Wooper out.&lt;/p&gt;
+&lt;p&gt;On his way back into the dungeon, he ran into another goon, who bonked away the last of Zoom’s hit points. He passed out and woke up in a &lt;a href=&quot;http://jimkang.com/articles/dnd-with-a-kid/pom-pom-dungeon/index.html#jail&quot;&gt;jail room&lt;/a&gt; with all of his stuff gone. The stuff consisted of a stick, a stone, and I think maybe a pom pom, but R. felt it was consequential.&lt;/p&gt;
 &lt;p&gt;The jail’s only exit was a small window that looked out onto a hallway with a single guard, who was a goon that was (of course) especially stupid. After Zoom yelled some nonsense at the guard, the guard announced that he was going to go to the bathroom.&lt;/p&gt;
-&lt;p&gt;When he came back, I asked what Zoom was going to do, and Anderson said he was going to kick the window, which I guess is an intuitive thing to do in a jail cell? I told him that it was loosening the window frame. The guard yelled at him to stop. Anderson said he was going to kick it some more.&lt;/p&gt;
+&lt;p&gt;When he came back, I asked what Zoom was going to do, and R. said he was going to kick the window, which I guess is an intuitive thing to do in a jail cell? I told him that it was loosening the window frame. The guard yelled at him to stop. R. said he was going to kick it some more.&lt;/p&gt;
 &lt;p&gt;I dropped a very unsubtle DM &lt;em&gt;Are you sure?&lt;/em&gt;&amp;mdash;did he want to do it now or wait to see if the guard went to the bathroom again? He opted to wait, kicked out the window frame, then escaped through the hole to adventure again, this time with 3 out 8 hp.&lt;/p&gt;
 &lt;p&gt;Eventually, he got to a hole without a ladder. Instead of searching for ladders in other rooms, he just used his once a day flying power. I thought &lt;em&gt;oh no don’t waste it on that&lt;/em&gt;, but you know, it did solve a problem. Older players commonly have the opposite problem: Holding an item or ability for some greater need in the future so tightly that they never actually use it.&lt;/p&gt;
 &lt;p&gt;Soon after, he came across a medkit. I had him make a Wisdom check to figure out what it was, but in retrospect, what would I have done if he had failed the check? Probably just let him attempt it again until he made it, which would have made it pointless.&lt;/p&gt;
 &lt;p&gt;He got the rest of his hp back. He kept the used medkit container, and from then on, he treasured all medkits. He said that medkits were his favorite item in the game.&lt;/p&gt;
-&lt;p&gt;In the next hallway, he ran into Ninja. Interestingly, Anderson asked if he was friendly, pointing out that his face looked friendly. (I happened to use a Lego head with happy eyebrows when snapping together the Ninja minifig.) I wanted to encourage this kind of non-hostile inquiry as a first reaction, but I had imagination failure about what Friendly Ninja would be like. So, I just said that it was a really good question and stuck with Ninja’s pre-designed personality.&lt;/p&gt;
+&lt;p&gt;In the next hallway, he ran into Ninja. Interestingly, R. asked if he was friendly, pointing out that his face looked friendly. (I happened to use a Lego head with happy eyebrows when snapping together the Ninja minifig.) I wanted to encourage this kind of non-hostile inquiry as a first reaction, but I had imagination failure about what Friendly Ninja would be like. So, I just said that it was a really good question and stuck with Ninja’s pre-designed personality.&lt;/p&gt;
 &lt;p&gt;Ninja demanded that Zoom give him something, like the medkit. Zoom replied that it was empty, so Ninja demanded the stick (which Zoom had picked up a room or so ago). Zoom refused and so battle was joined.&lt;/p&gt;
-&lt;p&gt;Anderson wanted to Zoom bite, but took my suggestion to try the stick, which did damage with a d6 instead of a d3. The significance of this didn’t really land, and he prefers biting. This is kind of pure.&lt;/p&gt;
+&lt;p&gt;R. wanted to Zoom bite, but took my suggestion to try the stick, which did damage with a d6 instead of a d3. The significance of this didn’t really land, and he prefers biting. This is kind of pure.&lt;/p&gt;
 &lt;p&gt;This is not too different from my grown-up D&amp;amp;D group. Being adults, they realize certain weapons are statistically superior to others. However, most them started playing as adults, just four years ago (I started as a teen). So, they’re into the “role-playing and doing weird things” side of D&amp;amp;D, and will sometimes use a less damaging weapon or tactic just for fun.&lt;/p&gt;
 &lt;p&gt;(Extremely specious theory: Min/maxing and power gaming are somehow the fault of puberty.)&lt;/p&gt;
 &lt;p&gt;After taking a shot from the stick, Ninja successfully grabbed the stick and broke it while trying to wrest it from Zoom. Each of them ended up with half a stick. Satisfied with his material gain, Ninja tossed down a smoke bomb the next round, and both parties left the room.&lt;/p&gt;
-&lt;p&gt;I was waiting for a good time to reveal the other two pre-designed encounters, but I felt like he should stack up some items before that, so I kept rolling out the random rooms. I was worried that Anderson would get bored, but he was surprisingly riveted by every new room.&lt;/p&gt;
+&lt;p&gt;I was waiting for a good time to reveal the other two pre-designed encounters, but I felt like he should stack up some items before that, so I kept rolling out the random rooms. I was worried that R. would get bored, but he was surprisingly riveted by every new room.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/dnd-with-a-kid/pom-pom-dungeon/skull-jones.jpg&quot; alt=&quot;Skull Jones&quot;&gt;&lt;/p&gt;
 &lt;p&gt;A few rooms later, the random NPC table coughed up the peddler, Skull Jones. For a floating skull, Skull Jones had a ridiculously large inventory which included a sword, a Wand of Wonder, and The Claw. All three of these made no impression. The Claw was a big “meme” in our house the day before; we played “claw tag” in which the person who was “it” was deemed “The Claw” and had to get the others with their hand in a claw posture.&lt;/p&gt;
 &lt;p&gt;It didn’t seem to matter. Zoom just bought a single medkit and moved on.&lt;/p&gt;
@@ -112,15 +234,15 @@ for file in *.zip
 &lt;p&gt;There were two fire traps and three lightning traps among the various treasures behind the doors. He triggered one of each, made his DEX save both times for half damage, then figured out which other doors not to open and cleaned out the rest, gathering many bags of gold, pom poms, and most importantly medkits.&lt;/p&gt;
 &lt;p&gt;He used the gold to buy the wand from Skull Jones, though he never used it. It’s too bad because the &lt;a href=&quot;http://jimkang.com/articles/dnd-with-a-kid/pom-pom-dungeon/index.html#wand&quot;&gt;Wand of Wonder&lt;/a&gt; brings a bit of game show into the game that I have a soft spot for.&lt;/p&gt;
 &lt;p&gt;Bursting with items, Zoom checked out the adjacent rooms and found that they each had multiple goons in each, so he backed out to the hallway where he ran into…Wooper again!&lt;/p&gt;
-&lt;p&gt;It turns out Wooper somehow stumbled back into the dungeon instead of finding his way back to Pom Pom Town after Zoom had taken him to the entrance. Anderson announced his intention to take Wooper up three levels to let him out again.&lt;/p&gt;
-&lt;p&gt;Inwardly, I was like 😨. I think Anderson very well might have had fun with playing through those rooms again, but I was not feeling that. So, I started looking for ways to squeeze in the boss encounter.&lt;/p&gt;
-&lt;p&gt;Zoom and Wooper ended up going through a multi-goon room because Anderson wanted to see what was in an unexplored exit. The goons demanded Wooper’s pom pom, and Zoom just handed them all of the pom poms he got out of the cube wall. The goons were occupied, and Zoom and Wooper passed peacefully. (I thought it was a fairly smooth move.)&lt;/p&gt;
+&lt;p&gt;It turns out Wooper somehow stumbled back into the dungeon instead of finding his way back to Pom Pom Town after Zoom had taken him to the entrance. R. announced his intention to take Wooper up three levels to let him out again.&lt;/p&gt;
+&lt;p&gt;Inwardly, I was like 😨. I think R. very well might have had fun with playing through those rooms again, but I was not feeling that. So, I started looking for ways to squeeze in the boss encounter.&lt;/p&gt;
+&lt;p&gt;Zoom and Wooper ended up going through a multi-goon room because R. wanted to see what was in an unexplored exit. The goons demanded Wooper’s pom pom, and Zoom just handed them all of the pom poms he got out of the cube wall. The goons were occupied, and Zoom and Wooper passed peacefully. (I thought it was a fairly smooth move.)&lt;/p&gt;
 &lt;p&gt;Finally, they went through a previously unexplored exit, I dropped the last pre-designed encounter there, the Pom Pom Monster’s lair. The Pom Pom Monster is a monster that likes to glue pom poms to itself. It was there with two goons and WOM, who was not feeling well.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/dnd-with-a-kid/pom-pom-dungeon/pom-pom-monster.jpg&quot; alt=&quot;The Pom Pom Monster&quot;&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/dnd-with-a-kid/boss-battle.jpg&quot; alt=&quot;Boss battle&quot;&gt;&lt;/p&gt;
-&lt;p&gt;I came up with a couple of ways the Pom Pom Monster could be defeated, but Anderson wasn’t too interested in that. He had Wooper run for the other exit from the room, while Zoom made his Dex save to reduce damage from the Pom Pom Monster’s fire breath, then applied a medkit to WOM.&lt;/p&gt;
+&lt;p&gt;I came up with a couple of ways the Pom Pom Monster could be defeated, but R. wasn’t too interested in that. He had Wooper run for the other exit from the room, while Zoom made his Dex save to reduce damage from the Pom Pom Monster’s fire breath, then applied a medkit to WOM.&lt;/p&gt;
 &lt;p&gt;WOM thanked Zoom, then mentioned he felt well enough to fly. The next round, the heroes won initiative then ran through the other exit, not bothering to fight the Pom Pom Monster and goons at all.&lt;/p&gt;
-&lt;p&gt;The next room was a shaft that went four floors up to the surface. I waited to see if Anderson would get stuck and end up fighting the bad guys after all. Nope, he asked WOM to fly them out, which he did. Mission accomplished.&lt;/p&gt;
+&lt;p&gt;The next room was a shaft that went four floors up to the surface. I waited to see if R. would get stuck and end up fighting the bad guys after all. Nope, he asked WOM to fly them out, which he did. Mission accomplished.&lt;/p&gt;
 &lt;p&gt;I awarded XP, but I don’t really know what I’m doing in 5E. It looks like &lt;a href=&quot;https://www.dandwiki.com/wiki/5e_SRD:Goblin&quot;&gt;goblins are worth 50 XP?&lt;/a&gt; But it only takes 300 XP to get to level 2?! I guess they really want players to feel like they’re progressing quickly? Maybe the Challenge value somehow changes things? Anyway, I awarded 20 XP per goon defeated or avoided and scaled up from there. I gave 100 XP for healing WOM to escape and 100 for buying off the goons. He ended up with 450 XP; enough to level up.&lt;/p&gt;
 &lt;p&gt;That was nearly four hours of total engagement from him, which isn’t easy to get. There are so many things we think he’ll like that he just ends up sliding away from after fifteen minutes. So, this feels like a good discovery.&lt;/p&gt;
 &lt;p&gt;I asked him what he liked about the game, and he said that he was proud of getting Wooper out without letting anyone take his pom pom. He also liked biting the goons.&lt;/p&gt;
@@ -568,10 +690,10 @@ img {
 &lt;/blockquote&gt;
 &lt;p&gt;Via NanoStudio 2 (a mobile app), I got some really nice orchestral virtual instruments for about $20. Many of the more percussive instruments sound extremely authentic, and the others can be very convincing when arranged in ensemble. Back around 2004, I remember downloading a comparable collection of virtual instruments. I downloaded the cracked version because it cost about $500 to get a legitimate copy. (Here’s a couple of pieces I used them in, in case you’re wondering: &lt;a href=&quot;https://soundcloud.com/isilence/passacaglia-amin-mix&quot;&gt;Passacaglia&lt;/a&gt;, &lt;a href=&quot;https://soundcloud.com/isilence/empty-city&quot;&gt;Empty City&lt;/a&gt;)&lt;/p&gt;
 &lt;p&gt;Having these orchestral instruments made me feel like I had access to something I shouldn’t have access to, like a cat being allowed into Old Country Buffet.&lt;/p&gt;
-&lt;p&gt;After rolling some timpani under trumpet and trombone blats, I imagined myself shaping my silly theme into a really powerful orchestral piece. My ambition inflated. At some point, I aspired to a Mars, Bringer of War or Star Wars kind of power. (Anderson is really into John Williams, so we’ve been listening to a lot of Star Wars and Jurassic Park lately.)&lt;/p&gt;
+&lt;p&gt;After rolling some timpani under trumpet and trombone blats, I imagined myself shaping my silly theme into a really powerful orchestral piece. My ambition inflated. At some point, I aspired to a Mars, Bringer of War or Star Wars kind of power. (R. is really into John Williams, so we’ve been listening to a lot of Star Wars and Jurassic Park lately.)&lt;/p&gt;
 &lt;p&gt;I didn’t get there. Instead, I verified that, yes, it is indeed hard to arrange for ten different parts. There’s a lot to think about, and every change is potentially a lot of rethinking and relistening. There was a particular piercing brass punch that I wanted that I didn’t quite reach. Also, I’ve never really worked on singing on pitch, so these were rather challenging vocals for me. Luckily, Katt agreed to get in the mix, and individual vocal accuracy matters a lot less in group vocals.&lt;/p&gt;
 &lt;p&gt;I scaled down from simulating a brilliant professional orchestra to simulating a community orchestra or an eager high school orchestra. The piece is more fun this way, and now, despite knowing how involved they are, orchestral pieces seem within my reach.&lt;/p&gt;
-&lt;p&gt;Speaking of feeling like you can make music, &lt;a href=&quot;https://soundcloud.com/isilence/sets/unfortunate-day-ep&quot;&gt;I’ve been recording songs Anderson’s been writing lately&lt;/a&gt;. And I wrote about songwriting and subservience in my &lt;a href=&quot;https://tinyletter.com/deathmtn/letters/no-gods-no-real-songs&quot;&gt;personal life newsletter&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Speaking of feeling like you can make music, &lt;a href=&quot;https://soundcloud.com/isilence/sets/unfortunate-day-ep&quot;&gt;I’ve been recording songs R.’s been writing lately&lt;/a&gt;. And I wrote about songwriting and subservience in my &lt;a href=&quot;https://tinyletter.com/deathmtn/letters/no-gods-no-real-songs&quot;&gt;personal life newsletter&lt;/a&gt;.&lt;/p&gt;
 &lt;h1 id=&quot;small-findings-continues&quot;&gt;Small Findings continues&lt;/h1&gt;
 &lt;p&gt;Since I last emailed you, I’ve put up five more episodes of the &lt;strong&gt;&lt;a href=&quot;https://jimkang.com/smallfindings/&quot;&gt;podcast&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;
 &lt;p&gt;I really tried to stick to posting a new episode every Monday, but it overwhelmed me. I am forced to admit that I can’t just take whatever notes I wrote that week and just read them out, which was the dream. There’s a big gulf between notes that have down what I want to remember and what is actually readable when read out loud, so I end up having to do quite a bit of script writing and additional research.&lt;/p&gt;
@@ -732,10 +854,10 @@ Or photos of physical paintings, at least. And a site for them: &lt;a href=&quot
 &lt;p&gt;That turned out to be enough, though! I was then able to view it free of compulsions. I decided it was fine and done.&lt;/p&gt;
 &lt;hr&gt;
 
-&lt;p&gt;The Bonus and Wily painting above is actually the seventh cat painting in our house. Katt painted three, Anderson painted two, and I did a Bonus Cat one last year.&lt;/p&gt;
+&lt;p&gt;The Bonus and Wily painting above is actually the seventh cat painting in our house. Katt painted three, R. painted two, and I did a Bonus Cat one last year.&lt;/p&gt;
 &lt;p&gt;Here’s one of Katt’s.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/cat-paintings/wily-radiator.jpg&quot; alt=&quot;Wily on a radiator next to a painting of that same thing&quot;&gt;&lt;/p&gt;
-&lt;p&gt;Here’s one of Anderson’s.&lt;/p&gt;
+&lt;p&gt;Here’s one of R.’s.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/cat-paintings/two-cat-friends.jpg&quot; alt=&quot;Two cat friends&quot;&gt;&lt;/p&gt;
 &lt;p&gt;We’re quite into cat painting. We will not stop.&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://www.lukepearson.com/Comics/The-Boy-Who-Drew-Cats&quot;&gt;&lt;img src=&quot;boy-who-drew-cats.png&quot; alt=&quot;The Boy Who Drew Cats&quot;&gt;&lt;/a&gt;&lt;/p&gt;
@@ -845,13 +967,13 @@ My &lt;a href=&quot;https://tinyletter.com/jimkang/letters/a-long-email-about-a-
 &lt;p&gt;From a more street-level point of view: GitHub Packages have free private packages (packages you want to limit in availability), whereas NPM charges for those.&lt;/p&gt;
 &lt;h1 id=&quot;subways&quot;&gt;Subways&lt;/h1&gt;
 &lt;p&gt;Last year, my National Novel Generation Month book had some pages in it that [happened to look somewhat like subways.&lt;/p&gt;
-&lt;p&gt;Anderson (who was 4 at the time and is now 5) was really into those pages.&lt;/p&gt;
+&lt;p&gt;R. (who was 4 at the time and is now 5) was really into those pages.&lt;/p&gt;
 &lt;p&gt;Since then, we got a book called &lt;a href=&quot;https://www.joycehesselberth.com/&quot;&gt;Mapping Sam&lt;/a&gt; that explains the concept of maps. There are a couple of pages with subways in them, and he always traces routes within the networks with his finger. We also have a poster of the MBTA subway system, and he does the same thing on it.&lt;/p&gt;
-&lt;p&gt;Anderson’s drawing happens in streaks. Sometimes, like now, he’s into it.&lt;/p&gt;
+&lt;p&gt;R.’s drawing happens in streaks. Sometimes, like now, he’s into it.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/unfinished-business-2019/train-drawing.jpg&quot; alt=&quot;Dual-perspective train!&quot;&gt;&lt;/p&gt;
 &lt;p&gt;There are also recurrent periods in which he’s really self-critical and avoids drawing because he’s not able to get what’s in his head onto the paper. The last time this happened, we eased back into it by drawing subways. Subways are great for this because we’re used to seeing abstractions of them that are simply colored lines. It’s not hard to make something that looks like a subway map, even when you get wild and have five-year-old line control.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/unfinished-business-2019/looping-subways.jpg&quot; alt=&quot;Looping subways&quot;&gt;&lt;/p&gt;
-&lt;p&gt;Now I’m into drawing subways, too, so I’m making a web app that generates subway maps, that hopefully, can be printed and read like a book. Like Anderson’s subways, I’m shooting for fanciful yet somewhat realistic, but “somewhat realistic” by adult standards. For example, I want there to be bodies of water, and I want subways to sometimes cross them, but mostly avoid them, and I want coverage of the area to be reasonable. But if something visually satisfying happens that wouldn’t be in a real subway, I want to let that happen.&lt;/p&gt;
+&lt;p&gt;Now I’m into drawing subways, too, so I’m making a web app that generates subway maps, that hopefully, can be printed and read like a book. Like R.’s subways, I’m shooting for fanciful yet somewhat realistic, but “somewhat realistic” by adult standards. For example, I want there to be bodies of water, and I want subways to sometimes cross them, but mostly avoid them, and I want coverage of the area to be reasonable. But if something visually satisfying happens that wouldn’t be in a real subway, I want to let that happen.&lt;/p&gt;
 &lt;p&gt;If I do this right, this will be one of those things where a fairly dry system of (colored curves, chosen randomly with some constraints) gets you to imagine things that are really vivid and big. I think that’s the best kind of art.&lt;/p&gt;
 &lt;p&gt;I’ve gotten as far generating what I feel are “reasonable-looking” bodies of water, picking some subway station locations, and finding a skeleton that connects them all. I’m now trying to make train lines using that skeleton as a guideline (and sometimes crossing gaps in the skeleton).&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/unfinished-business-2019/subway.gif&quot; alt=&quot;The layers of the subways&quot;&gt;&lt;/p&gt;
@@ -2238,11 +2360,11 @@ ul {
 &lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;section class=&quot;center-img-zone&quot;&gt;
 
-&lt;a class=&quot;img-container&quot; href=&quot;https://www.flickr.com/gp/ignignokt/Cvdies&quot;&gt;&lt;img src=&quot;https://farm8.staticflickr.com/7524/16083616772_db60f440aa_z.jpg&quot; width=&quot;480&quot; height=&quot;640&quot; alt=&quot;Anderson!&quot;&gt;&lt;/a&gt;
+&lt;a class=&quot;img-container&quot; href=&quot;https://www.flickr.com/gp/ignignokt/Cvdies&quot;&gt;&lt;img src=&quot;https://farm8.staticflickr.com/7524/16083616772_db60f440aa_z.jpg&quot; width=&quot;480&quot; height=&quot;640&quot; alt=&quot;R.!&quot;&gt;&lt;/a&gt;
 &lt;/section&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p&gt;His name is Anderson. He’s a great guy. On his behalf, we:
+&lt;p&gt;He’s a great guy. On his behalf, we:
 &lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Found a deleaded apartment.&lt;/li&gt;
@@ -2270,7 +2392,7 @@ ul {
 </description>
     </item>
     <item>
-      <title>Walking with Anderson</title>
+      <title>Walking with R.</title>
       <link>http://jimkang.com/weblog/articles/walking-with-anderson/</link>
       <pubDate>Sun, 07 Sep 2014 20:00:00 -0400</pubDate>
       <guid isPermaLink="true">http://jimkang.com/weblog/articles/walking-with-anderson/</guid>
@@ -2281,7 +2403,7 @@ On the way home, I saw a good sunset starting.
 &lt;p&gt;&lt;a class=&quot;img-container&quot; href=&quot;/articles/walking-with-anderson/&quot; title=&quot;Untitled by Jim, on Flickr&quot;&gt;&lt;img src=&quot;https://farm4.staticflickr.com/3871/15184185345_cbdd84c636_h.jpg&quot; width=&quot;800&quot; height=&quot;597&quot; alt=&quot;Untitled&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;/section&gt;
 &lt;span class=&quot;more&quot;&gt;&lt;/span&gt;
-So, we risked some major screaming and took Anderson out for a walk. He was very content with walking, as it happened.&lt;/p&gt;
+So, we risked some major screaming and took R. out for a walk. He was very content with walking, as it happened.&lt;/p&gt;
 &lt;section class=&quot;center-img-zone&quot;&gt;
 
 &lt;p&gt;&lt;a class=&quot;img-container&quot; href=&quot;https://www.flickr.com/photos/ignignokt/14998449668&quot; title=&quot;Untitled by Jim, on Flickr&quot;&gt;&lt;img src=&quot;https://farm4.staticflickr.com/3855/14998449668_07df3d2612_h.jpg&quot; width=&quot;800&quot; height=&quot;600&quot; alt=&quot;Untitled&quot;&gt;&lt;/a&gt;&lt;/p&gt;

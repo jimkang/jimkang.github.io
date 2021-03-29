@@ -34,20 +34,6 @@
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="converting-video-formats">Converting video&nbsp;formats</h1>
-<p>In many cases, it’s sufficient to just pass filenames with different file extensions to ffmpeg, like&nbsp;this:</p>
-<pre><code>ffmpeg -i in.ogv out.mp4
-</code></pre><p>It will use the container format corresponding to the file extensions to pick appropriate default encoders. (e.g. libx264 and aac for&nbsp;mp4)</p>
-<p>See&nbsp;also:</p>
-<ul>
-<li><a href="/weblog/articles/miscellaneous-findings-002/findings/2020-04-13----04:17__ffmpeg_too_many_packets_error.md">Too many packets&nbsp;error</a></li>
-</ul>
-<p>#ffmpeg</p>
-<p>#formats</p>
-<p>#video</p>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="-too-many-packets-ffmpeg-error">“Too many packets” ffmpeg&nbsp;error</h1>
 <p>When ffmpeg says “Too many packets buffered for output stream 0:1”, it means it literally. You can <a href="https://stackoverflow.com/questions/49686244/ffmpeg-too-many-packets-buffered-for-output-stream-01">increase the buffer size with this switch</a>:</p>
 <pre><code>-max_muxing_queue_size 1024
@@ -73,6 +59,20 @@
 <p>#video</p>
 <p>#editing</p>
 <p>#ffmpeg</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="converting-video-formats">Converting video&nbsp;formats</h1>
+<p>In many cases, it’s sufficient to just pass filenames with different file extensions to ffmpeg, like&nbsp;this:</p>
+<pre><code>ffmpeg -i in.ogv out.mp4
+</code></pre><p>It will use the container format corresponding to the file extensions to pick appropriate default encoders. (e.g. libx264 and aac for&nbsp;mp4)</p>
+<p>See&nbsp;also:</p>
+<ul>
+<li><a href="/weblog/articles/miscellaneous-findings-002/findings/2020-04-13----04:17__ffmpeg_too_many_packets_error.md">Too many packets&nbsp;error</a></li>
+</ul>
+<p>#ffmpeg</p>
+<p>#formats</p>
+<p>#video</p>
 </section>
           </article>
         </article>

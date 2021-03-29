@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width" initial-scale="1">
+    <title>The web actually breathing usability into old tools - jimkang.com
+    </title>
+    <link rel="alternate" href="http://jimkang.com/feed.xml" type="application/rss+xml" title="It's dot com.">
+    <link rel="stylesheet" href="/weblog/css/main.css">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <!-- include author-->
+        <h1>The web actually breathing usability into old tools</h1>
+        <!-- p.author-->
+        <!--  | #{ "Written by " }-->
+        <!--  mixin author(page.metadata.author)-->
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>People have been writing software for quite a long time, so natually, there are some amazing, rock-solid old tools out there, like <a href="https://bost.ocks.org/mike/make/">make</a> and <a href="https://en.wikipedia.org/wiki/Rsync">rsync</a>. This extends to diagramming&nbsp;software.</p>
+<p><span class="more"></span>
+For years, I’ve used <a href="https://graphviz.org/">Graphviz</a> (created <a href="https://en.wikipedia.org/wiki/Graphviz">“before 1991”</a>), which lets you write a little declarative program that says what nodes connect to what. Then, you run a compiler that makes the diagram. It figures out for you exactly where the circles (or boxes or other shapes) and lines and labels should&nbsp;go.</p>
+<p>Here’s an example&nbsp;program:</p>
+<pre><code>digraph {
+  graph [fontsize=12, fontname=Ubuntu, penwidth=3];
+  node [fontsize=12, fontname=Ubuntu, shape=circle];
+  edge [fontsize=12, fontname=Ubuntu];
+  nodesep=3;
+  overlap=false;
+  root=onEstablishPilesContainer;
+  dim=4;
+  mode=ipsep;
+  sep=0.4
+
+  // Persisters
+  PilesPersister;
+  PilesPersister -&gt; DeckStore [label=&quot;setPart&quot;];
+  PilesPersister -&gt; DeckStore [label=&quot;get&quot;];
+  deckIdsPersister -&gt; localStorage [label=&quot;setItem&quot;];
+  thingPersister -&gt; localStorage [label=&quot;setItem&quot;];
+
+  subgraph cluster_stores {
+    label=&quot;Stores&quot;;
+    bgcolor=&quot;#fde725&quot;;
+    DeckCollectionStore;
+    DeckStore [shape=doublecircle];
+    activeDeckIdentifier;
+    PileCollectionStore;
+    PileStore [shape=doublecircle];
+  }
+
+  subgraph cluster_responders {
+    label=&quot;Responders&quot;;
+    bgcolor=&quot;#a5db36&quot;;
+
+    onDeckCollectionChange;
+    onDeckChange [shape=doublecircle];
+    onPileCollectionChange;
+    onPileChange [shape=doublecircle];
+    onEstablishPilesContainer [shape=doublecircle];
+
+    DeckCollectionStore -&gt; onDeckCollectionChange;
+    DeckCollectionStore -&gt; deckIdsPersister [label=&quot;write&quot;];
+    activeDeckIdentifier -&gt; onDeckCollectionChange;
+    DeckStore -&gt; onDeckChange;
+    DeckStore -&gt; thingPersister [style=dashed, label=&quot;write&quot;];
+    PileCollectionStore -&gt; onPileCollectionChange;
+    PileStore -&gt; onPileChange;
+    PileStore -&gt; thingPersister [style=dashed, label=&quot;write&quot;];
+    PileCollectionStore -&gt; PilesPersister [style=dashed, label=&quot;write&quot;]
+  }
+
+  subgraph cluster_renderers {
+    label=&quot;Renderers&quot;;
+    bgcolor=&quot;#54c568&quot;;
+
+    RenderDeckCollection;
+    RenderDeck [shape=doublecircle];
+    RenderPileCollection;
+    RenderPile [shape=doublecircle];
+
+    onDeckCollectionChange -&gt; RenderDeckCollection;
+    onDeckChange -&gt; RenderDeck;
+    RenderDeck -&gt; onEstablishPilesContainer [style=dashed, label=&quot;(one-time)&quot;];
+    onEstablishPilesContainer -&gt; RenderPileCollection;
+    onEstablishPilesContainer -&gt; RenderPile;
+
+    onPileCollectionChange -&gt; RenderPileCollection;
+    onPileChange -&gt; RenderPile;
+  }
+
+  subgraph cluster_updaters {
+    label=&quot;Updaters&quot;;
+    bgcolor=&quot;#22a884&quot;;
+
+    addDeck;
+    addPile;
+    addDeck -&gt; DeckCollectionStore;
+    addPile -&gt; PileCollectionStore [label=&quot;add&quot;];
+    RenderDeckCollection -&gt; addDeck [style=dashed];
+    RenderDeck -&gt; activeDeckIdentifier [style=dashed, label=&quot;setPart&quot;];
+    RenderDeck -&gt; DeckStore [style=dashed, label=&quot;setPart&quot;];
+    RenderDeck -&gt; DeckStore [style=dashed, label=&quot;del&quot;];
+    RenderDeck -&gt; DeckCollectionStore [style=dashed, label=&quot;remove&quot;];
+    RenderPileCollection -&gt; addPile [style=dashed];
+    RenderPile -&gt; PileCollectionStore [style=dashed, label=&quot;remove&quot;];
+    RenderPile -&gt; PileStore [style=dashed, label=&quot;del&quot;];
+    RenderPile -&gt; PileStore [style=dashed, label=&quot;setPart&quot;];
+  }
+}
+</code></pre><p>That produces this&nbsp;diagram:</p>
+<p><img src="/weblog/articles/web-creating-usability/machines.png" alt="Graphviz diagram"></p>
+<p>Despite knowing Graphviz, I started that diagram drawing it by hand on an e-ink tablet because I’ve been trying lately do stuff away from the computer as much as possible. It was easier than doing it in the likes of Visio or LucidChart, but every change to the subject of the diagram meant a painful redrawing of the layout. I’m diagramming my app for the purpose of finding problems and ways to reduce the complexity, so being able to update the diagram easily is important. With Graphviz, updating is usually a matter of editing a line or two, then running <code>neato</code> or <code>dot</code>.</p>
+<p>This afternoon, I found <a href="http://www.mcternan.me.uk/mscgen/">Mscgen</a>, a tool specifically for making sequence diagrams. It’s inspired by Graphviz and is more recent (2011), yet is still a command line&nbsp;tool.</p>
+<h2 id="secret-room-for-improvement">Secret room for&nbsp;improvement</h2>
+<p>Both of these turn out to have browser ports: <a href="https://dreampuf.github.io/GraphvizOnline/">GraphvizOnline</a> and <a href="https://mscgen.js.org/?lang=msgenny">mscgen_js</a>.</p>
+<p>I think I saw that GraphvizOnline existed years before, but I dismissed it as some Emscripten stunt. Only after stumbling on it again recently did I realize how powerful it is. It and mscgen_js make two simple additions to their respective original&nbsp;programs:</p>
+<ul>
+<li>They put a code editor side-by-side with the program&nbsp;output.</li>
+<li>They run the diagram compiler whenever you stop typing and update the image next to the&nbsp;code.</li>
+</ul>
+<p>The result is that you can see changes as you try them. With GraphvizOnline, you can even flip through the different compilers (e.g. the one for hierarchies, the one for cyclic graphs, the one for ring diagrams) in a select control. It’s like flipping through Photoshop blending modes and watching the images&nbsp;update.</p>
+<p><img src="/weblog/articles/web-creating-usability/graphviz-online.png" alt="Graphviz Online showing code and diagram, side by side"></p>
+<p>Without these web apps, you have to edit the diagram code in your text editor, then run a command in the terminal, then look at a separate image-viewing app. It’s a long loop, but it’s not so bad that I wiped sweat from my brow and thought “There’s gotta be a better way!” But when these web apps cut that loop down to “edit the code”, they exploded Graphviz and Mscgen up into a new plane of extreme&nbsp;usability.</p>
+<h2 id="javascript-is-good-sometimes-">JavaScript is good,&nbsp;sometimes.</h2>
+<p>There is a lot said lately about there being too many apps on the web, and rightly so. You do not need JavaScript, much less a React, Vue, or Angular app, for a web page that is publishing information or even for many forms. There is a case to be made for a <a href="https://macwright.com/2020/08/22/clean-starts-for-the-web.html">document-oriented web</a>.</p>
+<p>Despite their overapplication, web apps have their place. How else could have these web apps have been&nbsp;made?</p>
+<p>Well, they could have been made by wrapping the C core of the original code with <span class="caps">GUI</span> code for all of the platforms that web browsers support: GTK, Cocoa, Cocoa Touch, MFC (or whatever is state-of-the-art on Windows these days &mdash; WPF?), and several&nbsp;others.</p>
+<p>Then, they would have to be distributed to each platform. Buy an Apple Developer Program license, do some certificate obtaining and signing, get into some app stores maybe? Once those hurdles are leapt, the developers would deal with reports that it doesn’t work on particular variants or configurations of&nbsp;OSes.</p>
+<p>This, by the way, is why I empathize with complaints about Electron apps taking up a ton of memory yet still think it’s good that it&nbsp;exists.</p>
+<p>Big companies like Salesforce (who now make Slack) and Microsoft (who make <span class="caps">VS</span> Code) can actually afford to make a native version of their apps for every platform. (Though attempts to herd them all could lead back to either a large and inefficient shared core or <a href="https://en.wikipedia.org/wiki/Chromium_Embedded_Framework#Applications_using_CEF">something similar to Electron</a>.) But that would cost money, which these corporations have plenty of, and Milton Friedman said that corporations’ sole responsibility is to maximize profit. (And as we all know, Milton Friedman is a god-pharaoh that compels all from his sarcophagus underneath the University of&nbsp;Chicago.)</p>
+<p>For smaller companies and indie developers, it’s hard to imagine better alternatives, except perhaps offline web apps (which aren’t easy for a lot of users to wrap their heads around &mdash; the association between the web and internet connections is strong) or tying themselves to a specific&nbsp;platform.</p>
+<p>I guess all I’m saying is: Web browsers are (sadly?) the closest we’ve ever gotten to a universal app platform, so I hope we can cut away their many excesses and abuses while keeping that&nbsp;part.</p>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/weblog/">« Full blog</a></div>
+        <!--section.about-->
+        <!--  !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2021 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+          <p><a href='/weblog/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>
