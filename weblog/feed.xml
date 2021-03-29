@@ -9,6 +9,127 @@
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
     <item>
+      <title>The web actually breathing usability into old tools</title>
+      <link>http://jimkang.com/weblog/articles/web-creating-usability/</link>
+      <pubDate>Wed, 17 Feb 2021 19:00:00 -0500</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/web-creating-usability/</guid>
+      <author></author>
+      <description>&lt;p&gt;People have been writing software for quite a long time, so natually, there are some amazing, rock-solid old tools out there, like &lt;a href=&quot;https://bost.ocks.org/mike/make/&quot;&gt;make&lt;/a&gt; and &lt;a href=&quot;https://en.wikipedia.org/wiki/Rsync&quot;&gt;rsync&lt;/a&gt;. This extends to diagramming software.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;
+For years, I’ve used &lt;a href=&quot;https://graphviz.org/&quot;&gt;Graphviz&lt;/a&gt; (created &lt;a href=&quot;https://en.wikipedia.org/wiki/Graphviz&quot;&gt;“before 1991”&lt;/a&gt;), which lets you write a little declarative program that says what nodes connect to what. Then, you run a compiler that makes the diagram. It figures out for you exactly where the circles (or boxes or other shapes) and lines and labels should go.&lt;/p&gt;
+&lt;p&gt;Here’s an example program:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;digraph {
+  graph [fontsize=12, fontname=Ubuntu, penwidth=3];
+  node [fontsize=12, fontname=Ubuntu, shape=circle];
+  edge [fontsize=12, fontname=Ubuntu];
+  nodesep=3;
+  overlap=false;
+  root=onEstablishPilesContainer;
+  dim=4;
+  mode=ipsep;
+  sep=0.4
+  bgcolor=&amp;quot;#fde725&amp;quot;;
+
+  // Persisters
+  PilesPersister -&amp;gt; DeckStore [label=&amp;quot;setPart&amp;quot;];
+  PilesPersister -&amp;gt; DeckStore [label=&amp;quot;get&amp;quot;];
+  deckIdsPersister -&amp;gt; localStorage [label=&amp;quot;setItem&amp;quot;];
+  thingPersister -&amp;gt; localStorage [label=&amp;quot;setItem&amp;quot;];
+
+  // Stores
+  DeckCollectionStore;
+  DeckStore [shape=doublecircle];
+  activeDeckIdentifier;
+  PileCollectionStore;
+  PileStore [shape=doublecircle];
+
+
+  // Responders
+  onDeckCollectionChange;
+  onDeckChange [shape=doublecircle];
+  onPileCollectionChange;
+  onPileChange [shape=doublecircle];
+  onEstablishPilesContainer [shape=doublecircle];
+
+  DeckCollectionStore -&amp;gt; onDeckCollectionChange;
+  DeckCollectionStore -&amp;gt; deckIdsPersister [label=&amp;quot;write&amp;quot;];
+  activeDeckIdentifier -&amp;gt; onDeckCollectionChange;
+  DeckStore -&amp;gt; onDeckChange;
+  DeckStore -&amp;gt; thingPersister [style=dashed, label=&amp;quot;write&amp;quot;];
+  PileCollectionStore -&amp;gt; onPileCollectionChange;
+  PileStore -&amp;gt; onPileChange;
+  PileStore -&amp;gt; thingPersister [style=dashed, label=&amp;quot;write&amp;quot;];
+  PileCollectionStore -&amp;gt; PilesPersister [style=dashed, label=&amp;quot;write&amp;quot;]
+
+
+  // Renderers
+  RenderDeckCollection;
+  RenderDeck [shape=doublecircle];
+  RenderPileCollection;
+  RenderPile [shape=doublecircle];
+
+  onDeckCollectionChange -&amp;gt; RenderDeckCollection;
+  onDeckChange -&amp;gt; RenderDeck;
+  RenderDeck -&amp;gt; onEstablishPilesContainer [style=dashed, label=&amp;quot;(one-time)&amp;quot;];
+  onEstablishPilesContainer -&amp;gt; RenderPileCollection;
+  onEstablishPilesContainer -&amp;gt; RenderPile;
+
+  onPileCollectionChange -&amp;gt; RenderPileCollection;
+  onPileChange -&amp;gt; RenderPile;
+
+  // Updaters
+  addDeck -&amp;gt; DeckCollectionStore;
+  addPile -&amp;gt; PileCollectionStore [label=&amp;quot;add&amp;quot;];
+  RenderDeckCollection -&amp;gt; addDeck [style=dashed];
+  RenderDeck -&amp;gt; activeDeckIdentifier [style=dashed, label=&amp;quot;setPart&amp;quot;];
+  RenderDeck -&amp;gt; DeckStore [style=dashed, label=&amp;quot;setPart&amp;quot;];
+  RenderDeck -&amp;gt; DeckStore [style=dashed, label=&amp;quot;del&amp;quot;];
+  RenderDeck -&amp;gt; DeckCollectionStore [style=dashed, label=&amp;quot;remove&amp;quot;];
+  RenderPileCollection -&amp;gt; addPile [style=dashed];
+  RenderPile -&amp;gt; PileCollectionStore [style=dashed, label=&amp;quot;remove&amp;quot;];
+  RenderPile -&amp;gt; PileStore [style=dashed, label=&amp;quot;del&amp;quot;];
+  RenderPile -&amp;gt; PileStore [style=dashed, label=&amp;quot;setPart&amp;quot;];
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;That produces this diagram:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/web-creating-usability/machines.png&quot; alt=&quot;Graphviz diagram&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Despite knowing Graphviz, I started that diagram drawing it by hand on an e-ink tablet because I’ve been trying lately do stuff away from the computer as much as possible. It was easier than doing it in the likes of Visio or LucidChart, but every change to the subject of the diagram meant a painful redrawing of the layout. I’m diagramming my app for the purpose of finding problems and ways to reduce the complexity, so being able to update the diagram easily is important. With Graphviz, updating is usually a matter of editing a line or two, then running &lt;code&gt;neato&lt;/code&gt; or &lt;code&gt;dot&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;This afternoon, I found &lt;a href=&quot;http://www.mcternan.me.uk/mscgen/&quot;&gt;Mscgen&lt;/a&gt;, a tool specifically for making sequence diagrams. It’s inspired by Graphviz and is more recent (2011), yet is still a command line tool.&lt;/p&gt;
+&lt;h2 id=&quot;secret-room-for-improvement&quot;&gt;Secret room for improvement&lt;/h2&gt;
+&lt;p&gt;Both of these turn out to have browser ports: &lt;a href=&quot;https://dreampuf.github.io/GraphvizOnline/&quot;&gt;GraphvizOnline&lt;/a&gt; and &lt;a href=&quot;https://mscgen.js.org/?lang=msgenny&quot;&gt;mscgen_js&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I think I saw that GraphvizOnline existed years before, but I dismissed it as some Emscripten stunt. Only after stumbling on it again recently did I realize how powerful it is. It and mscgen_js make two simple additions to their respective original programs:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;They put a code editor side-by-side with the program output.&lt;/li&gt;
+&lt;li&gt;They run the diagram compiler whenever you stop typing and update the image next to the code.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The result is that you can see changes as you try them. With GraphvizOnline, you can even flip through the different compilers (e.g. the one for hierarchies, the one for cyclic graphs, the one for ring diagrams) in a select control. It’s like flipping through Photoshop blending modes and watching the images update.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/web-creating-usability/graphviz-online.png&quot; alt=&quot;Graphviz Online showing code and diagram, side by side&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Without these web apps, to evaluate a change you have to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Edit the diagram code in your text editor.&lt;/li&gt;
+&lt;li&gt;Switch to a terminal tab (or open a terminal window in vim) and run a command.&lt;/li&gt;
+&lt;li&gt;Look at a separate image-viewing app to see the result.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;It’s a long loop, but it’s not so bad that I wiped sweat from my brow and thought “There’s gotta be a better way!”&lt;/p&gt;
+&lt;p&gt;But there was! When that loop down is cut down to…&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Edit the code&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;…Graphviz and Mscgen explode up into a new plane of extreme usability.&lt;/p&gt;
+&lt;h2 id=&quot;so-javascript-is-good-sometimes-&quot;&gt;So, JavaScript is good, sometimes.&lt;/h2&gt;
+&lt;p&gt;There is a lot said lately about too many web pages being saddled with unnecessary code, and rightly so. You do not need JavaScript, much less a React, Vue, or Angular app, for a web page that tells you which doctors are in your insurance network or how to reboot a phone.&lt;/p&gt;
+&lt;p&gt;Even forms don’t require much JavaScript, or even none at all. (I can’t tell you how many times I’ve had to go into DevTools in order to delete or force elements to show up in some fragile web app so that I can pay a bill.) There is a case to be made for a &lt;a href=&quot;https://macwright.com/2020/08/22/clean-starts-for-the-web.html&quot;&gt;document-oriented web&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Despite their overapplication, web apps have their place. How else could have GraphvizOnline and mscgen_js have been made?&lt;/p&gt;
+&lt;p&gt;Well, the developers could have wrapped the C core of the original code with GUI code for each of the platforms that web browsers support. They’d build around the original code with GTK, Cocoa, Cocoa Touch, MFC (or whatever is state-of-the-art on Windows these days &amp;mdash; WPF?), and several other SDKs.&lt;/p&gt;
+&lt;p&gt;They would have distribute to each platform. For Apple platforms, the developers would either have to tell people how to bypass Gatekeeper or maybe buy an Apple Developer Program license, and obtain a certificate. For other platforms, they could get it into a package repository or perhaps just put the binary up somewhere, then proceed to convincing users that they should bother to download and execute their app. (This is quite a bit more work than saying “look at this web site.”)&lt;/p&gt;
+&lt;p&gt;Once those hurdles were leapt, the reports that it doesn’t work on particular variants or configurations of users’ OSes would start coming in.&lt;/p&gt;
+&lt;p&gt;This, by the way, is why I empathize with complaints about Electron apps taking up a ton of memory, while still being glad that it exists.&lt;/p&gt;
+&lt;p&gt;Big companies like Salesforce (who now make Slack) and Microsoft (who make VS Code) can actually afford to make a native version of their apps for every platform. (Though attempts to herd them all could lead back to either a large and inefficient shared core or &lt;a href=&quot;https://en.wikipedia.org/wiki/Chromium_Embedded_Framework#Applications_using_CEF&quot;&gt;something similar to Electron&lt;/a&gt;.)&lt;/p&gt;
+&lt;p&gt;But that would reduce profits, and Milton Friedman has famously proclaimed that corporations’ sole responsibility is to maximize profit. (And as we all know, Milton Friedman is a god-pharaoh that issues forth waves that &lt;em&gt;compel all to obey&lt;/em&gt; from his sarcophagus underneath the University of Chicago.)&lt;/p&gt;
+&lt;p&gt;For smaller companies, indie developers, and people who just want to make something nice for others, it’s hard to imagine better alternatives, except perhaps offline web apps (which aren’t easy for a lot of users to wrap their heads around &amp;mdash; the association between the web and internet connections is strong) or putting all of their proverbial eggs on a specific platform.&lt;/p&gt;
+&lt;p&gt;I guess all I’m saying is: Web browsers are (sadly?) the closest we’ve ever gotten to a universal app platform, so I hope we can cut away their many excesses and abuses while keeping that part.&lt;/p&gt;
+</description>
+    </item>
+    <item>
       <title>Civilized Bandcamp file unzipping</title>
       <link>http://jimkang.com/weblog/articles/bandcamp-unzip/</link>
       <pubDate>Wed, 17 Feb 2021 19:00:00 -0500</pubDate>
@@ -39,128 +160,6 @@ for file in *.zip
 &lt;p&gt;I’ve usually used their streaming service, but lately I’ve been downloading albums from them and importing them into &lt;a href=&quot;https://plex.tv/&quot;&gt;Plex&lt;/a&gt; to play. (I like it because lets me stream from my Raspberry Pi at home to my phone. The Bandcamp app also lets you stream to your phone but only with music you’ve bought on Bandcamp.)&lt;/p&gt;
 &lt;p&gt;At first, I thought I’d dump all of my files into one directory and let Plex use ID3 tags to organize them, but you still have to get into the files sometimes, and a 4,000-file directory is total hell. Via Bandcamp purchases and CD rips (weird, I know), this pile is growing again after being frozen for half a decade and needs a little structure.&lt;/p&gt;
 &lt;p&gt;I think I like this way of listening to and acquiring music, as backwards as it sounds, because I tend to consider each album more fully and give each one more of a chance, either because I bought it directly or I once bought it long ago and now have put in the work to rip a CD. And in the cases when I buy from a label-less artist, I provide magnitudes more financial compensation to the artist than I would via any streaming service.&lt;/p&gt;
-</description>
-    </item>
-    <item>
-      <title>The web actually breathing usability into old tools</title>
-      <link>http://jimkang.com/weblog/articles/web-creating-usability/</link>
-      <pubDate>Wed, 17 Feb 2021 19:00:00 -0500</pubDate>
-      <guid isPermaLink="true">http://jimkang.com/weblog/articles/web-creating-usability/</guid>
-      <author></author>
-      <description>&lt;p&gt;People have been writing software for quite a long time, so natually, there are some amazing, rock-solid old tools out there, like &lt;a href=&quot;https://bost.ocks.org/mike/make/&quot;&gt;make&lt;/a&gt; and &lt;a href=&quot;https://en.wikipedia.org/wiki/Rsync&quot;&gt;rsync&lt;/a&gt;. This extends to diagramming software.&lt;/p&gt;
-&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;
-For years, I’ve used &lt;a href=&quot;https://graphviz.org/&quot;&gt;Graphviz&lt;/a&gt; (created &lt;a href=&quot;https://en.wikipedia.org/wiki/Graphviz&quot;&gt;“before 1991”&lt;/a&gt;), which lets you write a little declarative program that says what nodes connect to what. Then, you run a compiler that makes the diagram. It figures out for you exactly where the circles (or boxes or other shapes) and lines and labels should go.&lt;/p&gt;
-&lt;p&gt;Here’s an example program:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;digraph {
-  graph [fontsize=12, fontname=Ubuntu, penwidth=3];
-  node [fontsize=12, fontname=Ubuntu, shape=circle];
-  edge [fontsize=12, fontname=Ubuntu];
-  nodesep=3;
-  overlap=false;
-  root=onEstablishPilesContainer;
-  dim=4;
-  mode=ipsep;
-  sep=0.4
-
-  // Persisters
-  PilesPersister;
-  PilesPersister -&amp;gt; DeckStore [label=&amp;quot;setPart&amp;quot;];
-  PilesPersister -&amp;gt; DeckStore [label=&amp;quot;get&amp;quot;];
-  deckIdsPersister -&amp;gt; localStorage [label=&amp;quot;setItem&amp;quot;];
-  thingPersister -&amp;gt; localStorage [label=&amp;quot;setItem&amp;quot;];
-
-  subgraph cluster_stores {
-    label=&amp;quot;Stores&amp;quot;;
-    bgcolor=&amp;quot;#fde725&amp;quot;;
-    DeckCollectionStore;
-    DeckStore [shape=doublecircle];
-    activeDeckIdentifier;
-    PileCollectionStore;
-    PileStore [shape=doublecircle];
-  }
-
-  subgraph cluster_responders {
-    label=&amp;quot;Responders&amp;quot;;
-    bgcolor=&amp;quot;#a5db36&amp;quot;;
-
-    onDeckCollectionChange;
-    onDeckChange [shape=doublecircle];
-    onPileCollectionChange;
-    onPileChange [shape=doublecircle];
-    onEstablishPilesContainer [shape=doublecircle];
-
-    DeckCollectionStore -&amp;gt; onDeckCollectionChange;
-    DeckCollectionStore -&amp;gt; deckIdsPersister [label=&amp;quot;write&amp;quot;];
-    activeDeckIdentifier -&amp;gt; onDeckCollectionChange;
-    DeckStore -&amp;gt; onDeckChange;
-    DeckStore -&amp;gt; thingPersister [style=dashed, label=&amp;quot;write&amp;quot;];
-    PileCollectionStore -&amp;gt; onPileCollectionChange;
-    PileStore -&amp;gt; onPileChange;
-    PileStore -&amp;gt; thingPersister [style=dashed, label=&amp;quot;write&amp;quot;];
-    PileCollectionStore -&amp;gt; PilesPersister [style=dashed, label=&amp;quot;write&amp;quot;]
-  }
-
-  subgraph cluster_renderers {
-    label=&amp;quot;Renderers&amp;quot;;
-    bgcolor=&amp;quot;#54c568&amp;quot;;
-
-    RenderDeckCollection;
-    RenderDeck [shape=doublecircle];
-    RenderPileCollection;
-    RenderPile [shape=doublecircle];
-
-    onDeckCollectionChange -&amp;gt; RenderDeckCollection;
-    onDeckChange -&amp;gt; RenderDeck;
-    RenderDeck -&amp;gt; onEstablishPilesContainer [style=dashed, label=&amp;quot;(one-time)&amp;quot;];
-    onEstablishPilesContainer -&amp;gt; RenderPileCollection;
-    onEstablishPilesContainer -&amp;gt; RenderPile;
-
-    onPileCollectionChange -&amp;gt; RenderPileCollection;
-    onPileChange -&amp;gt; RenderPile;
-  }
-
-  subgraph cluster_updaters {
-    label=&amp;quot;Updaters&amp;quot;;
-    bgcolor=&amp;quot;#22a884&amp;quot;;
-
-    addDeck;
-    addPile;
-    addDeck -&amp;gt; DeckCollectionStore;
-    addPile -&amp;gt; PileCollectionStore [label=&amp;quot;add&amp;quot;];
-    RenderDeckCollection -&amp;gt; addDeck [style=dashed];
-    RenderDeck -&amp;gt; activeDeckIdentifier [style=dashed, label=&amp;quot;setPart&amp;quot;];
-    RenderDeck -&amp;gt; DeckStore [style=dashed, label=&amp;quot;setPart&amp;quot;];
-    RenderDeck -&amp;gt; DeckStore [style=dashed, label=&amp;quot;del&amp;quot;];
-    RenderDeck -&amp;gt; DeckCollectionStore [style=dashed, label=&amp;quot;remove&amp;quot;];
-    RenderPileCollection -&amp;gt; addPile [style=dashed];
-    RenderPile -&amp;gt; PileCollectionStore [style=dashed, label=&amp;quot;remove&amp;quot;];
-    RenderPile -&amp;gt; PileStore [style=dashed, label=&amp;quot;del&amp;quot;];
-    RenderPile -&amp;gt; PileStore [style=dashed, label=&amp;quot;setPart&amp;quot;];
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;That produces this diagram:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/web-creating-usability/machines.png&quot; alt=&quot;Graphviz diagram&quot;&gt;&lt;/p&gt;
-&lt;p&gt;Despite knowing Graphviz, I started that diagram drawing it by hand on an e-ink tablet because I’ve been trying lately do stuff away from the computer as much as possible. It was easier than doing it in the likes of Visio or LucidChart, but every change to the subject of the diagram meant a painful redrawing of the layout. I’m diagramming my app for the purpose of finding problems and ways to reduce the complexity, so being able to update the diagram easily is important. With Graphviz, updating is usually a matter of editing a line or two, then running &lt;code&gt;neato&lt;/code&gt; or &lt;code&gt;dot&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;This afternoon, I found &lt;a href=&quot;http://www.mcternan.me.uk/mscgen/&quot;&gt;Mscgen&lt;/a&gt;, a tool specifically for making sequence diagrams. It’s inspired by Graphviz and is more recent (2011), yet is still a command line tool.&lt;/p&gt;
-&lt;h2 id=&quot;secret-room-for-improvement&quot;&gt;Secret room for improvement&lt;/h2&gt;
-&lt;p&gt;Both of these turn out to have browser ports: &lt;a href=&quot;https://dreampuf.github.io/GraphvizOnline/&quot;&gt;GraphvizOnline&lt;/a&gt; and &lt;a href=&quot;https://mscgen.js.org/?lang=msgenny&quot;&gt;mscgen_js&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;I think I saw that GraphvizOnline existed years before, but I dismissed it as some Emscripten stunt. Only after stumbling on it again recently did I realize how powerful it is. It and mscgen_js make two simple additions to their respective original programs:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;They put a code editor side-by-side with the program output.&lt;/li&gt;
-&lt;li&gt;They run the diagram compiler whenever you stop typing and update the image next to the code.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The result is that you can see changes as you try them. With GraphvizOnline, you can even flip through the different compilers (e.g. the one for hierarchies, the one for cyclic graphs, the one for ring diagrams) in a select control. It’s like flipping through Photoshop blending modes and watching the images update.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/web-creating-usability/graphviz-online.png&quot; alt=&quot;Graphviz Online showing code and diagram, side by side&quot;&gt;&lt;/p&gt;
-&lt;p&gt;Without these web apps, you have to edit the diagram code in your text editor, then run a command in the terminal, then look at a separate image-viewing app. It’s a long loop, but it’s not so bad that I wiped sweat from my brow and thought “There’s gotta be a better way!” But when these web apps cut that loop down to “edit the code”, they exploded Graphviz and Mscgen up into a new plane of extreme usability.&lt;/p&gt;
-&lt;h2 id=&quot;javascript-is-good-sometimes-&quot;&gt;JavaScript is good, sometimes.&lt;/h2&gt;
-&lt;p&gt;There is a lot said lately about there being too many apps on the web, and rightly so. You do not need JavaScript, much less a React, Vue, or Angular app, for a web page that is publishing information or even for many forms. There is a case to be made for a &lt;a href=&quot;https://macwright.com/2020/08/22/clean-starts-for-the-web.html&quot;&gt;document-oriented web&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Despite their overapplication, web apps have their place. How else could have these web apps have been made?&lt;/p&gt;
-&lt;p&gt;Well, they could have been made by wrapping the C core of the original code with GUI code for all of the platforms that web browsers support: GTK, Cocoa, Cocoa Touch, MFC (or whatever is state-of-the-art on Windows these days &amp;mdash; WPF?), and several others.&lt;/p&gt;
-&lt;p&gt;Then, they would have to be distributed to each platform. Buy an Apple Developer Program license, do some certificate obtaining and signing, get into some app stores maybe? Once those hurdles are leapt, the developers would deal with reports that it doesn’t work on particular variants or configurations of OSes.&lt;/p&gt;
-&lt;p&gt;This, by the way, is why I empathize with complaints about Electron apps taking up a ton of memory yet still think it’s good that it exists.&lt;/p&gt;
-&lt;p&gt;Big companies like Salesforce (who now make Slack) and Microsoft (who make VS Code) can actually afford to make a native version of their apps for every platform. (Though attempts to herd them all could lead back to either a large and inefficient shared core or &lt;a href=&quot;https://en.wikipedia.org/wiki/Chromium_Embedded_Framework#Applications_using_CEF&quot;&gt;something similar to Electron&lt;/a&gt;.) But that would cost money, which these corporations have plenty of, and Milton Friedman said that corporations’ sole responsibility is to maximize profit. (And as we all know, Milton Friedman is a god-pharaoh that compels all from his sarcophagus underneath the University of Chicago.)&lt;/p&gt;
-&lt;p&gt;For smaller companies and indie developers, it’s hard to imagine better alternatives, except perhaps offline web apps (which aren’t easy for a lot of users to wrap their heads around &amp;mdash; the association between the web and internet connections is strong) or tying themselves to a specific platform.&lt;/p&gt;
-&lt;p&gt;I guess all I’m saying is: Web browsers are (sadly?) the closest we’ve ever gotten to a universal app platform, so I hope we can cut away their many excesses and abuses while keeping that part.&lt;/p&gt;
 </description>
     </item>
     <item>
