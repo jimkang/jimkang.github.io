@@ -5,9 +5,19 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Mon, 26 Apr 2021 20:00:00 -0400</pubDate>
+    <pubDate>Sun, 02 May 2021 20:00:00 -0400</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Miscellaneous Findings VII: Quirks</title>
+      <link>http://jimkang.com/weblog/articles/miscellaneous-findings-007/</link>
+      <pubDate>Sun, 02 May 2021 20:00:00 -0400</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/miscellaneous-findings-007/</guid>
+      <author></author>
+      <description>&lt;p&gt;There’s one finding about a handy D3 method, and the rest are about quirks, including one that affected getting this weblog, in this edition of Miscellaneous Findings.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;This is a roundup of miscellaneous things that I’ve found out about (or have rediscovered).&lt;span class=&quot;more&quot;&gt;&lt;/span&gt; I take notes on findings regularly, and I put the findings that translate well to speech on my podcast, &lt;span style=&quot;text-decoration: underline&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://jimkang.com/smallfindings/&quot;&gt;Small Findings&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;. The rest (which are often technical findings), I put here. They’re not always written up for maximum comprehension as a blog post, but if anything is hard to understand, please &lt;a href=&quot;mailto:jimkang@fastmail.com&quot;&gt;email me&lt;/a&gt; if you need clarification.&lt;/em&gt;&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Miscellaneous Findings VI: Commands, Pi</title>
       <link>http://jimkang.com/weblog/articles/miscellaneous-findings-006/</link>

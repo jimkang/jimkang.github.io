@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width" initial-scale="1">
+    <title>Miscellaneous Findings VII: Quirks - jimkang.com
+    </title>
+    <link rel="alternate" href="http://jimkang.com/feed.xml" type="application/rss+xml" title="It's dot com.">
+    <link rel="stylesheet" href="/weblog/css/main.css">
+  </head>
+  <body>
+    <header class="header">
+      <div class="content-wrap">
+        <!-- include author-->
+        <h1>Miscellaneous Findings VII: Quirks</h1>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>There’s one finding about a handy D3 method, and the rest are about quirks, including one that affected getting this weblog, in this edition of Miscellaneous&nbsp;Findings.</p>
+<p><em>This is a roundup of miscellaneous things that I’ve found out about (or have rediscovered).<span class="more"></span> I take notes on findings regularly, and I put the findings that translate well to speech on my podcast, <span style="text-decoration: underline"><strong><a href="https://jimkang.com/smallfindings/">Small Findings</a></strong></span>. The rest (which are often technical findings), I put here. They’re not always written up for maximum comprehension as a blog post, but if anything is hard to understand, please <a href="mailto:jimkang@fastmail.com">email me</a> if you need&nbsp;clarification.</em></p>
+</section>
+          <article class="finding">
+            <section class="content"><h1 id="mobile-safari">Mobile&nbsp;Safari</h1>
+<h2 id="file-inputs">File&nbsp;inputs</h2>
+<p>You can set the accept attribute of an input element to <code>audio/*</code>, and on Firefox, the file selection dialog will let the user select any audio file. This doesn’t work on Mobile Safari, which apparently can’t tell what files are audio files. So, you have to specify file extensions,&nbsp;like:</p>
+<pre><code>&lt;input type=&quot;file&quot; id=&quot;media-file&quot; accept=&quot;image/*, video/*, audio/*, .m4a,.ogg,.mp3,.wav&quot; multiple /&gt;
+</code></pre><p>#web #media&nbsp;#browser</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="javascript-weirdness">JavaScript&nbsp;weirdness</h1>
+<p>There is a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/self">self</a> keyword for referring to the global scope, whether it’s Window or&nbsp;Worker.</p>
+<p>#javascript&nbsp;#weird</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="d3">d3</h1>
+<p>In D3 6 (maybe this was introduced in 5? definitely was not in 4), there is a handy <a href="https://github.com/d3/d3-selection#selection_join">join</a> method on the <code>selection</code> object.</p>
+<p>It’s shorthand for <code>exit</code> with <code>remove</code> chained to it, <code>enter</code> with <code>append</code> chained to it, and returns the merged enter and update selections (the set of selections that’s still valid after syncing with the new data) so that you can make updates to them, like updating attributes and&nbsp;text.</p>
+<p>So you can replace&nbsp;this:</p>
+<pre><code>var connectionSels = connectionsSel
+  .selectAll(&#39;li&#39;)
+  .data(soul.connections);
+connectionSels.exit().remove();
+var newConnectionSels = connectionSels.enter().append(&#39;li&#39;);
+newConnectionSels.merge(connectionSels).text(accessor(&#39;identity&#39;));
+</code></pre><p>With:</p>
+<pre><code>connectionsSel
+  .selectAll(&#39;li&#39;)
+  .data(soul.connections)
+  .join(&#39;li&#39;)
+  .text(accessor(&#39;identity&#39;));
+</code></pre><p>It seems trivial and sort of is, but I find it cuts down on the reading&nbsp;strain.</p>
+<p>And it’s not for all situations. If you’re doing something special on the exit or enter selections, you can provide functions to <code>join</code> to do them, but in that case, I think it’s better to stay explicit like&nbsp;this:</p>
+<pre><code>var containers = itemRoot.selectAll(&#39;.item-container&#39;).data(ids, accessor(&#39;identity&#39;));
+containers.exit().remove();
+containers
+  .enter()
+  .append(&#39;li&#39;)
+  .classed(&#39;item-container&#39;, true)
+  .classed(&#39;soul&#39;, true)
+  .attr(&#39;id&#39;, accessor(&#39;identity&#39;));
+</code></pre><p>#d3</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="wintersmith">Wintersmith</h1>
+<p>If you are using a Jade template with the static site generator Wintersmith, and your template pulls in files in a directory like&nbsp;so:</p>
+<pre><code>block content
+  article.article
+    section.content!= typogr(page.html).typogrify()
+    each finding in page.parent.findings
+      include partials/finding
+</code></pre><p>And you then edit a file in that directory (in this example <code>findings</code>), you may get this error next time you build the&nbsp;site:</p>
+<pre><code>articles/miscellaneous-findings-006/index.html: /home/jimkang/gcw/weblog-src/templates/partials/finding.jade:5
+  &gt; 5|     section.content!= typogr(page.html).typogrify()
+
+Cannot read property &#39;jquery&#39; of undefined
+</code></pre><p>I thought this had something to do with the contents of the files being read, and I was partly right, but no amount of editing changed anything, and the build succeeded only when I deleted everything in <code>findings</code>.</p>
+<p>I was editing with vim, and <code>vim</code> puts a hidden <code>.swp</code> file in the directory. <code>typogrify</code> was choking on that. Closing the file in vim got rid of the&nbsp;problem.</p>
+<p>#static-site #vim&nbsp;#hidden</p>
+</section>
+          </article>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/weblog/">« Full blog</a></div>
+        <!--section.about-->
+        <!--  !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2021 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+          <p><a href='/weblog/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>
