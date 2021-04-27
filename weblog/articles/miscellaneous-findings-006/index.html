@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width" initial-scale="1">
+    <title>Miscellaneous Findings VI: Commands, Pi - jimkang.com
+    </title>
+    <link rel="alternate" href="http://jimkang.com/feed.xml" type="application/rss+xml" title="It's dot com.">
+    <link rel="stylesheet" href="/weblog/css/main.css">
+  </head>
+  <body>
+    <header class="header">
+      <div class="content-wrap">
+        <!-- include author-->
+        <h1>Miscellaneous Findings VI: Commands, Pi</h1>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>This time, in Miscellaneous Findings, we’ve got some command line things, plus a huge Raspberry Pi setup dump, with some related stuff about hard drives and filesystems mixed&nbsp;in.</p>
+<p><em>This is a roundup of miscellaneous things that I’ve found out about (or have rediscovered).<span class="more"></span> I take notes on findings regularly, and I put the findings that translate well to speech on my podcast, <span style="text-decoration: underline"><strong><a href="https://jimkang.com/smallfindings/">Small Findings</a></strong></span>. The rest (which are often technical findings), I put here. They’re not always written up for maximum comprehension as a blog post, but if anything is hard to understand, please <a href="mailto:jimkang@fastmail.com">email me</a> if you need&nbsp;clarification.</em></p>
+</section>
+          <article class="finding">
+            <section class="content"><h1 id="git-shortlog">Git&nbsp;shortlog</h1>
+<p><a href="https://git-scm.com/docs/git-shortlog">https://git-scm.com/docs/git-shortlog</a></p>
+<p>It’s surprisingly nice to read.&nbsp;e.g.:</p>
+<pre><code>Jim Kang (54):
+      Hacked up Field. Have a minimally viable TypeScript rollup config.
+      Add make target and rollup config for working on a small piece of the app independetly.
+      Renaming again.
+      Start basic card layout.
+      Start move to svelte. Get watch working.
+      Convert card to svelte component.
+      Move experiments to vats.
+      Stub out stores vat.
+      Type checking finally working in Svelte components?? Next: Single multi-page rollup config for vats.
+      Get multiple rollup configs to work.
+      Start stores. Bind to card store in component.
+      Drop unneeded crud.
+      Stub in all cards store.
+      Start persisting to localStorage in stores.
+      Hack in a delete.
+      Move persistent state stuff into state, take that out of the stores to make them responsible for mostly notifying subscribers.
+      Start an export cards component.
+      Start import component. Reporting conflicts but not doing anything with them yet.
+      Fix wrong set of cards being imported (cards from file, not the ones already in the store), enable Card component to render read-only.
+</code></pre><p>#git&nbsp;#command</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="excluding-dirs-from-find">Excluding dirs from&nbsp;find</h1>
+<p>Say you want to find all of the directories in which you have a <code>rollup.config.js</code> file.</p>
+<p>You could&nbsp;try</p>
+<pre><code>find . -name rollup.config.js
+</code></pre><p>But that would also search all of the <code>node_modules</code> directories, and you mean to find projects in which you’ve used rollup&nbsp;directly.</p>
+<p>You can add <a href="/weblog/articles/miscellaneous-findings-006/findings/"><code>-path</code> and <code>-not</code></a> to exclude them from the&nbsp;search:</p>
+<pre><code>find . -name rollup.config.js -and -not \( -path &#39;*/node_modules/*&#39; \) -prune
+</code></pre><p>#search #unix #command&nbsp;#find</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="raspberry-pi-setup">Raspberry Pi&nbsp;setup</h1>
+<h2 id="basics">Basics</h2>
+<p>With a pre-loaded Canakit boot <span class="caps">SD</span> card&nbsp;inserted:</p>
+<ul>
+<li>Connect keyboard, mouse, and display, then&nbsp;power.</li>
+<li>Pick your wifi network in the&nbsp;wizard.</li>
+<li>Select “Raspbian Stretch” as the <span class="caps">OS</span> to install in the&nbsp;wizard.</li>
+<li>Open terminal and change password for <code>pi</code>.</li>
+</ul>
+<h2 id="without-one-">Without&nbsp;one:</h2>
+<ul>
+<li>[Get a Raspberry Pi <span class="caps">OS</span> image onto an SD&nbsp;card]</li>
+<li>Hook it up to a <span class="caps">TV</span> or display with an HDMI&nbsp;cable</li>
+<li>Connect a mouse and&nbsp;keyboard</li>
+<li>Connect a power&nbsp;supply</li>
+</ul>
+<h2 id="remote-access">Remote&nbsp;access</h2>
+<p><a href="https://remysharp.com/2018/02/18/headless-raspberry-pi-setup">From Remy Sharp’s post</a>:</p>
+<ul>
+<li>Create an empty file in <code>/boot</code> named <code>ssh</code>: <code>sudo touch /boot/ssh</code>.</li>
+<li>Reboot.</li>
+<li>On another computer: <code>arp -a</code> or (sudo nmap -sn [<span class="caps">ROUTER</span>-IP]/24 | grep -i raspberry -B&nbsp;2)</li>
+<li><span class="caps">SSH</span> in with the user&nbsp;pi</li>
+</ul>
+<h2 id="key-based-access">Key-based&nbsp;access</h2>
+<p>From <a href="https://www.raspberrypi.org/documentation/remote-access/ssh/passwordless.md">https://www.raspberrypi.org/documentation/remote-access/ssh/passwordless.md</a>:</p>
+<ul>
+<li><code>cd ~ &amp;&amp; install -d -m 700 ~/.ssh</code><ul>
+<li>Creates the .ssh dir with the right&nbsp;permissions.</li>
+</ul>
+</li>
+<li>From a computer where you already have your public key: <code>cat ~/.ssh/id_rsa.pub | ssh &lt;USERNAME&gt;@&lt;IP-ADDRESS&gt; &#39;cat &gt;&gt; .ssh/authorized_keys&#39;</code></li>
+<li><p><a href="https://www.jaredwolff.com/passwordless-ssh-raspberry-pi/">Remove password&nbsp;auth</a></p>
+<ul>
+<li><p>Edit <code>/etc/ssh/sshd_config</code> with these&nbsp;settings:</p>
+<pre><code>ChallengeResponseAuthentication no
+PasswordAuthentication no
+UsePAM no
+</code></pre></li>
+<li><code>sudo /etc/init.d/ssh reload</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="external-usb-hard-drive">External <span class="caps">USB</span> hard&nbsp;drive</h3>
+<ul>
+<li>Connect the hard drive to the&nbsp;Pi</li>
+<li><code>sudo blkid</code><ul>
+<li>Make sure the <span class="caps">HD</span> appears on /sda1 and&nbsp;/sda2</li>
+</ul>
+</li>
+<li>Format it. <code>sudo fdisk /dev/sda</code> to enter interactive fdisk. <a href="https://www.raspberrypi.org/forums/viewtopic.php?p=210745#p210745">Reference</a><ul>
+<li><code>d</code> (I think) to delete the /sda1 and /sda2&nbsp;partitions.</li>
+<li><code>n</code> to create a new big partition that spans the whole <span class="caps">HD</span>. Accept&nbsp;defaults.</li>
+<li><code>w</code> to commit&nbsp;this.</li>
+</ul>
+</li>
+<li><code>mkfs.ext4 /dev/sda1</code></li>
+<li>Set up automatic mounting. <code>sudo vi /etc/fstab</code>. Add the line: - <code>/dev/sda1    /mnt/storage    ext4    defaults,nofail      0      0</code><ul>
+<li>(Manual mounting would go like this: <code>sudo mkdir /mnt/usb &amp;&amp; sudo mount /dev/sdb1 /mnt/usb</code>, unmount: <code>sudo umount /dev/sdb1</code>)<ul>
+<li><code>nofail</code> is what lets the <span class="caps">OS</span> boot even if the HD is not plugged&nbsp;in.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="https://smidgeo.com/notes/deathmtn/deathmtn-XkxbJKNc.html">If the <span class="caps">HD</span> looks like it has nothing on it after a power&nbsp;outage</a></li>
+</ul>
+<p>If you use a vfat filesystem, I don’t think you can change&nbsp;owners?</p>
+<p><strong>The consequences of this is that everything is owned by root, and everything, including rsync, must run as&nbsp;root.</strong></p>
+<p>Also, <a href="https://en.wikipedia.org/wiki/File_Allocation_Table#FAT32">you can’t have files larger than 4 <span class="caps">GB</span></a>.</p>
+<p>Also also wildcards only go so far if they are in the middle of a specification. <code>ls sm*.js</code> will work, but <code>ls smi*.js</code> will&nbsp;not.</p>
+<p><strong>Warning:</strong> If you reformat your external drive, you may not be able to boot, even if you have <code>nofail</code> in the fstab entry! It happented to&nbsp;me.</p>
+<h3 id="changing-the-wifi-password">Changing the wifi&nbsp;password</h3>
+<ul>
+<li>Edit&nbsp;/etc/wpa_supplicant/wpa-supplicant.conf</li>
+<li>Change the <code>psk</code> value under the <code>network</code> entry.</li>
+</ul>
+<h3 id="getting-a-static-ip-on-the-wifi">Getting a static ip on the&nbsp;WiFi</h3>
+<p>The following steps from <a href="https://pimylifeup.com/raspberry-pi-static-ip-address/">Raspberry Pi static ip</a>&nbsp;worked:</p>
+<ul>
+<li>Get the router ip from <code>ip r | grep default</code> (It’s the first ip&nbsp;listed.)</li>
+<li><code>cat /etc/resolv.conf</code> to get the nameserver&nbsp;ip.</li>
+<li><p>Add this to <code>/etc/dhcpcd.conf</code>:</p>
+<pre><code>interface wlan0
+static ip_address=&lt;desired ip&gt;/24
+static routers=&lt;router ip&gt;
+static domain_name_servers=&lt;router ip&gt; 8.8.8.8
+</code></pre></li>
+</ul>
+<p>You can substitute an external <span class="caps">DNS</span> server ip in <code>domain_name_servers</code>.</p>
+<ul>
+<li><code>sudo reboot</code></li>
+</ul>
+<h3 id="turning-off-the-wifi">Turning off the&nbsp;wifi</h3>
+<p><a href="https://raspberrytips.com/disable-wifi-raspberry-pi/">https://raspberrytips.com/disable-wifi-raspberry-pi/</a></p>
+<p>Edit <code>/boot/config.txt</code> to add this line: <code>dtoverlay=disable-wifi</code></p>
+<h1 id="root-user">Root&nbsp;user</h1>
+<p>The <code>root</code> user does not have a password by default. You can give it a password, but the <code>pi</code> user can sudo, so using <code>sudo su</code> may be&nbsp;easier.</p>
+<h1 id="installing-plex">Installing&nbsp;Plex</h1>
+<p><a href="https://linuxize.com/post/how-to-install-plex-media-server-on-raspberry-pi/">https://linuxize.com/post/how-to-install-plex-media-server-on-raspberry-pi/</a></p>
+<ul>
+<li><code>sudo apt update</code></li>
+<li><code>sudo apt install apt-transport-https ca-certificates curl</code></li>
+<li><code>curl https://downloads.plex.tv/plex-keys/PlexSign.key | sudo apt-key add -</code></li>
+<li><code>deb https://downloads.plex.tv/repo/deb public main | sudo tee /etc/apt/sources.list.d/plexmediaserver.list</code></li>
+<li><code>sudo apt update</code></li>
+<li><code>sudo apt install plexmediaserver</code></li>
+<li>Check: <code>sudo systemctl status plexmediaserver</code></li>
+</ul>
+<h2 id="set-up-dirs">Set up&nbsp;dirs</h2>
+<ul>
+<li><code>sudo mkdir -p /mnt/smidgeocloud/plexmedia</code></li>
+<li><code>sudo chown -R plex /mnt/smidgeocloud/plexmedia</code> (But not for a <span class="caps">FAT</span>&nbsp;drive)</li>
+<li>Config in browser at <a href="http://server-ip:32400/web">http://server-ip:32400/web</a></li>
+</ul>
+<p>I somehow ended up with <code>music</code> in the media directory being owned by the <code>503</code> user, which prevented the <code>pi</code> user from creating dirs&nbsp;there.</p>
+<pre><code>drwxrwxr-x 587 503 staff 20480 Mar 27 01:52 music
+</code></pre><p>I chmodded it to&nbsp;pi.</p>
+</section>
+          </article>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/weblog/">« Full blog</a></div>
+        <!--section.about-->
+        <!--  !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2021 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+          <p><a href='/weblog/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>
