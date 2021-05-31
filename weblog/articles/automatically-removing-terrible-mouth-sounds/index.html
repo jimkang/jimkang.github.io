@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width" initial-scale="1">
+    <title>Automating the removal of terrible mouth sounds from podcasts - jimkang.com
+    </title>
+    <link rel="alternate" href="http://jimkang.com/feed.xml" type="application/rss+xml" title="It's dot com.">
+    <link rel="stylesheet" href="/weblog/css/main.css">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <!-- include author-->
+        <h1>Automating the removal of terrible mouth sounds from podcasts</h1>
+        <!-- p.author-->
+        <!--  | #{ "Written by " }-->
+        <!--  mixin author(page.metadata.author)-->
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>It is important to me to create <a href="https://jimkang.com/smallfindings/">Small Findings</a> episodes that have information that I myself would want to hear. At the same time, for the sake of sustainability, it is also important to keep it cheap in terms of time and effort . That is to say, if it’s too much work, I can’t justify doing&nbsp;it.</p>
+<p>Therefore, I cast aside concerns about slick audio and perfect phrasing and vocal&nbsp;performance.</p>
+<p>Here are two of the things I do to keep it small enough to fit into my&nbsp;life:</p>
+<p><span class="more"></span></p>
+<style>img { width: 100% }</style>
+
+<ul>
+<li>I record just using my phone without a complex setup or a fixed location. This lets me record a segment wherever I happen to be within short pockets of available&nbsp;time.</li>
+<li>I automate much of the production. A <a href="https://github.com/jimkang/smallfindings/blob/master/prepare-audio.sh">shell script</a> and <a href="https://github.com/jimkang/smallfindings/blob/master/Makefile">Makefile</a> take the m4a files from my phone, normalize them, covert them to the proper formats, concatenate them with the theme music and stings, and make the final mp3. Sometimes, I have to step in to some part of the chain to make a manual edit, but I still save time as a result of the remaining parts being&nbsp;automated.</li>
+</ul>
+<p>One consequence of recording with a handheld phone is that sometimes I hold it too close to my face and get the dreaded “mouth crackle” in the recording, which can sound distracting at best and gross at worst to the&nbsp;listener.</p>
+<p>Here’s an&nbsp;example.</p>
+<audio src="mouth-crackle-eq-before.mp3" controls></audio>
+
+<p>There are a lot of audio “issues” that I don’t think truly matter, but this one&nbsp;does.</p>
+<p>To get rid of the crackle, you can either re-record the segment (which makes the podcast too expensive), or you can isolate the frequencies that the crackle lives in, then cut them out with a graphic equalizer. I’ve found that these live in the 6 kHz-12 kHz range. That corresponds with perceived brightness in music, but luckily, this is speech, not&nbsp;music.</p>
+<p>To manually cut those frequencies, you can do something like this with a graphic <span class="caps">EQ</span>&nbsp;filter.</p>
+<p><img src="/weblog/articles/automatically-removing-terrible-mouth-sounds/mouth-crackle-eq.png" alt="Graphic EQ settings for cutting mouth crackle in Audacity."></p>
+<p>However, manually doing this for every segment is laborious. It’s going to make me want to quit the podcast. Fortunately, this can be done via the <a href="http://sox.sourceforge.net/">SoX command line program</a>.</p>
+<p>Here is an example bash script that will run <code>sox</code> on every file in a&nbsp;directory.</p>
+<pre><code>#!/bin/bash
+
+for file in meta/before/*.wav
+do
+  filename=${file##*/}
+  sox &quot;${file}&quot; \
+    &quot;meta/after/${filename}&quot; \
+    equalizer 5k 1.0q -7 \
+    equalizer 6.3k 5.0q -20 \
+    equalizer 8k 5.0q -20 \
+    equalizer 10k 5.0q -20 \
+    equalizer 12k 5.0q -20
+done
+</code></pre><p><code>sox</code> commands take an input file, switches (none were used in this example), an output file, and optionally, an effects chain. In the command in the above script, the effects chain is five equalizer filters. Each equalizer clause&nbsp;specifies:</p>
+<ul>
+<li>The center of the frequencies to be&nbsp;affected</li>
+<li>The width of the band (how far from the center to&nbsp;go)</li>
+<li>The amount to adjust the affected&nbsp;band</li>
+</ul>
+<p>For example, this clause, <code>equalizer 6.3k 5.0q -20</code>, says “take the frequencies in a narrow band (5.0q) around 6.3 kHz and drop them by as much as 20 dB”. So, <code>sox</code> will drop 20 kHz frequencies by 20 dB, and a little less so for neighboring&nbsp;frequencies.</p>
+<p>(The default bandwidth is 1.0q. The higher the value, the narrower the band. <a href="http://digitalsoundandmusic.com/chapters/ch7/">This online book</a> has some nice graphs of various q&nbsp;values.)</p>
+<p>Again, here’s the terrible mouth crackling&nbsp;clip:</p>
+<audio src="mouth-crackle-eq-before.mp3" controls></audio>
+
+<p>And here it is after running the command to turn those frequencies way&nbsp;down:</p>
+<audio src="mouth-crackle-eq-after.mp3" controls></audio>
+
+<p>It’s now muddier because, as we said, we are reducing the brightness by attenuating those frequencies. However, it is now more listenable, which is the trade-off that we&nbsp;want.</p>
+<p><a href="https://github.com/jimkang/smallfindings/blob/9251a9c22e4467757694ceb1aedb4af3e81a77ff/prepare-audio.sh#L29">Here is my eq command in context.</a> I bet there are better values I can use, but that’s what I found via ten minutes of experimentation. If you have parameter suggestions, <a href="mailto:jimkang@fastmail.com">let me&nbsp;know!</a></p>
+<h2 id="plosives">Plosives</h2>
+<p>The other problem with holding a phone rather than having a mic in a fixed position is that you sometimes get pops from speaking <a href="https://www.wordnik.com/words/plosive">plosives</a> too close to the phone mic. A burst of air really close to a mic is unpleasant to hear in a&nbsp;recording.</p>
+<p>Here’s what that sounds&nbsp;like:</p>
+<audio src="plosive-before.mp3" controls></audio>
+
+<p>Fortunately, there are frequencies we can attenuate to sweep these under the rug, too. Unlike the mouth crackle frequencies, plosive pops live in low frequency bands, around 100-130 Hz, in my estimation. (Note that it’s Hz, not&nbsp;kHz.)</p>
+<p>If we’re going to filter out stuff that low, we might as well get rid of everything else down there, too. Stuff under 80 Hz doesn’t really serve a purpose outside of music. Everything under 20 Hz is unhearable and is essentially a waste of computer energy, so you might as always roll that&nbsp;off.</p>
+<p>Given that, it’s preferable to just say “roll everything off lower than 130 Hz” instead of specifying several individual frequency peaks. And that is exactly what highpass filters are&nbsp;for.</p>
+<p>This sox command tells it to only keep frequencies above 130&nbsp;Hz:</p>
+<pre><code>sox before.wav after.wav highpass 130 4q
+</code></pre><p>(The <code>4q</code> says to do a steeper-than-default&nbsp;rolloff.)</p>
+<p>Here’s the clip with the pop&nbsp;again:</p>
+<audio src="plosive-before.mp3" controls></audio>
+
+<p>And here it is after the highpass filter is&nbsp;run:</p>
+<audio src="plosive-after.mp3" controls></audio>
+
+<p>It’s not entirely smooth-sounding now, but it is no longer jarringly&nbsp;percussive.</p>
+<p>So, now you can have scripts deal with both mouth crackling and plosive pops. Enjoy not having to do that&nbsp;yourself!</p>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/weblog/">« Full blog</a></div>
+        <!--section.about-->
+        <!--  !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2021 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+          <p><a href='/weblog/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>

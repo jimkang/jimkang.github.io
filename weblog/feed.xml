@@ -5,9 +5,85 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Sun, 02 May 2021 20:00:00 -0400</pubDate>
+    <pubDate>Mon, 31 May 2021 20:00:00 -0400</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Automating the removal of terrible mouth sounds from podcasts</title>
+      <link>http://jimkang.com/weblog/articles/automatically-removing-terrible-mouth-sounds/</link>
+      <pubDate>Mon, 31 May 2021 20:00:00 -0400</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/automatically-removing-terrible-mouth-sounds/</guid>
+      <author></author>
+      <description>&lt;p&gt;It is important to me to create &lt;a href=&quot;https://jimkang.com/smallfindings/&quot;&gt;Small Findings&lt;/a&gt; episodes that have information that I myself would want to hear. At the same time, for the sake of sustainability, it is also important to keep it cheap in terms of time and effort . That is to say, if it’s too much work, I can’t justify doing it.&lt;/p&gt;
+&lt;p&gt;Therefore, I cast aside concerns about slick audio and perfect phrasing and vocal performance.&lt;/p&gt;
+&lt;p&gt;Here are two of the things I do to keep it small enough to fit into my life:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;style&gt;img { width: 100% }&lt;/style&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I record just using my phone without a complex setup or a fixed location. This lets me record a segment wherever I happen to be within short pockets of available time.&lt;/li&gt;
+&lt;li&gt;I automate much of the production. A &lt;a href=&quot;https://github.com/jimkang/smallfindings/blob/master/prepare-audio.sh&quot;&gt;shell script&lt;/a&gt; and &lt;a href=&quot;https://github.com/jimkang/smallfindings/blob/master/Makefile&quot;&gt;Makefile&lt;/a&gt; take the m4a files from my phone, normalize them, covert them to the proper formats, concatenate them with the theme music and stings, and make the final mp3. Sometimes, I have to step in to some part of the chain to make a manual edit, but I still save time as a result of the remaining parts being automated.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;One consequence of recording with a handheld phone is that sometimes I hold it too close to my face and get the dreaded “mouth crackle” in the recording, which can sound distracting at best and gross at worst to the listener.&lt;/p&gt;
+&lt;p&gt;Here’s an example.&lt;/p&gt;
+&lt;audio src=&quot;mouth-crackle-eq-before.mp3&quot; controls&gt;&lt;/audio&gt;
+
+&lt;p&gt;There are a lot of audio “issues” that I don’t think truly matter, but this one does.&lt;/p&gt;
+&lt;p&gt;To get rid of the crackle, you can either re-record the segment (which makes the podcast too expensive), or you can isolate the frequencies that the crackle lives in, then cut them out with a graphic equalizer. I’ve found that these live in the 6 kHz-12 kHz range. That corresponds with perceived brightness in music, but luckily, this is speech, not music.&lt;/p&gt;
+&lt;p&gt;To manually cut those frequencies, you can do something like this with a graphic EQ filter.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/automatically-removing-terrible-mouth-sounds/mouth-crackle-eq.png&quot; alt=&quot;Graphic EQ settings for cutting mouth crackle in Audacity.&quot;&gt;&lt;/p&gt;
+&lt;p&gt;However, manually doing this for every segment is laborious. It’s going to make me want to quit the podcast. Fortunately, this can be done via the &lt;a href=&quot;http://sox.sourceforge.net/&quot;&gt;SoX command line program&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Here is an example bash script that will run &lt;code&gt;sox&lt;/code&gt; on every file in a directory.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#!/bin/bash
+
+for file in meta/before/*.wav
+do
+  filename=${file##*/}
+  sox &amp;quot;${file}&amp;quot; \
+    &amp;quot;meta/after/${filename}&amp;quot; \
+    equalizer 5k 1.0q -7 \
+    equalizer 6.3k 5.0q -20 \
+    equalizer 8k 5.0q -20 \
+    equalizer 10k 5.0q -20 \
+    equalizer 12k 5.0q -20
+done
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;sox&lt;/code&gt; commands take an input file, switches (none were used in this example), an output file, and optionally, an effects chain. In the command in the above script, the effects chain is five equalizer filters. Each equalizer clause specifies:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The center of the frequencies to be affected&lt;/li&gt;
+&lt;li&gt;The width of the band (how far from the center to go)&lt;/li&gt;
+&lt;li&gt;The amount to adjust the affected band&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;For example, this clause, &lt;code&gt;equalizer 6.3k 5.0q -20&lt;/code&gt;, says “take the frequencies in a narrow band (5.0q) around 6.3 kHz and drop them by as much as 20 dB”. So, &lt;code&gt;sox&lt;/code&gt; will drop 20 kHz frequencies by 20 dB, and a little less so for neighboring frequencies.&lt;/p&gt;
+&lt;p&gt;(The default bandwidth is 1.0q. The higher the value, the narrower the band. &lt;a href=&quot;http://digitalsoundandmusic.com/chapters/ch7/&quot;&gt;This online book&lt;/a&gt; has some nice graphs of various q values.)&lt;/p&gt;
+&lt;p&gt;Again, here’s the terrible mouth crackling clip:&lt;/p&gt;
+&lt;audio src=&quot;mouth-crackle-eq-before.mp3&quot; controls&gt;&lt;/audio&gt;
+
+&lt;p&gt;And here it is after running the command to turn those frequencies way down:&lt;/p&gt;
+&lt;audio src=&quot;mouth-crackle-eq-after.mp3&quot; controls&gt;&lt;/audio&gt;
+
+&lt;p&gt;It’s now muddier because, as we said, we are reducing the brightness by attenuating those frequencies. However, it is now more listenable, which is the trade-off that we want.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/jimkang/smallfindings/blob/9251a9c22e4467757694ceb1aedb4af3e81a77ff/prepare-audio.sh#L29&quot;&gt;Here is my eq command in context.&lt;/a&gt; I bet there are better values I can use, but that’s what I found via ten minutes of experimentation. If you have parameter suggestions, &lt;a href=&quot;mailto:jimkang@fastmail.com&quot;&gt;let me know!&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;plosives&quot;&gt;Plosives&lt;/h2&gt;
+&lt;p&gt;The other problem with holding a phone rather than having a mic in a fixed position is that you sometimes get pops from speaking &lt;a href=&quot;https://www.wordnik.com/words/plosive&quot;&gt;plosives&lt;/a&gt; too close to the phone mic. A burst of air really close to a mic is unpleasant to hear in a recording.&lt;/p&gt;
+&lt;p&gt;Here’s what that sounds like:&lt;/p&gt;
+&lt;audio src=&quot;plosive-before.mp3&quot; controls&gt;&lt;/audio&gt;
+
+&lt;p&gt;Fortunately, there are frequencies we can attenuate to sweep these under the rug, too. Unlike the mouth crackle frequencies, plosive pops live in low frequency bands, around 100-130 Hz, in my estimation. (Note that it’s Hz, not kHz.)&lt;/p&gt;
+&lt;p&gt;If we’re going to filter out stuff that low, we might as well get rid of everything else down there, too. Stuff under 80 Hz doesn’t really serve a purpose outside of music. Everything under 20 Hz is unhearable and is essentially a waste of computer energy, so you might as always roll that off.&lt;/p&gt;
+&lt;p&gt;Given that, it’s preferable to just say “roll everything off lower than 130 Hz” instead of specifying several individual frequency peaks. And that is exactly what highpass filters are for.&lt;/p&gt;
+&lt;p&gt;This sox command tells it to only keep frequencies above 130 Hz:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sox before.wav after.wav highpass 130 4q
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;(The &lt;code&gt;4q&lt;/code&gt; says to do a steeper-than-default rolloff.)&lt;/p&gt;
+&lt;p&gt;Here’s the clip with the pop again:&lt;/p&gt;
+&lt;audio src=&quot;plosive-before.mp3&quot; controls&gt;&lt;/audio&gt;
+
+&lt;p&gt;And here it is after the highpass filter is run:&lt;/p&gt;
+&lt;audio src=&quot;plosive-after.mp3&quot; controls&gt;&lt;/audio&gt;
+
+&lt;p&gt;It’s not entirely smooth-sounding now, but it is no longer jarringly percussive.&lt;/p&gt;
+&lt;p&gt;So, now you can have scripts deal with both mouth crackling and plosive pops. Enjoy not having to do that yourself!&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Miscellaneous Findings VII: Quirks</title>
       <link>http://jimkang.com/weblog/articles/miscellaneous-findings-007/</link>
