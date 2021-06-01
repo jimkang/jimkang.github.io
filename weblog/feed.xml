@@ -22,16 +22,16 @@
 
 &lt;ul&gt;
 &lt;li&gt;I record just using my phone without a complex setup or a fixed location. This lets me record a segment wherever I happen to be, whenever I have a few moments of spare time.&lt;/li&gt;
-&lt;li&gt;I automate much of the production. A &lt;a href=&quot;https://github.com/jimkang/smallfindings/blob/master/prepare-audio.sh&quot;&gt;shell script&lt;/a&gt; and &lt;a href=&quot;https://github.com/jimkang/smallfindings/blob/master/Makefile&quot;&gt;Makefile&lt;/a&gt; take the m4a files from my phone, normalize them, covert them to the proper formats, concatenate them with the theme music and stings, and make the final mp3. Sometimes, I have to step in to some part of the chain to make a manual edit, but I still save time as a result of the remaining parts being automated.&lt;/li&gt;
+&lt;li&gt;I automate much of the production. A &lt;a href=&quot;https://github.com/jimkang/smallfindings/blob/master/prepare-audio.sh&quot;&gt;shell script&lt;/a&gt; and &lt;a href=&quot;https://github.com/jimkang/smallfindings/blob/master/Makefile&quot;&gt;Makefile&lt;/a&gt; take the m4a files from my phone, normalize them, convert them to the proper formats, concatenate them with the theme music and stings, and make the final mp3. Sometimes, I have to step in to some part of the chain to make a manual edit, but I still save time as a result of the remaining parts being automated.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;This saves a lot of time. However, one consequence of recording with a handheld phone is that sometimes I hold it too close to my face and get the dreaded “mouth crackle” in the recording, which can sound distracting at best and gross at worst to the listener.&lt;/p&gt;
 &lt;p&gt;Here’s an example.&lt;/p&gt;
-&lt;audio src=&quot;mouth-crackle-eq-before.mp3&quot; controls&gt;&lt;/audio&gt;
+&lt;audio src=&quot;/weblog/articles/automatically-removing-terrible-mouth-sounds/mouth-crackle-eq-before.mp3&quot; controls&gt;&lt;/audio&gt;
 
 &lt;p&gt;There are a lot of audio issues that I don’t think are important as people think they are, but this one cannot be ignored.&lt;/p&gt;
 &lt;p&gt;To get rid of the crackle, you can either re-record the segment (which makes the podcast too expensive), or you can isolate the frequencies that the crackle lives in, then cut them out with a graphic equalizer. The crackle noise lives in the 6 kHz-12 kHz range. That coincides with the frequency range for perceived brightness in music, but luckily, this is speech, not music.&lt;/p&gt;
 &lt;p&gt;To manually cut those frequencies, you can do something like this with a graphic EQ filter.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/automatically-removing-terrible-mouth-sounds/mouth-crackle-eq.png&quot; alt=&quot;Graphic EQ settings for cutting mouth crackle in Audacity.&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jimkang.com/weblog/articles/automatically-removing-terrible-mouth-sounds/mouth-crackle-eq.png&quot; alt=&quot;Graphic EQ settings for cutting mouth crackle in Audacity.&quot;&gt;&lt;/p&gt;
 &lt;p&gt;However, manually doing this for every segment is laborious. It’s going to make me want to quit the podcast. Fortunately, this can be done via the &lt;a href=&quot;http://sox.sourceforge.net/&quot;&gt;SoX command line program&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Here is an example bash script that will run &lt;code&gt;sox&lt;/code&gt; on every file in a directory.&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;#!/bin/bash
@@ -56,17 +56,17 @@ done
 &lt;p&gt;For example, this clause, &lt;code&gt;equalizer 6.3k 5.0q -20&lt;/code&gt;, says “take the frequencies in a narrow band (5.0q) around 6.3 kHz and drop them by as much as 20 dB”. So, &lt;code&gt;sox&lt;/code&gt; will drop 20 kHz frequencies by 20 dB, and a little less so for neighboring frequencies.&lt;/p&gt;
 &lt;p&gt;(The default bandwidth is 1.0q. The higher the value, the narrower the band. &lt;a href=&quot;http://digitalsoundandmusic.com/chapters/ch7/&quot;&gt;This online book&lt;/a&gt; has some nice graphs of various q values.)&lt;/p&gt;
 &lt;p&gt;Again, here’s the terrible mouth crackling clip:&lt;/p&gt;
-&lt;audio src=&quot;mouth-crackle-eq-before.mp3&quot; controls&gt;&lt;/audio&gt;
+&lt;audio src=&quot;/weblog/articles/automatically-removing-terrible-mouth-sounds/mouth-crackle-eq-before.mp3&quot; controls&gt;&lt;/audio&gt;
 
 &lt;p&gt;And here it is after running the command to turn those frequencies way down:&lt;/p&gt;
-&lt;audio src=&quot;mouth-crackle-eq-after.mp3&quot; controls&gt;&lt;/audio&gt;
+&lt;audio src=&quot;/weblog/articles/automatically-removing-terrible-mouth-sounds/mouth-crackle-eq-after.mp3&quot; controls&gt;&lt;/audio&gt;
 
 &lt;p&gt;It’s now muddier because, as we said, we are reducing the brightness by attenuating those frequencies. However, it is now more listenable, which is the trade-off that we want.&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://github.com/jimkang/smallfindings/blob/9251a9c22e4467757694ceb1aedb4af3e81a77ff/prepare-audio.sh#L29&quot;&gt;Here is my eq command in context.&lt;/a&gt; I bet there are better values I can use, but that’s what I found via ten minutes of experimentation. If you have parameter suggestions, &lt;a href=&quot;mailto:jimkang@fastmail.com&quot;&gt;let me know!&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;plosives&quot;&gt;Plosives&lt;/h2&gt;
 &lt;p&gt;The other problem with holding a phone rather than having a mic in a fixed position is that you sometimes get pops from speaking &lt;a href=&quot;https://www.wordnik.com/words/plosive&quot;&gt;plosives&lt;/a&gt; too close to the phone mic. A burst of air really close to a mic is unpleasant to hear in a recording.&lt;/p&gt;
 &lt;p&gt;Here’s what that sounds like:&lt;/p&gt;
-&lt;audio src=&quot;plosive-before.mp3&quot; controls&gt;&lt;/audio&gt;
+&lt;audio src=&quot;/weblog/articles/automatically-removing-terrible-mouth-sounds/plosive-before.mp3&quot; controls&gt;&lt;/audio&gt;
 
 &lt;p&gt;Fortunately, there are frequencies we can attenuate to sweep these under the rug, too. Unlike the mouth crackle frequencies, plosive pops live in low frequency bands, around 100-130 Hz, in my estimation. (Note that it’s Hz, not kHz.)&lt;/p&gt;
 &lt;p&gt;If we’re going to filter out stuff that low, we might as well get rid of everything else down there, too. Stuff under 80 Hz doesn’t really serve a purpose outside of music. Everything under 20 Hz is unhearable and is essentially a waste of computer energy, so you might as always roll that off.&lt;/p&gt;
@@ -75,10 +75,10 @@ done
 &lt;pre&gt;&lt;code&gt;sox before.wav after.wav highpass 130 4q
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;(The &lt;code&gt;4q&lt;/code&gt; says to do a steeper-than-default rolloff.)&lt;/p&gt;
 &lt;p&gt;Here’s the clip with the pop again:&lt;/p&gt;
-&lt;audio src=&quot;plosive-before.mp3&quot; controls&gt;&lt;/audio&gt;
+&lt;audio src=&quot;/weblog/articles/automatically-removing-terrible-mouth-sounds/plosive-before.mp3&quot; controls&gt;&lt;/audio&gt;
 
 &lt;p&gt;And here it is after the highpass filter is run:&lt;/p&gt;
-&lt;audio src=&quot;plosive-after.mp3&quot; controls&gt;&lt;/audio&gt;
+&lt;audio src=&quot;/weblog/articles/automatically-removing-terrible-mouth-sounds/plosive-after.mp3&quot; controls&gt;&lt;/audio&gt;
 
 &lt;p&gt;It’s not entirely smooth-sounding now, but it is no longer jarringly percussive.&lt;/p&gt;
 &lt;p&gt;So, now you can have scripts deal with both mouth crackling and plosive pops. Enjoy not having to do that yourself!&lt;/p&gt;
@@ -120,39 +120,6 @@ done
 &lt;p&gt;Everyone has the right to listen to whatever is immediately comfortable, and I’m glad that there are more options that cater to functional sound needs. However, if everyone views themselves as a customer to be satisfied, music culture will die some more, and people will miss out on all sorts of rewarding art.&lt;/p&gt;
 &lt;p&gt;A small number of people will always make the music they feel should exist, though they might suffer more to make it with an even tinier audience. The bigger losers from this shift, however, are the people that could have experienced that music but never got the chance because of cultural and business practices.&lt;/p&gt;
 &lt;p&gt;The &lt;a href=&quot;https://www.openculture.com/2021/04/the-decay-of-cinema-susan-sontag-martin-scorsese-their-lamentations-on-the-decline-of-cinema-explored-in-a-new-video-essay.html&quot;&gt;video essay&lt;/a&gt; makes this point better than I do here; you should watch it and consider the idea that challenge isn’t always bad.&lt;/p&gt;
-</description>
-    </item>
-    <item>
-      <title>Civilized Bandcamp file unzipping</title>
-      <link>http://jimkang.com/weblog/articles/bandcamp-unzip/</link>
-      <pubDate>Wed, 17 Feb 2021 19:00:00 -0500</pubDate>
-      <guid isPermaLink="true">http://jimkang.com/weblog/articles/bandcamp-unzip/</guid>
-      <author></author>
-      <description>&lt;p&gt;Here’s a script that’s handy for unzipping stuff you download from Bandcamp.
-&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;Bandcamp gives you zip files that contain no directory structure. So, the files just unzip to whatever directory you’re in. I have found that to get messy, and I now like an &lt;code&gt;artist-dir/album-dir&lt;/code&gt; structure, like I’m in the year 2000.&lt;/p&gt;
-&lt;p&gt;Here’s a script I wrote to unzip Bandcamp zip files into such a structure. It uses the naming scheme of the zip file (&lt;code&gt;&amp;lt;artist name&amp;gt;&lt;/code&gt;-&lt;code&gt;&amp;lt;album name&amp;gt;&lt;/code&gt;) to determine the appropriate directory names.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;#!/bin/bash
-
-for file in *.zip
-  do
-    filename=&amp;quot;${file%.*}&amp;quot;
-    # Filenames can&amp;#39;t contain /. So, I wonder
-    # what Bandcamp would do if they had AC/DC?
-    unzippath=$(echo &amp;quot;$filename&amp;quot; |sed -e &amp;#39;s/ - /\//&amp;#39;)
-    mkdir -p &amp;quot;$unzippath&amp;quot;
-    unzip &amp;quot;$filename&amp;quot; -d &amp;quot;$unzippath&amp;quot;
-  done
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;It will run on all of the zip files in the working directory. You’ll end up with your mp3 files in directory structures like &lt;code&gt;Chaucerian Myth/The Canterbury Tales&lt;/code&gt; now.&lt;/p&gt;
-&lt;p&gt;&lt;hr&gt;&lt;/p&gt;
-&lt;p&gt;&lt;blockquote&gt;Here, we’re about to drift away from that tiny script into background story space! I feel like a guy that responds to “Where is the nearest gas station?” with a long explanation of local zoning policy and their own personal journey away from fossil fuels to a house powered entirely with solar panels. (I actually would like solar panels, BTW.)&lt;/p&gt;
-&lt;p&gt;Unlike that guy, however, there is no way I’ll notice if you just close the tab now!&lt;/blockquote&gt;&lt;/p&gt;
-&lt;hr&gt;
-
-&lt;p&gt;This has come up because I’ve been increasingly enjoying &lt;a href=&quot;https://bandcamp.com/&quot;&gt;Bandcamp&lt;/a&gt; over the last few years, but now I’m all in on them.&lt;/p&gt;
-&lt;p&gt;I’ve usually used their streaming service, but lately I’ve been downloading albums from them and importing them into &lt;a href=&quot;https://plex.tv/&quot;&gt;Plex&lt;/a&gt; to play. (I like it because lets me stream from my Raspberry Pi at home to my phone. The Bandcamp app also lets you stream to your phone but only with music you’ve bought on Bandcamp.)&lt;/p&gt;
-&lt;p&gt;At first, I thought I’d dump all of my files into one directory and let Plex use ID3 tags to organize them, but you still have to get into the files sometimes, and a 4,000-file directory is total hell. Via Bandcamp purchases and CD rips (weird, I know), this pile is growing again after being frozen for half a decade and needs a little structure.&lt;/p&gt;
-&lt;p&gt;I think I like this way of listening to and acquiring music, as backwards as it sounds, because I tend to consider each album more fully and give each one more of a chance, either because I bought it directly or I once bought it long ago and now have put in the work to rip a CD. And in the cases when I buy from a label-less artist, I provide magnitudes more financial compensation to the artist than I would via any streaming service.&lt;/p&gt;
 </description>
     </item>
     <item>
@@ -275,6 +242,39 @@ For years, I’ve used &lt;a href=&quot;https://graphviz.org/&quot;&gt;Graphviz&
 &lt;p&gt;But that would reduce profits, and Milton Friedman has famously proclaimed that corporations’ sole responsibility is to maximize profit. (And as we all know, Milton Friedman is a god-pharaoh that issues forth waves that &lt;em&gt;compel all to obey&lt;/em&gt; from his sarcophagus underneath the University of Chicago.)&lt;/p&gt;
 &lt;p&gt;For smaller companies, indie developers, and people who just want to make something nice for others, it’s hard to imagine better alternatives, except perhaps offline web apps (which aren’t easy for a lot of users to wrap their heads around &amp;mdash; the association between the web and internet connections is strong) or putting all of their proverbial eggs on a specific platform.&lt;/p&gt;
 &lt;p&gt;I guess all I’m saying is: Web browsers are (sadly?) the closest we’ve ever gotten to a universal app platform, so I hope we can cut away their many excesses and abuses while keeping that part.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Civilized Bandcamp file unzipping</title>
+      <link>http://jimkang.com/weblog/articles/bandcamp-unzip/</link>
+      <pubDate>Wed, 17 Feb 2021 19:00:00 -0500</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/bandcamp-unzip/</guid>
+      <author></author>
+      <description>&lt;p&gt;Here’s a script that’s handy for unzipping stuff you download from Bandcamp.
+&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Bandcamp gives you zip files that contain no directory structure. So, the files just unzip to whatever directory you’re in. I have found that to get messy, and I now like an &lt;code&gt;artist-dir/album-dir&lt;/code&gt; structure, like I’m in the year 2000.&lt;/p&gt;
+&lt;p&gt;Here’s a script I wrote to unzip Bandcamp zip files into such a structure. It uses the naming scheme of the zip file (&lt;code&gt;&amp;lt;artist name&amp;gt;&lt;/code&gt;-&lt;code&gt;&amp;lt;album name&amp;gt;&lt;/code&gt;) to determine the appropriate directory names.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#!/bin/bash
+
+for file in *.zip
+  do
+    filename=&amp;quot;${file%.*}&amp;quot;
+    # Filenames can&amp;#39;t contain /. So, I wonder
+    # what Bandcamp would do if they had AC/DC?
+    unzippath=$(echo &amp;quot;$filename&amp;quot; |sed -e &amp;#39;s/ - /\//&amp;#39;)
+    mkdir -p &amp;quot;$unzippath&amp;quot;
+    unzip &amp;quot;$filename&amp;quot; -d &amp;quot;$unzippath&amp;quot;
+  done
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;It will run on all of the zip files in the working directory. You’ll end up with your mp3 files in directory structures like &lt;code&gt;Chaucerian Myth/The Canterbury Tales&lt;/code&gt; now.&lt;/p&gt;
+&lt;p&gt;&lt;hr&gt;&lt;/p&gt;
+&lt;p&gt;&lt;blockquote&gt;Here, we’re about to drift away from that tiny script into background story space! I feel like a guy that responds to “Where is the nearest gas station?” with a long explanation of local zoning policy and their own personal journey away from fossil fuels to a house powered entirely with solar panels. (I actually would like solar panels, BTW.)&lt;/p&gt;
+&lt;p&gt;Unlike that guy, however, there is no way I’ll notice if you just close the tab now!&lt;/blockquote&gt;&lt;/p&gt;
+&lt;hr&gt;
+
+&lt;p&gt;This has come up because I’ve been increasingly enjoying &lt;a href=&quot;https://bandcamp.com/&quot;&gt;Bandcamp&lt;/a&gt; over the last few years, but now I’m all in on them.&lt;/p&gt;
+&lt;p&gt;I’ve usually used their streaming service, but lately I’ve been downloading albums from them and importing them into &lt;a href=&quot;https://plex.tv/&quot;&gt;Plex&lt;/a&gt; to play. (I like it because lets me stream from my Raspberry Pi at home to my phone. The Bandcamp app also lets you stream to your phone but only with music you’ve bought on Bandcamp.)&lt;/p&gt;
+&lt;p&gt;At first, I thought I’d dump all of my files into one directory and let Plex use ID3 tags to organize them, but you still have to get into the files sometimes, and a 4,000-file directory is total hell. Via Bandcamp purchases and CD rips (weird, I know), this pile is growing again after being frozen for half a decade and needs a little structure.&lt;/p&gt;
+&lt;p&gt;I think I like this way of listening to and acquiring music, as backwards as it sounds, because I tend to consider each album more fully and give each one more of a chance, either because I bought it directly or I once bought it long ago and now have put in the work to rip a CD. And in the cases when I buy from a label-less artist, I provide magnitudes more financial compensation to the artist than I would via any streaming service.&lt;/p&gt;
 </description>
     </item>
     <item>

@@ -30,11 +30,11 @@
 
 <ul>
 <li>I record just using my phone without a complex setup or a fixed location. This lets me record a segment wherever I happen to be, whenever I have a few moments of spare&nbsp;time.</li>
-<li>I automate much of the production. A <a href="https://github.com/jimkang/smallfindings/blob/master/prepare-audio.sh">shell script</a> and <a href="https://github.com/jimkang/smallfindings/blob/master/Makefile">Makefile</a> take the m4a files from my phone, normalize them, covert them to the proper formats, concatenate them with the theme music and stings, and make the final mp3. Sometimes, I have to step in to some part of the chain to make a manual edit, but I still save time as a result of the remaining parts being&nbsp;automated.</li>
+<li>I automate much of the production. A <a href="https://github.com/jimkang/smallfindings/blob/master/prepare-audio.sh">shell script</a> and <a href="https://github.com/jimkang/smallfindings/blob/master/Makefile">Makefile</a> take the m4a files from my phone, normalize them, convert them to the proper formats, concatenate them with the theme music and stings, and make the final mp3. Sometimes, I have to step in to some part of the chain to make a manual edit, but I still save time as a result of the remaining parts being&nbsp;automated.</li>
 </ul>
 <p>This saves a lot of time. However, one consequence of recording with a handheld phone is that sometimes I hold it too close to my face and get the dreaded “mouth crackle” in the recording, which can sound distracting at best and gross at worst to the&nbsp;listener.</p>
 <p>Here’s an&nbsp;example.</p>
-<audio src="mouth-crackle-eq-before.mp3" controls></audio>
+<audio src="/weblog/articles/automatically-removing-terrible-mouth-sounds/mouth-crackle-eq-before.mp3" controls></audio>
 
 <p>There are a lot of audio issues that I don’t think are important as people think they are, but this one cannot be&nbsp;ignored.</p>
 <p>To get rid of the crackle, you can either re-record the segment (which makes the podcast too expensive), or you can isolate the frequencies that the crackle lives in, then cut them out with a graphic equalizer. The crackle noise lives in the 6 kHz-12 kHz range. That coincides with the frequency range for perceived brightness in music, but luckily, this is speech, not&nbsp;music.</p>
@@ -64,17 +64,17 @@ done
 <p>For example, this clause, <code>equalizer 6.3k 5.0q -20</code>, says “take the frequencies in a narrow band (5.0q) around 6.3 kHz and drop them by as much as 20 dB”. So, <code>sox</code> will drop 20 kHz frequencies by 20 dB, and a little less so for neighboring&nbsp;frequencies.</p>
 <p>(The default bandwidth is 1.0q. The higher the value, the narrower the band. <a href="http://digitalsoundandmusic.com/chapters/ch7/">This online book</a> has some nice graphs of various q&nbsp;values.)</p>
 <p>Again, here’s the terrible mouth crackling&nbsp;clip:</p>
-<audio src="mouth-crackle-eq-before.mp3" controls></audio>
+<audio src="/weblog/articles/automatically-removing-terrible-mouth-sounds/mouth-crackle-eq-before.mp3" controls></audio>
 
 <p>And here it is after running the command to turn those frequencies way&nbsp;down:</p>
-<audio src="mouth-crackle-eq-after.mp3" controls></audio>
+<audio src="/weblog/articles/automatically-removing-terrible-mouth-sounds/mouth-crackle-eq-after.mp3" controls></audio>
 
 <p>It’s now muddier because, as we said, we are reducing the brightness by attenuating those frequencies. However, it is now more listenable, which is the trade-off that we&nbsp;want.</p>
 <p><a href="https://github.com/jimkang/smallfindings/blob/9251a9c22e4467757694ceb1aedb4af3e81a77ff/prepare-audio.sh#L29">Here is my eq command in context.</a> I bet there are better values I can use, but that’s what I found via ten minutes of experimentation. If you have parameter suggestions, <a href="mailto:jimkang@fastmail.com">let me&nbsp;know!</a></p>
 <h2 id="plosives">Plosives</h2>
 <p>The other problem with holding a phone rather than having a mic in a fixed position is that you sometimes get pops from speaking <a href="https://www.wordnik.com/words/plosive">plosives</a> too close to the phone mic. A burst of air really close to a mic is unpleasant to hear in a&nbsp;recording.</p>
 <p>Here’s what that sounds&nbsp;like:</p>
-<audio src="plosive-before.mp3" controls></audio>
+<audio src="/weblog/articles/automatically-removing-terrible-mouth-sounds/plosive-before.mp3" controls></audio>
 
 <p>Fortunately, there are frequencies we can attenuate to sweep these under the rug, too. Unlike the mouth crackle frequencies, plosive pops live in low frequency bands, around 100-130 Hz, in my estimation. (Note that it’s Hz, not&nbsp;kHz.)</p>
 <p>If we’re going to filter out stuff that low, we might as well get rid of everything else down there, too. Stuff under 80 Hz doesn’t really serve a purpose outside of music. Everything under 20 Hz is unhearable and is essentially a waste of computer energy, so you might as always roll that&nbsp;off.</p>
@@ -83,10 +83,10 @@ done
 <pre><code>sox before.wav after.wav highpass 130 4q
 </code></pre><p>(The <code>4q</code> says to do a steeper-than-default&nbsp;rolloff.)</p>
 <p>Here’s the clip with the pop&nbsp;again:</p>
-<audio src="plosive-before.mp3" controls></audio>
+<audio src="/weblog/articles/automatically-removing-terrible-mouth-sounds/plosive-before.mp3" controls></audio>
 
 <p>And here it is after the highpass filter is&nbsp;run:</p>
-<audio src="plosive-after.mp3" controls></audio>
+<audio src="/weblog/articles/automatically-removing-terrible-mouth-sounds/plosive-after.mp3" controls></audio>
 
 <p>It’s not entirely smooth-sounding now, but it is no longer jarringly&nbsp;percussive.</p>
 <p>So, now you can have scripts deal with both mouth crackling and plosive pops. Enjoy not having to do that&nbsp;yourself!</p>
