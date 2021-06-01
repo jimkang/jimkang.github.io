@@ -24,20 +24,20 @@
         <article class="article">
           <section class="content"><p>It is important to me to create <a href="https://jimkang.com/smallfindings/">Small Findings</a> episodes that have information that I myself would want to hear. At the same time, for the sake of sustainability, it is also important to keep it cheap in terms of time and effort . That is to say, if it’s too much work, I can’t justify doing&nbsp;it.</p>
 <p>Therefore, I cast aside concerns about slick audio and perfect phrasing and vocal&nbsp;performance.</p>
-<p>Here are two of the things I do to keep it small enough to fit into my&nbsp;life:</p>
+<p>Here are two other things I do to keep it small enough to fit into my&nbsp;life:</p>
 <p><span class="more"></span></p>
 <style>img { width: 100% }</style>
 
 <ul>
-<li>I record just using my phone without a complex setup or a fixed location. This lets me record a segment wherever I happen to be within short pockets of available&nbsp;time.</li>
+<li>I record just using my phone without a complex setup or a fixed location. This lets me record a segment wherever I happen to be, whenever I have a few moments of spare&nbsp;time.</li>
 <li>I automate much of the production. A <a href="https://github.com/jimkang/smallfindings/blob/master/prepare-audio.sh">shell script</a> and <a href="https://github.com/jimkang/smallfindings/blob/master/Makefile">Makefile</a> take the m4a files from my phone, normalize them, covert them to the proper formats, concatenate them with the theme music and stings, and make the final mp3. Sometimes, I have to step in to some part of the chain to make a manual edit, but I still save time as a result of the remaining parts being&nbsp;automated.</li>
 </ul>
-<p>One consequence of recording with a handheld phone is that sometimes I hold it too close to my face and get the dreaded “mouth crackle” in the recording, which can sound distracting at best and gross at worst to the&nbsp;listener.</p>
+<p>This saves a lot of time. However, one consequence of recording with a handheld phone is that sometimes I hold it too close to my face and get the dreaded “mouth crackle” in the recording, which can sound distracting at best and gross at worst to the&nbsp;listener.</p>
 <p>Here’s an&nbsp;example.</p>
 <audio src="mouth-crackle-eq-before.mp3" controls></audio>
 
-<p>There are a lot of audio “issues” that I don’t think truly matter, but this one&nbsp;does.</p>
-<p>To get rid of the crackle, you can either re-record the segment (which makes the podcast too expensive), or you can isolate the frequencies that the crackle lives in, then cut them out with a graphic equalizer. I’ve found that these live in the 6 kHz-12 kHz range. That corresponds with perceived brightness in music, but luckily, this is speech, not&nbsp;music.</p>
+<p>There are a lot of audio issues that I don’t think are important as people think they are, but this one cannot be&nbsp;ignored.</p>
+<p>To get rid of the crackle, you can either re-record the segment (which makes the podcast too expensive), or you can isolate the frequencies that the crackle lives in, then cut them out with a graphic equalizer. The crackle noise lives in the 6 kHz-12 kHz range. That coincides with the frequency range for perceived brightness in music, but luckily, this is speech, not&nbsp;music.</p>
 <p>To manually cut those frequencies, you can do something like this with a graphic <span class="caps">EQ</span>&nbsp;filter.</p>
 <p><img src="/weblog/articles/automatically-removing-terrible-mouth-sounds/mouth-crackle-eq.png" alt="Graphic EQ settings for cutting mouth crackle in Audacity."></p>
 <p>However, manually doing this for every segment is laborious. It’s going to make me want to quit the podcast. Fortunately, this can be done via the <a href="http://sox.sourceforge.net/">SoX command line program</a>.</p>
