@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width" initial-scale="1">
+    <title>Rappin' at ya - jimkang.com
+    </title>
+    <link rel="alternate" href="http://jimkang.com/feed.xml" type="application/rss+xml" title="It's dot com.">
+    <link rel="stylesheet" href="/weblog/css/main.css">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <!-- include author-->
+        <h1>Rappin' at ya</h1>
+        <!-- p.author-->
+        <!--  | #{ "Written by " }-->
+        <!--  mixin author(page.metadata.author)-->
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p><em>This was also sent out as a <a href="https://tinyletter.com/jimkang/letters/rappin-at-ya">newsletter</a>. If you’d like to get project updates like this as email, you can <a href="https://tinyletter.com/jimkang/">subscribe</a>.</em></p>
+<p><span class="more"></span>
+I know&mdash;we all know&mdash;that it’s been a long time since I rapped at ya. <em>So</em> long. Over a&nbsp;year.</p>
+<p>So, now I’m rappin’ at&nbsp;ya.</p>
+<p>In that time,&nbsp;I:</p>
+<ul>
+<li>Relearned to type on a weird keyboard to avoid&nbsp;pain</li>
+<li>Quit my job because it was using up my life in multiple terrible&nbsp;ways</li>
+<li>Got through a pandemic wave, maybe, like the rest of you? (Hoping there’s no “This user has died” autoreplies to this&nbsp;email.)</li>
+</ul>
+<p>(I wrote about this stuff in my <a href="https://tinyletter.com/deathmtn">personal newsletter</a> in gruesome&nbsp;detail.)</p>
+<h2 id="a-tiny-story">A tiny&nbsp;story</h2>
+<p>I also worked on a few projects when I could. One of them is this animated story piece that I made for Taper, a nifty zine packed with strange bits of web art. Taper is enjoyably disorienting and has a very different texture from the contemporary web. Every piece in Taper is required to be 2048 bytes or less, which is a big factor in the&nbsp;strangeness.</p>
+<p>My piece is about beings that do not have the same osmosed cultural knowledge about dice that we humans in 2021&nbsp;do:</p>
+<h2><a href="https://taper.badquar.to/6/reconstructing_the_die.html">Reconstructing the&nbsp;‘die’</a></h2>
+
+<p>To honor the spirit of the zine, I minified<b><a href="#note-1">*</a></b> the code myself, instead of using a standard industrial tool like Rollup or UglifyJS. It feels appropriately handmade that&nbsp;way.</p>
+<p>Keeping it under 2 <span class="caps">KB</span>&mdash;that made me sweat. After the core of it was working, every revision felt like stuffing yet another object into a closet so burstingly full of junk that cracking it open the wrong way could drop a bunch of wrenches and bowling balls on my&nbsp;head.</p>
+<p>There were a few things I got out of doing it this way, though. I talked about some things that I learned about minification on <a href="https://jimkang.com/smallfindings/episodes/who-is-the-robot-now/">this Small Findings episode</a>. (It’s near the end; the rest of it is about my experience of getting paid for freelance&nbsp;art.)</p>
+<p>Also, I feel that I would have coded it differently (possibly for the worse) had I been writing it in a normal, readable&nbsp;way.</p>
+<p>But I can’t prove that. Regardless, I appreciate the directness and total intimacy of programming this way. There were no parts of this program for which I had to say, “I don’t know what’s going on here, but I (have to) trust the library I’m&nbsp;using.”</p>
+<p><a href="https://github.com/jimkang/die-mystery">Here’s the source.</a> You can see its devolution across&nbsp;commits.</p>
+<p>The piece is in some ways an outgrowth of <a href="https://jimkang.com/slopcube/">Slop Cube</a>, a web app/bot that is always drawing cubes using 2D methods, often wonkily. Whereas Slop Cube draws them instantaneously, the being in Reconstructing draws the die step-by-step because it’s figuring it out as it&nbsp;goes.</p>
+<p>The story draws on human experiences with things they don’t understand. The beings conjecture about how the die works the way we do about the construction of the&nbsp;pyramids.</p>
+<h2 id="things-i-keep-doing">Things I keep&nbsp;doing</h2>
+<ul>
+<li><a href="https://jimkang.com/smallfindings/">Small Findings</a>, the podcast I started back when I last emailed you, has 19 episodes&nbsp;now.</li>
+<li>I keep blogging in <a href="https://jimkang.com/weblog/">large</a> and <a href="https://smidgeo.com/notes/deathmtn/">small</a>&nbsp;formats.</li>
+<li>Here is an <a href="https://jimkang.com/weblog/articles/dnd-with-a-kid/">article</a>  about playing with D&amp;D with a six-year-old, a thing I started doing during the pandemic, along with an <a href="https://jimkang.com/weblog/articles/dnd-with-a-kid/pom-pom-dungeon/">adventure module</a>.</li>
+<li><a href="https://smidgeo.com/bots/">These bots</a> continue as always. Hit me up if you want to be on their mailing list, which goes out three times a&nbsp;week.</li>
+<li><a href="https://smidgeo.com/bots/you-never-see-it-bot">You Never See It Bot</a> was a bot I started in December when Katt commented “They call it darjeeling, but you never see it darjeel.” My friend Wayne made the emoji the bot uses to deliver its&nbsp;lines.</li>
+</ul>
+<p>I mostly don’t know what you folks have been up to because I’m not on the social medias. So let me&nbsp;know!</p>
+<p>Jim</p>
+<p><b id="note-1">*</b> Minification is the process of taking JavaScript code and altering so that it still works the same way but is as small as possible so that less stuff has to be downloaded by the user. This comes at the cost of readability; the resulting code is very hard for humans to&nbsp;understand.</p>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/weblog/">« Full blog</a></div>
+        <!--section.about-->
+        <!--  !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2021 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+          <p><a href='/weblog/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>
