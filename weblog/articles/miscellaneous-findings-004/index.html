@@ -23,6 +23,15 @@
 <em>This is a roundup of miscellaneous things that I’ve found out about (or have rediscovered).<span class="more"></span> I take notes on findings regularly, and I put the findings that translate well to speech on my podcast, <span style="text-decoration: underline"><strong><a href="https://jimkang.com/smallfindings/">Small Findings</a></strong></span>. The rest (which are often technical findings), I put here. They’re not always written up for maximum comprehension as a blog post, but if anything is hard to understand, please <a href="mailto:jimkang@fastmail.com">email me</a> if you need&nbsp;clarification.</em></p>
 </section>
           <article class="finding">
+            <section class="content"><h1 id="dom-events"><span class="caps">DOM</span>&nbsp;events</h1>
+<h2 id="input">input</h2>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event">The <code>input</code> event</a> fires when the value of an <code>input</code>, <code>select</code>, or <code>textarea</code> changes. This is an event introduced in <span class="caps">HTML</span>&nbsp;5.</p>
+<p>The <code>change</code> event  only fires when a value is committed. So, a range <code>input</code> will fire <code>change</code> only when the user stops dragging the slider, but <code>input</code> will fire whenever the slider is&nbsp;moved.</p>
+<p>There’s many cases in which you do not want an event listener to run every time the user moves the&nbsp;slider.</p>
+<p>#html #js #event&nbsp;#control</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="transforming-a-hierarchy-by-key-type">Transforming a hierarchy by key&nbsp;type</h1>
 <p>Here’s an example of walking an object hierarchy in JavaScript and producing a copy that’s gotten rid of values considered “default” values. e.g. <code>&#39;&#39;</code> for strings, <code>0</code> for numbers,&nbsp;etc.</p>
 <p>You can copy this and do a different kind of transformation, if you’d like. It is recursive, so be careful where you apply&nbsp;it.</p>
@@ -79,15 +88,6 @@ export function dropDefaults(depth, maxDepth, value) {
   }
 }
 </code></pre><p> #javascript&nbsp;#hierarchy</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="dom-events"><span class="caps">DOM</span>&nbsp;events</h1>
-<h2 id="input">input</h2>
-<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event">The <code>input</code> event</a> fires when the value of an <code>input</code>, <code>select</code>, or <code>textarea</code> changes. This is an event introduced in <span class="caps">HTML</span>&nbsp;5.</p>
-<p>The <code>change</code> event  only fires when a value is committed. So, a range <code>input</code> will fire <code>change</code> only when the user stops dragging the slider, but <code>input</code> will fire whenever the slider is&nbsp;moved.</p>
-<p>There’s many cases in which you do not want an event listener to run every time the user moves the&nbsp;slider.</p>
-<p>#html #js #event&nbsp;#control</p>
 </section>
           </article>
           <article class="finding">
