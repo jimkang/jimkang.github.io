@@ -50,17 +50,6 @@
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="excluding-dirs-from-find">Excluding dirs from&nbsp;find</h1>
-<p>Say you want to find all of the directories in which you have a <code>rollup.config.js</code> file.</p>
-<p>You could&nbsp;try</p>
-<pre><code>find . -name rollup.config.js
-</code></pre><p>But that would also search all of the <code>node_modules</code> directories, and you mean to find projects in which you’ve used rollup&nbsp;directly.</p>
-<p>You can add <a href="/weblog/articles/miscellaneous-findings-006/findings/"><code>-path</code> and <code>-not</code></a> to exclude them from the&nbsp;search:</p>
-<pre><code>find . -name rollup.config.js -and -not \( -path &#39;*/node_modules/*&#39; \) -prune
-</code></pre><p>#search #unix #command&nbsp;#find</p>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="raspberry-pi-setup">Raspberry Pi&nbsp;setup</h1>
 <h2 id="basics">Basics</h2>
 <p>With a pre-loaded Canakit boot <span class="caps">SD</span> card&nbsp;inserted:</p>
@@ -178,6 +167,17 @@ static domain_name_servers=&lt;router ip&gt; 8.8.8.8
 <p>I somehow ended up with <code>music</code> in the media directory being owned by the <code>503</code> user, which prevented the <code>pi</code> user from creating dirs&nbsp;there.</p>
 <pre><code>drwxrwxr-x 587 503 staff 20480 Mar 27 01:52 music
 </code></pre><p>I chmodded it to&nbsp;pi.</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="excluding-dirs-from-find">Excluding dirs from&nbsp;find</h1>
+<p>Say you want to find all of the directories in which you have a <code>rollup.config.js</code> file.</p>
+<p>You could&nbsp;try</p>
+<pre><code>find . -name rollup.config.js
+</code></pre><p>But that would also search all of the <code>node_modules</code> directories, and you mean to find projects in which you’ve used rollup&nbsp;directly.</p>
+<p>You can add <a href="/weblog/articles/miscellaneous-findings-006/findings/"><code>-path</code> and <code>-not</code></a> to exclude them from the&nbsp;search:</p>
+<pre><code>find . -name rollup.config.js -and -not \( -path &#39;*/node_modules/*&#39; \) -prune
+</code></pre><p>#search #unix #command&nbsp;#find</p>
 </section>
           </article>
         </article>
