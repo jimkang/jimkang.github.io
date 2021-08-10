@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width" initial-scale="1">
+    <title>Miscellaneous Findings VIII: Modulation - jimkang.com
+    </title>
+    <link rel="alternate" href="http://jimkang.com/feed.xml" type="application/rss+xml" title="It's dot com.">
+    <link rel="stylesheet" href="/weblog/css/main.css">
+  </head>
+  <body>
+    <header class="header">
+      <div class="content-wrap">
+        <!-- include author-->
+        <h1>Miscellaneous Findings VIII: Modulation</h1>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>This edition is brought to you by the start of my stint at the <a href="https://recurse.com/">Recurse Center</a>! One of my goals for my time at the Recurse Center is to learn more about signal processing, and I started by finding out how modulation&nbsp;works.</p>
+<p><em>This is a roundup of miscellaneous things that I’ve found out about (or have rediscovered).<span class="more"></span> I take notes on findings regularly, and I put the findings that translate well to speech on my podcast, <span style="text-decoration: underline"><strong><a href="https://jimkang.com/smallfindings/">Small Findings</a></strong></span>. The rest (which are often technical findings), I put here. They’re not always written up for maximum comprehension as a blog post, but if anything is hard to understand, please <a href="mailto:jimkang@fastmail.com">email me</a> if you need&nbsp;clarification.</em></p>
+</section>
+          <article class="finding">
+            <section class="content"><h1 id="modulation">Modulation</h1>
+<p>Modulation is the act of modifying a wave with another wave. The modified wave is called the carrier signal, and the modifying wave is called the information&nbsp;signal.</p>
+<h2 id="why-did-we-need-modulation-for-communication-">Why did we need modulation for&nbsp;communication?</h2>
+<p><a href="https://www.nicerf.com/articles/detail/antenna-length-frequency-and-wavelength.html">https://www.nicerf.com/articles/detail/antenna-length-frequency-and-wavelength.html</a></p>
+<blockquote>
+<p>The length of the antenna is inversely proportional to the frequency and directly proportional to the&nbsp;wavelength.</p>
+</blockquote>
+<p>So, speech at 20,000 Hz would have a wavelength of 300,000km/20,000 = 15 km. (Speech frequencies fall in the 20-20,000 Hz&nbsp;band.)</p>
+<p>You need an antenna to be a 1/4 the length of the wavelength, so you’d need a 3.75 km antenna to send a 20 kHz&nbsp;signal.</p>
+<p>If you use modulation, you can transmit that 20 kHz signal on a much higher frequency (lower wavelength) carrier signal, like a 100 MHz one that would require a 75 cm antenna. (On the receiving end, a demodulator would separate the information signal from the carrier&nbsp;signal.)</p>
+<p>Another reason to use modulation is that even if everyone had giant antennae, the signals they’d broadcast would clash. By assigning different entities different carrier waves onto which they put information signals, collisions can be&nbsp;avoided.</p>
+<h2 id="fm"><span class="caps">FM</span></h2>
+<p><a href="https://fas.org/man/dod-101/navy/docs/es310/FM.htm">https://fas.org/man/dod-101/navy/docs/es310/<span class="caps">FM</span>.htm</a></p>
+<p>Frequency modulation encodes the information signal by varying the frequency of the carrier signal by some amount, which is determined by what’s called a modulation index. The link above gives the example of an <span class="caps">FM</span> transmitter using a modulation index of 5 and getting a bandwidth of 180 kHz. So, the lowest frequency the antenna would need to broadcast in a carrier signal at 88 MHz would be 88 MHz - 180 kHz = 87.82 MHz. The required antenna length would be 300,000km/8,782,000/4 = 0.00854 km = 8.54&nbsp;m.</p>
+<h2 id="fm-modulation-as-a-vocoder"><span class="caps">FM</span> modulation as a&nbsp;vocoder</h2>
+<p>I’m going to have more on vocoders later, which are a kind of modulator for encoding speech, but also for interesting musical&nbsp;effects.</p>
+<p>But without getting too deeply what they are, I did wonder what an <span class="caps">FM</span> modulator in the role of a vocoder would sound like. So, I modified my <a href="https://github.com/jimkang/fm-modulator">fm-modulator</a> module, which I had previously made to test out differently modulated carrier signals to indicate magnitudes back when <a href="https://jimkang.com/weblog/articles/music-for-the-twelve/">The Sound of the Far Future</a> was purely a data sonification. The module allowed the information signal to be a simple oscillation only, so I modified it to accept arbitary audio as the information&nbsp;signal.</p>
+<p>Here’s my information signal&nbsp;recording:</p>
+<audio src="info-signal.mp3" controls></audio>
+
+<p>And here is the result when you use it to modulate a 440 Hz sawtooth&nbsp;wave:</p>
+<audio src="modulated.mp3" controls></audio>
+
+<p>You can tell when I’m talking and when I’m not in that encoded signal. Other than that…it’s no vocoder. There may be some musical uses for this, but it’s not going to be broadly&nbsp;applicable.</p>
+<p>If you’d like to here what you’d sound like <span class="caps">FM</span> modulated, <a href="https://jimkang.com/fm-modulator/">you can try for yourself here</a>.</p>
+</section>
+          </article>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/weblog/">« Full blog</a></div>
+        <!--section.about-->
+        <!--  !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2021 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+          <p><a href='/weblog/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>
