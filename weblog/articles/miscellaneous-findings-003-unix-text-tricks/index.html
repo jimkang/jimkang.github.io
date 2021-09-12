@@ -41,25 +41,6 @@
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="xargs">xargs</h1>
-<p>(I’ve seen xargs a lot in shell scripts I’ve used and had a hazy idea about what it did but only just now did I actually look it&nbsp;up.)</p>
-<p><a href="https://en.wikipedia.org/wiki/Xargs"><code>xargs</code></a> is a command&nbsp;that:</p>
-<ul>
-<li>Runs another command for&nbsp;you</li>
-<li>Converts stuff piped to it via stdin into command-line arguments for that other&nbsp;command</li>
-</ul>
-<p>It’s a glue tool that’s necessary&nbsp;because:</p>
-<ul>
-<li>A lot of Unix commands communicate via stdin/stdout&nbsp;pipes</li>
-<li>Some do&nbsp;not</li>
-</ul>
-<p>In that way, it’s like <code>apply</code> in JavaScript which converts arrays into function&nbsp;arguments.</p>
-<p>As an example, you can use it to pass the results (a bunch of filenames) of <a href="https://gist.github.com/jimkang/1c4c9e44fe4133c8c3159572858bf0e3">get-entries-in-date-range</a> to <code>cat</code> to mash up the results into a single&nbsp;file:</p>
-<pre><code>./tools/get-entries-in-date-range.sh 2020-03-28 | xargs cat &gt; episode-2-script.md
-</code></pre><p>#unix&nbsp;#bash</p>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="tr-for-replacing-text">tr for replacing&nbsp;text</h1>
 <p>There is a Unix command called <code>tr</code>. You pipe in input text and give it two&nbsp;arguments:</p>
 <ul>
@@ -104,6 +85,25 @@
 ]
 </code></pre><p>And that is valid&nbsp;<span class="caps">JSON</span>.</p>
 <p>#tr #shell #unix #sed #text&nbsp;#bash</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="xargs">xargs</h1>
+<p>(I’ve seen xargs a lot in shell scripts I’ve used and had a hazy idea about what it did but only just now did I actually look it&nbsp;up.)</p>
+<p><a href="https://en.wikipedia.org/wiki/Xargs"><code>xargs</code></a> is a command&nbsp;that:</p>
+<ul>
+<li>Runs another command for&nbsp;you</li>
+<li>Converts stuff piped to it via stdin into command-line arguments for that other&nbsp;command</li>
+</ul>
+<p>It’s a glue tool that’s necessary&nbsp;because:</p>
+<ul>
+<li>A lot of Unix commands communicate via stdin/stdout&nbsp;pipes</li>
+<li>Some do&nbsp;not</li>
+</ul>
+<p>In that way, it’s like <code>apply</code> in JavaScript which converts arrays into function&nbsp;arguments.</p>
+<p>As an example, you can use it to pass the results (a bunch of filenames) of <a href="https://gist.github.com/jimkang/1c4c9e44fe4133c8c3159572858bf0e3">get-entries-in-date-range</a> to <code>cat</code> to mash up the results into a single&nbsp;file:</p>
+<pre><code>./tools/get-entries-in-date-range.sh 2020-03-28 | xargs cat &gt; episode-2-script.md
+</code></pre><p>#unix&nbsp;#bash</p>
 </section>
           </article>
           <article class="finding">
