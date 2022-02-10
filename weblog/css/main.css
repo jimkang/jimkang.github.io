@@ -139,7 +139,7 @@ footer .nav {
 }
 
 footer a {
-  font-size: 1.2rem;
+  font-size: 1.2em;
   text-decoration: none;
   font-style: normal;
 }
@@ -176,7 +176,10 @@ footer .copy, footer .copy a {
 /* article */
 
 .article {
-  margin: 3em 3em 4em 1rem;
+  margin-top: 3em;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 
 .article header {
