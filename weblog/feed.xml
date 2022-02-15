@@ -5,9 +5,79 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Mon, 07 Feb 2022 19:00:00 -0500</pubDate>
+    <pubDate>Mon, 14 Feb 2022 19:00:00 -0500</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Eight small things</title>
+      <link>http://jimkang.com/weblog/articles/eight-small-things/</link>
+      <pubDate>Mon, 14 Feb 2022 19:00:00 -0500</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/eight-small-things/</guid>
+      <author></author>
+      <description>&lt;p&gt;&lt;em&gt;This was also sent out as a &lt;a href=&quot;https://tinyletter.com/jimkang/letters/eight-small-things&quot;&gt;newsletter&lt;/a&gt;. If you’d like to get project updates like this as email, you can &lt;a href=&quot;https://tinyletter.com/jimkang/&quot;&gt;subscribe&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;
+Hey, everybody.&lt;/p&gt;
+&lt;p&gt; I’ve been doing contract work. I’ve been transporting my kid to various places. I’ve been learning about audio digital signal processing in fits and starts.&lt;/p&gt;
+&lt;p&gt;But! I’ve also done several small projects over these past few months, so I thought I’d round them up for you.&lt;/p&gt;
+&lt;p&gt;In case you’re in a Clicking and Not Reading Mood, here’s a bunch of stuff to click:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://jimkang.com/music/deathmtn-VAeaecCm.html&quot;&gt;Programmatically-generated shredding&lt;/a&gt; (&lt;a href=&quot;https://jimkang.com/music/deathmtn-vBdReLto.html&quot;&gt;Softer synthy version&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://smidgeo.com/notes/deathmtn/podcast.xml&quot;&gt;Notescast podcast feed&lt;/a&gt; (&lt;a href=&quot;https://podcasts.apple.com/us/podcast/notescast/id1605530179&quot;&gt;Apple Podcasts page&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://smidgeo.com/anoited/&quot;&gt;Anoited&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://jimkang.com/adventures/orm-mines/&quot;&gt;Orm Mines&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://jimkang.com/weblog/articles/remind-me-in-10000-years/&quot;&gt;Remind me in 10,000 years&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://jimkang.com/curse-notice/&quot;&gt;Curse Notice&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://jimkang.com/personalized-bible/fucking-bible.html&quot;&gt;The Fucking Bible&lt;/a&gt; (warning 7.5 MB)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://tinyletter.com/hot-garbage&quot;&gt;Hot Garbage&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;For those of you in a Reading Mood, here’s an explanation of those projects.&lt;/p&gt;
+&lt;h2 id=&quot;programmatically-generated-shredding&quot;&gt;Programmatically-generated shredding&lt;/h2&gt;
+&lt;p&gt;As part of &lt;a href=&quot;https://synthruary.com/&quot;&gt;Synthruary&lt;/a&gt;, I generated this:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://jimkang.com/music/deathmtn-VAeaecCm.html&quot;&gt;Two Robots Loitering at Guitar Center&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;If you’re not familiar with Guitar Center, it’s a big box store for music equipment. People buy (often shoddy or overpriced) amps and instruments there, but they also go there just to touch a lot of guitars and show off, even if they don’t really have much to show off. (Or, at least they did. I haven’t been to one in over a decade.)&lt;/p&gt;
+&lt;p&gt;Two Robots is a simulation of guitar store showoffs that know the modes and scales in every key and improvise solos that sound like etudes, just to make sure that &lt;em&gt;you&lt;/em&gt; know that they do. At one point, I thought about allowing the guitar robot to play a non-sixteenth note. But I felt that wasn’t true to the spirit of the kind of noodler I remember.&lt;/p&gt;
+&lt;p&gt;It adheres to a certain mechanical aesthetic, but I think the mode changes provide drama and depth of feeling. So, I hope it’s enjoyable in addition to despite its simulationist nature!&lt;/p&gt;
+&lt;p&gt;I wrote this &lt;a href=&quot;https://github.com/jimkang/midimod/blob/main/tools/micromodes.js&quot;&gt;script&lt;/a&gt; to generate the MIDI parts, but the big technical breakthrough for me was rendering those parts in a passable electric guitar sound, which I thought was unattainable for MIDI-driven music. (There’s some &lt;a href=&quot;https://jimkang.com/music/deathmtn-VAeaecCm.html&quot;&gt;details on how to do that in the music post&lt;/a&gt;, if you’re interested.)&lt;/p&gt;
+&lt;p&gt;There’s also a softer, synthier version, named &lt;a href=&quot;https://jimkang.com/music/deathmtn-vBdReLto.html&quot;&gt;The Wizards’ Enlightening Conversation&lt;/a&gt;. The guy rated the guitar version “just OK” but after hearing one bar of this version, he deemed it “really good”, which goes to show how huge timbre is in listener perception, despite it commonly not being thought of as “content”.&lt;/p&gt;
+&lt;p&gt;I’ve done a few other pieces for Synthruary. They’re even weirder, and you can find them on my &lt;a href=&quot;https://jimkang.com/music/&quot;&gt;music site&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;notescast&quot;&gt;Notescast&lt;/h2&gt;
+&lt;p&gt;I “created” a podcast by setting up an automated process that goes through my &lt;a href=&quot;https://smidgeo.com/notes/deathmtn/&quot;&gt;microblog&lt;/a&gt; and puts the posts that have audio in them into a &lt;a href=&quot;https://smidgeo.com/notes/deathmtn/podcast.xml&quot;&gt;podcast feed&lt;/a&gt;. So, now you can have that stuff delivered conveniently to your podcast app.&lt;/p&gt;
+&lt;p&gt;Like and subscribe:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://smidgeo.com/notes/deathmtn/podcast.xml&quot;&gt;https://smidgeo.com/notes/deathmtn/podcast.xml&lt;/a&gt;
+&lt;a href=&quot;https://podcasts.apple.com/us/podcast/notescast/id1605530179&quot;&gt;https://podcasts.apple.com/us/podcast/notescast/id1605530179&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;(Or search for “Notescast” in your podcast app.)&lt;/p&gt;
+&lt;p&gt;The podcast ends up being a mix of music and talk. Maybe I’ll add the hits of the ‘90s, ‘00s’, and today, with news and weather on the ones.&lt;/p&gt;
+&lt;h2 id=&quot;anoited&quot;&gt;Anoited&lt;/h2&gt;
+&lt;p&gt;Along the same “nice repackaging” lines, I started Anoited:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://smidgeo.com/anoited/&quot;&gt;https://smidgeo.com/anoited/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;It’s a blog about my experience playing Noita, an amazing 2D physics simulation driven game rocemmended to me by &lt;a href=&quot;https://joegester.com/&quot;&gt;Joe&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Anoited is yet another cut of my microblog, so if you subscribe to that, you already get all of the posts that are in Anoited. All I can say for it is that it has more “game aesthetic,” and the screenshots are bigger and scaled crisply, FWIW.&lt;/p&gt;
+&lt;h2 id=&quot;orm-mines&quot;&gt;Orm Mines&lt;/h2&gt;
+&lt;p&gt;Here is an extraterrestrial 5E D&amp;amp;D adventure designed for one kid player with a fifth-level character:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://jimkang.com/adventures/orm-mines/&quot;&gt;https://jimkang.com/adventures/orm-mines/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;It was well-received, but this written artifact is sparse in details. So, maybe it’s more useful as rough inspiration for your adventure than as a thing you can just pick up and play.&lt;/p&gt;
+&lt;h2 id=&quot;remind-me-in-10-000-years&quot;&gt;Remind me in 10,000 years&lt;/h2&gt;
+&lt;p&gt;I wrote about some speculative automated reminders that the guy and I made:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://jimkang.com/weblog/articles/remind-me-in-10000-years/&quot;&gt;https://jimkang.com/weblog/articles/remind-me-in-10000-years/&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;curse-notice&quot;&gt;Curse Notice&lt;/h2&gt;
+&lt;p&gt;Here is a hyper-specific tool:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://jimkang.com/curse-notice/&quot;&gt;https://jimkang.com/curse-notice/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;It’s just for making Castlevania-2-style notices like this:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/eight-small-things/the-morning-sun-has-vanquished-the-newsletter-drought.png&quot; alt=&quot;The morning sun has vanquished the newsletter drought.&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;the-fucking-bible&quot;&gt;The Fucking Bible&lt;/h2&gt;
+&lt;p&gt; It’s the Bible — with added swearing!&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://jimkang.com/personalized-bible/fucking-bible.html&quot;&gt;https://jimkang.com/personalized-bible/fucking-bible.html&lt;/a&gt; (warning 7.5 MB)&lt;/p&gt;
+&lt;h2 id=&quot;hot-garbage&quot;&gt;Hot Garbage&lt;/h2&gt;
+&lt;p&gt;Hot Garbage is back! The Hot Garbage team has been consistently sending out newsletters packed with interesting links every week again for a couple of months now. I sometimes contribute links. Subscribe if you have an untoward hunger for interesting links!&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://tinyletter.com/hot-garbage&quot;&gt;https://tinyletter.com/hot-garbage&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;bonus-hills-in-halls&quot;&gt;Bonus: Hills in halls&lt;/h2&gt;
+&lt;p&gt;I don’t know if you remember me submitting images from my &lt;a href=&quot;https://smidgeo.com/bots/hills/&quot;&gt;Hills bot&lt;/a&gt; to a &lt;a href=&quot;https://jimkang.com/smallfindings/episodes/who-is-the-robot-now/&quot;&gt;call for art&lt;/a&gt;, but some of them ended up getting chosen to go up on the walls in a condo in Philadelphia.&lt;/p&gt;
+&lt;p&gt;I’ll never see that place, but I like knowing that these bot creations have been made wall-size, and hopefully, the people that squeeze through what look like fairly narrow hallways have their some shapes and colors.&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;Hills in halls in a condo&quot; src=&quot;13C_Kang_3.jpg&quot; width=&quot;100%&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Jim&lt;/p&gt;
+&lt;p&gt;P.S. You should reply and let me know your haps! I likely do not know them.&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Remind me in 10,000 years</title>
       <link>http://jimkang.com/weblog/articles/remind-me-in-10000-years/</link>
