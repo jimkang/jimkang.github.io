@@ -5,9 +5,173 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Fri, 26  Aug 2022 20:00:00 -0400</pubDate>
+    <pubDate>Thu, 23 Feb 2023 19:00:00 -0500</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>The Web Audio API's linearRampToValueAtTime doesn't work on playbackRate</title>
+      <link>http://jimkang.com/weblog/articles/no-ramps-for-playback-rate/</link>
+      <pubDate>Thu, 23 Feb 2023 19:00:00 -0500</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/no-ramps-for-playback-rate/</guid>
+      <author></author>
+      <description>&lt;p&gt;As a public service, I’m explicitly stating that &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/AudioParam/linearRampToValueAtTime&quot;&gt;linearRampToValueAtTime&lt;/a&gt; does not work on an AudioBufferSourceNode’s &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode/playbackRate&quot;&gt;playbackRate&lt;/a&gt;, as of February 24, 2023, on Firefox. It does work on Chrome. I’ve included a simple demo here.
+&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;style&gt;
+#message-field {
+  font-weight: bold;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.button-container button {
+  font-size: larger;
+  margin-bottom: 0.5rem;
+}
+&lt;/style&gt;
+
+&lt;p&gt;&lt;hr&gt;
+&lt;span id=&quot;message-field&quot;&gt;Loading sample…&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;div class=&quot;button-container&quot;&gt;
+  &lt;button id=&quot;play-builtin-ramp&quot; disabled&gt;Play sample with linearRampToValueAtTime&lt;/button&gt;
+  &lt;button id=&quot;play-homemade-ramp&quot; disabled&gt;Play sample with homemade ramp&lt;/button&gt;
+&lt;/div&gt;&lt;/p&gt;
+&lt;hr&gt;
+
+&lt;p&gt;&lt;noscript&gt;(If you’re reading this from RSS: There’s a demo here, probably not displaying in your RSS reader. You have to click through to see it.)&lt;/noscript&gt;&lt;/p&gt;
+&lt;script&gt;
+var playBuiltInButton;
+var playHomemadeButton;
+var messageField;
+
+(function rampDemo() {
+  messageField = document.getElementById('message-field');
+  playBuiltInButton = document.getElementById('play-builtin-ramp');
+  playHomemadeButton = document.getElementById('play-homemade-ramp');
+
+  getSample();
+})();
+
+
+async function getSample() {
+  var ctx = new AudioContext();
+
+  try {
+    var res = await fetch('flute_note_tremolo.wav');
+    if (!res.ok) {
+      throw new Error(`Error while trying to get sample. Status: ${res.status}`);
+    }
+    var blob = await res.blob();
+    var rawBuffer = await blob.arrayBuffer();
+    ctx.decodeAudioData(rawBuffer, setBuffer);
+  } catch (error) {
+    messageField.textContent = error.message;
+  }
+
+  function setBuffer(decoded) {
+    messageField.textContent = &quot;The sample is loaded. Click a button to play it with either the built-in ramp (which doesn't work on Firefox) or homemade ramp.&quot;;
+
+    var builtInPlayer = Player({ runRamp: runBuiltInRamp, buffer: decoded, ctx });
+    var homemadePlayer = Player({ runRamp: runHomemadeRamp, buffer: decoded, ctx });
+
+    playBuiltInButton.addEventListener('click', builtInPlayer.play);
+    playHomemadeButton.addEventListener('click', homemadePlayer.play);
+
+    playBuiltInButton.removeAttribute('disabled');
+    playHomemadeButton.removeAttribute('disabled');
+  }
+}
+
+function Player({ runRamp, buffer, ctx }) {
+  var timeoutKey;
+  var samplerNode;
+
+  return { play };
+
+  function play() {
+    if (timeoutKey) {
+      clearTimeout(timeoutKey);
+    }
+    if (samplerNode) {
+      samplerNode.stop();
+    }
+
+    samplerNode = ctx.createBufferSource();
+    samplerNode.loop = true;
+    samplerNode.buffer = buffer;
+
+    samplerNode.connect(ctx.destination);
+    samplerNode.start();
+    runRamp({ ctx, samplerNode });
+
+    timeoutKey = setTimeout(() =&gt; samplerNode.stop(), 6000);
+  }
+}
+
+function runBuiltInRamp({ ctx, samplerNode }) {
+  samplerNode.playbackRate.linearRampToValueAtTime(
+    2.0,
+    ctx.currentTime + 4
+  );
+}
+
+function runHomemadeRamp({ ctx, samplerNode }) {
+  homemadeLinearRamp({ param: samplerNode.playbackRate, targetVal: 2, ctx, durationSeconds: 4 });
+}
+
+// Warning: cancelScheduledValues doesn't cancel this.
+function homemadeLinearRamp({ param, targetVal, ctx, durationSeconds }) {
+  const startTime = ctx.currentTime;
+  const startVal = param.value;
+  const valDelta = targetVal - startVal;
+  window.requestAnimationFrame(updateParam);
+
+  function updateParam() {
+    const elapsed = ctx.currentTime - startTime;
+    const progress = elapsed / durationSeconds;
+    param.value = startVal + progress * valDelta;
+    if (progress &lt; 1) {
+      window.requestAnimationFrame(updateParam);
+    }
+  }
+}
+&lt;/script&gt;
+
+&lt;p&gt;If you click “Play sample with linearRampToValueAtTime”, the browser will play a flute sample and run code that attempts to change the &lt;code&gt;playbackRate&lt;/code&gt; of the &lt;code&gt;AudioBufferSourceNode&lt;/code&gt; from 1.0 to 2.0 over the course of four seconds. It should sound something like a slide whistle, but on Firefox, it just plays at a normal rate and pitch for four seconds, then jumps up to the target playbackRate, an octave up. Here’s what that code looks like:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;  samplerNode.playbackRate.linearRampToValueAtTime(
+    2.0,
+    ctx.currentTime + 4
+  );
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;However, if you click “Play sample with homemade ramp”, which doesn’t use &lt;code&gt;linearRampToValueAtTime&lt;/code&gt; and instead sets &lt;code&gt;playbackRate.value&lt;/code&gt; during a series of callbacks from &lt;code&gt;requestAnimationFrame&lt;/code&gt;, then it slides up as expected in both Firefox and Chrome. Here’s what that code looks like, which you can use as a polyfill:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// Warning: cancelScheduledValues doesn&amp;#39;t cancel this.
+function homemadeLinearRamp({ param, targetVal, ctx, durationSeconds }) {
+  const startTime = ctx.currentTime;
+  const startVal = param.value;
+  const valDelta = targetVal - startVal;
+  window.requestAnimationFrame(updateParam);
+
+  function updateParam() {
+    const elapsed = ctx.currentTime - startTime;
+    const progress = elapsed / durationSeconds;
+    param.value = startVal + progress * valDelta;
+    if (progress &amp;lt; 1) {
+      window.requestAnimationFrame(updateParam);
+    }
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;(Here, &lt;code&gt;param&lt;/code&gt; should be the &lt;code&gt;playbackRate&lt;/code&gt; instance from your &lt;code&gt;AudioBufferSourceNode&lt;/code&gt;. &lt;code&gt;ctx&lt;/code&gt; should be your &lt;code&gt;AudioContext&lt;/code&gt;.)&lt;/p&gt;
+&lt;p&gt;You can use View Source to see the code in context.&lt;/p&gt;
+&lt;h2 id=&quot;not-mad&quot;&gt;Not mad&lt;/h2&gt;
+&lt;p&gt;I’m not writing to complain about Firefox’s implementation! I know that team has &lt;a href=&quot;https://arstechnica.com/information-technology/2020/08/firefox-maker-mozilla-lays-off-250-workers-says-covid-19-lowered-revenue/&quot;&gt;dev resource issues&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I wrote this because I was in this situation in which I was working on a generative music piece which has gotten complex, and I was trying unsuccessfully to use this API method. I was hoping the internet would tell me definitively whether I was using it wrong or if it just didn’t work.&lt;/p&gt;
+&lt;p&gt;It did not tell me anything conclusive.&lt;/p&gt;
+&lt;p&gt;Searching the web just seems bad lately, both on Duck Duck Go and Google, and the closest I could get is a &lt;a href=&quot;https://stackoverflow.com/questions/37027694/audio-api-setvaluecurveattime-firefox&quot;&gt;Stack Overflow post from six years ago&lt;/a&gt; about &lt;code&gt;setValueCurveAtTime&lt;/code&gt; not working on &lt;code&gt;playbackRate&lt;/code&gt; on Firefox.&lt;/p&gt;
+&lt;p&gt;So, I had to take the time to test it for myself, which I loathed having to do because I have a lot to do. But now, you don’t have to! I hope this helps, Internet Searcher of the future!&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Evil meditation</title>
       <link>http://jimkang.com/weblog/articles/evil-meditation/</link>
@@ -429,39 +593,6 @@ done
 </description>
     </item>
     <item>
-      <title>Civilized Bandcamp file unzipping</title>
-      <link>http://jimkang.com/weblog/articles/bandcamp-unzip/</link>
-      <pubDate>Wed, 17 Feb 2021 19:00:00 -0500</pubDate>
-      <guid isPermaLink="true">http://jimkang.com/weblog/articles/bandcamp-unzip/</guid>
-      <author></author>
-      <description>&lt;p&gt;Here’s a script that’s handy for unzipping stuff you download from Bandcamp.
-&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;Bandcamp gives you zip files that contain no directory structure. So, the files just unzip to whatever directory you’re in. I have found that to get messy, and I now like an &lt;code&gt;artist-dir/album-dir&lt;/code&gt; structure, like I’m in the year 2000.&lt;/p&gt;
-&lt;p&gt;Here’s a script I wrote to unzip Bandcamp zip files into such a structure. It uses the naming scheme of the zip file (&lt;code&gt;&amp;lt;artist name&amp;gt;&lt;/code&gt;-&lt;code&gt;&amp;lt;album name&amp;gt;&lt;/code&gt;) to determine the appropriate directory names.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;#!/bin/bash
-
-for file in *.zip
-  do
-    filename=&amp;quot;${file%.*}&amp;quot;
-    # Filenames can&amp;#39;t contain /. So, I wonder
-    # what Bandcamp would do if they had AC/DC?
-    unzippath=$(echo &amp;quot;$filename&amp;quot; |sed -e &amp;#39;s/ - /\//&amp;#39;)
-    mkdir -p &amp;quot;$unzippath&amp;quot;
-    unzip &amp;quot;$filename&amp;quot; -d &amp;quot;$unzippath&amp;quot;
-  done
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;It will run on all of the zip files in the working directory. You’ll end up with your mp3 files in directory structures like &lt;code&gt;Chaucerian Myth/The Canterbury Tales&lt;/code&gt; now.&lt;/p&gt;
-&lt;p&gt;&lt;hr&gt;&lt;/p&gt;
-&lt;p&gt;&lt;blockquote&gt;Here, we’re about to drift away from that tiny script into background story space! I feel like a guy that responds to “Where is the nearest gas station?” with a long explanation of local zoning policy and their own personal journey away from fossil fuels to a house powered entirely with solar panels. (I actually would like solar panels, BTW.)&lt;/p&gt;
-&lt;p&gt;Unlike that guy, however, there is no way I’ll notice if you just close the tab now!&lt;/blockquote&gt;&lt;/p&gt;
-&lt;hr&gt;
-
-&lt;p&gt;This has come up because I’ve been increasingly enjoying &lt;a href=&quot;https://bandcamp.com/&quot;&gt;Bandcamp&lt;/a&gt; over the last few years, but now I’m all in on them.&lt;/p&gt;
-&lt;p&gt;I’ve usually used their streaming service, but lately I’ve been downloading albums from them and importing them into &lt;a href=&quot;https://plex.tv/&quot;&gt;Plex&lt;/a&gt; to play. (I like it because lets me stream from my Raspberry Pi at home to my phone. The Bandcamp app also lets you stream to your phone but only with music you’ve bought on Bandcamp.)&lt;/p&gt;
-&lt;p&gt;At first, I thought I’d dump all of my files into one directory and let Plex use ID3 tags to organize them, but you still have to get into the files sometimes, and a 4,000-file directory is total hell. Via Bandcamp purchases and CD rips (weird, I know), this pile is growing again after being frozen for half a decade and needs a little structure.&lt;/p&gt;
-&lt;p&gt;I think I like this way of listening to and acquiring music, as backwards as it sounds, because I tend to consider each album more fully and give each one more of a chance, either because I bought it directly or I once bought it long ago and now have put in the work to rip a CD. And in the cases when I buy from a label-less artist, I provide magnitudes more financial compensation to the artist than I would via any streaming service.&lt;/p&gt;
-</description>
-    </item>
-    <item>
       <title>The web actually breathing usability into old tools</title>
       <link>http://jimkang.com/weblog/articles/web-creating-usability/</link>
       <pubDate>Wed, 17 Feb 2021 19:00:00 -0500</pubDate>
@@ -581,6 +712,39 @@ For years, I’ve used &lt;a href=&quot;https://graphviz.org/&quot;&gt;Graphviz&
 &lt;p&gt;But that would reduce profits, and Milton Friedman has famously proclaimed that corporations’ sole responsibility is to maximize profit. (And as we all know, Milton Friedman is a god-pharaoh that issues forth waves that &lt;em&gt;compel all to obey&lt;/em&gt; from his sarcophagus underneath the University of Chicago.)&lt;/p&gt;
 &lt;p&gt;For smaller companies, indie developers, and people who just want to make something nice for others, it’s hard to imagine better alternatives, except perhaps offline web apps (which aren’t easy for a lot of users to wrap their heads around &amp;mdash; the association between the web and internet connections is strong) or putting all of their proverbial eggs on a specific platform.&lt;/p&gt;
 &lt;p&gt;I guess all I’m saying is: Web browsers are (sadly?) the closest we’ve ever gotten to a universal app platform, so I hope we can cut away their many excesses and abuses while keeping that part.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Civilized Bandcamp file unzipping</title>
+      <link>http://jimkang.com/weblog/articles/bandcamp-unzip/</link>
+      <pubDate>Wed, 17 Feb 2021 19:00:00 -0500</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/bandcamp-unzip/</guid>
+      <author></author>
+      <description>&lt;p&gt;Here’s a script that’s handy for unzipping stuff you download from Bandcamp.
+&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Bandcamp gives you zip files that contain no directory structure. So, the files just unzip to whatever directory you’re in. I have found that to get messy, and I now like an &lt;code&gt;artist-dir/album-dir&lt;/code&gt; structure, like I’m in the year 2000.&lt;/p&gt;
+&lt;p&gt;Here’s a script I wrote to unzip Bandcamp zip files into such a structure. It uses the naming scheme of the zip file (&lt;code&gt;&amp;lt;artist name&amp;gt;&lt;/code&gt;-&lt;code&gt;&amp;lt;album name&amp;gt;&lt;/code&gt;) to determine the appropriate directory names.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#!/bin/bash
+
+for file in *.zip
+  do
+    filename=&amp;quot;${file%.*}&amp;quot;
+    # Filenames can&amp;#39;t contain /. So, I wonder
+    # what Bandcamp would do if they had AC/DC?
+    unzippath=$(echo &amp;quot;$filename&amp;quot; |sed -e &amp;#39;s/ - /\//&amp;#39;)
+    mkdir -p &amp;quot;$unzippath&amp;quot;
+    unzip &amp;quot;$filename&amp;quot; -d &amp;quot;$unzippath&amp;quot;
+  done
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;It will run on all of the zip files in the working directory. You’ll end up with your mp3 files in directory structures like &lt;code&gt;Chaucerian Myth/The Canterbury Tales&lt;/code&gt; now.&lt;/p&gt;
+&lt;p&gt;&lt;hr&gt;&lt;/p&gt;
+&lt;p&gt;&lt;blockquote&gt;Here, we’re about to drift away from that tiny script into background story space! I feel like a guy that responds to “Where is the nearest gas station?” with a long explanation of local zoning policy and their own personal journey away from fossil fuels to a house powered entirely with solar panels. (I actually would like solar panels, BTW.)&lt;/p&gt;
+&lt;p&gt;Unlike that guy, however, there is no way I’ll notice if you just close the tab now!&lt;/blockquote&gt;&lt;/p&gt;
+&lt;hr&gt;
+
+&lt;p&gt;This has come up because I’ve been increasingly enjoying &lt;a href=&quot;https://bandcamp.com/&quot;&gt;Bandcamp&lt;/a&gt; over the last few years, but now I’m all in on them.&lt;/p&gt;
+&lt;p&gt;I’ve usually used their streaming service, but lately I’ve been downloading albums from them and importing them into &lt;a href=&quot;https://plex.tv/&quot;&gt;Plex&lt;/a&gt; to play. (I like it because lets me stream from my Raspberry Pi at home to my phone. The Bandcamp app also lets you stream to your phone but only with music you’ve bought on Bandcamp.)&lt;/p&gt;
+&lt;p&gt;At first, I thought I’d dump all of my files into one directory and let Plex use ID3 tags to organize them, but you still have to get into the files sometimes, and a 4,000-file directory is total hell. Via Bandcamp purchases and CD rips (weird, I know), this pile is growing again after being frozen for half a decade and needs a little structure.&lt;/p&gt;
+&lt;p&gt;I think I like this way of listening to and acquiring music, as backwards as it sounds, because I tend to consider each album more fully and give each one more of a chance, either because I bought it directly or I once bought it long ago and now have put in the work to rip a CD. And in the cases when I buy from a label-less artist, I provide magnitudes more financial compensation to the artist than I would via any streaming service.&lt;/p&gt;
 </description>
     </item>
     <item>

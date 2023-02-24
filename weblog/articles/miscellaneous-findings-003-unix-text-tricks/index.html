@@ -41,25 +41,6 @@
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="xargs">xargs</h1>
-<p>(I’ve seen xargs a lot in shell scripts I’ve used and had a hazy idea about what it did but only just now did I actually look it&nbsp;up.)</p>
-<p><a href="https://en.wikipedia.org/wiki/Xargs"><code>xargs</code></a> is a command&nbsp;that:</p>
-<ul>
-<li>Runs another command for&nbsp;you</li>
-<li>Converts stuff piped to it via stdin into command-line arguments for that other&nbsp;command</li>
-</ul>
-<p>It’s a glue tool that’s necessary&nbsp;because:</p>
-<ul>
-<li>A lot of Unix commands communicate via stdin/stdout&nbsp;pipes</li>
-<li>Some do&nbsp;not</li>
-</ul>
-<p>In that way, it’s like <code>apply</code> in JavaScript which converts arrays into function&nbsp;arguments.</p>
-<p>As an example, you can use it to pass the results (a bunch of filenames) of <a href="https://gist.github.com/jimkang/1c4c9e44fe4133c8c3159572858bf0e3">get-entries-in-date-range</a> to <code>cat</code> to mash up the results into a single&nbsp;file:</p>
-<pre><code>./tools/get-entries-in-date-range.sh 2020-03-28 | xargs cat &gt; episode-2-script.md
-</code></pre><p>#unix&nbsp;#bash</p>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="tr-for-replacing-text">tr for replacing&nbsp;text</h1>
 <p>There is a Unix command called <code>tr</code>. You pipe in input text and give it two&nbsp;arguments:</p>
 <ul>
@@ -107,6 +88,25 @@
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="xargs">xargs</h1>
+<p>(I’ve seen xargs a lot in shell scripts I’ve used and had a hazy idea about what it did but only just now did I actually look it&nbsp;up.)</p>
+<p><a href="https://en.wikipedia.org/wiki/Xargs"><code>xargs</code></a> is a command&nbsp;that:</p>
+<ul>
+<li>Runs another command for&nbsp;you</li>
+<li>Converts stuff piped to it via stdin into command-line arguments for that other&nbsp;command</li>
+</ul>
+<p>It’s a glue tool that’s necessary&nbsp;because:</p>
+<ul>
+<li>A lot of Unix commands communicate via stdin/stdout&nbsp;pipes</li>
+<li>Some do&nbsp;not</li>
+</ul>
+<p>In that way, it’s like <code>apply</code> in JavaScript which converts arrays into function&nbsp;arguments.</p>
+<p>As an example, you can use it to pass the results (a bunch of filenames) of <a href="https://gist.github.com/jimkang/1c4c9e44fe4133c8c3159572858bf0e3">get-entries-in-date-range</a> to <code>cat</code> to mash up the results into a single&nbsp;file:</p>
+<pre><code>./tools/get-entries-in-date-range.sh 2020-03-28 | xargs cat &gt; episode-2-script.md
+</code></pre><p>#unix&nbsp;#bash</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="regex-in-sed">Regex in&nbsp;sed</h1>
 <p>If you use <code>sed</code> without the <code>-r</code> switch, it does support a sort of regex, but doesn’t support capture groups. If you do, you can do something like this to replace all instances of <code>var something = require(&#39;somepackage&#39;)</code> with <code>import something from &#39;somepackage&#39;</code> in a&nbsp;file:</p>
 <pre><code>xargs sed -r &quot;s/var (\w+) = require\(&#39;(.*)&#39;\)/import \1 from &#39;\2&#39;/g&quot; -i myfile.js
@@ -125,7 +125,7 @@
         <!--section.about-->
         <!--  !=contents['about.md'].html-->
         <section class="copy">
-          <p>&copy; 2022 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          <p>&copy; 2023 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
           </p>
           <p><a href='/weblog/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
         </section>
