@@ -164,6 +164,7 @@ function homemadeLinearRamp({ param, targetVal, ctx, durationSeconds }) {
 }
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;(Here, &lt;code&gt;param&lt;/code&gt; should be the &lt;code&gt;playbackRate&lt;/code&gt; instance from your &lt;code&gt;AudioBufferSourceNode&lt;/code&gt;. &lt;code&gt;ctx&lt;/code&gt; should be your &lt;code&gt;AudioContext&lt;/code&gt;.)&lt;/p&gt;
 &lt;p&gt;You can use View Source to see the code in context.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Update, 2023-02-27:&lt;/strong&gt; Same situation in Firefox with &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/StereoPannerNode&quot;&gt;StereoPannerNode&lt;/a&gt;s and the &lt;code&gt;pan&lt;/code&gt; property.&lt;/p&gt;
 &lt;h2 id=&quot;not-mad&quot;&gt;Not mad&lt;/h2&gt;
 &lt;p&gt;I’m not writing to complain about Firefox’s implementation! I know that team has &lt;a href=&quot;https://arstechnica.com/information-technology/2020/08/firefox-maker-mozilla-lays-off-250-workers-says-covid-19-lowered-revenue/&quot;&gt;dev resource issues&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;I wrote this because I was in this situation in which I was working on a generative music piece which has gotten complex, and I was trying unsuccessfully to use this API method. I was hoping the internet would tell me definitively whether I was using it wrong or if it just didn’t work.&lt;/p&gt;
