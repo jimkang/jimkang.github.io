@@ -82,6 +82,15 @@ export function dropDefaults(depth, maxDepth, value) {
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="dom-events"><span class="caps">DOM</span>&nbsp;events</h1>
+<h2 id="input">input</h2>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event">The <code>input</code> event</a> fires when the value of an <code>input</code>, <code>select</code>, or <code>textarea</code> changes. This is an event introduced in <span class="caps">HTML</span>&nbsp;5.</p>
+<p>The <code>change</code> event  only fires when a value is committed. So, a range <code>input</code> will fire <code>change</code> only when the user stops dragging the slider, but <code>input</code> will fire whenever the slider is&nbsp;moved.</p>
+<p>There’s many cases in which you do not want an event listener to run every time the user moves the&nbsp;slider.</p>
+<p>#html #js #event&nbsp;#control</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="cropping-shapes-in-svg">Cropping shapes in&nbsp;<span class="caps">SVG</span></h1>
 <p>You can crop in <span class="caps">SVG</span> in the browser by using <code>clipPath</code>. The thing to remember is that the clipPath defines the part that <em>should be shown</em>, not the part that should be&nbsp;hidden.</p>
 <p>For example, here, anything in the <code>.hills</code> group that goes outside of the 100x100 viewBox is hidden, because it uses a clipPath defined as a 100x100 rect starting at 0,&nbsp;0.</p>
@@ -97,15 +106,6 @@ export function dropDefaults(depth, maxDepth, value) {
 </code></pre><p>This svg markup will be respected by the browser but also, at the least, Inkscape and Ubuntu Image&nbsp;Viewer.</p>
 <p><a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Clipping_and_masking"><span class="caps">MDN</span> on clipping and&nbsp;masking</a></p>
 <p>#svg #cropping&nbsp;#browser</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="dom-events"><span class="caps">DOM</span>&nbsp;events</h1>
-<h2 id="input">input</h2>
-<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event">The <code>input</code> event</a> fires when the value of an <code>input</code>, <code>select</code>, or <code>textarea</code> changes. This is an event introduced in <span class="caps">HTML</span>&nbsp;5.</p>
-<p>The <code>change</code> event  only fires when a value is committed. So, a range <code>input</code> will fire <code>change</code> only when the user stops dragging the slider, but <code>input</code> will fire whenever the slider is&nbsp;moved.</p>
-<p>There’s many cases in which you do not want an event listener to run every time the user moves the&nbsp;slider.</p>
-<p>#html #js #event&nbsp;#control</p>
 </section>
           </article>
         </article>

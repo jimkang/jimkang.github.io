@@ -23,20 +23,6 @@
 <p><em>This is a roundup of miscellaneous things that I’ve found out about (or have rediscovered).<span class="more"></span> I take notes on findings regularly, and I put the findings that translate well to speech on my podcast, <span style="text-decoration: underline"><strong><a href="https://jimkang.com/smallfindings/">Small Findings</a></strong></span>. The rest (which are often technical findings), I put here. They’re not always written up for maximum comprehension as a blog post, but if anything is hard to understand, please <a href="mailto:jimkang@fastmail.com">email me</a> if you need&nbsp;clarification.</em></p>
 </section>
           <article class="finding">
-            <section class="content"><h1 id="javascript-weirdness">JavaScript&nbsp;weirdness</h1>
-<p>There is a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/self">self</a> keyword for referring to the global scope, whether it’s Window or&nbsp;Worker.</p>
-<p>#javascript&nbsp;#weird</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="mobile-safari">Mobile&nbsp;Safari</h1>
-<h2 id="file-inputs">File&nbsp;inputs</h2>
-<p>You can set the accept attribute of an input element to <code>audio/*</code>, and on Firefox, the file selection dialog will let the user select any audio file. This doesn’t work on Mobile Safari, which apparently can’t tell what files are audio files. So, you have to specify file extensions,&nbsp;like:</p>
-<pre><code>&lt;input type=&quot;file&quot; id=&quot;media-file&quot; accept=&quot;image/*, video/*, audio/*, .m4a,.ogg,.mp3,.wav&quot; multiple /&gt;
-</code></pre><p>#web #media&nbsp;#browser</p>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="d3">d3</h1>
 <p>In D3 6 (maybe this was introduced in 5? definitely was not in 4), there is a handy <a href="https://github.com/d3/d3-selection#selection_join">join</a> method on the <code>selection</code> object.</p>
 <p>It’s shorthand for <code>exit</code> with <code>remove</code> chained to it, <code>enter</code> with <code>append</code> chained to it, and returns the merged enter and update selections (the set of selections that’s still valid after syncing with the new data) so that you can make updates to them, like updating attributes and&nbsp;text.</p>
@@ -64,6 +50,20 @@ containers
   .classed(&#39;soul&#39;, true)
   .attr(&#39;id&#39;, accessor(&#39;identity&#39;));
 </code></pre><p>#d3</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="mobile-safari">Mobile&nbsp;Safari</h1>
+<h2 id="file-inputs">File&nbsp;inputs</h2>
+<p>You can set the accept attribute of an input element to <code>audio/*</code>, and on Firefox, the file selection dialog will let the user select any audio file. This doesn’t work on Mobile Safari, which apparently can’t tell what files are audio files. So, you have to specify file extensions,&nbsp;like:</p>
+<pre><code>&lt;input type=&quot;file&quot; id=&quot;media-file&quot; accept=&quot;image/*, video/*, audio/*, .m4a,.ogg,.mp3,.wav&quot; multiple /&gt;
+</code></pre><p>#web #media&nbsp;#browser</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="javascript-weirdness">JavaScript&nbsp;weirdness</h1>
+<p>There is a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/self">self</a> keyword for referring to the global scope, whether it’s Window or&nbsp;Worker.</p>
+<p>#javascript&nbsp;#weird</p>
 </section>
           </article>
           <article class="finding">
