@@ -5,9 +5,50 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Wed, 15 Mar 2023 20:00:00 -0400</pubDate>
+    <pubDate>Sun, 14 May 2023 20:00:00 -0400</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Get ahead of the misinformation game</title>
+      <link>http://jimkang.com/weblog/articles/get-ahead-of-the-misinformation-game/</link>
+      <pubDate>Sun, 14 May 2023 20:00:00 -0400</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/get-ahead-of-the-misinformation-game/</guid>
+      <author></author>
+      <description>&lt;p&gt;&lt;em&gt;This was also sent out as a &lt;a href=&quot;https://tinyletter.com/jimkang/letters/get-ahead-of-the-misinformation-game&quot;&gt;newsletter&lt;/a&gt;. If you’d like to get project updates like this as email, you can &lt;a href=&quot;https://tinyletter.com/jimkang/&quot;&gt;subscribe&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;
+Everyone’s talking about how large language models are going to take internet misinformation to a new level in the near future!&lt;/p&gt;
+&lt;p&gt;That’s true. But there’s no need to wait for all of that web scraping and model training. &lt;em&gt;You can fill your head with misinformation &lt;strong&gt;right now&lt;/strong&gt; with the Known Leaders web site!&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://jimkang.com/knownleaders/&quot;&gt;https://jimkang.com/knownleaders/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;Everyone knows that the most important part of a band is the leader of the band. The one that’s in the front in the band photo and does all the interviews. &lt;em&gt;But who is that person?&lt;/em&gt; This site tells you!&lt;/p&gt;
+&lt;p&gt;It also tells you who various games’ main heroes are and who the protagonists are in various novels.&lt;/p&gt;
+&lt;p&gt;As a bonus, it uses a &lt;a href=&quot;https://github.com/jimkang/knownleaders/&quot;&gt;simpler mechanism than machine learning&lt;/a&gt; that is far less resource-intensive, and it passes the savings onto you!
+So, &lt;a href=&quot;https://jimkang.com/knownleaders/&quot;&gt;mislearn away&lt;/a&gt;!&lt;/p&gt;
+&lt;p&gt;(Also, if you’re a weirdo who likes to learn about new bands, this isn’t bad for that, either.)&lt;/p&gt;
+&lt;h2 id=&quot;explaining-the-joke-a-classic-way-to-make-things-funnier&quot;&gt;Explaining the joke, a classic way to make things funnier&lt;/h2&gt;
+&lt;p&gt;I first wrote down the idea for this on March 23, 2016 in a now-abandoned git repo where I used to keep project ideas. (I have probably tried about a dozen task management systems since.) The joke format is:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;You take the name of a band.&lt;/li&gt;
+&lt;li&gt;You assume that the band has a “leader”.&lt;/li&gt;
+&lt;li&gt;You assume the leader’s last name is same as the band’s name, like Eddie Van Halen and Van Halen or any of the Ramones and the Ramones.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;I first encountered this format in high school. My friend Tim and I thought it was mildly amusing that, instead of a band photo, the cover of &lt;a href=&quot;https://www.discogs.com/release/24966868-Slayer-Decade-Of-Aggression-Live&quot;&gt;Decade of Aggression&lt;/a&gt; is just the silhouette of one person. (Jeff Hanneman, RIP.) (&lt;a href=&quot;https://www.discogs.com/release/382379-Slayer-Decade-Of-Aggression-Live&quot;&gt;There is also a version with a band photo on it.&lt;/a&gt; I’m not sure why there’s two versions.) Tim commented that the guy on the cover was obviously Rick Slayer, the lead guitarist/lead singer of Slayer.&lt;/p&gt;
+&lt;h2 id=&quot;the-making-of&quot;&gt;The making of&lt;/h2&gt;
+&lt;p&gt;I got this project going during Never Graduate Week, a weeklong event that the &lt;a href=&quot;https://www.recurse.com/&quot;&gt;Recurse Center&lt;/a&gt; runs for its alumni, in which the alumni do some of the things they did while they were at the Recurse Center, most of which are learning things, doing projects, and talking to other about the previous two things. I was only able to do NGW things on Tuesday, but during that day, I went to a local Boston meetup, validated this concept, and presented a rough demo.&lt;/p&gt;
+&lt;p&gt;It felt pretty refreshing! On one hand, I wasn’t really breaking new ground. I’ve done a &lt;a href=&quot;https://smidgeo.com/bots/successfulbot/&quot;&gt;lot&lt;/a&gt; &lt;a href=&quot;https://smidgeo.com/bots/you-never-see-it-bot&quot;&gt;of&lt;/a&gt; &lt;a href=&quot;https://smidgeo.com/bots/autocompletejok&quot;&gt;things&lt;/a&gt; like this. However, back when I was making a lot of small word bot type things, I kind of felt like I was constantly rolling out Play-Doh worms.&lt;/p&gt;
+&lt;p&gt;Lately, I have been working on a lot of projects that involve audio or graphics and feel very &lt;em&gt;long&lt;/em&gt;. So, while doing short text-oriented projects all the time isn’t for me, it is a nice break! It’s good to roll a worm once in while. And I wouldn’t have thought of doing that if I hadn’t had the external prompt of the NGW Tuesday.&lt;/p&gt;
+&lt;h2 id=&quot;noise&quot;&gt;Noise&lt;/h2&gt;
+&lt;p&gt;Speaking of prompts, two of the last three pieces I’ve done in the last couple of months have started from &lt;a href=&quot;https://disquiet.com/2012/01/27/the-disquiet-junto/&quot;&gt;Disquiet Junto&lt;/a&gt; assignments. Two of them are noise pieces:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://jimkang.com/music/deathmtn-zzavwFoW.html&quot;&gt;Middlesex Fells&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://jimkang.com/music/deathmtn-qHSICRqb.html&quot;&gt;In a Bomb&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;But they’re fairly gentle — noise in the sense of brown noise, not the kind of thing that’s meant to freak out the squares. So, squares and non-squares alike should give them a listen.&lt;/p&gt;
+&lt;p&gt;And there’s also a &lt;a href=&quot;https://jimkang.com/music/deathmtn-MPTiqQEx.html&quot;&gt;more traditional song&lt;/a&gt; if you’re into that.&lt;/p&gt;
+&lt;p&gt;Jim&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Let's Have Fun Why Not</title>
       <link>http://jimkang.com/weblog/articles/lets-have-fun-why-not/</link>
