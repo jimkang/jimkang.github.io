@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width" initial-scale="1">
+    <title>CORS junk - jimkang.com
+    </title>
+    <link rel="alternate" href="http://jimkang.com/feed.xml" type="application/rss+xml" title="It's dot com.">
+    <link rel="stylesheet" href="/weblog/css/main.css">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <!-- include author-->
+        <h1>CORS junk</h1>
+        <!-- p.author-->
+        <!--  | #{ "Written by " }-->
+        <!--  mixin author(page.metadata.author)-->
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>At the last three jobs I’ve been at, I’ve hit some form of this&nbsp;issue:</p>
+<ul>
+<li>I am writing a web&nbsp;app.</li>
+<li>I am running locally on localhost while developing&nbsp;it.</li>
+<li>It needs to make an http request to a server on another origin (a “cross-origin” request, if you&nbsp;will).</li>
+<li>That server, at least at that moment, does not provide headers in its http responses that say “it is <span class="caps">OK</span> to make requests to me from&nbsp;localhost.”</li>
+<li>Requests from the browser to that server fail because of this <span class="caps">CORS</span>&nbsp;issue.</li>
+</ul>
+<p><span class="more"></span>
+Long-term, maybe you or someone at your organization changes the server or create another instance of it that’s configured with the right <span class="caps">CORS</span> headers. But in the short term, maybe you don’t have control over the&nbsp;server.</p>
+<p>So, to keep the web dev flowing, you create a proxy that the browser can make requests to. That proxy makes the request to the server you actually want to target, collects the response, then passes that back to the browser with the appropriate <span class="caps">CORS</span> headers tacked&nbsp;on.</p>
+<p>I’ve made a few different versions of this proxy, often messily and sometimes glommed onto a web server meant for something&nbsp;else.</p>
+<p>Today, I made a clean version of this that you can run on your laptop: <a href="https://github.com/jimkang/local-nginx-proxy">local-nginx-proxy</a></p>
+<p>You can also use this as a reference for making more permanent proxies. (I have a bunch of Node services that sit behind proxies like this in nginx, for example, but the config is way&nbsp;messier.)</p>
+<p>This isn’t really how I planned to spend the morning, but every once in a great while, the exhortations of my soul are weird in a <a href="http://datassette.net/businessfunk/">Businessfunk</a> kind of&nbsp;way.</p>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/weblog/">« Full blog</a></div>
+        <!--section.about-->
+        <!--  !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2023 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+          <p><a href='/weblog/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>

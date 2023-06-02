@@ -5,9 +5,32 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Tue, 30 May 2023 20:00:00 -0400</pubDate>
+    <pubDate>Thu, 01 Jun 2023 20:00:00 -0400</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>CORS junk</title>
+      <link>http://jimkang.com/weblog/articles/cors-junk/</link>
+      <pubDate>Thu, 01 Jun 2023 20:00:00 -0400</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/cors-junk/</guid>
+      <author></author>
+      <description>&lt;p&gt;At the last three jobs I’ve been at, I’ve hit some form of this issue:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;I am writing a web app.&lt;/li&gt;
+&lt;li&gt;I am running locally on localhost while developing it.&lt;/li&gt;
+&lt;li&gt;It needs to make an http request to a server on another origin (a “cross-origin” request, if you will).&lt;/li&gt;
+&lt;li&gt;That server, at least at that moment, does not provide headers in its http responses that say “it is OK to make requests to me from localhost.”&lt;/li&gt;
+&lt;li&gt;Requests from the browser to that server fail because of this CORS issue.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;
+Long-term, maybe you or someone at your organization changes the server or create another instance of it that’s configured with the right CORS headers. But in the short term, maybe you don’t have control over the server.&lt;/p&gt;
+&lt;p&gt;So, to keep the web dev flowing, you create a proxy that the browser can make requests to. That proxy makes the request to the server you actually want to target, collects the response, then passes that back to the browser with the appropriate CORS headers tacked on.&lt;/p&gt;
+&lt;p&gt;I’ve made a few different versions of this proxy, often messily and sometimes glommed onto a web server meant for something else.&lt;/p&gt;
+&lt;p&gt;Today, I made a clean version of this that you can run on your laptop: &lt;a href=&quot;https://github.com/jimkang/local-nginx-proxy&quot;&gt;local-nginx-proxy&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;You can also use this as a reference for making more permanent proxies. (I have a bunch of Node services that sit behind proxies like this in nginx, for example, but the config is way messier.)&lt;/p&gt;
+&lt;p&gt;This isn’t really how I planned to spend the morning, but every once in a great while, the exhortations of my soul are weird in a &lt;a href=&quot;http://datassette.net/businessfunk/&quot;&gt;Businessfunk&lt;/a&gt; kind of way.&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Miscellaneous Findings X: Catching up somewhat</title>
       <link>http://jimkang.com/weblog/articles/miscellaneous-findings-010/</link>
