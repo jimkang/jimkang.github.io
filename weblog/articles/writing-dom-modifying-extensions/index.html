@@ -92,7 +92,7 @@ chrome.browserAction.onClicked.addListener(function respondToClick(tab) {
 <p>So, how would this work as a bookmarklet? You just have get a bookmark created on your users’ browsers that has a <span class="caps">URL</span> that looks like&nbsp;this:</p>
 <pre><code>javascript:&lt;Your IIFE&gt;
 </code></pre><p>You can’t really tell most users “copy this code, then edit a bookmark and paste it into the <span class="caps">URL</span> field.” You need to create a web page that has a link that contains your code in the <code>href</code> and tell them to drag it to the bookmarks bar. Like&nbsp;this:</p>
-<pre><code>&lt;p&gt;Drag this to your bookmarks bar:&lt;/p&gt;      
+<pre><code>&lt;p&gt;Drag this to your bookmarks bar:&lt;/p&gt;
 &lt;p&gt;
   &lt;a class=&quot;bookmarklet&quot; href=&quot;javascript:&lt;Your IIFE&quot;&gt;Greatest Bookmarklet of All Time!&lt;/a&gt;
 &lt;/p&gt;

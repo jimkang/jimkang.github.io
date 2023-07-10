@@ -5,9 +5,32 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Thu, 01 Jun 2023 20:00:00 -0400</pubDate>
+    <pubDate>Sat, 08 Jul 2023 20:00:00 -0400</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Bold marketing</title>
+      <link>http://jimkang.com/weblog/articles/bold-marketing/</link>
+      <pubDate>Sat, 08 Jul 2023 20:00:00 -0400</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/bold-marketing/</guid>
+      <author></author>
+      <description>&lt;p&gt;I signed up to the Stacking the Bricks newsletter. They tell you how to build a business in &lt;i&gt;a way you too can do&lt;/i&gt;.&lt;/p&gt;
+&lt;p&gt;They have &lt;i&gt;one central idea&lt;/i&gt;: Visit forums of professionals known to pay for things, see what they want, and make that. I think this idea is &lt;i&gt;valid&lt;/i&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;They also bold every third paragraph and write in short sentences.&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;
+This style makes me feel like I’m reading:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://smidgeo.com/&quot;&gt;&lt;b&gt;SMIDGEO&lt;/b&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://timmyfailure.com/total-failure-inc/&quot;&gt;Timmy Failure&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Matt Furey, a 2010s (and maybe current?) fitness grifter &lt;i&gt;who wrote exactly like this&lt;/i&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Much like &lt;b&gt;Cal Newport&lt;/b&gt;, Stacking the Bricks have taken one good idea and &lt;i&gt;stretched&lt;/i&gt; it. Have you ever read a Cal Newport book? It is like someone took a tweet and asked &lt;b&gt;ChatGPT&lt;/b&gt; to expand it to &lt;i&gt;50,000 words&lt;/i&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Anyway, what they’re going is not the worst, considering, but the scam vibe does their single good idea a disservice.&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;Want to know what I think is a &lt;i&gt;good way of imparting information&lt;/i&gt;?&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;&amp;#x261b; &lt;u&gt;Download this pdf to find out!&lt;/u&gt; &amp;#x261a;&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;(I’m &lt;b&gt;kidding&lt;/b&gt;, but reading those emails right after watching a &lt;a href=&quot;https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/resources/lecture-2-elimination-with-matrices/&quot;&gt;traditional lecture on linear algebra&lt;/a&gt; is quite a &lt;i&gt;contrast&lt;/i&gt;.)&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>CORS junk</title>
       <link>http://jimkang.com/weblog/articles/cors-junk/</link>
@@ -1786,14 +1809,14 @@ E) Do B, but also support deleting individual posts and patching up indexes and 
 { a, b, c, d }
 { 8, a, 🌍, “The concept of FOMO”, 🤔 }&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;But also: &lt;/p&gt;
+&lt;p&gt;But also:&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;A = { 0, 1, 2, A }&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;Where A is a set that has the element A, which is…itself.&lt;/p&gt;
 &lt;p&gt;For decades, mathematicians thought this was fine, until Bertrand Russell pointed out a paradox.&lt;/p&gt;
 &lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Bertrand_Russell&quot;&gt;Bertrand Russell&lt;/a&gt; gave the label “extraordinary sets” to sets like A that refer to themselves. He called non-self-referential sets (like &lt;code&gt;{ 4, 5, 6}&lt;/code&gt;) “ordinary sets”. It follows that every set must be either: &lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Bertrand_Russell&quot;&gt;Bertrand Russell&lt;/a&gt; gave the label “extraordinary sets” to sets like A that refer to themselves. He called non-self-referential sets (like &lt;code&gt;{ 4, 5, 6}&lt;/code&gt;) “ordinary sets”. It follows that every set must be either:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;Extraordinary&lt;/li&gt;
 &lt;li&gt;Ordinary&lt;/li&gt;
@@ -2325,7 +2348,7 @@ notify_classes = resource, software, bounce, policy
 &lt;hr&gt;
 
 &lt;h1 id=&quot;-span-id-ps-email-history-p-s-why-i-thought-it-would-be-easy-span-&quot;&gt;&lt;span id=&quot;ps-email-history&quot;&gt;P.S. Why I thought it would be easy&lt;/span&gt;&lt;/h1&gt;
-&lt;p&gt;Email is a technology that has been around since nearly the beginning of the Internet. &lt;/p&gt;
+&lt;p&gt;Email is a technology that has been around since nearly the beginning of the Internet.&lt;/p&gt;
 &lt;p&gt;Here in 2019, &lt;a href=&quot;https://morningconsult.com/2017/06/21/poll-gmail-dominates-email-use/&quot;&gt;70% of people use either Gmail or Yahoo Mail&lt;/a&gt;, at least according to that poll. But in the ‘90s (and before), email traffic was handled by servers run by a diverse group of institutions. If you went to a university, your email was likely received and relayed by some computers on campus. If you worked at a company, your work email probably also went through servers in your company’s buildings. ISPs (and there used to be many ISPs) each had their own email servers.&lt;/p&gt;
 &lt;p&gt;This history made it seem like a stable technology that could be administered by someone with a 1999-level of technical understanding. Unfortunately, the spam wars (and maybe the consolidation of the control of email into very few hands), have made trust in email a much more complex issue.&lt;/p&gt;
 &lt;p&gt;As a result, sending email from your own server, like so many things, is more or less out of the hands of a person that has a day job and a limited amount of time. It is the domain of large corporate aggregators that trust each other.&lt;/p&gt;
@@ -3553,7 +3576,7 @@ chrome.browserAction.onClicked.addListener(function respondToClick(tab) {
 &lt;p&gt;So, how would this work as a bookmarklet? You just have get a bookmark created on your users’ browsers that has a URL that looks like this:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;javascript:&amp;lt;Your IIFE&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;You can’t really tell most users “copy this code, then edit a bookmark and paste it into the URL field.” You need to create a web page that has a link that contains your code in the &lt;code&gt;href&lt;/code&gt; and tell them to drag it to the bookmarks bar. Like this:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;Drag this to your bookmarks bar:&amp;lt;/p&amp;gt;      
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;Drag this to your bookmarks bar:&amp;lt;/p&amp;gt;
 &amp;lt;p&amp;gt;
   &amp;lt;a class=&amp;quot;bookmarklet&amp;quot; href=&amp;quot;javascript:&amp;lt;Your IIFE&amp;quot;&amp;gt;Greatest Bookmarklet of All Time!&amp;lt;/a&amp;gt;
 &amp;lt;/p&amp;gt;

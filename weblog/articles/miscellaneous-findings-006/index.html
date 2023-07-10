@@ -23,6 +23,17 @@
 <p><em>This is a roundup of miscellaneous things that I’ve found out about (or have rediscovered).<span class="more"></span> I take notes on findings regularly, and I put the findings that translate well to speech on my podcast, <span style="text-decoration: underline"><strong><a href="https://jimkang.com/smallfindings/">Small Findings</a></strong></span>. The rest (which are often technical findings), I put here. They’re not always written up for maximum comprehension as a blog post, but if anything is hard to understand, please <a href="mailto:jimkang@fastmail.com">email me</a> if you need&nbsp;clarification.</em></p>
 </section>
           <article class="finding">
+            <section class="content"><h1 id="excluding-dirs-from-find">Excluding dirs from&nbsp;find</h1>
+<p>Say you want to find all of the directories in which you have a <code>rollup.config.js</code> file.</p>
+<p>You could&nbsp;try</p>
+<pre><code>find . -name rollup.config.js
+</code></pre><p>But that would also search all of the <code>node_modules</code> directories, and you mean to find projects in which you’ve used rollup&nbsp;directly.</p>
+<p>You can add <a href="/weblog/articles/miscellaneous-findings-006/findings/"><code>-path</code> and <code>-not</code></a> to exclude them from the&nbsp;search:</p>
+<pre><code>find . -name rollup.config.js -and -not \( -path &#39;*/node_modules/*&#39; \) -prune
+</code></pre><p>#search #unix #command&nbsp;#find</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="git-shortlog">Git&nbsp;shortlog</h1>
 <p><a href="https://git-scm.com/docs/git-shortlog">https://git-scm.com/docs/git-shortlog</a></p>
 <p>It’s surprisingly nice to read.&nbsp;e.g.:</p>
@@ -167,17 +178,6 @@ static domain_name_servers=&lt;router ip&gt; 8.8.8.8
 <p>I somehow ended up with <code>music</code> in the media directory being owned by the <code>503</code> user, which prevented the <code>pi</code> user from creating dirs&nbsp;there.</p>
 <pre><code>drwxrwxr-x 587 503 staff 20480 Mar 27 01:52 music
 </code></pre><p>I chmodded it to&nbsp;pi.</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="excluding-dirs-from-find">Excluding dirs from&nbsp;find</h1>
-<p>Say you want to find all of the directories in which you have a <code>rollup.config.js</code> file.</p>
-<p>You could&nbsp;try</p>
-<pre><code>find . -name rollup.config.js
-</code></pre><p>But that would also search all of the <code>node_modules</code> directories, and you mean to find projects in which you’ve used rollup&nbsp;directly.</p>
-<p>You can add <a href="/weblog/articles/miscellaneous-findings-006/findings/"><code>-path</code> and <code>-not</code></a> to exclude them from the&nbsp;search:</p>
-<pre><code>find . -name rollup.config.js -and -not \( -path &#39;*/node_modules/*&#39; \) -prune
-</code></pre><p>#search #unix #command&nbsp;#find</p>
 </section>
           </article>
         </article>
