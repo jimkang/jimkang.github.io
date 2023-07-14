@@ -23,12 +23,6 @@
 <p><em>This is a roundup of miscellaneous things that I’ve found out about (or have rediscovered).<span class="more"></span> I take notes on findings regularly, and I put the findings that translate well to speech on my podcast, <span style="text-decoration: underline"><strong><a href="https://jimkang.com/smallfindings/">Small Findings</a></strong></span>. The rest (which are often technical findings), I put here. They’re not always written up for maximum comprehension as a blog post, but if anything is hard to understand, please <a href="mailto:jimkang@fastmail.com">email me</a> if you need&nbsp;clarification.</em></p>
 </section>
           <article class="finding">
-            <section class="content"><h1 id="javascript-weirdness">JavaScript&nbsp;weirdness</h1>
-<p>There is a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/self">self</a> keyword for referring to the global scope, whether it’s Window or&nbsp;Worker.</p>
-<p>#javascript&nbsp;#weird</p>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="mobile-safari">Mobile&nbsp;Safari</h1>
 <h2 id="file-inputs">File&nbsp;inputs</h2>
 <p>You can set the accept attribute of an input element to <code>audio/*</code>, and on Firefox, the file selection dialog will let the user select any audio file. This doesn’t work on Mobile Safari, which apparently can’t tell what files are audio files. So, you have to specify file extensions,&nbsp;like:</p>
@@ -37,21 +31,9 @@
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="wintersmith">Wintersmith</h1>
-<p>If you are using a Jade template with the static site generator Wintersmith, and your template pulls in files in a directory like&nbsp;so:</p>
-<pre><code>block content
-  article.article
-    section.content!= typogr(page.html).typogrify()
-    each finding in page.parent.findings
-      include partials/finding
-</code></pre><p>And you then edit a file in that directory (in this example <code>findings</code>), you may get this error next time you build the&nbsp;site:</p>
-<pre><code>articles/miscellaneous-findings-006/index.html: /home/jimkang/gcw/weblog-src/templates/partials/finding.jade:5
-  &gt; 5|     section.content!= typogr(page.html).typogrify()
-
-Cannot read property &#39;jquery&#39; of undefined
-</code></pre><p>I thought this had something to do with the contents of the files being read, and I was partly right, but no amount of editing changed anything, and the build succeeded only when I deleted everything in <code>findings</code>.</p>
-<p>I was editing with vim, and <code>vim</code> puts a hidden <code>.swp</code> file in the directory. <code>typogrify</code> was choking on that. Closing the file in vim got rid of the&nbsp;problem.</p>
-<p>#static-site #vim&nbsp;#hidden</p>
+            <section class="content"><h1 id="javascript-weirdness">JavaScript&nbsp;weirdness</h1>
+<p>There is a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/self">self</a> keyword for referring to the global scope, whether it’s Window or&nbsp;Worker.</p>
+<p>#javascript&nbsp;#weird</p>
 </section>
           </article>
           <article class="finding">
@@ -82,6 +64,24 @@ containers
   .classed(&#39;soul&#39;, true)
   .attr(&#39;id&#39;, accessor(&#39;identity&#39;));
 </code></pre><p>#d3</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="wintersmith">Wintersmith</h1>
+<p>If you are using a Jade template with the static site generator Wintersmith, and your template pulls in files in a directory like&nbsp;so:</p>
+<pre><code>block content
+  article.article
+    section.content!= typogr(page.html).typogrify()
+    each finding in page.parent.findings
+      include partials/finding
+</code></pre><p>And you then edit a file in that directory (in this example <code>findings</code>), you may get this error next time you build the&nbsp;site:</p>
+<pre><code>articles/miscellaneous-findings-006/index.html: /home/jimkang/gcw/weblog-src/templates/partials/finding.jade:5
+  &gt; 5|     section.content!= typogr(page.html).typogrify()
+
+Cannot read property &#39;jquery&#39; of undefined
+</code></pre><p>I thought this had something to do with the contents of the files being read, and I was partly right, but no amount of editing changed anything, and the build succeeded only when I deleted everything in <code>findings</code>.</p>
+<p>I was editing with vim, and <code>vim</code> puts a hidden <code>.swp</code> file in the directory. <code>typogrify</code> was choking on that. Closing the file in vim got rid of the&nbsp;problem.</p>
+<p>#static-site #vim&nbsp;#hidden</p>
 </section>
           </article>
         </article>
