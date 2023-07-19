@@ -5,9 +5,50 @@
     <atom:link href="http://jimkang.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Thu, 13 Jul 2023 20:00:00 -0400</pubDate>
+    <pubDate>Tue, 18 Jul 2023 20:00:00 -0400</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Sleep Funnels</title>
+      <link>http://jimkang.com/weblog/articles/sleep-funnels/</link>
+      <pubDate>Tue, 18 Jul 2023 20:00:00 -0400</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/sleep-funnels/</guid>
+      <author></author>
+      <description>&lt;p&gt;&lt;em&gt;This was also sent out as a &lt;a href=&quot;https://tinyletter.com/jimkang/letters/sleep-funnels&quot;&gt;newsletter&lt;/a&gt;. If you’d like to get project updates like this as email, you can &lt;a href=&quot;https://tinyletter.com/jimkang/&quot;&gt;subscribe&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;style&gt;
+.article img {
+  width: 100%;
+}
+&lt;/style&gt;
+Here is a new EP for you!&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://jimkang.bandcamp.com/album/sleep-funnels&quot;&gt;https://jimkang.bandcamp.com/album/sleep-funnels&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;h1 id=&quot;the-trouble-with-dynamics&quot;&gt;The trouble with dynamics&lt;/h1&gt;
+&lt;p&gt;It is about sleep, but it is not &lt;em&gt;for&lt;/em&gt; sleep, at least not by design like the things produced by the sleep utility industry (10 Hours of Continuous Rain Sounds, Sleepy Piano, etc.). I did try to put it on as falling-asleep music, but my partner asked me to not do that.&lt;/p&gt;
+&lt;p&gt;However! For people who are into sleep music, I think it could work. Certainly, the first track, &lt;a href=&quot;https://jimkang.bandcamp.com/track/float-nebula&quot;&gt;Float Nebula&lt;/a&gt;, will give you no jolts. The rest of it does have drums and dynamics, though.&lt;/p&gt;
+&lt;p&gt;I had trouble deciding on how far to go with the dynamics. I made sure that the loud parts go no louder than -4 db FS (and mostly no louder than -6 db FS), so as not to cause any unpleasant shocks. But a consequence of that is that the really quiet parts ended up being around -40 db FS.&lt;/p&gt;
+&lt;p&gt;I think that if you’re listening in a relatively normal sound environment, you’ll have no problem hearing it, but I did worry that it would be missed. So, I did compress things at some point, but backed off of that because I actually really did want the quiet parts to be quiet. And if people hear it as silence, that could be a good experience, too.&lt;/p&gt;
+&lt;h1 id=&quot;you-can-t-control-everything-or-even-anything-close-to-everything&quot;&gt;You can’t control everything or even anything close to everything&lt;/h1&gt;
+&lt;p&gt;I hit another mastering problem when I listened to it in the car. Because I had EQ’d out some noisy parts of the trumpets, the road noise made them seem inarticulate and like a bunch of random honking. So, I brought some (but not all) of the grit back. Now the listener has something to grip when things get busy.&lt;/p&gt;
+&lt;p&gt;But I probably didn’t solve the articulation-in-road-noise issue. It just might not be destined to be a road jam. (And no matter how much articulation there is, there is no guarantee that it won’t come off as random honking.)&lt;/p&gt;
+&lt;p&gt;I’m sure that if I listen to them again tomorrow, I’ll find more &lt;em&gt;Concerns&lt;/em&gt;, which is why I’m releasing it now. This is because musical perception outcomes are determined not only but what signals are sent by the cochlear nerve, but also by the entire state of the brain.&lt;/p&gt;
+&lt;p&gt;The state of the brain is determined by Many Factors and cannot be locked down, as far as I know.&lt;/p&gt;
+&lt;h1 id=&quot;getting-things-over-the-line-with-tooling&quot;&gt;Getting things over the line with tooling&lt;/h1&gt;
+&lt;p&gt;These songs have been around for a while, going through several morphing and hibernation cycles. Float Nebula was 50 minutes long at some point. Sleep Funnels is at least &lt;a href=&quot;https://soundcloud.com/isilence/operating-damaged-disquiet0488&quot;&gt;two years old&lt;/a&gt;, and after a lot of manual DAW work, I eventually had to write a &lt;a href=&quot;https://github.com/jimkang/phasesmash/&quot;&gt;looping tool&lt;/a&gt; to get what I wanted. (Sleep Funnels is &lt;a href=&quot;https://en.wikipedia.org/wiki/Phase_music&quot;&gt;phase music&lt;/a&gt; and takes advantage of metric superimposition, the way Meshuggah and Steve Reich do.)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/sleep-funnels/phasesmash-screenshot.png&quot; alt=&quot;A picture of Phasesmash&quot;&gt;
+&lt;em&gt;It’s ugly, it did make it easy for me to loop 30 samples in various periods.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;To make the cover, I wrote a drawing program that generates spines for funnels as a series of points that make a line, then for each point, generates an ellipse to go around that point.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jimkang.com/articles/sleep-funnels/sleep-funnels-cover-purple.png&quot; alt=&quot;Sleep Funnels cover&quot;&gt;&lt;/p&gt;
+&lt;p&gt;You can try the program here and make your own funnel pictures:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://jimkang.com/funnels/&quot;&gt;https://jimkang.com/funnels/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Messing with the settings in the url with changes what gets generated. &lt;code&gt;seed&lt;/code&gt; and &lt;code&gt;funnelCount&lt;/code&gt; are fun ones to mess with. I wish I had put color control in the url, but I didn’t and just tried color schemes out in &lt;a href=&quot;https://github.com/jimkang/funnels/&quot;&gt;code&lt;/a&gt;.&lt;/p&gt;
+&lt;h1 id=&quot;oh-yeah-let-s-not-forget-there-s-a-mini-album-here&quot;&gt;Oh, yeah, let’s not forget there’s a mini-album here&lt;/h1&gt;
+&lt;p&gt;Regardess of what you think of the various makeshift tools to make it, I hope you enjoy Sleep Funnels for your sleeping, concentration, or even your art-experience needs. Since this message is so long, you may have forgotten the URL! So here it is:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://jimkang.bandcamp.com/album/sleep-funnels&quot;&gt;https://jimkang.bandcamp.com/album/sleep-funnels&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Jim&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Build the bomb</title>
       <link>http://jimkang.com/weblog/articles/build-the-bomb/</link>
