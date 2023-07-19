@@ -23,25 +23,6 @@
 <em>This is a roundup of miscellaneous things that I’ve found out about (or have rediscovered).<span class="more"></span> I take notes on findings regularly, and I put the findings that translate well to speech on my podcast, <span style="text-decoration: underline"><strong><a href="https://jimkang.com/smallfindings/">Small Findings</a></strong></span>. The rest (which are often technical findings), I put here. They’re not always written up for maximum comprehension as a blog post, but if anything is hard to understand, please <a href="mailto:jimkang@fastmail.com">email me</a> if you need&nbsp;clarification.</em></p>
 </section>
           <article class="finding">
-            <section class="content"><h1 id="xargs">xargs</h1>
-<p>(I’ve seen xargs a lot in shell scripts I’ve used and had a hazy idea about what it did but only just now did I actually look it&nbsp;up.)</p>
-<p><a href="https://en.wikipedia.org/wiki/Xargs"><code>xargs</code></a> is a command&nbsp;that:</p>
-<ul>
-<li>Runs another command for&nbsp;you</li>
-<li>Converts stuff piped to it via stdin into command-line arguments for that other&nbsp;command</li>
-</ul>
-<p>It’s a glue tool that’s necessary&nbsp;because:</p>
-<ul>
-<li>A lot of Unix commands communicate via stdin/stdout&nbsp;pipes</li>
-<li>Some do&nbsp;not</li>
-</ul>
-<p>In that way, it’s like <code>apply</code> in JavaScript which converts arrays into function&nbsp;arguments.</p>
-<p>As an example, you can use it to pass the results (a bunch of filenames) of <a href="https://gist.github.com/jimkang/1c4c9e44fe4133c8c3159572858bf0e3">get-entries-in-date-range</a> to <code>cat</code> to mash up the results into a single&nbsp;file:</p>
-<pre><code>./tools/get-entries-in-date-range.sh 2020-03-28 | xargs cat &gt; episode-2-script.md
-</code></pre><p>#unix&nbsp;#bash</p>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="replacing-all-with-sed">Replacing all with&nbsp;sed</h1>
 <p>To replace all instances of a string in a directory tree with another string, do a <code>find</code> for the file types you want to target, pipe that to <a href="/weblog/articles/miscellaneous-findings-003-unix-text-tricks/findings/2020-04-03----00:51__xargs.md"><code>xargs</code></a> to run <code>sed</code> on the files it&nbsp;finds.</p>
 <p>Example:</p>
@@ -60,13 +41,22 @@
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="regex-in-sed">Regex in&nbsp;sed</h1>
-<p>If you use <code>sed</code> without the <code>-r</code> switch, it does support a sort of regex, but doesn’t support capture groups. If you do, you can do something like this to replace all instances of <code>var something = require(&#39;somepackage&#39;)</code> with <code>import something from &#39;somepackage&#39;</code> in a&nbsp;file:</p>
-<pre><code>xargs sed -r &quot;s/var (\w+) = require\(&#39;(.*)&#39;\)/import \1 from &#39;\2&#39;/g&quot; -i myfile.js
-</code></pre><p>(You use <code>\1</code>, <code>\2</code>, et al to point to capture groups in the replacement clause instead of <code>$1</code>, <code>$2</code>.)</p>
-<p>If you want to run that on every <span class="caps">JS</span> file in a directory tree, you can pipe the output of a find command that looks for all <code>.js</code> files into xargs, which will run the sed command you give it and add each output from <code>find</code> to the commands. It’s sort of like&nbsp;currying.</p>
-<pre><code>find . -type f \( -name &#39;*.js&#39; \) | xargs sed -r &quot;s/var (\w+) = require\(&#39;(.*)&#39;\)/import \1 from &#39;\2&#39;/g&quot; -i
-</code></pre><p>#command #shell #regex&nbsp;#unix</p>
+            <section class="content"><h1 id="xargs">xargs</h1>
+<p>(I’ve seen xargs a lot in shell scripts I’ve used and had a hazy idea about what it did but only just now did I actually look it&nbsp;up.)</p>
+<p><a href="https://en.wikipedia.org/wiki/Xargs"><code>xargs</code></a> is a command&nbsp;that:</p>
+<ul>
+<li>Runs another command for&nbsp;you</li>
+<li>Converts stuff piped to it via stdin into command-line arguments for that other&nbsp;command</li>
+</ul>
+<p>It’s a glue tool that’s necessary&nbsp;because:</p>
+<ul>
+<li>A lot of Unix commands communicate via stdin/stdout&nbsp;pipes</li>
+<li>Some do&nbsp;not</li>
+</ul>
+<p>In that way, it’s like <code>apply</code> in JavaScript which converts arrays into function&nbsp;arguments.</p>
+<p>As an example, you can use it to pass the results (a bunch of filenames) of <a href="https://gist.github.com/jimkang/1c4c9e44fe4133c8c3159572858bf0e3">get-entries-in-date-range</a> to <code>cat</code> to mash up the results into a single&nbsp;file:</p>
+<pre><code>./tools/get-entries-in-date-range.sh 2020-03-28 | xargs cat &gt; episode-2-script.md
+</code></pre><p>#unix&nbsp;#bash</p>
 </section>
           </article>
           <article class="finding">
@@ -114,6 +104,16 @@
 ]
 </code></pre><p>And that is valid&nbsp;<span class="caps">JSON</span>.</p>
 <p>#tr #shell #unix #sed #text&nbsp;#bash</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="regex-in-sed">Regex in&nbsp;sed</h1>
+<p>If you use <code>sed</code> without the <code>-r</code> switch, it does support a sort of regex, but doesn’t support capture groups. If you do, you can do something like this to replace all instances of <code>var something = require(&#39;somepackage&#39;)</code> with <code>import something from &#39;somepackage&#39;</code> in a&nbsp;file:</p>
+<pre><code>xargs sed -r &quot;s/var (\w+) = require\(&#39;(.*)&#39;\)/import \1 from &#39;\2&#39;/g&quot; -i myfile.js
+</code></pre><p>(You use <code>\1</code>, <code>\2</code>, et al to point to capture groups in the replacement clause instead of <code>$1</code>, <code>$2</code>.)</p>
+<p>If you want to run that on every <span class="caps">JS</span> file in a directory tree, you can pipe the output of a find command that looks for all <code>.js</code> files into xargs, which will run the sed command you give it and add each output from <code>find</code> to the commands. It’s sort of like&nbsp;currying.</p>
+<pre><code>find . -type f \( -name &#39;*.js&#39; \) | xargs sed -r &quot;s/var (\w+) = require\(&#39;(.*)&#39;\)/import \1 from &#39;\2&#39;/g&quot; -i
+</code></pre><p>#command #shell #regex&nbsp;#unix</p>
 </section>
           </article>
         </article>

@@ -23,32 +23,6 @@
 <p>Well, I forgot about doing this, so it’s been <a href="http://localhost:8080/weblog/articles/miscellaneous-findings-009/">over a year</a> since I’ve posted findings. So, here’s 17 of&nbsp;them!</p>
 </section>
           <article class="finding">
-            <section class="content"><h1 id="audio-latency">Audio&nbsp;latency</h1>
-<p>In QJackCtl’s setup dialog, there are two params that affect audio&nbsp;latency:</p>
-<ul>
-<li>Frames/period</li>
-<li>Periods/buffer</li>
-</ul>
-<p>If the sample rate is 44,100 Hz, then a frame takes 1/44,100 seconds. So, how long does it take to get a frame through the&nbsp;computer?</p>
-<p>If frames/period is 1024 and periods/buffer is 2, each buffer carries 1024 * 2 frames. That’s 2048 frames. Since each frame takes 1/44,100 seconds, the buffer takes 2048/44,100 seconds = 46.44 ms to&nbsp;process.</p>
-<p><span class="caps">TODO</span>: What is involved in processing exactly,&nbsp;though?</p>
-<p>So, sound input goes in, then at least 46.44 ms later, something comes&nbsp;out.</p>
-<p>That’s kind of a lot! If you are playing a guitar into your computer, then having an amp modeler process it and send it back out, you may notice a delay which will throw you off. I read that <a href="http://mountainbikesandtrombones.blogspot.com/2012/03/problems-with-xrun.html">every 10ms of latency corresponds with being ~10 feet further from an analog source</a>. So, 10ms is acceptable for&nbsp;me.</p>
-<p>When I set frames/period to 128 and frames/period to 2 to get a latency of 5.8 msec, I started getting <a href="https://discourse.ardour.org/t/xruns-cadence-vs-qjackctl-in-kxstudio/89465/4">xruns</a> when using Guitarix. The computer was not keeping up with the incoming buffers, so it’d dump zeroes to the output, which sound like pops in the&nbsp;output.</p>
-<p>I found out that my computer, by default, dynamically slows down the <span class="caps">CPU</span> to save power, which causes latency&nbsp;issues. </p>
-<p>I was getting pops in my guitar amp modeler (and sometimes in pd), and that seemed to take care of&nbsp;it.</p>
-<p>I was clued in by the install script for Ardour, which said&nbsp;this:</p>
-<blockquote>
-<p>!!! <span class="caps">WARNING</span> !!! - Your system seems to use frequency scaling.<br>This can have a serious impact on audio latency.<br>For best results turn it off, e.g. by chosing the ‘performance’&nbsp;governor.”</p>
-</blockquote>
-<p>So, even though that app crashes when I try to create a project in it, I’m thankful to&nbsp;it.</p>
-<p>There’s this <code>indicator-cpufreq</code> package you can install, which puts a thing in the system menu bar to turn that&nbsp;off!</p>
-<pre><code>sudo apt-get install indicator-cpufreq
-</code></pre><p>When I turn set the governor to “Performance” via that applet, I don’t get the pops&nbsp;anymore.</p>
-<p>#cpu #frequencyscaling #audio #ubuntu&nbsp;#jack</p>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="c-">C++</h1>
 <h2 id="complex-numbers">Complex&nbsp;numbers</h2>
 <p><a href="https://en.cppreference.com/w/c/numeric/complex">C (not jjust C++) has supported complex numbers since&nbsp;1999!</a></p>
@@ -80,6 +54,32 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 <ul>
 <li>When you create an object inline in a function call, that object is implicitly&nbsp;const.</li>
 </ul>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="audio-latency">Audio&nbsp;latency</h1>
+<p>In QJackCtl’s setup dialog, there are two params that affect audio&nbsp;latency:</p>
+<ul>
+<li>Frames/period</li>
+<li>Periods/buffer</li>
+</ul>
+<p>If the sample rate is 44,100 Hz, then a frame takes 1/44,100 seconds. So, how long does it take to get a frame through the&nbsp;computer?</p>
+<p>If frames/period is 1024 and periods/buffer is 2, each buffer carries 1024 * 2 frames. That’s 2048 frames. Since each frame takes 1/44,100 seconds, the buffer takes 2048/44,100 seconds = 46.44 ms to&nbsp;process.</p>
+<p><span class="caps">TODO</span>: What is involved in processing exactly,&nbsp;though?</p>
+<p>So, sound input goes in, then at least 46.44 ms later, something comes&nbsp;out.</p>
+<p>That’s kind of a lot! If you are playing a guitar into your computer, then having an amp modeler process it and send it back out, you may notice a delay which will throw you off. I read that <a href="http://mountainbikesandtrombones.blogspot.com/2012/03/problems-with-xrun.html">every 10ms of latency corresponds with being ~10 feet further from an analog source</a>. So, 10ms is acceptable for&nbsp;me.</p>
+<p>When I set frames/period to 128 and frames/period to 2 to get a latency of 5.8 msec, I started getting <a href="https://discourse.ardour.org/t/xruns-cadence-vs-qjackctl-in-kxstudio/89465/4">xruns</a> when using Guitarix. The computer was not keeping up with the incoming buffers, so it’d dump zeroes to the output, which sound like pops in the&nbsp;output.</p>
+<p>I found out that my computer, by default, dynamically slows down the <span class="caps">CPU</span> to save power, which causes latency&nbsp;issues. </p>
+<p>I was getting pops in my guitar amp modeler (and sometimes in pd), and that seemed to take care of&nbsp;it.</p>
+<p>I was clued in by the install script for Ardour, which said&nbsp;this:</p>
+<blockquote>
+<p>!!! <span class="caps">WARNING</span> !!! - Your system seems to use frequency scaling.<br>This can have a serious impact on audio latency.<br>For best results turn it off, e.g. by chosing the ‘performance’&nbsp;governor.”</p>
+</blockquote>
+<p>So, even though that app crashes when I try to create a project in it, I’m thankful to&nbsp;it.</p>
+<p>There’s this <code>indicator-cpufreq</code> package you can install, which puts a thing in the system menu bar to turn that&nbsp;off!</p>
+<pre><code>sudo apt-get install indicator-cpufreq
+</code></pre><p>When I turn set the governor to “Performance” via that applet, I don’t get the pops&nbsp;anymore.</p>
+<p>#cpu #frequencyscaling #audio #ubuntu&nbsp;#jack</p>
 </section>
           </article>
           <article class="finding">
@@ -131,6 +131,53 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="data-privacy-policies">Data privacy&nbsp;policies</h1>
+<h2 id="microsoft-and-google">Microsoft and&nbsp;Google</h2>
+<p>One thing that’s better about using Excel instead of Google Sheets (other than better features, of which I don’t really know how to take advantage) is the <a href="https://support.microsoft.com/en-us/office/diagnostic-data-in-microsoft-365-f409137d-15d3-4803-a8ae-d26fcbfc91dd">data policy</a>:</p>
+<blockquote>
+<p>This data does not include your name or email address, the content of your files, or information about apps unrelated to Microsoft 365 or&nbsp;OneDrive.</p>
+</blockquote>
+<p>Google’s <a href="https://support.google.com/docs/answer/10381817?hl=en">privacy policy</a> is more complex and&nbsp;includes:</p>
+<blockquote>
+<p>To provide <em>services like</em> spam filtering, virus detection, malware protection and the ability to search for files within your individual account, we process your&nbsp;content.</p>
+</blockquote>
+<p>(Emphasis&nbsp;added.)</p>
+<h2 id="atlassian">Atlassian</h2>
+<p><a href="https://www.atlassian.com/legal/privacy-policy#how-we-use-information-we-collect">https://www.atlassian.com/legal/privacy-policy#how-we-use-information-we-collect</a></p>
+<blockquote>
+<p>Our Services also include tailored features that personalize your experience, enhance your productivity, and improve your ability to collaborate effectively with others by automatically analyzing the activities of your team to provide search results, activity feeds, notifications, connections and recommendations that are most relevant for you and your&nbsp;team.</p>
+</blockquote>
+<h2 id="dropbox">Dropbox</h2>
+<p><a href="https://www.dropbox.com/privacy">https://www.dropbox.com/privacy</a></p>
+<blockquote>
+<p>We collect and use the following information to provide, improve, protect, and promote our&nbsp;Services.</p>
+</blockquote>
+<blockquote>
+<p>Account information. We collect, and associate with your account, the information you provide to us when you do things such as sign up for your account, upgrade to a paid plan, and set up two-factor authentication (like your name, email address, phone number, payment info, and physical&nbsp;address).</p>
+</blockquote>
+<blockquote>
+<p>Your Stuff. Our Services are designed as a simple and personalized way for you to store your files, documents, photos, comments, messages, and so on (“Your Stuff”), collaborate with others, and work across multiple devices and services. To make that possible, we store, process, and transmit Your Stuff as well as information related to it. This related information includes your <a href="https://help.dropbox.com/accounts-billing/settings-sign-in/change-profile-information">profile information</a> that makes it easier to collaborate and share Your Stuff with others, as well as things like the size of the file, the time it was uploaded, collaborators, and usage&nbsp;activity.</p>
+</blockquote>
+<p>What about the contents of “Your&nbsp;Stuff”?</p>
+<p><a href="https://www.pcworld.com/article/447666/dropbox-takes-a-peek-at-files.html">https://www.pcworld.com/article/447666/dropbox-takes-a-peek-at-files.html</a>
+<a href="https://arstechnica.com/tech-policy/2014/03/dropbox-clarifies-its-policy-on-reviewing-shared-files-for-dmca-issues/">https://arstechnica.com/tech-policy/2014/03/dropbox-clarifies-its-policy-on-reviewing-shared-files-for-dmca-issues/</a></p>
+<p>2013: employee access is intended to be&nbsp;restricted.</p>
+<p>But what about process&nbsp;access?</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="flickr">Flickr</h1>
+<h2 id="making-all-public-photos-non-public">Making all public photos&nbsp;non-public</h2>
+<ul>
+<li>Go to&nbsp;Organizr.</li>
+<li>Select “Only show public content” in the bottom&nbsp;bar.</li>
+<li>Select all. Drag the bottom bar selection to the&nbsp;workspace.</li>
+<li>Go to the permissions menu and change the permissions for those&nbsp;photos.</li>
+<li>Seems to run for about an hour (getting through 3000 photos) before it fails, and you have to start&nbsp;over.</li>
+</ul>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="finding-out-what-s-using-a-port">Finding out what’s using a&nbsp;port</h1>
 <p>There’s <code>lsof -i TCP</code>, but that sometimes misses it. Maybe that’s for active&nbsp;connections?</p>
 <p>This seems&nbsp;better:</p>
@@ -174,18 +221,6 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 <li>They use one from “<span class="caps">MTG</span> Co.&nbsp;Ltd.”</li>
 </ul>
 </li>
-</ul>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="flickr">Flickr</h1>
-<h2 id="making-all-public-photos-non-public">Making all public photos&nbsp;non-public</h2>
-<ul>
-<li>Go to&nbsp;Organizr.</li>
-<li>Select “Only show public content” in the bottom&nbsp;bar.</li>
-<li>Select all. Drag the bottom bar selection to the&nbsp;workspace.</li>
-<li>Go to the permissions menu and change the permissions for those&nbsp;photos.</li>
-<li>Seems to run for about an hour (getting through 3000 photos) before it fails, and you have to start&nbsp;over.</li>
 </ul>
 </section>
           </article>
@@ -306,6 +341,62 @@ MimeType=text/english;text/plain;text/x-markdown;
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="serving-local-web-apps-via-https">Serving local web apps via&nbsp;https</h1>
+<p>If you need to serve a local web page via&nbsp;https:</p>
+<h2 id="create-a-cert">Create a&nbsp;cert</h2>
+<p><a href="https://letsencrypt.org/docs/certificates-for-localhost/">https://letsencrypt.org/docs/certificates-for-localhost/</a></p>
+<pre><code>openssl req -x509 -out localhost.crt -keyout localhost.key \
+  -newkey rsa:2048 -nodes -sha256 \
+  -subj &#39;/CN=localhost&#39; -extensions EXT -config &lt;( \
+   printf &quot;[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth&quot;)
+</code></pre><h2 id="serving-via-python">Serving via&nbsp;Python</h2>
+<ul>
+<li>Mash the crt and key files together: <code></code>cat localhost.crt localhost.key &gt;&nbsp;localhost.pem`</li>
+<li>Create a server script like so:
+<code>`</code>from http.server import HTTPServer, SimpleHTTPRequestHandler
+import&nbsp;ssl</li>
+</ul>
+<p>httpd = HTTPServer((“localhost”, 443), SimpleHTTPRequestHandler)
+httpd.socket = ssl.wrap_socket(
+    httpd.socket, certfile=”./localhost.pem”, server_side=True
+)
+httpd.serve_forever()
+<code>`</code></p>
+<ul>
+<li>Start it with <code>sudo python3 server.py</code>.</li>
+</ul>
+<h2 id="serving-via-node">Serving via&nbsp;Node</h2>
+<p><a href="https://stackoverflow.com/a/61905546/87798">https://stackoverflow.com/a/61905546/87798</a> (Ignore the brew, mkcert&nbsp;stuff)</p>
+<ul>
+<li>Rename the crt and key files to <code>cert.pem</code> and <code>key.pem</code>.</li>
+<li>Run the <code>http-server</code> module with `http-server -P 443 -S -C cert.pem&nbsp;-o’</li>
+</ul>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="moonlander">Moonlander</h1>
+<h2 id="wally-getting-stuck-after-you-re-supposed-to-reset-the-keyboard">Wally getting stuck after you’re supposed to reset the&nbsp;keyboard</h2>
+<p>When this happened to me, it was on a new computer. I never added the udev rule file as described&nbsp;here:</p>
+<p><a href="https://github.com/zsa/wally/wiki/Linux-install">https://github.com/zsa/wally/wiki/Linux-install</a></p>
+<p>After I did that, it&nbsp;worked!</p>
+<p>#keyboard&nbsp;#ubuntu</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="recording-internal-audio">Recording internal&nbsp;audio</h1>
+<p><a href="https://askubuntu.com/questions/250073/how-to-record-any-internal-sound-in-and-out-using-ubuntu-and-audacity">https://askubuntu.com/questions/250073/how-to-record-any-internal-sound-in-and-out-using-ubuntu-and-audacity</a></p>
+<blockquote>
+<p>As soon as we record any audio stream the name of the recording application and the source from where it records will be shown in the <em>Recording</em> tab. We then may be able to change the source to <code>Monitor of &lt;your soundcard&gt;</code> to record the output of our&nbsp;soundcard:</p>
+</blockquote>
+<ul>
+<li>First, start recording in&nbsp;Audacity.</li>
+<li>Then, in <code>pavucontrol</code>, in the Recording tab, in the Audacity entry, select “Monitor of soundcard” (instead of&nbsp;soundcard).</li>
+</ul>
+<p>Now it’s recording the output of the soundcard instead of the mic connected to the&nbsp;soundcard.</p>
+<p>#ubuntu&nbsp;#audio</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="area-high-schools">Area high&nbsp;schools</h1>
 <h2 id="bbn"><span class="caps">BB</span>&amp;N</h2>
 <ul>
@@ -362,97 +453,6 @@ MimeType=text/english;text/plain;text/x-markdown;
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="serving-local-web-apps-via-https">Serving local web apps via&nbsp;https</h1>
-<p>If you need to serve a local web page via&nbsp;https:</p>
-<h2 id="create-a-cert">Create a&nbsp;cert</h2>
-<p><a href="https://letsencrypt.org/docs/certificates-for-localhost/">https://letsencrypt.org/docs/certificates-for-localhost/</a></p>
-<pre><code>openssl req -x509 -out localhost.crt -keyout localhost.key \
-  -newkey rsa:2048 -nodes -sha256 \
-  -subj &#39;/CN=localhost&#39; -extensions EXT -config &lt;( \
-   printf &quot;[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth&quot;)
-</code></pre><h2 id="serving-via-python">Serving via&nbsp;Python</h2>
-<ul>
-<li>Mash the crt and key files together: <code></code>cat localhost.crt localhost.key &gt;&nbsp;localhost.pem`</li>
-<li>Create a server script like so:
-<code>`</code>from http.server import HTTPServer, SimpleHTTPRequestHandler
-import&nbsp;ssl</li>
-</ul>
-<p>httpd = HTTPServer((“localhost”, 443), SimpleHTTPRequestHandler)
-httpd.socket = ssl.wrap_socket(
-    httpd.socket, certfile=”./localhost.pem”, server_side=True
-)
-httpd.serve_forever()
-<code>`</code></p>
-<ul>
-<li>Start it with <code>sudo python3 server.py</code>.</li>
-</ul>
-<h2 id="serving-via-node">Serving via&nbsp;Node</h2>
-<p><a href="https://stackoverflow.com/a/61905546/87798">https://stackoverflow.com/a/61905546/87798</a> (Ignore the brew, mkcert&nbsp;stuff)</p>
-<ul>
-<li>Rename the crt and key files to <code>cert.pem</code> and <code>key.pem</code>.</li>
-<li>Run the <code>http-server</code> module with `http-server -P 443 -S -C cert.pem&nbsp;-o’</li>
-</ul>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="moonlander">Moonlander</h1>
-<h2 id="wally-getting-stuck-after-you-re-supposed-to-reset-the-keyboard">Wally getting stuck after you’re supposed to reset the&nbsp;keyboard</h2>
-<p>When this happened to me, it was on a new computer. I never added the udev rule file as described&nbsp;here:</p>
-<p><a href="https://github.com/zsa/wally/wiki/Linux-install">https://github.com/zsa/wally/wiki/Linux-install</a></p>
-<p>After I did that, it&nbsp;worked!</p>
-<p>#keyboard&nbsp;#ubuntu</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="data-privacy-policies">Data privacy&nbsp;policies</h1>
-<h2 id="microsoft-and-google">Microsoft and&nbsp;Google</h2>
-<p>One thing that’s better about using Excel instead of Google Sheets (other than better features, of which I don’t really know how to take advantage) is the <a href="https://support.microsoft.com/en-us/office/diagnostic-data-in-microsoft-365-f409137d-15d3-4803-a8ae-d26fcbfc91dd">data policy</a>:</p>
-<blockquote>
-<p>This data does not include your name or email address, the content of your files, or information about apps unrelated to Microsoft 365 or&nbsp;OneDrive.</p>
-</blockquote>
-<p>Google’s <a href="https://support.google.com/docs/answer/10381817?hl=en">privacy policy</a> is more complex and&nbsp;includes:</p>
-<blockquote>
-<p>To provide <em>services like</em> spam filtering, virus detection, malware protection and the ability to search for files within your individual account, we process your&nbsp;content.</p>
-</blockquote>
-<p>(Emphasis&nbsp;added.)</p>
-<h2 id="atlassian">Atlassian</h2>
-<p><a href="https://www.atlassian.com/legal/privacy-policy#how-we-use-information-we-collect">https://www.atlassian.com/legal/privacy-policy#how-we-use-information-we-collect</a></p>
-<blockquote>
-<p>Our Services also include tailored features that personalize your experience, enhance your productivity, and improve your ability to collaborate effectively with others by automatically analyzing the activities of your team to provide search results, activity feeds, notifications, connections and recommendations that are most relevant for you and your&nbsp;team.</p>
-</blockquote>
-<h2 id="dropbox">Dropbox</h2>
-<p><a href="https://www.dropbox.com/privacy">https://www.dropbox.com/privacy</a></p>
-<blockquote>
-<p>We collect and use the following information to provide, improve, protect, and promote our&nbsp;Services.</p>
-</blockquote>
-<blockquote>
-<p>Account information. We collect, and associate with your account, the information you provide to us when you do things such as sign up for your account, upgrade to a paid plan, and set up two-factor authentication (like your name, email address, phone number, payment info, and physical&nbsp;address).</p>
-</blockquote>
-<blockquote>
-<p>Your Stuff. Our Services are designed as a simple and personalized way for you to store your files, documents, photos, comments, messages, and so on (“Your Stuff”), collaborate with others, and work across multiple devices and services. To make that possible, we store, process, and transmit Your Stuff as well as information related to it. This related information includes your <a href="https://help.dropbox.com/accounts-billing/settings-sign-in/change-profile-information">profile information</a> that makes it easier to collaborate and share Your Stuff with others, as well as things like the size of the file, the time it was uploaded, collaborators, and usage&nbsp;activity.</p>
-</blockquote>
-<p>What about the contents of “Your&nbsp;Stuff”?</p>
-<p><a href="https://www.pcworld.com/article/447666/dropbox-takes-a-peek-at-files.html">https://www.pcworld.com/article/447666/dropbox-takes-a-peek-at-files.html</a>
-<a href="https://arstechnica.com/tech-policy/2014/03/dropbox-clarifies-its-policy-on-reviewing-shared-files-for-dmca-issues/">https://arstechnica.com/tech-policy/2014/03/dropbox-clarifies-its-policy-on-reviewing-shared-files-for-dmca-issues/</a></p>
-<p>2013: employee access is intended to be&nbsp;restricted.</p>
-<p>But what about process&nbsp;access?</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="recording-internal-audio">Recording internal&nbsp;audio</h1>
-<p><a href="https://askubuntu.com/questions/250073/how-to-record-any-internal-sound-in-and-out-using-ubuntu-and-audacity">https://askubuntu.com/questions/250073/how-to-record-any-internal-sound-in-and-out-using-ubuntu-and-audacity</a></p>
-<blockquote>
-<p>As soon as we record any audio stream the name of the recording application and the source from where it records will be shown in the <em>Recording</em> tab. We then may be able to change the source to <code>Monitor of &lt;your soundcard&gt;</code> to record the output of our&nbsp;soundcard:</p>
-</blockquote>
-<ul>
-<li>First, start recording in&nbsp;Audacity.</li>
-<li>Then, in <code>pavucontrol</code>, in the Recording tab, in the Audacity entry, select “Monitor of soundcard” (instead of&nbsp;soundcard).</li>
-</ul>
-<p>Now it’s recording the output of the soundcard instead of the mic connected to the&nbsp;soundcard.</p>
-<p>#ubuntu&nbsp;#audio</p>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="setting-up-a-new-computer-running-ubuntu">Setting up a new computer running&nbsp;Ubuntu</h1>
 <ul>
 <li>Move over your private&nbsp;key.</li>
@@ -482,19 +482,8 @@ httpd.serve_forever()
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="unrar">unrar</h1>
-<p>If you get “no files to extract”, the problem may actually be that it doesn’t have permission to create a file or directory, rather that there being no files to extract in the rar&nbsp;file.</p>
-<h2 id="unraring-from-multiple-subdirectories">Unraring from multiple&nbsp;subdirectories</h2>
-<p>Remove the any unwanted subdirectories first, e.g.&nbsp;“Sample”.</p>
-<pre><code>find . -name Sample -exec rm -rf {} \;
-</code></pre><p>Run this&nbsp;script:</p>
-<pre><code>#!/bin/bash
-
-for dir in ./*
-do
-    unrar e &quot;${dir}/*.rar&quot;
-done
-</code></pre><p>#rar #command&nbsp;#shell</p>
+            <section class="content"><h2 id="dom"><span class="caps">DOM</span></h2>
+<p>If you parse an <span class="caps">SVG</span> document into a tree, then append one of the child nodes to the browser’s current DOM, then the node disappears from the source tree. Sort of a move, rather than a&nbsp;copy.</p>
 </section>
           </article>
           <article class="finding">
@@ -516,6 +505,22 @@ Add 1/2 tea spoon black&nbsp;pepper.</p>
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="unrar">unrar</h1>
+<p>If you get “no files to extract”, the problem may actually be that it doesn’t have permission to create a file or directory, rather that there being no files to extract in the rar&nbsp;file.</p>
+<h2 id="unraring-from-multiple-subdirectories">Unraring from multiple&nbsp;subdirectories</h2>
+<p>Remove the any unwanted subdirectories first, e.g.&nbsp;“Sample”.</p>
+<pre><code>find . -name Sample -exec rm -rf {} \;
+</code></pre><p>Run this&nbsp;script:</p>
+<pre><code>#!/bin/bash
+
+for dir in ./*
+do
+    unrar e &quot;${dir}/*.rar&quot;
+done
+</code></pre><p>#rar #command&nbsp;#shell</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="neovim">neovim</h1>
 <h2 id="installing-plugins">Installing&nbsp;plugins</h2>
 <ul>
@@ -533,21 +538,6 @@ Add 1/2 tea spoon black&nbsp;pepper.</p>
 </li>
 <li>Run <code>:CheckHealth</code> to make sure things are&nbsp;<span class="caps">OK</span>.</li>
 </ul>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="rsync">rsync</h1>
-<h2 id="dealing-with-spaces-in-the-path">Dealing with spaces in the&nbsp;path</h2>
-<p>Use <code>--protect-args</code>.&nbsp;e.g.:</p>
-<pre><code>rsync -avz --protect-args pi@midnight-giant:&quot;/mnt/storage/media/music/Pikmin Sound Team/Pikmin 3 Deluxe&quot; .
-</code></pre><h2 id="keeping-local-files-even-if-they-re-missing-on-remote">Keeping local files even if they’re missing on&nbsp;remote</h2>
-<p>It does this by&nbsp;default!</p>
-<p><a href="https://www.digitalocean.com/community/tutorials/how-to-use-rsync-to-sync-local-and-remote-directories">https://www.digitalocean.com/community/tutorials/how-to-use-rsync-to-sync-local-and-remote-directories</a></p>
-<blockquote>
-<p>In order to keep two directories truly in sync, it’s necessary to delete files from the destination directory if they are removed from the source. By default, <code>rsync</code> does not delete anything from the destination&nbsp;directory.</p>
-<p>You can change this behavior with the <code>--delete</code> option.</p>
-</blockquote>
-<p>#rsync&nbsp;#command</p>
 </section>
           </article>
           <article class="finding">
@@ -572,14 +562,31 @@ Add 1/2 tea spoon black&nbsp;pepper.</p>
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="zip">Zip</h1>
-<p><code>-j</code> gets it to not put the directory structure into the zip file.
-<code>-x &lt;pattern&gt;</code> makes it ignore files matching the&nbsp;pattern.</p>
+            <section class="content"><h1 id="rsync">rsync</h1>
+<h2 id="dealing-with-spaces-in-the-path">Dealing with spaces in the&nbsp;path</h2>
+<p>Use <code>--protect-args</code>.&nbsp;e.g.:</p>
+<pre><code>rsync -avz --protect-args pi@midnight-giant:&quot;/mnt/storage/media/music/Pikmin Sound Team/Pikmin 3 Deluxe&quot; .
+</code></pre><h2 id="keeping-local-files-even-if-they-re-missing-on-remote">Keeping local files even if they’re missing on&nbsp;remote</h2>
+<p>It does this by&nbsp;default!</p>
+<p><a href="https://www.digitalocean.com/community/tutorials/how-to-use-rsync-to-sync-local-and-remote-directories">https://www.digitalocean.com/community/tutorials/how-to-use-rsync-to-sync-local-and-remote-directories</a></p>
+<blockquote>
+<p>In order to keep two directories truly in sync, it’s necessary to delete files from the destination directory if they are removed from the source. By default, <code>rsync</code> does not delete anything from the destination&nbsp;directory.</p>
+<p>You can change this behavior with the <code>--delete</code> option.</p>
+</blockquote>
+<p>#rsync&nbsp;#command</p>
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h2 id="dom"><span class="caps">DOM</span></h2>
-<p>If you parse an <span class="caps">SVG</span> document into a tree, then append one of the child nodes to the browser’s current DOM, then the node disappears from the source tree. Sort of a move, rather than a&nbsp;copy.</p>
+            <section class="content"><h1 id="tail-calls">Tail&nbsp;calls</h1>
+<p>If a function ends by calling itself, that’s called a tail&nbsp;call.</p>
+<p>It can usually be optimized by converting the function to just use a loop (or jump in assembly) instead of putting up another stack frame for another function&nbsp;call.</p>
+<p>#programming</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="zip">Zip</h1>
+<p><code>-j</code> gets it to not put the directory structure into the zip file.
+<code>-x &lt;pattern&gt;</code> makes it ignore files matching the&nbsp;pattern.</p>
 </section>
           </article>
           <article class="finding">
@@ -600,13 +607,6 @@ Add 1/2 tea spoon black&nbsp;pepper.</p>
 <p>There’s a <code>-delete</code> flag.</p>
 <pre><code>find . -name &quot;*.pdf&quot; -delete
 </code></pre><p>#search #unix #command&nbsp;#find</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="tail-calls">Tail&nbsp;calls</h1>
-<p>If a function ends by calling itself, that’s called a tail&nbsp;call.</p>
-<p>It can usually be optimized by converting the function to just use a loop (or jump in assembly) instead of putting up another stack frame for another function&nbsp;call.</p>
-<p>#programming</p>
 </section>
           </article>
         </article>
