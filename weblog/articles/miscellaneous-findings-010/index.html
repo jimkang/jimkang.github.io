@@ -23,6 +23,32 @@
 <p>Well, I forgot about doing this, so it’s been <a href="http://localhost:8080/weblog/articles/miscellaneous-findings-009/">over a year</a> since I’ve posted findings. So, here’s 17 of&nbsp;them!</p>
 </section>
           <article class="finding">
+            <section class="content"><h1 id="audio-latency">Audio&nbsp;latency</h1>
+<p>In QJackCtl’s setup dialog, there are two params that affect audio&nbsp;latency:</p>
+<ul>
+<li>Frames/period</li>
+<li>Periods/buffer</li>
+</ul>
+<p>If the sample rate is 44,100 Hz, then a frame takes 1/44,100 seconds. So, how long does it take to get a frame through the&nbsp;computer?</p>
+<p>If frames/period is 1024 and periods/buffer is 2, each buffer carries 1024 * 2 frames. That’s 2048 frames. Since each frame takes 1/44,100 seconds, the buffer takes 2048/44,100 seconds = 46.44 ms to&nbsp;process.</p>
+<p><span class="caps">TODO</span>: What is involved in processing exactly,&nbsp;though?</p>
+<p>So, sound input goes in, then at least 46.44 ms later, something comes&nbsp;out.</p>
+<p>That’s kind of a lot! If you are playing a guitar into your computer, then having an amp modeler process it and send it back out, you may notice a delay which will throw you off. I read that <a href="http://mountainbikesandtrombones.blogspot.com/2012/03/problems-with-xrun.html">every 10ms of latency corresponds with being ~10 feet further from an analog source</a>. So, 10ms is acceptable for&nbsp;me.</p>
+<p>When I set frames/period to 128 and frames/period to 2 to get a latency of 5.8 msec, I started getting <a href="https://discourse.ardour.org/t/xruns-cadence-vs-qjackctl-in-kxstudio/89465/4">xruns</a> when using Guitarix. The computer was not keeping up with the incoming buffers, so it’d dump zeroes to the output, which sound like pops in the&nbsp;output.</p>
+<p>I found out that my computer, by default, dynamically slows down the <span class="caps">CPU</span> to save power, which causes latency&nbsp;issues. </p>
+<p>I was getting pops in my guitar amp modeler (and sometimes in pd), and that seemed to take care of&nbsp;it.</p>
+<p>I was clued in by the install script for Ardour, which said&nbsp;this:</p>
+<blockquote>
+<p>!!! <span class="caps">WARNING</span> !!! - Your system seems to use frequency scaling.<br>This can have a serious impact on audio latency.<br>For best results turn it off, e.g. by chosing the ‘performance’&nbsp;governor.”</p>
+</blockquote>
+<p>So, even though that app crashes when I try to create a project in it, I’m thankful to&nbsp;it.</p>
+<p>There’s this <code>indicator-cpufreq</code> package you can install, which puts a thing in the system menu bar to turn that&nbsp;off!</p>
+<pre><code>sudo apt-get install indicator-cpufreq
+</code></pre><p>When I turn set the governor to “Performance” via that applet, I don’t get the pops&nbsp;anymore.</p>
+<p>#cpu #frequencyscaling #audio #ubuntu&nbsp;#jack</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="c-">C++</h1>
 <h2 id="complex-numbers">Complex&nbsp;numbers</h2>
 <p><a href="https://en.cppreference.com/w/c/numeric/complex">C (not jjust C++) has supported complex numbers since&nbsp;1999!</a></p>
@@ -54,32 +80,6 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 <ul>
 <li>When you create an object inline in a function call, that object is implicitly&nbsp;const.</li>
 </ul>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="audio-latency">Audio&nbsp;latency</h1>
-<p>In QJackCtl’s setup dialog, there are two params that affect audio&nbsp;latency:</p>
-<ul>
-<li>Frames/period</li>
-<li>Periods/buffer</li>
-</ul>
-<p>If the sample rate is 44,100 Hz, then a frame takes 1/44,100 seconds. So, how long does it take to get a frame through the&nbsp;computer?</p>
-<p>If frames/period is 1024 and periods/buffer is 2, each buffer carries 1024 * 2 frames. That’s 2048 frames. Since each frame takes 1/44,100 seconds, the buffer takes 2048/44,100 seconds = 46.44 ms to&nbsp;process.</p>
-<p><span class="caps">TODO</span>: What is involved in processing exactly,&nbsp;though?</p>
-<p>So, sound input goes in, then at least 46.44 ms later, something comes&nbsp;out.</p>
-<p>That’s kind of a lot! If you are playing a guitar into your computer, then having an amp modeler process it and send it back out, you may notice a delay which will throw you off. I read that <a href="http://mountainbikesandtrombones.blogspot.com/2012/03/problems-with-xrun.html">every 10ms of latency corresponds with being ~10 feet further from an analog source</a>. So, 10ms is acceptable for&nbsp;me.</p>
-<p>When I set frames/period to 128 and frames/period to 2 to get a latency of 5.8 msec, I started getting <a href="https://discourse.ardour.org/t/xruns-cadence-vs-qjackctl-in-kxstudio/89465/4">xruns</a> when using Guitarix. The computer was not keeping up with the incoming buffers, so it’d dump zeroes to the output, which sound like pops in the&nbsp;output.</p>
-<p>I found out that my computer, by default, dynamically slows down the <span class="caps">CPU</span> to save power, which causes latency&nbsp;issues. </p>
-<p>I was getting pops in my guitar amp modeler (and sometimes in pd), and that seemed to take care of&nbsp;it.</p>
-<p>I was clued in by the install script for Ardour, which said&nbsp;this:</p>
-<blockquote>
-<p>!!! <span class="caps">WARNING</span> !!! - Your system seems to use frequency scaling.<br>This can have a serious impact on audio latency.<br>For best results turn it off, e.g. by chosing the ‘performance’&nbsp;governor.”</p>
-</blockquote>
-<p>So, even though that app crashes when I try to create a project in it, I’m thankful to&nbsp;it.</p>
-<p>There’s this <code>indicator-cpufreq</code> package you can install, which puts a thing in the system menu bar to turn that&nbsp;off!</p>
-<pre><code>sudo apt-get install indicator-cpufreq
-</code></pre><p>When I turn set the governor to “Performance” via that applet, I don’t get the pops&nbsp;anymore.</p>
-<p>#cpu #frequencyscaling #audio #ubuntu&nbsp;#jack</p>
 </section>
           </article>
           <article class="finding">
@@ -178,15 +178,6 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="finding-out-what-s-using-a-port">Finding out what’s using a&nbsp;port</h1>
-<p>There’s <code>lsof -i TCP</code>, but that sometimes misses it. Maybe that’s for active&nbsp;connections?</p>
-<p>This seems&nbsp;better:</p>
-<p><code>ss -lntp</code></p>
-<p>It should list the processes bound to <span class="caps">TCP</span> ports. But sometimes the process field is blank. If you run it with <code>sudo</code>, you’ll probably be able to see the&nbsp;processes.</p>
-<p>#port #unix&nbsp;#network</p>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="eye-massagers">Eye&nbsp;massagers</h1>
 <ul>
 <li>Optometrist office wouldn’t say they’re great, but did say “you can buy&nbsp;one”.</li>
@@ -225,6 +216,37 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="finding-out-what-s-using-a-port">Finding out what’s using a&nbsp;port</h1>
+<p>There’s <code>lsof -i TCP</code>, but that sometimes misses it. Maybe that’s for active&nbsp;connections?</p>
+<p>This seems&nbsp;better:</p>
+<p><code>ss -lntp</code></p>
+<p>It should list the processes bound to <span class="caps">TCP</span> ports. But sometimes the process field is blank. If you run it with <code>sudo</code>, you’ll probably be able to see the&nbsp;processes.</p>
+<p>#port #unix&nbsp;#network</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="getting-apps-to-show-up-in-ubuntu-search">Getting apps to show up in Ubuntu&nbsp;search</h1>
+<p>You know how when you hit ctrl+space, you can type an app name and then launch it from there? Sometime an app won’t show up there if you’ve installed it as an AppImage or just downloaded it to run from wherever you put it instead of using a&nbsp;Snap.</p>
+<p>That’s not the actual reason, it’s not showing up in desktop search, though. It’s because it doesn’t have a <code>.desktop</code> file.</p>
+<p>You can look at a bunch of <code>.desktop</code> files in <code>/usr/share/applications</code>, then copy and edit one of them to make a new&nbsp;one.</p>
+<p>Here is a minimal one that I made for Obsidian, named <code>obsidian.desktop</code>, which I run as an AppImage because there was no Snap when I first got&nbsp;it:</p>
+<pre><code>[Desktop Entry]
+Name=Obsidian
+GenericName=Notes organizer
+Comment=Organize notes
+Exec=/home/myuserdir/apps/Obsidian-1.0.3.AppImage
+Terminal=false
+Type=Application
+Keywords=notes;organizer;
+Icon=/home/myuserdir/apps/obsidian-meta/obsidian-icon-256.png
+Categories=Utility;TextEditor;
+StartupNotify=false
+MimeType=text/english;text/plain;text/x-markdown;
+</code></pre><p>Now it shows up, and I don’t have to open a new terminal tab to launch it. I’ve done the same for Firefox because I’m now just using a version downloaded from its site to avoid the [issue in which the Snap image makes the mouse cursor really small on Ubuntu&nbsp;22.04.1]</p>
+<p>#ubuntu</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="getting-noita-to-run-on-ubuntu">Getting Noita to run on&nbsp;Ubuntu</h1>
 <ul>
 <li>Get the game from <span class="caps">GOG</span>, not&nbsp;Steam.</li>
@@ -258,28 +280,6 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 <p><a href="https://askubuntu.com/questions/1090094/wine-missing-ntlm-auth-3-0-25">Reintalling winbind</a> gets rid of that&nbsp;error:</p>
 <pre><code>sudo apt-get remove winbind &amp;&amp; sudo apt-get install winbind
 </code></pre><p>#game&nbsp;#switch</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="getting-apps-to-show-up-in-ubuntu-search">Getting apps to show up in Ubuntu&nbsp;search</h1>
-<p>You know how when you hit ctrl+space, you can type an app name and then launch it from there? Sometime an app won’t show up there if you’ve installed it as an AppImage or just downloaded it to run from wherever you put it instead of using a&nbsp;Snap.</p>
-<p>That’s not the actual reason, it’s not showing up in desktop search, though. It’s because it doesn’t have a <code>.desktop</code> file.</p>
-<p>You can look at a bunch of <code>.desktop</code> files in <code>/usr/share/applications</code>, then copy and edit one of them to make a new&nbsp;one.</p>
-<p>Here is a minimal one that I made for Obsidian, named <code>obsidian.desktop</code>, which I run as an AppImage because there was no Snap when I first got&nbsp;it:</p>
-<pre><code>[Desktop Entry]
-Name=Obsidian
-GenericName=Notes organizer
-Comment=Organize notes
-Exec=/home/myuserdir/apps/Obsidian-1.0.3.AppImage
-Terminal=false
-Type=Application
-Keywords=notes;organizer;
-Icon=/home/myuserdir/apps/obsidian-meta/obsidian-icon-256.png
-Categories=Utility;TextEditor;
-StartupNotify=false
-MimeType=text/english;text/plain;text/x-markdown;
-</code></pre><p>Now it shows up, and I don’t have to open a new terminal tab to launch it. I’ve done the same for Firefox because I’m now just using a version downloaded from its site to avoid the [issue in which the Snap image makes the mouse cursor really small on Ubuntu&nbsp;22.04.1]</p>
-<p>#ubuntu</p>
 </section>
           </article>
           <article class="finding">
@@ -521,6 +521,21 @@ done
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="rsync">rsync</h1>
+<h2 id="dealing-with-spaces-in-the-path">Dealing with spaces in the&nbsp;path</h2>
+<p>Use <code>--protect-args</code>.&nbsp;e.g.:</p>
+<pre><code>rsync -avz --protect-args pi@midnight-giant:&quot;/mnt/storage/media/music/Pikmin Sound Team/Pikmin 3 Deluxe&quot; .
+</code></pre><h2 id="keeping-local-files-even-if-they-re-missing-on-remote">Keeping local files even if they’re missing on&nbsp;remote</h2>
+<p>It does this by&nbsp;default!</p>
+<p><a href="https://www.digitalocean.com/community/tutorials/how-to-use-rsync-to-sync-local-and-remote-directories">https://www.digitalocean.com/community/tutorials/how-to-use-rsync-to-sync-local-and-remote-directories</a></p>
+<blockquote>
+<p>In order to keep two directories truly in sync, it’s necessary to delete files from the destination directory if they are removed from the source. By default, <code>rsync</code> does not delete anything from the destination&nbsp;directory.</p>
+<p>You can change this behavior with the <code>--delete</code> option.</p>
+</blockquote>
+<p>#rsync&nbsp;#command</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="neovim">neovim</h1>
 <h2 id="installing-plugins">Installing&nbsp;plugins</h2>
 <ul>
@@ -562,18 +577,9 @@ done
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="rsync">rsync</h1>
-<h2 id="dealing-with-spaces-in-the-path">Dealing with spaces in the&nbsp;path</h2>
-<p>Use <code>--protect-args</code>.&nbsp;e.g.:</p>
-<pre><code>rsync -avz --protect-args pi@midnight-giant:&quot;/mnt/storage/media/music/Pikmin Sound Team/Pikmin 3 Deluxe&quot; .
-</code></pre><h2 id="keeping-local-files-even-if-they-re-missing-on-remote">Keeping local files even if they’re missing on&nbsp;remote</h2>
-<p>It does this by&nbsp;default!</p>
-<p><a href="https://www.digitalocean.com/community/tutorials/how-to-use-rsync-to-sync-local-and-remote-directories">https://www.digitalocean.com/community/tutorials/how-to-use-rsync-to-sync-local-and-remote-directories</a></p>
-<blockquote>
-<p>In order to keep two directories truly in sync, it’s necessary to delete files from the destination directory if they are removed from the source. By default, <code>rsync</code> does not delete anything from the destination&nbsp;directory.</p>
-<p>You can change this behavior with the <code>--delete</code> option.</p>
-</blockquote>
-<p>#rsync&nbsp;#command</p>
+            <section class="content"><h1 id="zip">Zip</h1>
+<p><code>-j</code> gets it to not put the directory structure into the zip file.
+<code>-x &lt;pattern&gt;</code> makes it ignore files matching the&nbsp;pattern.</p>
 </section>
           </article>
           <article class="finding">
@@ -581,12 +587,6 @@ done
 <p>If a function ends by calling itself, that’s called a tail&nbsp;call.</p>
 <p>It can usually be optimized by converting the function to just use a loop (or jump in assembly) instead of putting up another stack frame for another function&nbsp;call.</p>
 <p>#programming</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="zip">Zip</h1>
-<p><code>-j</code> gets it to not put the directory structure into the zip file.
-<code>-x &lt;pattern&gt;</code> makes it ignore files matching the&nbsp;pattern.</p>
 </section>
           </article>
           <article class="finding">
