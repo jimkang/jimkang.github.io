@@ -23,32 +23,6 @@
 <p>Well, I forgot about doing this, so it’s been <a href="http://localhost:8080/weblog/articles/miscellaneous-findings-009/">over a year</a> since I’ve posted findings. So, here’s 17 of&nbsp;them!</p>
 </section>
           <article class="finding">
-            <section class="content"><h1 id="audio-latency">Audio&nbsp;latency</h1>
-<p>In QJackCtl’s setup dialog, there are two params that affect audio&nbsp;latency:</p>
-<ul>
-<li>Frames/period</li>
-<li>Periods/buffer</li>
-</ul>
-<p>If the sample rate is 44,100 Hz, then a frame takes 1/44,100 seconds. So, how long does it take to get a frame through the&nbsp;computer?</p>
-<p>If frames/period is 1024 and periods/buffer is 2, each buffer carries 1024 * 2 frames. That’s 2048 frames. Since each frame takes 1/44,100 seconds, the buffer takes 2048/44,100 seconds = 46.44 ms to&nbsp;process.</p>
-<p><span class="caps">TODO</span>: What is involved in processing exactly,&nbsp;though?</p>
-<p>So, sound input goes in, then at least 46.44 ms later, something comes&nbsp;out.</p>
-<p>That’s kind of a lot! If you are playing a guitar into your computer, then having an amp modeler process it and send it back out, you may notice a delay which will throw you off. I read that <a href="http://mountainbikesandtrombones.blogspot.com/2012/03/problems-with-xrun.html">every 10ms of latency corresponds with being ~10 feet further from an analog source</a>. So, 10ms is acceptable for&nbsp;me.</p>
-<p>When I set frames/period to 128 and frames/period to 2 to get a latency of 5.8 msec, I started getting <a href="https://discourse.ardour.org/t/xruns-cadence-vs-qjackctl-in-kxstudio/89465/4">xruns</a> when using Guitarix. The computer was not keeping up with the incoming buffers, so it’d dump zeroes to the output, which sound like pops in the&nbsp;output.</p>
-<p>I found out that my computer, by default, dynamically slows down the <span class="caps">CPU</span> to save power, which causes latency&nbsp;issues. </p>
-<p>I was getting pops in my guitar amp modeler (and sometimes in pd), and that seemed to take care of&nbsp;it.</p>
-<p>I was clued in by the install script for Ardour, which said&nbsp;this:</p>
-<blockquote>
-<p>!!! <span class="caps">WARNING</span> !!! - Your system seems to use frequency scaling.<br>This can have a serious impact on audio latency.<br>For best results turn it off, e.g. by chosing the ‘performance’&nbsp;governor.”</p>
-</blockquote>
-<p>So, even though that app crashes when I try to create a project in it, I’m thankful to&nbsp;it.</p>
-<p>There’s this <code>indicator-cpufreq</code> package you can install, which puts a thing in the system menu bar to turn that&nbsp;off!</p>
-<pre><code>sudo apt-get install indicator-cpufreq
-</code></pre><p>When I turn set the governor to “Performance” via that applet, I don’t get the pops&nbsp;anymore.</p>
-<p>#cpu #frequencyscaling #audio #ubuntu&nbsp;#jack</p>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="c-">C++</h1>
 <h2 id="complex-numbers">Complex&nbsp;numbers</h2>
 <p><a href="https://en.cppreference.com/w/c/numeric/complex">C (not jjust C++) has supported complex numbers since&nbsp;1999!</a></p>
@@ -131,53 +105,6 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="data-privacy-policies">Data privacy&nbsp;policies</h1>
-<h2 id="microsoft-and-google">Microsoft and&nbsp;Google</h2>
-<p>One thing that’s better about using Excel instead of Google Sheets (other than better features, of which I don’t really know how to take advantage) is the <a href="https://support.microsoft.com/en-us/office/diagnostic-data-in-microsoft-365-f409137d-15d3-4803-a8ae-d26fcbfc91dd">data policy</a>:</p>
-<blockquote>
-<p>This data does not include your name or email address, the content of your files, or information about apps unrelated to Microsoft 365 or&nbsp;OneDrive.</p>
-</blockquote>
-<p>Google’s <a href="https://support.google.com/docs/answer/10381817?hl=en">privacy policy</a> is more complex and&nbsp;includes:</p>
-<blockquote>
-<p>To provide <em>services like</em> spam filtering, virus detection, malware protection and the ability to search for files within your individual account, we process your&nbsp;content.</p>
-</blockquote>
-<p>(Emphasis&nbsp;added.)</p>
-<h2 id="atlassian">Atlassian</h2>
-<p><a href="https://www.atlassian.com/legal/privacy-policy#how-we-use-information-we-collect">https://www.atlassian.com/legal/privacy-policy#how-we-use-information-we-collect</a></p>
-<blockquote>
-<p>Our Services also include tailored features that personalize your experience, enhance your productivity, and improve your ability to collaborate effectively with others by automatically analyzing the activities of your team to provide search results, activity feeds, notifications, connections and recommendations that are most relevant for you and your&nbsp;team.</p>
-</blockquote>
-<h2 id="dropbox">Dropbox</h2>
-<p><a href="https://www.dropbox.com/privacy">https://www.dropbox.com/privacy</a></p>
-<blockquote>
-<p>We collect and use the following information to provide, improve, protect, and promote our&nbsp;Services.</p>
-</blockquote>
-<blockquote>
-<p>Account information. We collect, and associate with your account, the information you provide to us when you do things such as sign up for your account, upgrade to a paid plan, and set up two-factor authentication (like your name, email address, phone number, payment info, and physical&nbsp;address).</p>
-</blockquote>
-<blockquote>
-<p>Your Stuff. Our Services are designed as a simple and personalized way for you to store your files, documents, photos, comments, messages, and so on (“Your Stuff”), collaborate with others, and work across multiple devices and services. To make that possible, we store, process, and transmit Your Stuff as well as information related to it. This related information includes your <a href="https://help.dropbox.com/accounts-billing/settings-sign-in/change-profile-information">profile information</a> that makes it easier to collaborate and share Your Stuff with others, as well as things like the size of the file, the time it was uploaded, collaborators, and usage&nbsp;activity.</p>
-</blockquote>
-<p>What about the contents of “Your&nbsp;Stuff”?</p>
-<p><a href="https://www.pcworld.com/article/447666/dropbox-takes-a-peek-at-files.html">https://www.pcworld.com/article/447666/dropbox-takes-a-peek-at-files.html</a>
-<a href="https://arstechnica.com/tech-policy/2014/03/dropbox-clarifies-its-policy-on-reviewing-shared-files-for-dmca-issues/">https://arstechnica.com/tech-policy/2014/03/dropbox-clarifies-its-policy-on-reviewing-shared-files-for-dmca-issues/</a></p>
-<p>2013: employee access is intended to be&nbsp;restricted.</p>
-<p>But what about process&nbsp;access?</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="flickr">Flickr</h1>
-<h2 id="making-all-public-photos-non-public">Making all public photos&nbsp;non-public</h2>
-<ul>
-<li>Go to&nbsp;Organizr.</li>
-<li>Select “Only show public content” in the bottom&nbsp;bar.</li>
-<li>Select all. Drag the bottom bar selection to the&nbsp;workspace.</li>
-<li>Go to the permissions menu and change the permissions for those&nbsp;photos.</li>
-<li>Seems to run for about an hour (getting through 3000 photos) before it fails, and you have to start&nbsp;over.</li>
-</ul>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="eye-massagers">Eye&nbsp;massagers</h1>
 <ul>
 <li>Optometrist office wouldn’t say they’re great, but did say “you can buy&nbsp;one”.</li>
@@ -225,25 +152,50 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="getting-apps-to-show-up-in-ubuntu-search">Getting apps to show up in Ubuntu&nbsp;search</h1>
-<p>You know how when you hit ctrl+space, you can type an app name and then launch it from there? Sometime an app won’t show up there if you’ve installed it as an AppImage or just downloaded it to run from wherever you put it instead of using a&nbsp;Snap.</p>
-<p>That’s not the actual reason, it’s not showing up in desktop search, though. It’s because it doesn’t have a <code>.desktop</code> file.</p>
-<p>You can look at a bunch of <code>.desktop</code> files in <code>/usr/share/applications</code>, then copy and edit one of them to make a new&nbsp;one.</p>
-<p>Here is a minimal one that I made for Obsidian, named <code>obsidian.desktop</code>, which I run as an AppImage because there was no Snap when I first got&nbsp;it:</p>
-<pre><code>[Desktop Entry]
-Name=Obsidian
-GenericName=Notes organizer
-Comment=Organize notes
-Exec=/home/myuserdir/apps/Obsidian-1.0.3.AppImage
-Terminal=false
-Type=Application
-Keywords=notes;organizer;
-Icon=/home/myuserdir/apps/obsidian-meta/obsidian-icon-256.png
-Categories=Utility;TextEditor;
-StartupNotify=false
-MimeType=text/english;text/plain;text/x-markdown;
-</code></pre><p>Now it shows up, and I don’t have to open a new terminal tab to launch it. I’ve done the same for Firefox because I’m now just using a version downloaded from its site to avoid the [issue in which the Snap image makes the mouse cursor really small on Ubuntu&nbsp;22.04.1]</p>
-<p>#ubuntu</p>
+            <section class="content"><h1 id="data-privacy-policies">Data privacy&nbsp;policies</h1>
+<h2 id="microsoft-and-google">Microsoft and&nbsp;Google</h2>
+<p>One thing that’s better about using Excel instead of Google Sheets (other than better features, of which I don’t really know how to take advantage) is the <a href="https://support.microsoft.com/en-us/office/diagnostic-data-in-microsoft-365-f409137d-15d3-4803-a8ae-d26fcbfc91dd">data policy</a>:</p>
+<blockquote>
+<p>This data does not include your name or email address, the content of your files, or information about apps unrelated to Microsoft 365 or&nbsp;OneDrive.</p>
+</blockquote>
+<p>Google’s <a href="https://support.google.com/docs/answer/10381817?hl=en">privacy policy</a> is more complex and&nbsp;includes:</p>
+<blockquote>
+<p>To provide <em>services like</em> spam filtering, virus detection, malware protection and the ability to search for files within your individual account, we process your&nbsp;content.</p>
+</blockquote>
+<p>(Emphasis&nbsp;added.)</p>
+<h2 id="atlassian">Atlassian</h2>
+<p><a href="https://www.atlassian.com/legal/privacy-policy#how-we-use-information-we-collect">https://www.atlassian.com/legal/privacy-policy#how-we-use-information-we-collect</a></p>
+<blockquote>
+<p>Our Services also include tailored features that personalize your experience, enhance your productivity, and improve your ability to collaborate effectively with others by automatically analyzing the activities of your team to provide search results, activity feeds, notifications, connections and recommendations that are most relevant for you and your&nbsp;team.</p>
+</blockquote>
+<h2 id="dropbox">Dropbox</h2>
+<p><a href="https://www.dropbox.com/privacy">https://www.dropbox.com/privacy</a></p>
+<blockquote>
+<p>We collect and use the following information to provide, improve, protect, and promote our&nbsp;Services.</p>
+</blockquote>
+<blockquote>
+<p>Account information. We collect, and associate with your account, the information you provide to us when you do things such as sign up for your account, upgrade to a paid plan, and set up two-factor authentication (like your name, email address, phone number, payment info, and physical&nbsp;address).</p>
+</blockquote>
+<blockquote>
+<p>Your Stuff. Our Services are designed as a simple and personalized way for you to store your files, documents, photos, comments, messages, and so on (“Your Stuff”), collaborate with others, and work across multiple devices and services. To make that possible, we store, process, and transmit Your Stuff as well as information related to it. This related information includes your <a href="https://help.dropbox.com/accounts-billing/settings-sign-in/change-profile-information">profile information</a> that makes it easier to collaborate and share Your Stuff with others, as well as things like the size of the file, the time it was uploaded, collaborators, and usage&nbsp;activity.</p>
+</blockquote>
+<p>What about the contents of “Your&nbsp;Stuff”?</p>
+<p><a href="https://www.pcworld.com/article/447666/dropbox-takes-a-peek-at-files.html">https://www.pcworld.com/article/447666/dropbox-takes-a-peek-at-files.html</a>
+<a href="https://arstechnica.com/tech-policy/2014/03/dropbox-clarifies-its-policy-on-reviewing-shared-files-for-dmca-issues/">https://arstechnica.com/tech-policy/2014/03/dropbox-clarifies-its-policy-on-reviewing-shared-files-for-dmca-issues/</a></p>
+<p>2013: employee access is intended to be&nbsp;restricted.</p>
+<p>But what about process&nbsp;access?</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="flickr">Flickr</h1>
+<h2 id="making-all-public-photos-non-public">Making all public photos&nbsp;non-public</h2>
+<ul>
+<li>Go to&nbsp;Organizr.</li>
+<li>Select “Only show public content” in the bottom&nbsp;bar.</li>
+<li>Select all. Drag the bottom bar selection to the&nbsp;workspace.</li>
+<li>Go to the permissions menu and change the permissions for those&nbsp;photos.</li>
+<li>Seems to run for about an hour (getting through 3000 photos) before it fails, and you have to start&nbsp;over.</li>
+</ul>
 </section>
           </article>
           <article class="finding">
@@ -323,6 +275,84 @@ MimeType=text/english;text/plain;text/x-markdown;
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="getting-apps-to-show-up-in-ubuntu-search">Getting apps to show up in Ubuntu&nbsp;search</h1>
+<p>You know how when you hit ctrl+space, you can type an app name and then launch it from there? Sometime an app won’t show up there if you’ve installed it as an AppImage or just downloaded it to run from wherever you put it instead of using a&nbsp;Snap.</p>
+<p>That’s not the actual reason, it’s not showing up in desktop search, though. It’s because it doesn’t have a <code>.desktop</code> file.</p>
+<p>You can look at a bunch of <code>.desktop</code> files in <code>/usr/share/applications</code>, then copy and edit one of them to make a new&nbsp;one.</p>
+<p>Here is a minimal one that I made for Obsidian, named <code>obsidian.desktop</code>, which I run as an AppImage because there was no Snap when I first got&nbsp;it:</p>
+<pre><code>[Desktop Entry]
+Name=Obsidian
+GenericName=Notes organizer
+Comment=Organize notes
+Exec=/home/myuserdir/apps/Obsidian-1.0.3.AppImage
+Terminal=false
+Type=Application
+Keywords=notes;organizer;
+Icon=/home/myuserdir/apps/obsidian-meta/obsidian-icon-256.png
+Categories=Utility;TextEditor;
+StartupNotify=false
+MimeType=text/english;text/plain;text/x-markdown;
+</code></pre><p>Now it shows up, and I don’t have to open a new terminal tab to launch it. I’ve done the same for Firefox because I’m now just using a version downloaded from its site to avoid the [issue in which the Snap image makes the mouse cursor really small on Ubuntu&nbsp;22.04.1]</p>
+<p>#ubuntu</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="area-high-schools">Area high&nbsp;schools</h1>
+<h2 id="bbn"><span class="caps">BB</span>&amp;N</h2>
+<ul>
+<li>$44,600 to $57,200 per&nbsp;year!</li>
+<li>High school: <a href="https://www.bbns.org/uploaded/PDFs/Upper_School/2021-22/PPG_2022-23.pdf?1646751815851">https://www.bbns.org/uploaded/PDFs/Upper_School/2021-22/PPG_2022-23.pdf?1646751815851</a></li>
+</ul>
+<h2 id="international-school-of-boston">International School of&nbsp;Boston</h2>
+<ul>
+<li>$41,000 per&nbsp;year!</li>
+<li>They learn&nbsp;French?</li>
+</ul>
+<h2 id="newton-north">Newton&nbsp;North</h2>
+<ul>
+<li>Why is it&nbsp;good?</li>
+</ul>
+<h2 id="belmont-high">Belmont&nbsp;High</h2>
+<ul>
+<li>Student-teacher ratio isn’t amazing:&nbsp;17:1.</li>
+</ul>
+<h2 id="acton-boxborough">Acton-Boxborough</h2>
+<h2 id="lincoln-sudbury">Lincoln-Sudbury</h2>
+<h2 id="medford-high">Medford&nbsp;High</h2>
+<ul>
+<li>10:1 student-teacher&nbsp;ratio?</li>
+<li>Culinary&nbsp;program</li>
+<li>Diverse</li>
+<li>Uneven teacher quality? <span class="caps">CS</span> teacher unable to code, for example.<ul>
+<li>“The entire district has a bullying problem and no school except for the Brooks does anything about&nbsp;it.”</li>
+</ul>
+</li>
+<li><a href="https://www.documentcloud.org/documents/23801465-mhs_mvths-recommendations-552023?responsive=1&amp;title=1">Stabbing</a></li>
+</ul>
+<h2 id="fayerweather-street-school">Fayerweather Street&nbsp;School</h2>
+<ul>
+<li>$40K?!</li>
+<li>4:1 student-teacher&nbsp;ratio.</li>
+<li><a href="https://www.privateschoolreview.com/fayerweather-street-school-profile">https://www.privateschoolreview.com/fayerweather-street-school-profile</a></li>
+</ul>
+<h2 id="nuvu">NuVu</h2>
+<ul>
+<li>$48K?!</li>
+<li>Lots of studio&nbsp;time.</li>
+</ul>
+<h2 id="cambridge-friends-school">Cambridge Friends&nbsp;School</h2>
+<ul>
+<li>$27K!</li>
+<li>5:1</li>
+</ul>
+<h2 id="shady-hill">Shady&nbsp;Hill</h2>
+<ul>
+<li>5:1</li>
+<li>$30-$50K!</li>
+</ul>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="googlebot-and-avoiding-indexing-content-from-your-spa">Googlebot and avoiding indexing content from your&nbsp;<span class="caps">SPA</span></h1>
 <p>In their <a href="/weblog/articles/miscellaneous-findings-010/findings/%5B%3Chttps://developers.google.com/search/docs/crawling-indexing/javascript/fix-search-javascript%3E%5D(%3Chttps://developers.google.com/search/docs/crawling-indexing/javascript/fix-search-javascript%3E">suggestions for handling missing content in SPAs</a>), Google recommends dynamically adding a meta tag to the page like&nbsp;so:</p>
 <pre><code class="lang-jsx">fetch(`https://api.kitten.club/cats/${id}`)
@@ -397,59 +427,34 @@ httpd.serve_forever()
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="area-high-schools">Area high&nbsp;schools</h1>
-<h2 id="bbn"><span class="caps">BB</span>&amp;N</h2>
+            <section class="content"><h1 id="audio-latency">Audio&nbsp;latency</h1>
+<p>In QJackCtl’s setup dialog, there are two params that affect audio&nbsp;latency:</p>
 <ul>
-<li>$44,600 to $57,200 per&nbsp;year!</li>
-<li>High school: <a href="https://www.bbns.org/uploaded/PDFs/Upper_School/2021-22/PPG_2022-23.pdf?1646751815851">https://www.bbns.org/uploaded/PDFs/Upper_School/2021-22/PPG_2022-23.pdf?1646751815851</a></li>
+<li>Frames/period</li>
+<li>Periods/buffer</li>
 </ul>
-<h2 id="international-school-of-boston">International School of&nbsp;Boston</h2>
-<ul>
-<li>$41,000 per&nbsp;year!</li>
-<li>They learn&nbsp;French?</li>
-</ul>
-<h2 id="newton-north">Newton&nbsp;North</h2>
-<ul>
-<li>Why is it&nbsp;good?</li>
-</ul>
-<h2 id="belmont-high">Belmont&nbsp;High</h2>
-<ul>
-<li>Student-teacher ratio isn’t amazing:&nbsp;17:1.</li>
-</ul>
-<h2 id="acton-boxborough">Acton-Boxborough</h2>
-<h2 id="lincoln-sudbury">Lincoln-Sudbury</h2>
-<h2 id="medford-high">Medford&nbsp;High</h2>
-<ul>
-<li>10:1 student-teacher&nbsp;ratio?</li>
-<li>Culinary&nbsp;program</li>
-<li>Diverse</li>
-<li>Uneven teacher quality? <span class="caps">CS</span> teacher unable to code, for example.<ul>
-<li>“The entire district has a bullying problem and no school except for the Brooks does anything about&nbsp;it.”</li>
-</ul>
-</li>
-<li><a href="https://www.documentcloud.org/documents/23801465-mhs_mvths-recommendations-552023?responsive=1&amp;title=1">Stabbing</a></li>
-</ul>
-<h2 id="fayerweather-street-school">Fayerweather Street&nbsp;School</h2>
-<ul>
-<li>$40K?!</li>
-<li>4:1 student-teacher&nbsp;ratio.</li>
-<li><a href="https://www.privateschoolreview.com/fayerweather-street-school-profile">https://www.privateschoolreview.com/fayerweather-street-school-profile</a></li>
-</ul>
-<h2 id="nuvu">NuVu</h2>
-<ul>
-<li>$48K?!</li>
-<li>Lots of studio&nbsp;time.</li>
-</ul>
-<h2 id="cambridge-friends-school">Cambridge Friends&nbsp;School</h2>
-<ul>
-<li>$27K!</li>
-<li>5:1</li>
-</ul>
-<h2 id="shady-hill">Shady&nbsp;Hill</h2>
-<ul>
-<li>5:1</li>
-<li>$30-$50K!</li>
-</ul>
+<p>If the sample rate is 44,100 Hz, then a frame takes 1/44,100 seconds. So, how long does it take to get a frame through the&nbsp;computer?</p>
+<p>If frames/period is 1024 and periods/buffer is 2, each buffer carries 1024 * 2 frames. That’s 2048 frames. Since each frame takes 1/44,100 seconds, the buffer takes 2048/44,100 seconds = 46.44 ms to&nbsp;process.</p>
+<p><span class="caps">TODO</span>: What is involved in processing exactly,&nbsp;though?</p>
+<p>So, sound input goes in, then at least 46.44 ms later, something comes&nbsp;out.</p>
+<p>That’s kind of a lot! If you are playing a guitar into your computer, then having an amp modeler process it and send it back out, you may notice a delay which will throw you off. I read that <a href="http://mountainbikesandtrombones.blogspot.com/2012/03/problems-with-xrun.html">every 10ms of latency corresponds with being ~10 feet further from an analog source</a>. So, 10ms is acceptable for&nbsp;me.</p>
+<p>When I set frames/period to 128 and frames/period to 2 to get a latency of 5.8 msec, I started getting <a href="https://discourse.ardour.org/t/xruns-cadence-vs-qjackctl-in-kxstudio/89465/4">xruns</a> when using Guitarix. The computer was not keeping up with the incoming buffers, so it’d dump zeroes to the output, which sound like pops in the&nbsp;output.</p>
+<p>I found out that my computer, by default, dynamically slows down the <span class="caps">CPU</span> to save power, which causes latency&nbsp;issues. </p>
+<p>I was getting pops in my guitar amp modeler (and sometimes in pd), and that seemed to take care of&nbsp;it.</p>
+<p>I was clued in by the install script for Ardour, which said&nbsp;this:</p>
+<blockquote>
+<p>!!! <span class="caps">WARNING</span> !!! - Your system seems to use frequency scaling.<br>This can have a serious impact on audio latency.<br>For best results turn it off, e.g. by chosing the ‘performance’&nbsp;governor.”</p>
+</blockquote>
+<p>So, even though that app crashes when I try to create a project in it, I’m thankful to&nbsp;it.</p>
+<p>There’s this <code>indicator-cpufreq</code> package you can install, which puts a thing in the system menu bar to turn that&nbsp;off!</p>
+<pre><code>sudo apt-get install indicator-cpufreq
+</code></pre><p>When I turn set the governor to “Performance” via that applet, I don’t get the pops&nbsp;anymore.</p>
+<p>#cpu #frequencyscaling #audio #ubuntu&nbsp;#jack</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h2 id="dom"><span class="caps">DOM</span></h2>
+<p>If you parse an <span class="caps">SVG</span> document into a tree, then append one of the child nodes to the browser’s current DOM, then the node disappears from the source tree. Sort of a move, rather than a&nbsp;copy.</p>
 </section>
           </article>
           <article class="finding">
@@ -482,8 +487,23 @@ httpd.serve_forever()
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h2 id="dom"><span class="caps">DOM</span></h2>
-<p>If you parse an <span class="caps">SVG</span> document into a tree, then append one of the child nodes to the browser’s current DOM, then the node disappears from the source tree. Sort of a move, rather than a&nbsp;copy.</p>
+            <section class="content"><h1 id="neovim">neovim</h1>
+<h2 id="installing-plugins">Installing&nbsp;plugins</h2>
+<ul>
+<li><p>Add the plugin to this section in <code>~/.config/nvim/init.nvim</code>:</p>
+<pre><code>  call plug#begin()
+    Plug &#39;neomake/neomake&#39;
+    Plug &#39;machakann/vim-highlightedyank&#39;
+    Plug &#39;tmhedberg/SimpylFold&#39;
+    Plug &#39;w0rp/ale&#39;
+    Plug &#39;fisadev/vim-isort&#39;
+    Plug &#39;psf/black&#39;, { &#39;branch&#39;: &#39;stable&#39; }
+  call plug#end()
+</code></pre></li>
+<li><p>Restart nvim, then run <code>:PlugInstall</code>.</p>
+</li>
+<li>Run <code>:CheckHealth</code> to make sure things are&nbsp;<span class="caps">OK</span>.</li>
+</ul>
 </section>
           </article>
           <article class="finding">
@@ -505,22 +525,6 @@ Add 1/2 tea spoon black&nbsp;pepper.</p>
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="unrar">unrar</h1>
-<p>If you get “no files to extract”, the problem may actually be that it doesn’t have permission to create a file or directory, rather that there being no files to extract in the rar&nbsp;file.</p>
-<h2 id="unraring-from-multiple-subdirectories">Unraring from multiple&nbsp;subdirectories</h2>
-<p>Remove the any unwanted subdirectories first, e.g.&nbsp;“Sample”.</p>
-<pre><code>find . -name Sample -exec rm -rf {} \;
-</code></pre><p>Run this&nbsp;script:</p>
-<pre><code>#!/bin/bash
-
-for dir in ./*
-do
-    unrar e &quot;${dir}/*.rar&quot;
-done
-</code></pre><p>#rar #command&nbsp;#shell</p>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="rsync">rsync</h1>
 <h2 id="dealing-with-spaces-in-the-path">Dealing with spaces in the&nbsp;path</h2>
 <p>Use <code>--protect-args</code>.&nbsp;e.g.:</p>
@@ -536,57 +540,25 @@ done
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="neovim">neovim</h1>
-<h2 id="installing-plugins">Installing&nbsp;plugins</h2>
-<ul>
-<li><p>Add the plugin to this section in <code>~/.config/nvim/init.nvim</code>:</p>
-<pre><code>  call plug#begin()
-    Plug &#39;neomake/neomake&#39;
-    Plug &#39;machakann/vim-highlightedyank&#39;
-    Plug &#39;tmhedberg/SimpylFold&#39;
-    Plug &#39;w0rp/ale&#39;
-    Plug &#39;fisadev/vim-isort&#39;
-    Plug &#39;psf/black&#39;, { &#39;branch&#39;: &#39;stable&#39; }
-  call plug#end()
-</code></pre></li>
-<li><p>Restart nvim, then run <code>:PlugInstall</code>.</p>
-</li>
-<li>Run <code>:CheckHealth</code> to make sure things are&nbsp;<span class="caps">OK</span>.</li>
-</ul>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="making-a-video-from-images-in-multiple-directories">Making a video from images in multiple&nbsp;directories</h1>
-<p><a href="https://stackoverflow.com/a/37478183/87798">https://stackoverflow.com/a/37478183/87798</a></p>
-<pre><code>ffmpeg -framerate 30 -pattern_type glob -i &#39;**/*.JPG&#39; \
-  -c:v libx264 -pix_fmt yuv420p out.mp4
-</code></pre><h1 id="rotating-video">Rotating&nbsp;video</h1>
-<p>`ffmpeg -i input.mp4 -vf “transpose=1, transpose=1”&nbsp;output.mp4</p>
-<p>The above rotates the input 90° twice. <code>transpose=0</code> rotates it&nbsp;counterclockwise.</p>
-<p><code>&quot;rotate=PI:bilinear=0&quot;</code> will rotate it 180° and turn off bilinear interpolation to avoid&nbsp;blurriness.</p>
-<h1 id="scaling-down">Scaling&nbsp;down</h1>
-<pre><code>ffmpeg big2840.mp4 -vf scale=3840:1080 -c:v libx264 -crf 20 -preset slow smaller.mp4
-</code></pre><p>The <code>scale</code> value is the target&nbsp;size.</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="wget">wget</h1>
-<h2 id="downloading-all-of-the-links-on-a-web-page">Downloading all of the links on a web&nbsp;page</h2>
-<pre><code>wget -m and robots=off https://the-site-you-want
-</code></pre><p>#bash </p>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="zip">Zip</h1>
 <p><code>-j</code> gets it to not put the directory structure into the zip file.
 <code>-x &lt;pattern&gt;</code> makes it ignore files matching the&nbsp;pattern.</p>
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="tail-calls">Tail&nbsp;calls</h1>
-<p>If a function ends by calling itself, that’s called a tail&nbsp;call.</p>
-<p>It can usually be optimized by converting the function to just use a loop (or jump in assembly) instead of putting up another stack frame for another function&nbsp;call.</p>
-<p>#programming</p>
+            <section class="content"><h1 id="unrar">unrar</h1>
+<p>If you get “no files to extract”, the problem may actually be that it doesn’t have permission to create a file or directory, rather that there being no files to extract in the rar&nbsp;file.</p>
+<h2 id="unraring-from-multiple-subdirectories">Unraring from multiple&nbsp;subdirectories</h2>
+<p>Remove the any unwanted subdirectories first, e.g.&nbsp;“Sample”.</p>
+<pre><code>find . -name Sample -exec rm -rf {} \;
+</code></pre><p>Run this&nbsp;script:</p>
+<pre><code>#!/bin/bash
+
+for dir in ./*
+do
+    unrar e &quot;${dir}/*.rar&quot;
+done
+</code></pre><p>#rar #command&nbsp;#shell</p>
 </section>
           </article>
           <article class="finding">
@@ -607,6 +579,34 @@ done
 <p>There’s a <code>-delete</code> flag.</p>
 <pre><code>find . -name &quot;*.pdf&quot; -delete
 </code></pre><p>#search #unix #command&nbsp;#find</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="wget">wget</h1>
+<h2 id="downloading-all-of-the-links-on-a-web-page">Downloading all of the links on a web&nbsp;page</h2>
+<pre><code>wget -m and robots=off https://the-site-you-want
+</code></pre><p>#bash </p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="making-a-video-from-images-in-multiple-directories">Making a video from images in multiple&nbsp;directories</h1>
+<p><a href="https://stackoverflow.com/a/37478183/87798">https://stackoverflow.com/a/37478183/87798</a></p>
+<pre><code>ffmpeg -framerate 30 -pattern_type glob -i &#39;**/*.JPG&#39; \
+  -c:v libx264 -pix_fmt yuv420p out.mp4
+</code></pre><h1 id="rotating-video">Rotating&nbsp;video</h1>
+<p>`ffmpeg -i input.mp4 -vf “transpose=1, transpose=1”&nbsp;output.mp4</p>
+<p>The above rotates the input 90° twice. <code>transpose=0</code> rotates it&nbsp;counterclockwise.</p>
+<p><code>&quot;rotate=PI:bilinear=0&quot;</code> will rotate it 180° and turn off bilinear interpolation to avoid&nbsp;blurriness.</p>
+<h1 id="scaling-down">Scaling&nbsp;down</h1>
+<pre><code>ffmpeg big2840.mp4 -vf scale=3840:1080 -c:v libx264 -crf 20 -preset slow smaller.mp4
+</code></pre><p>The <code>scale</code> value is the target&nbsp;size.</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="tail-calls">Tail&nbsp;calls</h1>
+<p>If a function ends by calling itself, that’s called a tail&nbsp;call.</p>
+<p>It can usually be optimized by converting the function to just use a loop (or jump in assembly) instead of putting up another stack frame for another function&nbsp;call.</p>
+<p>#programming</p>
 </section>
           </article>
         </article>

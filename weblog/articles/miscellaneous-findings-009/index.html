@@ -24,6 +24,52 @@
 <p><img src="/weblog/articles/running-your-own-email-server/sideshow-bob-next-rake.gif" alt="Sideshow Bob steps on rakes"></p>
 </section>
           <article class="finding">
+            <section class="content"><h1 id="juce"><span class="caps">JUCE</span></h1>
+<p><a href="https://juce.com/"><span class="caps">JUCE</span></a> is a commercial framework (they charge you money if you make money) for audio&nbsp;software.</p>
+<h2 id="building-a-projucer-created-project">Building a Projucer-created&nbsp;project</h2>
+<p><a href="https://docs.juce.com/master/tutorial_new_projucer_project.html">Projucer</a> is a scaffolding tool that sets up a project for you that includes a (usually) working build configuration and whatever boilerplate you&nbsp;need.</p>
+<h3 id="getting-missing-packages">Getting missing&nbsp;packages</h3>
+<p>If you get something like <code>Package libcurl was not found in the pkg-config search path.</code> when you build a project created by Projucer on Linux, try installing it via apt-get,&nbsp;e.g.:</p>
+<pre><code>sudo apt-get install libcurl4-openssl-dev
+</code></pre><h3 id="missing-headers">Missing&nbsp;headers</h3>
+<p><code>ft2build.h: No such file or directory</code>:</p>
+<p>Add <code>/usr/include/freetype2</code> to Exporters | Linux Makefile | Debug and Release | Header Search&nbsp;Paths.</p>
+<p><code>fatal error: gtk/gtk.h: No such file or directory</code>:</p>
+<p>Add <code>/usr/include/gtk-3.0/gtk</code> to Header Search Paths. (Unsure if this&nbsp;matters.)</p>
+<pre><code>sudo apt-get install libwebkit2gtk-4.0-37 libwebkit2gtk-4.0-dev
+</code></pre><p>Your mileage may vary, but installing those packages and adding that header search path was all I needed to successfully build my first <span class="caps">JUCE</span> project. I was pleasantly&nbsp;surprised.</p>
+<h3 id="building-vsts">Building&nbsp;VSTs</h3>
+<p>When you build a Projucer <span class="caps">VST</span> project, the vsts don’t go to the build directory. When I didn’t see it there, I assumed something went wrong. But the VST actually built without problems. I found it in the directory listed in the “VST binary location” setting in&nbsp;Projucer.</p>
+<h2 id="file-writer-memory-management">File writer memory&nbsp;management</h2>
+<p>This is more of a “getting back into C++” issue than a <span class="caps">JUCE</span> issue, but I’ll tell you about it in case you also are getting back into C++ or trying C++ for the first&nbsp;time.</p>
+<p>I wrote code to write an audio buffer out to a wav file that looked something like&nbsp;this:</p>
+<pre><code>juce::FileOutputStream outStream(outFile, outLen * channelCount);
+juce::WavAudioFormat wavFormat;
+juce::AudioFormatWriter *writer = wavFormat.createWriterFor(
+    &amp;outStream, sampleRate, channelCount, bitsPerSample, {}, 0
+);
+outStream.release();
+writer-&gt;writeFromAudioSampleBuffer(outBuffer, 0, outLen);
+delete writer;
+</code></pre><p>When the <code>delete</code> was run, I’d get this&nbsp;error:</p>
+<pre><code>munmap_chunk(): invalid pointer
+zsh: abort (core dumped)  ./build/vocode ../../example-media/donut.wav ../../example-media/talking.wav
+</code></pre><p>But why? <a href="https://docs.juce.com/master/classWavAudioFormat.html#af252fe3c9ab9d924e420f36d0916b088">The docs for <code>createWriterFor</code></a>&nbsp;say:</p>
+<blockquote>
+<p>The writer object that is returned can be used to write to the stream, and should then be deleted by the&nbsp;caller.</p>
+</blockquote>
+<p>That’s me! I’m the caller! Or my function is, at least. It is supposed to clean up the writer object. So, why can’t&nbsp;it?</p>
+<p>It turns out that the writer’s destructor tries to delete the output stream that you pass to <code>createWriterFor</code>. I found this out via the <a href="https://github.com/juce-framework/JUCE/blob/master/modules/juce_audio_formats/format/juce_AudioFormatWriter.cpp#L61">source</a>, but if I had just read <a href="https://docs.juce.com/master/classWavAudioFormat.html#af252fe3c9ab9d924e420f36d0916b088">the docs for <code>createWriterFor</code></a> completely, I would have noticed that it&nbsp;said:</p>
+<blockquote>
+<p>the stream that the data will go to - this will be deleted by the <a href="https://docs.juce.com/master/classAudioFormatWriter.html" title="Writes samples to an audio file stream.">AudioFormatWriter</a> object when it’s no longer&nbsp;needed.</p>
+</blockquote>
+<p>So, when my function deletes the writer, the writer tries to delete the stream. However, because I allocated the stream object in the function scope in <a href="https://timsong-cpp.github.io/cppwp/n3337/basic.stc#auto">automatic storage</a> instead of via <code>new</code> in <a href="https://timsong-cpp.github.io/cppwp/n3337/basic.stc#dynamic">dynamic storage</a>, it can’t be <code>delete</code>d.</p>
+<p><a href="https://github.com/jimkang/vocode/commit/bf65cc1f311db5a11bb105c01833ee3229481e0f#diff-1e2d2abc7bbac63e70c77de7cb8e92039a1a552a4a6ce78908988a2ce33ba935R91">The fix</a> was to put the stream in dynamic storage. (I almost said “on the heap” because I was taught it college that that’s where <code>new</code>-created objects went, but apparently, that’s no longer necessarily true among all&nbsp;implementations.)</p>
+<p>I have not worked with C++ on the regular in quite a while, and I can’t emphasize enough to myself: <em>Always know who’s responsible for every piece of memory you touch.</em> I came into this thinking, oh, yeah, I gotta pay attention to memory, then got distracted by other&nbsp;things.</p>
+<p>#linux #cpp&nbsp;#audio</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="pure-data">Pure&nbsp;Data</h1>
 <p>I started using <a href="https://en.wikipedia.org/wiki/Pure_Data">Pure Data</a>. Here’s some mysteries and problems I’ve run into as a beginner so far, as well as how I got around&nbsp;them.</p>
 <h2 id="installing">Installing</h2>
@@ -103,52 +149,6 @@ warning: carrierFile: multiply&nbsp;defined</p>
 <p>If you have two patches open that each have a table named <code>infoFile</code> in them, objects that reference <code>infoFile</code> can actually access the wrong <code>infoFile</code>.</p>
 <p>I’m guessing there is some conventional way to avoid collisions, though, because people aren’t naming their tables with&nbsp;UUIDs.</p>
 <p>#puredata #global #docs&nbsp;#jack</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="juce"><span class="caps">JUCE</span></h1>
-<p><a href="https://juce.com/"><span class="caps">JUCE</span></a> is a commercial framework (they charge you money if you make money) for audio&nbsp;software.</p>
-<h2 id="building-a-projucer-created-project">Building a Projucer-created&nbsp;project</h2>
-<p><a href="https://docs.juce.com/master/tutorial_new_projucer_project.html">Projucer</a> is a scaffolding tool that sets up a project for you that includes a (usually) working build configuration and whatever boilerplate you&nbsp;need.</p>
-<h3 id="getting-missing-packages">Getting missing&nbsp;packages</h3>
-<p>If you get something like <code>Package libcurl was not found in the pkg-config search path.</code> when you build a project created by Projucer on Linux, try installing it via apt-get,&nbsp;e.g.:</p>
-<pre><code>sudo apt-get install libcurl4-openssl-dev
-</code></pre><h3 id="missing-headers">Missing&nbsp;headers</h3>
-<p><code>ft2build.h: No such file or directory</code>:</p>
-<p>Add <code>/usr/include/freetype2</code> to Exporters | Linux Makefile | Debug and Release | Header Search&nbsp;Paths.</p>
-<p><code>fatal error: gtk/gtk.h: No such file or directory</code>:</p>
-<p>Add <code>/usr/include/gtk-3.0/gtk</code> to Header Search Paths. (Unsure if this&nbsp;matters.)</p>
-<pre><code>sudo apt-get install libwebkit2gtk-4.0-37 libwebkit2gtk-4.0-dev
-</code></pre><p>Your mileage may vary, but installing those packages and adding that header search path was all I needed to successfully build my first <span class="caps">JUCE</span> project. I was pleasantly&nbsp;surprised.</p>
-<h3 id="building-vsts">Building&nbsp;VSTs</h3>
-<p>When you build a Projucer <span class="caps">VST</span> project, the vsts don’t go to the build directory. When I didn’t see it there, I assumed something went wrong. But the VST actually built without problems. I found it in the directory listed in the “VST binary location” setting in&nbsp;Projucer.</p>
-<h2 id="file-writer-memory-management">File writer memory&nbsp;management</h2>
-<p>This is more of a “getting back into C++” issue than a <span class="caps">JUCE</span> issue, but I’ll tell you about it in case you also are getting back into C++ or trying C++ for the first&nbsp;time.</p>
-<p>I wrote code to write an audio buffer out to a wav file that looked something like&nbsp;this:</p>
-<pre><code>juce::FileOutputStream outStream(outFile, outLen * channelCount);
-juce::WavAudioFormat wavFormat;
-juce::AudioFormatWriter *writer = wavFormat.createWriterFor(
-    &amp;outStream, sampleRate, channelCount, bitsPerSample, {}, 0
-);
-outStream.release();
-writer-&gt;writeFromAudioSampleBuffer(outBuffer, 0, outLen);
-delete writer;
-</code></pre><p>When the <code>delete</code> was run, I’d get this&nbsp;error:</p>
-<pre><code>munmap_chunk(): invalid pointer
-zsh: abort (core dumped)  ./build/vocode ../../example-media/donut.wav ../../example-media/talking.wav
-</code></pre><p>But why? <a href="https://docs.juce.com/master/classWavAudioFormat.html#af252fe3c9ab9d924e420f36d0916b088">The docs for <code>createWriterFor</code></a>&nbsp;say:</p>
-<blockquote>
-<p>The writer object that is returned can be used to write to the stream, and should then be deleted by the&nbsp;caller.</p>
-</blockquote>
-<p>That’s me! I’m the caller! Or my function is, at least. It is supposed to clean up the writer object. So, why can’t&nbsp;it?</p>
-<p>It turns out that the writer’s destructor tries to delete the output stream that you pass to <code>createWriterFor</code>. I found this out via the <a href="https://github.com/juce-framework/JUCE/blob/master/modules/juce_audio_formats/format/juce_AudioFormatWriter.cpp#L61">source</a>, but if I had just read <a href="https://docs.juce.com/master/classWavAudioFormat.html#af252fe3c9ab9d924e420f36d0916b088">the docs for <code>createWriterFor</code></a> completely, I would have noticed that it&nbsp;said:</p>
-<blockquote>
-<p>the stream that the data will go to - this will be deleted by the <a href="https://docs.juce.com/master/classAudioFormatWriter.html" title="Writes samples to an audio file stream.">AudioFormatWriter</a> object when it’s no longer&nbsp;needed.</p>
-</blockquote>
-<p>So, when my function deletes the writer, the writer tries to delete the stream. However, because I allocated the stream object in the function scope in <a href="https://timsong-cpp.github.io/cppwp/n3337/basic.stc#auto">automatic storage</a> instead of via <code>new</code> in <a href="https://timsong-cpp.github.io/cppwp/n3337/basic.stc#dynamic">dynamic storage</a>, it can’t be <code>delete</code>d.</p>
-<p><a href="https://github.com/jimkang/vocode/commit/bf65cc1f311db5a11bb105c01833ee3229481e0f#diff-1e2d2abc7bbac63e70c77de7cb8e92039a1a552a4a6ce78908988a2ce33ba935R91">The fix</a> was to put the stream in dynamic storage. (I almost said “on the heap” because I was taught it college that that’s where <code>new</code>-created objects went, but apparently, that’s no longer necessarily true among all&nbsp;implementations.)</p>
-<p>I have not worked with C++ on the regular in quite a while, and I can’t emphasize enough to myself: <em>Always know who’s responsible for every piece of memory you touch.</em> I came into this thinking, oh, yeah, I gotta pay attention to memory, then got distracted by other&nbsp;things.</p>
-<p>#linux #cpp&nbsp;#audio</p>
 </section>
           </article>
         </article>

@@ -48,6 +48,19 @@
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="-too-many-packets-ffmpeg-error">“Too many packets” ffmpeg&nbsp;error</h1>
+<p>When ffmpeg says “Too many packets buffered for output stream 0:1”, it means it literally. You can <a href="https://stackoverflow.com/questions/49686244/ffmpeg-too-many-packets-buffered-for-output-stream-01">increase the buffer size with this switch</a>:</p>
+<pre><code>-max_muxing_queue_size 1024
+</code></pre><p>(Substitute the size you need.) After that, it may be able to buffer all of the&nbsp;packets.</p>
+<p>That argument needs to go before the output file in the command, though, or there will be complaints. This works, for example, but it won’t work if you put <code>max_muxing_queue_size</code> before&nbsp;-i.</p>
+<pre><code>ffmpeg -i demo.ogv -max_muxing_queue_size 1024 demo.mp4 
+</code></pre><p>#video</p>
+<p>#ffmpeg</p>
+<p>#command</p>
+<p>#error</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="extracting-a-still-from-a-video">Extracting a still from a&nbsp;video</h1>
 <p>Use ffmpeg with the <code>-frames:v 1</code> switch to tell it to grab a single frome and a jpg filename as the output to tell it to write it to an image&nbsp;file.</p>
 <p>You can add <code>-ss &lt;seconds into the video&gt;</code> to tell it where in the video to get the frame from. You can specify jpeg quality <code>-qscale:v &lt;2-31&gt;</code>, with 2 being the highest&nbsp;quality.</p>
@@ -60,19 +73,6 @@
 <p>#video</p>
 <p>#editing</p>
 <p>#ffmpeg</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="-too-many-packets-ffmpeg-error">“Too many packets” ffmpeg&nbsp;error</h1>
-<p>When ffmpeg says “Too many packets buffered for output stream 0:1”, it means it literally. You can <a href="https://stackoverflow.com/questions/49686244/ffmpeg-too-many-packets-buffered-for-output-stream-01">increase the buffer size with this switch</a>:</p>
-<pre><code>-max_muxing_queue_size 1024
-</code></pre><p>(Substitute the size you need.) After that, it may be able to buffer all of the&nbsp;packets.</p>
-<p>That argument needs to go before the output file in the command, though, or there will be complaints. This works, for example, but it won’t work if you put <code>max_muxing_queue_size</code> before&nbsp;-i.</p>
-<pre><code>ffmpeg -i demo.ogv -max_muxing_queue_size 1024 demo.mp4 
-</code></pre><p>#video</p>
-<p>#ffmpeg</p>
-<p>#command</p>
-<p>#error</p>
 </section>
           </article>
         </article>
