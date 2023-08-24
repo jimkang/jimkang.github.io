@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width" initial-scale="1">
     <title>Miscellaneous Findings VI: Commands, Pi - jimkang.com
     </title>
-    <link rel="alternate" href="http://jimkang.com/feed.xml" type="application/rss+xml" title="It's dot com.">
+    <link rel="alternate" href="http://jimkang.com/weblog/feed.xml" type="application/rss+xml" title="It's dot com.">
     <link rel="stylesheet" href="/weblog/css/main.css">
   </head>
   <body>
@@ -47,17 +47,6 @@
       Start import component. Reporting conflicts but not doing anything with them yet.
       Fix wrong set of cards being imported (cards from file, not the ones already in the store), enable Card component to render read-only.
 </code></pre><p>#git&nbsp;#command</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="excluding-dirs-from-find">Excluding dirs from&nbsp;find</h1>
-<p>Say you want to find all of the directories in which you have a <code>rollup.config.js</code> file.</p>
-<p>You could&nbsp;try</p>
-<pre><code>find . -name rollup.config.js
-</code></pre><p>But that would also search all of the <code>node_modules</code> directories, and you mean to find projects in which you’ve used rollup&nbsp;directly.</p>
-<p>You can add <a href="/weblog/articles/miscellaneous-findings-006/findings/"><code>-path</code> and <code>-not</code></a> to exclude them from the&nbsp;search:</p>
-<pre><code>find . -name rollup.config.js -and -not \( -path &#39;*/node_modules/*&#39; \) -prune
-</code></pre><p>#search #unix #command&nbsp;#find</p>
 </section>
           </article>
           <article class="finding">
@@ -178,6 +167,17 @@ static domain_name_servers=&lt;router ip&gt; 8.8.8.8
 <p>I somehow ended up with <code>music</code> in the media directory being owned by the <code>503</code> user, which prevented the <code>pi</code> user from creating dirs&nbsp;there.</p>
 <pre><code>drwxrwxr-x 587 503 staff 20480 Mar 27 01:52 music
 </code></pre><p>I chmodded it to&nbsp;pi.</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="excluding-dirs-from-find">Excluding dirs from&nbsp;find</h1>
+<p>Say you want to find all of the directories in which you have a <code>rollup.config.js</code> file.</p>
+<p>You could&nbsp;try</p>
+<pre><code>find . -name rollup.config.js
+</code></pre><p>But that would also search all of the <code>node_modules</code> directories, and you mean to find projects in which you’ve used rollup&nbsp;directly.</p>
+<p>You can add <a href="/weblog/articles/miscellaneous-findings-006/findings/"><code>-path</code> and <code>-not</code></a> to exclude them from the&nbsp;search:</p>
+<pre><code>find . -name rollup.config.js -and -not \( -path &#39;*/node_modules/*&#39; \) -prune
+</code></pre><p>#search #unix #command&nbsp;#find</p>
 </section>
           </article>
         </article>
