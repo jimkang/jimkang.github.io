@@ -5,9 +5,336 @@
     <atom:link href="http://jimkang.com/weblog/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Wed, 16  Aug 2023 20:00:00 -0400</pubDate>
+    <pubDate>Fri, 25  Aug 2023 20:00:00 -0400</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>A literal edge case</title>
+      <link>http://jimkang.com/weblog/articles/literal-edge-case/</link>
+      <pubDate>Fri, 25  Aug 2023 20:00:00 -0400</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/literal-edge-case/</guid>
+      <author></author>
+      <description>&lt;p&gt;The other day, I was in an &lt;code&gt;&amp;lt;svg&amp;gt;&lt;/code&gt;, trying to make the end of a line into a triangle, like that of a pencil.&lt;/p&gt;
+&lt;p&gt;I eventually realized that the most elegant way to do it was with a &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/SVG/Element/marker&quot;&gt;marker definition&lt;/a&gt; like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;svg width=&amp;quot;100%&amp;quot; height=&amp;quot;50&amp;quot;&amp;gt;
+  &amp;lt;title&amp;gt;Line with triangular point diagram&amp;lt;/title&amp;gt;
+  &amp;lt;defs&amp;gt;
+    &amp;lt;marker
+      id=&amp;quot;pencil-point&amp;quot;
+      viewBox=&amp;quot;0 0 10 10&amp;quot;
+      refX=&amp;quot;0&amp;quot;
+      refY=&amp;quot;5&amp;quot;
+      markerWidth=&amp;quot;1&amp;quot;
+      markerHeight=&amp;quot;1&amp;quot;
+      orient=&amp;quot;auto-start-reverse&amp;quot;
+    &amp;gt;
+      &amp;lt;path d=&amp;quot;M 0 0 L 10 5 L 0 10 z&amp;quot; fill=&amp;quot;context-stroke&amp;quot; /&amp;gt;
+    &amp;lt;/marker&amp;gt;
+  &amp;lt;/defs&amp;gt;
+  &amp;lt;line
+    x1=&amp;quot;40&amp;quot;
+    x2=&amp;quot;200&amp;quot;
+    y1=&amp;quot;25&amp;quot;
+    y2=&amp;quot;25&amp;quot;
+    stroke=&amp;quot;hsl(35, 80%, 60%)&amp;quot;
+    stroke-width=&amp;quot;20&amp;quot;
+    marker-start=&amp;quot;url(#pencil-point)&amp;quot;
+  &amp;gt;&amp;lt;/line&amp;gt;
+&amp;lt;/svg&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;svg width=&quot;100%&quot; height=&quot;50&quot;&gt;
+  &lt;title&gt;Line with triangular point diagram&lt;/title&gt;
+  &lt;defs&gt;
+    &lt;marker
+      id=&quot;pencil-point&quot;
+      viewBox=&quot;0 0 10 10&quot;
+      refX=&quot;0&quot;
+      refY=&quot;5&quot;
+      markerWidth=&quot;1&quot;
+      markerHeight=&quot;1&quot;
+      orient=&quot;auto-start-reverse&quot;
+    &gt;
+      &lt;path d=&quot;M 0 0 L 10 5 L 0 10 z&quot; fill=&quot;context-stroke&quot; /&gt;
+    &lt;/marker&gt;
+  &lt;/defs&gt;
+  &lt;line
+    x1=&quot;40&quot;
+    x2=&quot;200&quot;
+    y1=&quot;25&quot;
+    y2=&quot;25&quot;
+    stroke=&quot;hsl(35, 80%, 60%)&quot;
+    stroke-width=&quot;20&quot;
+    marker-start=&quot;url(#pencil-point)&quot;
+  &gt;&lt;/line&gt;
+&lt;/svg&gt;
+
+&lt;p&gt;If you just wanted to know how to cut a triangle into the end of a line efficiently, there’s no need to read further. Close the tab &lt;em&gt;immediately&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;The rest of this post is about a &lt;code&gt;&amp;lt;clipPath&amp;gt;&lt;/code&gt; mystery that I encountered back when I was trying to do this the wrong way.
+&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;style&gt;
+svg {
+  border: solid 1px hsl(0, 0%, 40%);
+  font-family: Helvetica;
+  font-size: 16px;
+}
+.aside {
+  border: 1px gray dotted;
+  font-size: smaller;
+  padding: 1em;
+  color: #777;
+}
+.aside h3 {
+  margin-top: 0;
+}
+&lt;/style&gt;&lt;/p&gt;
+&lt;p&gt;&lt;hr&gt;&lt;/p&gt;
+&lt;h2 id=&quot;clippaths&quot;&gt;clipPaths&lt;/h2&gt;
+&lt;p&gt;In my early attempts to cut a triangle into the line, I tried applying a &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/SVG/Element/clipPath&quot;&gt;clipPath&lt;/a&gt; to a line.&lt;/p&gt;
+&lt;div class=&quot;aside&quot;&gt;
+clipPaths work like this:
+
+&lt;ul&gt;
+&lt;li&gt;Inside the &lt;code&gt;&amp;lt;clipPath&amp;gt;&lt;/code&gt; element, you define a shape.&lt;/li&gt; &lt;li&gt;You apply the &lt;code&gt;&amp;lt;clipPath&amp;gt;&lt;/code&gt; to a target element.&lt;/li&gt; &lt;li&gt;The parts of the target that fall inside&lt;b&gt;&amp;midast;&lt;/b&gt; the shape you defined will show up, but the parts outside of the shape will disappear.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;i&gt;&lt;b&gt;&amp;midast;&lt;/b&gt;The definition of “inside” played a big part of this mystery.&lt;/i&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;pre-clip-baseline&quot;&gt;Pre-clip baseline&lt;/h3&gt;
+&lt;p&gt;In order to make sure I started this attempt on firm footing, I began with no &lt;code&gt;&amp;lt;clipPath&amp;gt;&lt;/code&gt; at all:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;svg width=&amp;quot;100%&amp;quot; height=&amp;quot;50&amp;quot;&amp;gt;
+&amp;lt;title&amp;gt;Horizontal line with no clipPath&amp;lt;/title&amp;gt;
+&amp;lt;line
+  x1=&amp;quot;40&amp;quot;
+  x2=&amp;quot;200&amp;quot;
+  y1=&amp;quot;25&amp;quot;
+  y2=&amp;quot;25&amp;quot;
+  stroke=&amp;quot;hsl(35, 80%, 60%)&amp;quot;
+  stroke-width=&amp;quot;20&amp;quot;
+&amp;gt;&amp;lt;/line&amp;gt;
+&amp;lt;/svg&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;svg width=&quot;100%&quot; height=&quot;50&quot;&gt;
+  &lt;title&gt;Horizontal line with no clipPath&lt;/title&gt;
+  &lt;line
+    x1=&quot;40&quot;
+    x2=&quot;200&quot;
+    y1=&quot;25&quot;
+    y2=&quot;25&quot;
+    stroke=&quot;hsl(35, 80%, 60%)&quot;
+    stroke-width=&quot;20&quot;
+  &gt;&lt;/line&gt;
+&lt;/svg&gt;
+
+&lt;p&gt;So far, so good. I got what I expected: a thick horizontal line, with nothing clipped.&lt;/p&gt;
+&lt;h3 id=&quot;unsuccessful-clip&quot;&gt;Unsuccessful clip&lt;/h3&gt;
+&lt;p&gt;Next, I added a triangle clip.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;svg width=&amp;quot;100%&amp;quot; height=&amp;quot;50&amp;quot;&amp;gt;
+  &amp;lt;title&amp;gt;A triangle clipPath&amp;lt;/title&amp;gt;
+  &amp;lt;defs&amp;gt;
+    &amp;lt;clipPath id=&amp;quot;tclip&amp;quot; clipPathUnits=&amp;quot;objectBoundingBox&amp;quot;&amp;gt;
+      &amp;lt;polygon points=&amp;quot;0,0.5 1,1 1,0&amp;quot;&amp;gt;&amp;lt;/polygon&amp;gt;
+    &amp;lt;/clipPath&amp;gt;
+  &amp;lt;/defs&amp;gt;
+  &amp;lt;line
+    x1=&amp;quot;40&amp;quot;
+    x2=&amp;quot;200&amp;quot;
+    y1=&amp;quot;25&amp;quot;
+    y2=&amp;quot;25&amp;quot;
+    stroke=&amp;quot;hsl(35, 80%, 60%)&amp;quot;
+    stroke-width=&amp;quot;20&amp;quot;
+    clip-path=&amp;quot;url(#tclip)&amp;quot;
+  &amp;gt;&amp;lt;/line&amp;gt;
+&amp;lt;/svg&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;svg width=&quot;100%&quot; height=&quot;50&quot;&gt;
+  &lt;title&gt;A triangle clipPath&lt;/title&gt;
+  &lt;defs&gt;
+    &lt;clipPath id=&quot;tclip&quot; clipPathUnits=&quot;objectBoundingBox&quot;&gt;
+      &lt;polygon points=&quot;0,0.5 1,1 1,0&quot;&gt;&lt;/polygon&gt;
+    &lt;/clipPath&gt;
+  &lt;/defs&gt;
+  &lt;line
+    x1=&quot;40&quot;
+    x2=&quot;200&quot;
+    y1=&quot;25&quot;
+    y2=&quot;25&quot;
+    stroke=&quot;hsl(35, 80%, 60%)&quot;
+    stroke-width=&quot;20&quot;
+    clip-path=&quot;url(#tclip)&quot;
+  &gt;&lt;/line&gt;
+&lt;/svg&gt;
+
+&lt;p&gt;And everything disappeared.&lt;/p&gt;
+&lt;h2 id=&quot;debugging-with-the-all-inclusive-clippath&quot;&gt;Debugging with the all-inclusive clipPath&lt;/h2&gt;
+&lt;p&gt;I didn’t know why this was happening, so I backed up and tried the simplest &lt;code&gt;&amp;lt;clipPath&amp;gt;&lt;/code&gt; I could think of: a rectangle that covers the entire target element. Such a &lt;code&gt;&amp;lt;clipPath&amp;gt;&lt;/code&gt;, I thought, should show everything (“clip everything in”) and hide nothing (“clip nothing out”).&lt;/p&gt;
+&lt;p&gt;&lt;a id=&quot;hline&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;svg width=&amp;quot;100%&amp;quot; height=&amp;quot;50&amp;quot;&amp;gt;
+  &amp;lt;title&amp;gt;A clipPath that I thought would show everything but shows nothing&amp;lt;/title&amp;gt;
+  &amp;lt;defs&amp;gt;
+    &amp;lt;clipPath id=&amp;quot;hclip&amp;quot; clipPathUnits=&amp;quot;objectBoundingBox&amp;quot;&amp;gt;
+      &amp;lt;rect x=&amp;quot;0&amp;quot; y=&amp;quot;0&amp;quot; width=&amp;quot;1&amp;quot; height=&amp;quot;1&amp;quot;&amp;gt;&amp;lt;/rect&amp;gt;
+    &amp;lt;/clipPath&amp;gt;
+  &amp;lt;/defs&amp;gt;
+  &amp;lt;line
+    x1=&amp;quot;40&amp;quot;
+    x2=&amp;quot;200&amp;quot;
+    y1=&amp;quot;25&amp;quot;
+    y2=&amp;quot;25&amp;quot;
+    stroke=&amp;quot;hsl(35, 80%, 60%)&amp;quot;
+    stroke-width=&amp;quot;20&amp;quot;
+    clip-path=&amp;quot;url(#hclip)&amp;quot;
+  &amp;gt;&amp;lt;/line&amp;gt;
+&amp;lt;/svg&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;svg width=&quot;100%&quot; height=&quot;50&quot;&gt;
+  &lt;title&gt;A clipPath that I thought would show everything but shows nothing&lt;/title&gt;
+  &lt;defs&gt;
+    &lt;clipPath id=&quot;hclip&quot; clipPathUnits=&quot;objectBoundingBox&quot;&gt;
+      &lt;rect x=&quot;0&quot; y=&quot;0&quot; width=&quot;1&quot; height=&quot;1&quot;&gt;&lt;/rect&gt;
+    &lt;/clipPath&gt;
+  &lt;/defs&gt;
+  &lt;line
+    x1=&quot;40&quot;
+    x2=&quot;200&quot;
+    y1=&quot;25&quot;
+    y2=&quot;25&quot;
+    stroke=&quot;hsl(35, 80%, 60%)&quot;
+    stroke-width=&quot;20&quot;
+    clip-path=&quot;url(#hclip)&quot;
+  &gt;&lt;/line&gt;
+&lt;/svg&gt;
+
+&lt;p&gt;And yet everything was clipped out.&lt;/p&gt;
+&lt;p&gt;Did the horizontalness of the line somehow cause this? To rule it out, I tried out an &lt;em&gt;almost&lt;/em&gt; horizontal line like this:&lt;/p&gt;
+&lt;p&gt;&lt;a id=&quot;ahline&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;svg width=&amp;quot;100%&amp;quot; height=&amp;quot;50&amp;quot;&amp;gt;
+  &amp;lt;title&amp;gt;The almost-horizontal line with clipPath&amp;lt;/title&amp;gt;
+  &amp;lt;defs&amp;gt;
+    &amp;lt;clipPath id=&amp;quot;ahclip&amp;quot; clipPathUnits=&amp;quot;objectBoundingBox&amp;quot;&amp;gt;
+      &amp;lt;rect x=&amp;quot;0&amp;quot; y=&amp;quot;0&amp;quot; width=&amp;quot;1&amp;quot; height=&amp;quot;1&amp;quot;&amp;gt;&amp;lt;/rect&amp;gt;
+    &amp;lt;/clipPath&amp;gt;
+  &amp;lt;/defs&amp;gt;
+  &amp;lt;line
+    x1=&amp;quot;40&amp;quot;
+    x2=&amp;quot;200&amp;quot;
+    y1=&amp;quot;25&amp;quot;
+    y2=&amp;quot;26&amp;quot;
+    stroke=&amp;quot;hsl(35, 80%, 60%)&amp;quot;
+    stroke-width=&amp;quot;100%&amp;quot;
+    clip-path=&amp;quot;url(#ahclip)&amp;quot;
+  &amp;gt;&amp;lt;/line&amp;gt;
+&amp;lt;/svg&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;svg id=&quot;ahline&quot; width=&quot;100%&quot; height=&quot;50&quot;&gt;
+  &lt;title&gt;The almost-horizontal line with clipPath&lt;/title&gt;
+  &lt;defs&gt;
+    &lt;clipPath id=&quot;ahclip&quot; clipPathUnits=&quot;objectBoundingBox&quot;&gt;
+      &lt;rect x=&quot;0&quot; y=&quot;0&quot; width=&quot;1&quot; height=&quot;1&quot;&gt;&lt;/rect&gt;
+    &lt;/clipPath&gt;
+  &lt;/defs&gt;
+  &lt;line
+    x1=&quot;40&quot;
+    x2=&quot;200&quot;
+    y1=&quot;25&quot;
+    y2=&quot;26&quot;
+    stroke=&quot;hsl(35, 80%, 60%)&quot;
+    stroke-width=&quot;100%&quot;
+    clip-path=&quot;url(#ahclip)&quot;
+  &gt;&lt;/line&gt;
+&lt;/svg&gt;
+
+&lt;p&gt;A line showed up.&lt;/p&gt;
+&lt;p&gt;Both the &lt;a href=&quot;http://jimkang.com/articles/literal-edge-case/#hline&quot;&gt;perfectly horizontal line&lt;/a&gt; and the &lt;a href=&quot;http://jimkang.com/articles/literal-edge-case/#ahline&quot;&gt;almost horizontal line&lt;/a&gt; had the same “show everything” clipPath applied to them. So why does the almost horizontal one show up, but the perfectly horizontal one not show up?&lt;/p&gt;
+&lt;p&gt;Here is what I think is a likely explanation.&lt;/p&gt;
+&lt;p&gt;The first thing to notice is that I’m using &lt;code&gt;objectBoundingBox&lt;/code&gt; as the &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/clipPathUnits&quot;&gt;clipPathUnits&lt;/a&gt; attribute value.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;    &amp;lt;clipPath id=&amp;quot;ahclip&amp;quot; clipPathUnits=&amp;quot;objectBoundingBox&amp;quot;&amp;gt;
+      &amp;lt;rect x=&amp;quot;0&amp;quot; y=&amp;quot;0&amp;quot; width=&amp;quot;1&amp;quot; height=&amp;quot;1&amp;quot;&amp;gt;&amp;lt;/rect&amp;gt;
+    &amp;lt;/clipPath&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;As a result of the &lt;strong&gt;objectBoundingBox&lt;/strong&gt; setting, when I say the x of the &lt;code&gt;&amp;lt;rect&amp;gt;&lt;/code&gt; in the clipPath is 0, the rect’s left will be the very left of the element it’s being applied to. If I set the width to 1, that means that the rect will be the width of the entire element that the clipPath is being applied to.&lt;/p&gt;
+&lt;p&gt;It’s easier to understand in a diagram:&lt;/p&gt;
+&lt;svg width=&quot;100%&quot; height=&quot;300&quot;&gt;
+  &lt;title&gt;Bounding box and clip target relationship diagram&lt;/title&gt;
+  &lt;g transform=&quot;translate(0 15)&quot;&gt;
+    &lt;g transform=&quot;translate(87 50)&quot;&gt;
+      &lt;text text-anchor=&quot;middle&quot; x=&quot;38&quot; y=&quot;45&quot; fill=&quot;hsl(210, 55%, 50%)&quot;&gt;clipPath&lt;/text&gt;
+      &lt;text text-anchor=&quot;middle&quot; x=&quot;38&quot; y=&quot;70&quot; fill=&quot;hsl(210, 55%, 50%)&quot;&gt;target&lt;/text&gt;
+      &lt;rect x=&quot;0&quot; y=&quot;0&quot; width=&quot;75&quot; height=&quot;100&quot; stroke=&quot;hsl(210, 55%, 50%)&quot; stroke-width=&quot;4&quot; fill=&quot;none&quot;&gt;&lt;/rect&gt;
+      &lt;text text-anchor=&quot;end&quot; x=&quot;-8&quot; y=&quot;-10&quot; fill=&quot;hsl(210, 55%, 50%)&quot;&gt;70, 50&lt;/text&gt;
+      &lt;text text-anchor=&quot;start&quot; x=&quot;80&quot; y=&quot;-10&quot; fill=&quot;hsl(210, 55%, 50%)&quot;&gt;145, 50&lt;/text&gt;
+      &lt;text text-anchor=&quot;end&quot; x=&quot;-8&quot; y=&quot;120&quot; fill=&quot;hsl(210, 55%, 50%)&quot;&gt;70, 150&lt;/text&gt;
+      &lt;text text-anchor=&quot;start&quot; x=&quot;80&quot; y=&quot;120&quot; fill=&quot;hsl(210, 55%, 50%)&quot;&gt;145, 150&lt;/text&gt;
+    &lt;/g&gt;
+    &lt;g transform=&quot;translate(18 0)&quot;&gt;&lt;line x1=&quot;70&quot; y1=&quot;50&quot; x2=&quot;257&quot; y2=&quot;125&quot; stroke=&quot;hsl(140, 70%, 50%)&quot;&gt;&lt;/line&gt;&lt;/g&gt;
+    &lt;g transform=&quot;translate(93 0)&quot;&gt;&lt;line x1=&quot;70&quot; y1=&quot;50&quot; x2=&quot;257&quot; y2=&quot;125&quot; stroke=&quot;hsl(140, 70%, 50%)&quot;&gt;&lt;/line&gt;&lt;/g&gt;
+    &lt;g transform=&quot;translate(18 100)&quot;&gt;&lt;line x1=&quot;70&quot; y1=&quot;50&quot; x2=&quot;257&quot; y2=&quot;125&quot; stroke=&quot;hsl(140, 70%, 50%)&quot;&gt;&lt;/line&gt;&lt;/g&gt;
+    &lt;g transform=&quot;translate(93 100)&quot;&gt;&lt;line x1=&quot;70&quot; y1=&quot;50&quot; x2=&quot;257&quot; y2=&quot;125&quot; stroke=&quot;hsl(140, 70%, 50%)&quot;&gt;&lt;/line&gt;&lt;/g&gt;
+    &lt;g transform=&quot;translate(273, 125)&quot;&gt;
+      &lt;text text-anchor=&quot;middle&quot; x=&quot;38&quot; y=&quot;57&quot; fill=&quot;hsl(210, 55%, 50%)&quot;&gt;clipPath&lt;/text&gt;
+      &lt;rect x=&quot;0&quot; y=&quot;0&quot; width=&quot;75&quot; height=&quot;100&quot; stroke=&quot;hsl(210, 55%, 50%)&quot; stroke-width=&quot;4&quot; fill=&quot;none&quot;&gt;&lt;/rect&gt;
+      &lt;text x=&quot;-35&quot; y=&quot;-10&quot; fill=&quot;hsl(210, 55%, 50%)&quot;&gt;0, 0&lt;/text&gt;
+      &lt;text x=&quot;80&quot; y=&quot;-10&quot; fill=&quot;hsl(210, 55%, 50%)&quot;&gt;1, 0&lt;/text&gt;
+      &lt;text x=&quot;-35&quot; y=&quot;120&quot; fill=&quot;hsl(210, 55%, 50%)&quot;&gt;0, 1&lt;/text&gt;
+      &lt;text x=&quot;80&quot; y=&quot;120&quot; fill=&quot;hsl(210, 55%, 50%)&quot;&gt;1, 1&lt;/text&gt;
+    &lt;/g&gt;
+  &lt;/g&gt;
+&lt;/svg&gt;
+
+&lt;p&gt;The clipPath’s whole world is between 0 and 1, and that world gets mapped onto the bounds of the element to be clipped, which is the &lt;code&gt;&amp;lt;line&amp;gt;&lt;/code&gt; in this case.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;&amp;lt;rect&amp;gt;&lt;/code&gt; I put inside of the clip path goes from (0, 0) to (1, 1), which should cover everything.&lt;/p&gt;
+&lt;p&gt;However, in this case, &lt;em&gt;everything&lt;/em&gt; is nothing.&lt;/p&gt;
+&lt;p&gt;The element I’m applying the clipPath to is a line. The line has a &lt;code&gt;stroke-width&lt;/code&gt; of 20, so it looks like a thin rectangle. But clipPath does not use the &lt;code&gt;stroke-width&lt;/code&gt; when deriving its objectBoundingBox; it only uses the path itself (the “raw geometry”, as the &lt;a href=&quot;https://drafts.fxtf.org/css-masking-1/#ClipPathElement&quot;&gt;W3C spec&lt;/a&gt; calls it).&lt;/p&gt;
+&lt;p&gt;I think that the horizontal line, without decorative properties like &lt;code&gt;stroke-width&lt;/code&gt; applied, is considered to have a &lt;em&gt;height of 0&lt;/em&gt;.&lt;/p&gt;
+&lt;div class=&quot;aside&quot;&gt;
+&lt;h3&gt;Could it be that the line has a height of 1 (not 0) with an exclusive intersection algorithm?&lt;/h3&gt;
+Before, I thought it would have a height of 1. DevTools says the height of a horizontal line with no explicit &lt;code&gt;stroke-width&lt;/code&gt; is 1. We know that &lt;code&gt;&amp;lt;clipPath&amp;gt;&lt;/code&gt; doesn’t see it that way because of this bit from the &lt;a href=&quot;https://drafts.fxtf.org/css-masking-1/#ClipPathElement&quot;&gt;spec&lt;/a&gt; (emphasis added):
+&lt;blockquote&gt;The raw geometry of each child element exclusive of rendering properties such as fill, stroke, stroke-width within a clipPath conceptually defines a 1-bit mask (with the possible exception of anti-aliasing along the edge of the geometry) which represents the silhouette of the graphics associated with that element. Anything &lt;em&gt;outside&lt;/em&gt; the outline of the object is masked out.&lt;/blockquote&gt;
+&lt;p&gt;If the line had a height of 1, then there would exist a 1-unit high part of the line that intersected the horizontal line mask. This would NOT be outside of the mask, and it would show up in the end. Since nothing shows up, the height of the horizontal line mask must be 0, and &lt;em&gt;everything is considered to be outside the mask&lt;/em&gt;.&lt;/p&gt;
+
+Another possibility is that Firefox and Chrome didn’t implement things that way and instead implemented clipPaths that only allowed things &lt;em&gt;inside&lt;/em&gt; the boundaries of the clipPath to show. In that case, nothing can be inside of a 1-unit high “box.” (I tried to disprove this by looking at the &lt;a href=&quot;https://searchfox.org/mozilla-central/source/layout/svg/SVGClipPathFrame.cpp#243&quot;&gt;source&lt;/a&gt;, but at some point, I stopped being able to tell what implementations implemented which interfaces.)&lt;/div&gt;
+
+&lt;p&gt;Regardless of the way the browsers implement &lt;code&gt;&amp;lt;clipPath&amp;gt;&lt;/code&gt;, this behavior is consistent: putting a slope on the line gives the bounding box a height greater than 0.&lt;/p&gt;
+&lt;p&gt;To see this easily, let’s exaggerate the slope. Here, we set the angle of the line to 45° and make the &lt;code&gt;stroke-width&lt;/code&gt; ridiculously wide.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;svg width=&amp;quot;100%&amp;quot; height=&amp;quot;200&amp;quot;&amp;gt;
+  &amp;lt;title&amp;gt;The diagonal line that is really thick&amp;lt;/title&amp;gt;
+  &amp;lt;defs&amp;gt;
+    &amp;lt;clipPath id=&amp;quot;dclip&amp;quot; clipPathUnits=&amp;quot;objectBoundingBox&amp;quot;&amp;gt;
+      &amp;lt;rect x=&amp;quot;0&amp;quot; y=&amp;quot;0&amp;quot; width=&amp;quot;1&amp;quot; height=&amp;quot;1&amp;quot;&amp;gt;&amp;lt;/rect&amp;gt;
+    &amp;lt;/clipPath&amp;gt;
+  &amp;lt;/defs&amp;gt;
+  &amp;lt;line
+    x1=&amp;quot;40&amp;quot;
+    x2=&amp;quot;200&amp;quot;
+    y1=&amp;quot;15&amp;quot;
+    y2=&amp;quot;175&amp;quot;
+    stroke=&amp;quot;hsl(35, 80%, 60%)&amp;quot;
+    stroke-width=&amp;quot;100%&amp;quot;
+    clip-path=&amp;quot;url(#dclip)&amp;quot;
+  &amp;gt;&amp;lt;/line&amp;gt;
+&amp;lt;/svg&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;svg width=&quot;100%&quot; height=&quot;200&quot;&gt;
+  &lt;title&gt;The diagonal line that is really thick&lt;/title&gt;
+  &lt;defs&gt;
+    &lt;clipPath id=&quot;dclip&quot; clipPathUnits=&quot;objectBoundingBox&quot;&gt;
+      &lt;rect x=&quot;0&quot; y=&quot;0&quot; width=&quot;1&quot; height=&quot;1&quot;&gt;&lt;/rect&gt;
+    &lt;/clipPath&gt;
+  &lt;/defs&gt;
+  &lt;line
+    x1=&quot;40&quot;
+    x2=&quot;200&quot;
+    y1=&quot;15&quot;
+    y2=&quot;175&quot;
+    stroke=&quot;hsl(35, 80%, 60%)&quot;
+    stroke-width=&quot;100%&quot;
+    clip-path=&quot;url(#dclip)&quot;
+  &gt;&lt;/line&gt;
+&lt;/svg&gt;
+
+&lt;p&gt;Now the bounding box becomes a squarish box because that is what is necessary to enclose a line with a 45&amp;deg; angle.&lt;/p&gt;
+&lt;h2 id=&quot;was-this-completely-useless-&quot;&gt;Was this completely useless?&lt;/h2&gt;
+&lt;p&gt;This was not a short journey! But it provided us with these facts:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;clipPath&amp;gt;&lt;/code&gt;s use the “raw geometry” of the elements it is applied to to determine the bounding box used by the elements within the clipPath.&lt;/li&gt;
+&lt;li&gt;Horizontal &lt;code&gt;&amp;lt;line&amp;gt;&lt;/code&gt;s are considered to have a height of 0 when they are &lt;code&gt;&amp;lt;clipPath&amp;gt;&lt;/code&gt; targets.&lt;/li&gt;
+&lt;li&gt;“Sloped” lines (lines with that aren’t vertical or horizontal) get a bounding rectangle that covers their height and width, rather than a bounding container shaped like a line.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I tried my best, but no doubt this is still confusing to some readers. Maybe it would have been better as a video. But I’m happy to chat if you need clarification! &lt;a href=&quot;mailto:jimkang@fastmail.com&quot;&gt;jimkang@fastmail.com&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Obscura and the extrasonic part of music</title>
       <link>http://jimkang.com/weblog/articles/obscura/</link>
