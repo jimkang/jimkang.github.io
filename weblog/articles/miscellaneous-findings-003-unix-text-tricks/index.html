@@ -42,24 +42,6 @@
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="replacing-all-with-sed">Replacing all with&nbsp;sed</h1>
-<p>To replace all instances of a string in a directory tree with another string, do a <code>find</code> for the file types you want to target, pipe that to <a href="/weblog/articles/miscellaneous-findings-003-unix-text-tricks/findings/2020-04-03----00:51__xargs.md"><code>xargs</code></a> to run <code>sed</code> on the files it&nbsp;finds.</p>
-<p>Example:</p>
-<pre><code>find . -type f \( -name &#39;*.md&#39; -o -name &#39;*.js&#39; -o -name &#39;*.json&#39; -o -name &#39;Makefile&#39; \) | xargs sed -i &quot;s/small-findings/smallfindings/g&quot;
-</code></pre><p>Where:</p>
-<ul>
-<li>md, js, json, and Makefile are the kinds of files in which the replacement should be&nbsp;made.</li>
-<li>xargs is telling <code>sed</code> to run with:<ul>
-<li>A regular expression that replaces <code>small-findings</code> with <code>smallfindings</code></li>
-<li>A list of files that is whatever the <code>find</code> command&nbsp;found.</li>
-</ul>
-</li>
-</ul>
-<p><a href="https://gist.github.com/jimkang/4c636302815924e5aa995ccfecc068a8">Shell script&nbsp;example.</a></p>
-<p>#unix #bash #programming&nbsp;#text</p>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="tr-for-replacing-text">tr for replacing&nbsp;text</h1>
 <p>There is a Unix command called <code>tr</code>. You pipe in input text and give it two&nbsp;arguments:</p>
 <ul>
@@ -107,6 +89,24 @@
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="replacing-all-with-sed">Replacing all with&nbsp;sed</h1>
+<p>To replace all instances of a string in a directory tree with another string, do a <code>find</code> for the file types you want to target, pipe that to <a href="/weblog/articles/miscellaneous-findings-003-unix-text-tricks/findings/2020-04-03----00:51__xargs.md"><code>xargs</code></a> to run <code>sed</code> on the files it&nbsp;finds.</p>
+<p>Example:</p>
+<pre><code>find . -type f \( -name &#39;*.md&#39; -o -name &#39;*.js&#39; -o -name &#39;*.json&#39; -o -name &#39;Makefile&#39; \) | xargs sed -i &quot;s/small-findings/smallfindings/g&quot;
+</code></pre><p>Where:</p>
+<ul>
+<li>md, js, json, and Makefile are the kinds of files in which the replacement should be&nbsp;made.</li>
+<li>xargs is telling <code>sed</code> to run with:<ul>
+<li>A regular expression that replaces <code>small-findings</code> with <code>smallfindings</code></li>
+<li>A list of files that is whatever the <code>find</code> command&nbsp;found.</li>
+</ul>
+</li>
+</ul>
+<p><a href="https://gist.github.com/jimkang/4c636302815924e5aa995ccfecc068a8">Shell script&nbsp;example.</a></p>
+<p>#unix #bash #programming&nbsp;#text</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="regex-in-sed">Regex in&nbsp;sed</h1>
 <p>If you use <code>sed</code> without the <code>-r</code> switch, it does support a sort of regex, but doesn’t support capture groups. If you do, you can do something like this to replace all instances of <code>var something = require(&#39;somepackage&#39;)</code> with <code>import something from &#39;somepackage&#39;</code> in a&nbsp;file:</p>
 <pre><code>xargs sed -r &quot;s/var (\w+) = require\(&#39;(.*)&#39;\)/import \1 from &#39;\2&#39;/g&quot; -i myfile.js
@@ -126,7 +126,7 @@
         <!--section.about-->
         <!--  !=contents['about.md'].html-->
         <section class="copy">
-          <p>&copy; 2023 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          <p>&copy; 2024 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
           </p>
           <p><a href='/weblog/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
         </section>

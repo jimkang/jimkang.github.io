@@ -105,6 +105,32 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="audio-latency">Audio&nbsp;latency</h1>
+<p>In QJackCtl’s setup dialog, there are two params that affect audio&nbsp;latency:</p>
+<ul>
+<li>Frames/period</li>
+<li>Periods/buffer</li>
+</ul>
+<p>If the sample rate is 44,100 Hz, then a frame takes 1/44,100 seconds. So, how long does it take to get a frame through the&nbsp;computer?</p>
+<p>If frames/period is 1024 and periods/buffer is 2, each buffer carries 1024 * 2 frames. That’s 2048 frames. Since each frame takes 1/44,100 seconds, the buffer takes 2048/44,100 seconds = 46.44 ms to&nbsp;process.</p>
+<p><span class="caps">TODO</span>: What is involved in processing exactly,&nbsp;though?</p>
+<p>So, sound input goes in, then at least 46.44 ms later, something comes&nbsp;out.</p>
+<p>That’s kind of a lot! If you are playing a guitar into your computer, then having an amp modeler process it and send it back out, you may notice a delay which will throw you off. I read that <a href="http://mountainbikesandtrombones.blogspot.com/2012/03/problems-with-xrun.html">every 10ms of latency corresponds with being ~10 feet further from an analog source</a>. So, 10ms is acceptable for&nbsp;me.</p>
+<p>When I set frames/period to 128 and frames/period to 2 to get a latency of 5.8 msec, I started getting <a href="https://discourse.ardour.org/t/xruns-cadence-vs-qjackctl-in-kxstudio/89465/4">xruns</a> when using Guitarix. The computer was not keeping up with the incoming buffers, so it’d dump zeroes to the output, which sound like pops in the&nbsp;output.</p>
+<p>I found out that my computer, by default, dynamically slows down the <span class="caps">CPU</span> to save power, which causes latency&nbsp;issues. </p>
+<p>I was getting pops in my guitar amp modeler (and sometimes in pd), and that seemed to take care of&nbsp;it.</p>
+<p>I was clued in by the install script for Ardour, which said&nbsp;this:</p>
+<blockquote>
+<p>!!! <span class="caps">WARNING</span> !!! - Your system seems to use frequency scaling.<br>This can have a serious impact on audio latency.<br>For best results turn it off, e.g. by chosing the ‘performance’&nbsp;governor.”</p>
+</blockquote>
+<p>So, even though that app crashes when I try to create a project in it, I’m thankful to&nbsp;it.</p>
+<p>There’s this <code>indicator-cpufreq</code> package you can install, which puts a thing in the system menu bar to turn that&nbsp;off!</p>
+<pre><code>sudo apt-get install indicator-cpufreq
+</code></pre><p>When I turn set the governor to “Performance” via that applet, I don’t get the pops&nbsp;anymore.</p>
+<p>#cpu #frequencyscaling #audio #ubuntu&nbsp;#jack</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="data-privacy-policies">Data privacy&nbsp;policies</h1>
 <h2 id="microsoft-and-google">Microsoft and&nbsp;Google</h2>
 <p>One thing that’s better about using Excel instead of Google Sheets (other than better features, of which I don’t really know how to take advantage) is the <a href="https://support.microsoft.com/en-us/office/diagnostic-data-in-microsoft-365-f409137d-15d3-4803-a8ae-d26fcbfc91dd">data policy</a>:</p>
@@ -137,41 +163,6 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 <a href="https://arstechnica.com/tech-policy/2014/03/dropbox-clarifies-its-policy-on-reviewing-shared-files-for-dmca-issues/">https://arstechnica.com/tech-policy/2014/03/dropbox-clarifies-its-policy-on-reviewing-shared-files-for-dmca-issues/</a></p>
 <p>2013: employee access is intended to be&nbsp;restricted.</p>
 <p>But what about process&nbsp;access?</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="audio-latency">Audio&nbsp;latency</h1>
-<p>In QJackCtl’s setup dialog, there are two params that affect audio&nbsp;latency:</p>
-<ul>
-<li>Frames/period</li>
-<li>Periods/buffer</li>
-</ul>
-<p>If the sample rate is 44,100 Hz, then a frame takes 1/44,100 seconds. So, how long does it take to get a frame through the&nbsp;computer?</p>
-<p>If frames/period is 1024 and periods/buffer is 2, each buffer carries 1024 * 2 frames. That’s 2048 frames. Since each frame takes 1/44,100 seconds, the buffer takes 2048/44,100 seconds = 46.44 ms to&nbsp;process.</p>
-<p><span class="caps">TODO</span>: What is involved in processing exactly,&nbsp;though?</p>
-<p>So, sound input goes in, then at least 46.44 ms later, something comes&nbsp;out.</p>
-<p>That’s kind of a lot! If you are playing a guitar into your computer, then having an amp modeler process it and send it back out, you may notice a delay which will throw you off. I read that <a href="http://mountainbikesandtrombones.blogspot.com/2012/03/problems-with-xrun.html">every 10ms of latency corresponds with being ~10 feet further from an analog source</a>. So, 10ms is acceptable for&nbsp;me.</p>
-<p>When I set frames/period to 128 and frames/period to 2 to get a latency of 5.8 msec, I started getting <a href="https://discourse.ardour.org/t/xruns-cadence-vs-qjackctl-in-kxstudio/89465/4">xruns</a> when using Guitarix. The computer was not keeping up with the incoming buffers, so it’d dump zeroes to the output, which sound like pops in the&nbsp;output.</p>
-<p>I found out that my computer, by default, dynamically slows down the <span class="caps">CPU</span> to save power, which causes latency&nbsp;issues. </p>
-<p>I was getting pops in my guitar amp modeler (and sometimes in pd), and that seemed to take care of&nbsp;it.</p>
-<p>I was clued in by the install script for Ardour, which said&nbsp;this:</p>
-<blockquote>
-<p>!!! <span class="caps">WARNING</span> !!! - Your system seems to use frequency scaling.<br>This can have a serious impact on audio latency.<br>For best results turn it off, e.g. by chosing the ‘performance’&nbsp;governor.”</p>
-</blockquote>
-<p>So, even though that app crashes when I try to create a project in it, I’m thankful to&nbsp;it.</p>
-<p>There’s this <code>indicator-cpufreq</code> package you can install, which puts a thing in the system menu bar to turn that&nbsp;off!</p>
-<pre><code>sudo apt-get install indicator-cpufreq
-</code></pre><p>When I turn set the governor to “Performance” via that applet, I don’t get the pops&nbsp;anymore.</p>
-<p>#cpu #frequencyscaling #audio #ubuntu&nbsp;#jack</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="finding-out-what-s-using-a-port">Finding out what’s using a&nbsp;port</h1>
-<p>There’s <code>lsof -i TCP</code>, but that sometimes misses it. Maybe that’s for active&nbsp;connections?</p>
-<p>This seems&nbsp;better:</p>
-<p><code>ss -lntp</code></p>
-<p>It should list the processes bound to <span class="caps">TCP</span> ports. But sometimes the process field is blank. If you run it with <code>sudo</code>, you’ll probably be able to see the&nbsp;processes.</p>
-<p>#port #unix&nbsp;#network</p>
 </section>
           </article>
           <article class="finding">
@@ -213,6 +204,27 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="flickr">Flickr</h1>
+<h2 id="making-all-public-photos-non-public">Making all public photos&nbsp;non-public</h2>
+<ul>
+<li>Go to&nbsp;Organizr.</li>
+<li>Select “Only show public content” in the bottom&nbsp;bar.</li>
+<li>Select all. Drag the bottom bar selection to the&nbsp;workspace.</li>
+<li>Go to the permissions menu and change the permissions for those&nbsp;photos.</li>
+<li>Seems to run for about an hour (getting through 3000 photos) before it fails, and you have to start&nbsp;over.</li>
+</ul>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="finding-out-what-s-using-a-port">Finding out what’s using a&nbsp;port</h1>
+<p>There’s <code>lsof -i TCP</code>, but that sometimes misses it. Maybe that’s for active&nbsp;connections?</p>
+<p>This seems&nbsp;better:</p>
+<p><code>ss -lntp</code></p>
+<p>It should list the processes bound to <span class="caps">TCP</span> ports. But sometimes the process field is blank. If you run it with <code>sudo</code>, you’ll probably be able to see the&nbsp;processes.</p>
+<p>#port #unix&nbsp;#network</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="getting-noita-to-run-on-ubuntu">Getting Noita to run on&nbsp;Ubuntu</h1>
 <ul>
 <li>Get the game from <span class="caps">GOG</span>, not&nbsp;Steam.</li>
@@ -246,18 +258,6 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 <p><a href="https://askubuntu.com/questions/1090094/wine-missing-ntlm-auth-3-0-25">Reintalling winbind</a> gets rid of that&nbsp;error:</p>
 <pre><code>sudo apt-get remove winbind &amp;&amp; sudo apt-get install winbind
 </code></pre><p>#game&nbsp;#switch</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="flickr">Flickr</h1>
-<h2 id="making-all-public-photos-non-public">Making all public photos&nbsp;non-public</h2>
-<ul>
-<li>Go to&nbsp;Organizr.</li>
-<li>Select “Only show public content” in the bottom&nbsp;bar.</li>
-<li>Select all. Drag the bottom bar selection to the&nbsp;workspace.</li>
-<li>Go to the permissions menu and change the permissions for those&nbsp;photos.</li>
-<li>Seems to run for about an hour (getting through 3000 photos) before it fails, and you have to start&nbsp;over.</li>
-</ul>
 </section>
           </article>
           <article class="finding">
@@ -341,39 +341,6 @@ MimeType=text/english;text/plain;text/x-markdown;
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="serving-local-web-apps-via-https">Serving local web apps via&nbsp;https</h1>
-<p>If you need to serve a local web page via&nbsp;https:</p>
-<h2 id="create-a-cert">Create a&nbsp;cert</h2>
-<p><a href="https://letsencrypt.org/docs/certificates-for-localhost/">https://letsencrypt.org/docs/certificates-for-localhost/</a></p>
-<pre><code>openssl req -x509 -out localhost.crt -keyout localhost.key \
-  -newkey rsa:2048 -nodes -sha256 \
-  -subj &#39;/CN=localhost&#39; -extensions EXT -config &lt;( \
-   printf &quot;[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth&quot;)
-</code></pre><h2 id="serving-via-python">Serving via&nbsp;Python</h2>
-<ul>
-<li>Mash the crt and key files together: <code></code>cat localhost.crt localhost.key &gt;&nbsp;localhost.pem`</li>
-<li>Create a server script like so:
-<code>`</code>from http.server import HTTPServer, SimpleHTTPRequestHandler
-import&nbsp;ssl</li>
-</ul>
-<p>httpd = HTTPServer((“localhost”, 443), SimpleHTTPRequestHandler)
-httpd.socket = ssl.wrap_socket(
-    httpd.socket, certfile=”./localhost.pem”, server_side=True
-)
-httpd.serve_forever()
-<code>`</code></p>
-<ul>
-<li>Start it with <code>sudo python3 server.py</code>.</li>
-</ul>
-<h2 id="serving-via-node">Serving via&nbsp;Node</h2>
-<p><a href="https://stackoverflow.com/a/61905546/87798">https://stackoverflow.com/a/61905546/87798</a> (Ignore the brew, mkcert&nbsp;stuff)</p>
-<ul>
-<li>Rename the crt and key files to <code>cert.pem</code> and <code>key.pem</code>.</li>
-<li>Run the <code>http-server</code> module with `http-server -P 443 -S -C cert.pem&nbsp;-o’</li>
-</ul>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="area-high-schools">Area high&nbsp;schools</h1>
 <h2 id="bbn"><span class="caps">BB</span>&amp;N</h2>
 <ul>
@@ -453,6 +420,39 @@ httpd.serve_forever()
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="serving-local-web-apps-via-https">Serving local web apps via&nbsp;https</h1>
+<p>If you need to serve a local web page via&nbsp;https:</p>
+<h2 id="create-a-cert">Create a&nbsp;cert</h2>
+<p><a href="https://letsencrypt.org/docs/certificates-for-localhost/">https://letsencrypt.org/docs/certificates-for-localhost/</a></p>
+<pre><code>openssl req -x509 -out localhost.crt -keyout localhost.key \
+  -newkey rsa:2048 -nodes -sha256 \
+  -subj &#39;/CN=localhost&#39; -extensions EXT -config &lt;( \
+   printf &quot;[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth&quot;)
+</code></pre><h2 id="serving-via-python">Serving via&nbsp;Python</h2>
+<ul>
+<li>Mash the crt and key files together: <code></code>cat localhost.crt localhost.key &gt;&nbsp;localhost.pem`</li>
+<li>Create a server script like so:
+<code>`</code>from http.server import HTTPServer, SimpleHTTPRequestHandler
+import&nbsp;ssl</li>
+</ul>
+<p>httpd = HTTPServer((“localhost”, 443), SimpleHTTPRequestHandler)
+httpd.socket = ssl.wrap_socket(
+    httpd.socket, certfile=”./localhost.pem”, server_side=True
+)
+httpd.serve_forever()
+<code>`</code></p>
+<ul>
+<li>Start it with <code>sudo python3 server.py</code>.</li>
+</ul>
+<h2 id="serving-via-node">Serving via&nbsp;Node</h2>
+<p><a href="https://stackoverflow.com/a/61905546/87798">https://stackoverflow.com/a/61905546/87798</a> (Ignore the brew, mkcert&nbsp;stuff)</p>
+<ul>
+<li>Rename the crt and key files to <code>cert.pem</code> and <code>key.pem</code>.</li>
+<li>Run the <code>http-server</code> module with `http-server -P 443 -S -C cert.pem&nbsp;-o’</li>
+</ul>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="setting-up-a-new-computer-running-ubuntu">Setting up a new computer running&nbsp;Ubuntu</h1>
 <ul>
 <li>Move over your private&nbsp;key.</li>
@@ -482,37 +482,26 @@ httpd.serve_forever()
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="tail-calls">Tail&nbsp;calls</h1>
-<p>If a function ends by calling itself, that’s called a tail&nbsp;call.</p>
-<p>It can usually be optimized by converting the function to just use a loop (or jump in assembly) instead of putting up another stack frame for another function&nbsp;call.</p>
-<p>#programming</p>
+            <section class="content"><h2 id="dom"><span class="caps">DOM</span></h2>
+<p>If you parse an <span class="caps">SVG</span> document into a tree, then append one of the child nodes to the browser’s current DOM, then the node disappears from the source tree. Sort of a move, rather than a&nbsp;copy.</p>
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="making-a-video-from-images-in-multiple-directories">Making a video from images in multiple&nbsp;directories</h1>
-<p><a href="https://stackoverflow.com/a/37478183/87798">https://stackoverflow.com/a/37478183/87798</a></p>
-<pre><code>ffmpeg -framerate 30 -pattern_type glob -i &#39;**/*.JPG&#39; \
-  -c:v libx264 -pix_fmt yuv420p out.mp4
-</code></pre><h1 id="rotating-video">Rotating&nbsp;video</h1>
-<p>`ffmpeg -i input.mp4 -vf “transpose=1, transpose=1”&nbsp;output.mp4</p>
-<p>The above rotates the input 90° twice. <code>transpose=0</code> rotates it&nbsp;counterclockwise.</p>
-<p><code>&quot;rotate=PI:bilinear=0&quot;</code> will rotate it 180° and turn off bilinear interpolation to avoid&nbsp;blurriness.</p>
-<h1 id="scaling-down">Scaling&nbsp;down</h1>
-<pre><code>ffmpeg big2840.mp4 -vf scale=3840:1080 -c:v libx264 -crf 20 -preset slow smaller.mp4
-</code></pre><p>The <code>scale</code> value is the target&nbsp;size.</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="wget">wget</h1>
-<h2 id="downloading-all-of-the-links-on-a-web-page">Downloading all of the links on a web&nbsp;page</h2>
-<pre><code>wget -m and robots=off https://the-site-you-want
-</code></pre><p>#bash </p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="zip">Zip</h1>
-<p><code>-j</code> gets it to not put the directory structure into the zip file.
-<code>-x &lt;pattern&gt;</code> makes it ignore files matching the&nbsp;pattern.</p>
+            <section class="content"><h1 id="-jangjorim-">장조림(Jangjorim)</h1>
+<p>From&nbsp;Mom:</p>
+<p>Skirt steak or 결이 있는 good beef stew cut in to big chunk.
+Put it in big pot.
+Minced Garlic, cubic onions,green onions, soy sauce and sugar.
+Do not put water in it.
+Cook it medium high for 20 minutes do not burning  until all the water is&nbsp;gone.</p>
+<blockquote>
+<p><span class="caps">OK</span>! How much sugar for how much beef,&nbsp;about?</p>
+</blockquote>
+<p>Depend on beef.
+1/2 Lbs beef 3 table spoons 1 table spoon.
+Depend on your taste.
+Add 1/2 tea spoon black&nbsp;pepper.</p>
+<p>#cooking</p>
 </section>
           </article>
           <article class="finding">
@@ -536,6 +525,20 @@ httpd.serve_forever()
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="making-a-video-from-images-in-multiple-directories">Making a video from images in multiple&nbsp;directories</h1>
+<p><a href="https://stackoverflow.com/a/37478183/87798">https://stackoverflow.com/a/37478183/87798</a></p>
+<pre><code>ffmpeg -framerate 30 -pattern_type glob -i &#39;**/*.JPG&#39; \
+  -c:v libx264 -pix_fmt yuv420p out.mp4
+</code></pre><h1 id="rotating-video">Rotating&nbsp;video</h1>
+<p>`ffmpeg -i input.mp4 -vf “transpose=1, transpose=1”&nbsp;output.mp4</p>
+<p>The above rotates the input 90° twice. <code>transpose=0</code> rotates it&nbsp;counterclockwise.</p>
+<p><code>&quot;rotate=PI:bilinear=0&quot;</code> will rotate it 180° and turn off bilinear interpolation to avoid&nbsp;blurriness.</p>
+<h1 id="scaling-down">Scaling&nbsp;down</h1>
+<pre><code>ffmpeg big2840.mp4 -vf scale=3840:1080 -c:v libx264 -crf 20 -preset slow smaller.mp4
+</code></pre><p>The <code>scale</code> value is the target&nbsp;size.</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="rsync">rsync</h1>
 <h2 id="dealing-with-spaces-in-the-path">Dealing with spaces in the&nbsp;path</h2>
 <p>Use <code>--protect-args</code>.&nbsp;e.g.:</p>
@@ -551,21 +554,23 @@ httpd.serve_forever()
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="-jangjorim-">장조림(Jangjorim)</h1>
-<p>From&nbsp;Mom:</p>
-<p>Skirt steak or 결이 있는 good beef stew cut in to big chunk.
-Put it in big pot.
-Minced Garlic, cubic onions,green onions, soy sauce and sugar.
-Do not put water in it.
-Cook it medium high for 20 minutes do not burning  until all the water is&nbsp;gone.</p>
-<blockquote>
-<p><span class="caps">OK</span>! How much sugar for how much beef,&nbsp;about?</p>
-</blockquote>
-<p>Depend on beef.
-1/2 Lbs beef 3 table spoons 1 table spoon.
-Depend on your taste.
-Add 1/2 tea spoon black&nbsp;pepper.</p>
-<p>#cooking</p>
+            <section class="content"><h1 id="wget">wget</h1>
+<h2 id="downloading-all-of-the-links-on-a-web-page">Downloading all of the links on a web&nbsp;page</h2>
+<pre><code>wget -m and robots=off https://the-site-you-want
+</code></pre><p>#bash </p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="zip">Zip</h1>
+<p><code>-j</code> gets it to not put the directory structure into the zip file.
+<code>-x &lt;pattern&gt;</code> makes it ignore files matching the&nbsp;pattern.</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="tail-calls">Tail&nbsp;calls</h1>
+<p>If a function ends by calling itself, that’s called a tail&nbsp;call.</p>
+<p>It can usually be optimized by converting the function to just use a loop (or jump in assembly) instead of putting up another stack frame for another function&nbsp;call.</p>
+<p>#programming</p>
 </section>
           </article>
           <article class="finding">
@@ -586,11 +591,6 @@ Add 1/2 tea spoon black&nbsp;pepper.</p>
 <p>There’s a <code>-delete</code> flag.</p>
 <pre><code>find . -name &quot;*.pdf&quot; -delete
 </code></pre><p>#search #unix #command&nbsp;#find</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h2 id="dom"><span class="caps">DOM</span></h2>
-<p>If you parse an <span class="caps">SVG</span> document into a tree, then append one of the child nodes to the browser’s current DOM, then the node disappears from the source tree. Sort of a move, rather than a&nbsp;copy.</p>
 </section>
           </article>
           <article class="finding">
@@ -619,7 +619,7 @@ done
         <!--section.about-->
         <!--  !=contents['about.md'].html-->
         <section class="copy">
-          <p>&copy; 2023 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          <p>&copy; 2024 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
           </p>
           <p><a href='/weblog/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
         </section>
