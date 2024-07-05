@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width" initial-scale="1">
+    <title>The Daily Sutra - jimkang.com
+    </title>
+    <link rel="alternate" href="http://jimkang.com/weblog/feed.xml" type="application/rss+xml" title="It's dot com.">
+    <link rel="stylesheet" href="/weblog/css/main.css">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <!-- include author-->
+        <h1>The Daily Sutra</h1>
+        <!-- p.author-->
+        <!--  | #{ "Written by " }-->
+        <!--  mixin author(page.metadata.author)-->
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>Last Friday, I found myself a liturgical space while listening to a news podcast.
+<span class="more"></span></p>
+<p><style>
+button {
+    font-size: 36px;
+    font-weight: bold;
+    cursor: pointer;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    border-radius: 0.5em;
+    border-width: 0;
+    background-color: hsl(210, 40%, 50%);
+    color: white;
+}
+label {
+    font-size: 0.75em;
+}
+</style>
+<a href="https://nytimes.com/the-daily">The Daily</a> is a daily news podcast. It’s hit-or-miss, but one segment I do appreciate consistently is the “Here’s What You Need to Know Today” bit at end of each episode. It consists of one or two three-sentence stories describing recent events that can generally be agreed upon as being “big news”. Sometimes, I just skip to&nbsp;that.</p>
+<p>On Fridays, if Michael Barbaro is hosting, Here’s What You Need to Know Today is followed up by a very long staff credits&nbsp;read.</p>
+<p>A lot of people work on the Daily, and it is cool that they acknowlege so many of them. But it is weird to just hear names being read for two minutes. Almost no verbs an a sea of names. Because there’s few grammatical waypoints, the segment feels like it goes on for a much longer time than it actually does. The non-verbal, liturgical quality takes the listener to the chant/prayer/incantation&nbsp;space.</p>
+<p>So I could spend more time in that space, I made a player that shuffles chopped up Michael Barbaro samples so you can hear him reading names for as long as you’d&nbsp;like.</p>
+<p>Hit play to start the infinite staff credits chant:
+<br></p>
+<p><button id="play-button">Play</button> <button id="stop-button">Stop</button></p>
+<p><input type="checkbox" checked id="music-checkbox" name="music-checkbox"><label for="music-checkbox">Background music on</label>
+<br></p>
+<audio id="theme-loop-media-el" src="audio/theme-loop.mp3" loop controls style="display: none"></audio>
+
+<p><noscript>(Folks reading this from <span class="caps">RSS</span>: There’s an interactive tool here, probably not displaying in your RSS reader. You have to click through to see it.)</noscript></p>
+<script>
+const queueSize = 30;
+const pauseBetweenNamesMSMin = 1000;
+const pauseBetweenNamesMSRange = 250;
+const musicSpeedPlateauLengthMS = 2000 * 12;
+const musicSpeedShiftLengthMS = 2000 * 2;
+const speedShiftChancePerNameRead = 1/80;
+const maxSpeed = 4.0;
+const minSpeed = 0.5;
+const initialSpeed = 0.9;
+const speedAdjIncrement = 0.0000025;
+var namesRead = 0;
+
+var firstNames = [
+  'Alex',
+  'alicia-2',
+  'astha',
+  'brad-2',
+  'Brendan',
+  'Carlos',
+  'corey-2',
+  'Daniel',
+  'diana',
+  'Elizabeth-full', // edit again
+  'Isabella-full',
+  'jeffrey',
+  'jodie',
+  'Julia',
+  'Larissa',
+  'lexi',
+  'luke',
+  'maddie',
+  'mahima-2',
+  'Marion',
+  'Mary',
+  'michael',
+  'nick',
+  'Nina',
+  'olivia',
+  'page-2',
+  'patricia',
+  'paula',
+  'renan',
+  'ricky-2',
+  'rob',
+  'rochelle',
+  'rowan',
+  'sam-2',
+  'shannon-2',
+  'sophia-2',
+  'Stella-2',
+  'susan',
+  'Will',
+];
+
+var lastNames = [
+  'Anderson,',
+  'Baetube,',
+  'Banja,',
+  'Becker,',
+  'Borelli,',
+  'Calhoun,',
+  'Chablani,',
+  'Chathurvedi,',
+  'dia',
+  'Dolnick,',
+  'Feldman,',
+  'Klinkenberg.',
+  'krupke-2',
+  'Landman,',
+  'Lassam,',
+  'Lee,',
+  'Lozano,',
+  'Masiello,',
+  'Miranda,',
+  'Monday.',
+  'Moore,',
+  'Moxley,',
+  'milan',
+  'Nguyen,',
+  'nat',
+  'namesto-2',
+  'nevetski',
+  'obailen',
+  'Pittman.',
+  'Prieto,',
+  'Ramirez,',
+  'Reed,',
+  'sadie-2',
+  'Schrepple,',
+  'Schuman,',
+  'Simon,',
+  'simon-johnson',
+  'Stern,',
+  'Taylor,',
+  'Tobin,',
+  'vanderploeg-2',
+  'Willens,',
+  'Wilson,',
+  'Wong-2', // edit
+  'zadie',
+  'Zipko,',
+];
+
+var transitions = [
+  'with-help-from',
+  'it-was-edited-by',
+  'contains-original-music-by',
+  'and-was-engineered-by',
+  'special-thanks-to'
+];
+
+var audioByName = {};
+var firstNamesQueue = [];
+var lastNamesQueue = [];
+var transitionsQueue = [];
+
+var lastPlayedKind;
+var introPlayed = false;
+var stopButton = document.getElementById('stop-button');
+var themeLoopMedia = document.getElementById('theme-loop-media-el');
+var musicCheckbox = document.getElementById('music-checkbox');
+
+var adjustSpeedTimeoutKey;
+var playTimeoutKey;
+var playNextTimeoutKey;
+var playing = false;
+
+(function incantation() {
+  getAudio('todays-episode');
+  transitions.forEach(getAudio);
+  firstNames.forEach(getAudio);
+  lastNames.forEach(getAudio);
+  getAudio('and');
+
+  var playButton = document.getElementById('play-button');
+  playButton.addEventListener('click', onPlayClick);
+  themeLoopMedia.playbackRate = initialSpeed;
+  themeLoopMedia.preservesPitch = false;
+
+  musicCheckbox.addEventListener('change', onMusicCheckboxChange);
+
+  async function onPlayClick() {
+    playNext();
+  }
+})();
+
+function playNext() {
+  var audio;
+  const lastNamesQueueJustCompleted = lastNamesQueue.length < 1;
+
+  if (firstNamesQueue.length < 1) {
+    firstNamesQueue = shuffle(firstNames.slice()).slice(0, queueSize);
+  }
+  if (lastNamesQueue.length < 1) {
+    lastNamesQueue = shuffle(lastNames.slice()).slice(0, queueSize);
+  }
+  if (transitionsQueue.length < 1) {
+    transitionsQueue = shuffle(transitions.slice()).slice(0, queueSize);
+  }
+
+  if (!introPlayed) {
+    audio = getAudio('todays-episode');
+    audio.addEventListener('play', setIntroPlayedFlag);
+    play();
+    adjustSpeedTimeoutKey = setTimeout(adjustSpeed, musicSpeedShiftLengthMS);
+    return;
+  }
+
+  var playingKind = 'firstName';
+  var queue = firstNamesQueue;
+  if (lastPlayedKind) {
+    if (lastPlayedKind === 'firstName') {
+      queue = lastNamesQueue;
+      playingKind = 'lastName';
+    } else if (lastPlayedKind === 'lastName') {
+      namesRead += 1;
+      if (lastNamesQueueJustCompleted) {
+        queue = transitionsQueue;
+        playingKind = 'transition';
+      } else if (firstNamesQueue.length === 1 && lastNamesQueue.length === 1) {
+        audio = getAudio('and');
+        playingKind = 'transition';
+        play();
+        return;
+      }
+    }
+  }
+
+  const name = queue.shift();
+  console.log('playNext playing', name);
+  audio = getAudio(name);
+  if (lastPlayedKind && lastPlayedKind === 'lastName') {
+    playTimeoutKey = setTimeout(play, pauseBetweenNamesMSMin + Math.random() * pauseBetweenNamesMSRange);
+  } else {
+    play();
+  }
+
+  function play() {
+    stopButton.addEventListener('click', onStopClick);
+    audio.play();
+    playing = true;
+    //console.log('Playing', name);
+    lastPlayedKind = playingKind;
+    if (themeLoopMedia.paused && musicCheckbox.checked) {
+      themeLoopMedia.play();
+    }
+  }
+
+  function onStopClick() {
+    [playTimeoutKey, playNextTimeoutKey, adjustSpeedTimeoutKey].forEach(key => key && clearTimeout(key));
+    audio.pause();
+    themeLoopMedia.pause();
+    playing = false;
+  }
+}
+
+function onMusicCheckboxChange() {
+  if (playing) {
+    if (musicCheckbox.checked) {
+      if (themeLoopMedia.paused) {
+        themeLoopMedia.play();
+      }
+    } else {
+      if (!themeLoopMedia.paused) {
+        themeLoopMedia.pause();
+      }
+    }
+  }
+}
+
+function setIntroPlayedFlag() {
+  introPlayed = true;
+}
+
+function getAudio(name) {
+  var audio = audioByName[name];
+  if (!audio) {
+    const url = getNameURL(name);
+    audio = new Audio(url);
+    // The 'playing' event is sometimes double triggered when starting after
+    // being paused. This doesn't seem to be the case for 'play'.
+    audio.addEventListener('play', onPlay);
+    //audio.addEventListener('ended', playNext);
+
+    audioByName[name] = audio;
+  }
+  return audio;
+
+  function onPlay() {
+    //console.log('Setting next after', name, 'to play in', audio.duration, 'seconds.');
+    playNextTimeoutKey = setTimeout(playNext, audio.duration * 1000);
+  }
+}
+
+function getNameURL(name) {
+  return `audio/${name}.mp3`;
+}
+
+async function downloadAudioBuffer(ctx, url) {
+  try {
+    let res = await fetch(url);
+    let buffer = await res.arrayBuffer();
+    let audioBuffer = await ctx.decodeAudioData(buffer);
+    return audioBuffer;
+  } catch (error) {
+    console.error('Error while downloading and decoding', url, ':', error);
+  }
+}
+
+// From Underscore.js.
+function shuffle(array) {
+  var length = array.length;
+  var shuffled = Array(length);
+  for (var index = 0, rand; index < length; index++) {
+    rand = ~~(Math.random() * (index + 1));
+    if (rand !== index) {
+      shuffled[index] = shuffled[rand];
+    }
+    shuffled[rand] = array[index];
+  }
+  return shuffled;
+}
+
+function adjustSpeed() {
+  if (Math.random() > speedShiftChancePerNameRead * namesRead) {
+    setTimeout(adjustSpeed, musicSpeedPlateauLengthMS);
+    return;
+  }
+
+  const targetSpeedDirection = ~~(Math.random() * 5) < 3 ? -1 : 1;
+  var targetSpeed = 1;
+  if (targetSpeedDirection < 0) {
+    targetSpeed = 0.5 + Math.round(Math.random() * 4)/8.0;
+  } else if (targetSpeedDirection > 0) {
+    targetSpeed = 1.5 + Math.round(Math.random() * 5)/2;
+  }
+  console.log('New target speed of', targetSpeed);
+
+  requestAnimationFrame(moveTowardTargetSpeed);
+
+  function moveTowardTargetSpeed() {
+    if (Math.abs(themeLoopMedia.playbackRate - targetSpeed) < speedAdjIncrement) {
+      themeLoopMedia.playbackRate = targetSpeed;
+      console.log('Reached target speed of', targetSpeed);
+      setTimeout(adjustSpeed, musicSpeedPlateauLengthMS);
+      return;
+    }
+
+    const adjustment = themeLoopMedia.playbackRate > targetSpeed ? -speedAdjIncrement : speedAdjIncrement;
+    themeLoopMedia.playbackRate = themeLoopMedia.playbackRate + adjustment;
+    requestAnimationFrame(moveTowardTargetSpeed);
+  }
+}
+// Wow, wintersmith will freak out and interpet the <span class="caps">JS</span> as Markdown is there's not a linebreak after this closing script tag.
+</script>
+
+<p><br>
+(The other main host, Sabrina Tavernise, has much sharper enunciation than Michael Barbaro. There’s also generally a lot more life in her voice, so it would be interesting see what kind of vibe an infinite read by her would produce. Unfortunately, as far as I can tell, she never does the long staff credits&nbsp;read.)</p>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/weblog/">« Full blog</a></div>
+        <!--section.about-->
+        <!--  !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2024 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+          <p><a href='/weblog/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>

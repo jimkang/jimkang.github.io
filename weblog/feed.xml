@@ -5,9 +5,368 @@
     <atom:link href="http://jimkang.com/weblog/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Wed, 07 Feb 2024 19:00:00 -0500</pubDate>
+    <pubDate>Thu, 04 Jul 2024 20:00:00 -0400</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>The Daily Sutra</title>
+      <link>http://jimkang.com/weblog/articles/daily-sutra/</link>
+      <pubDate>Thu, 04 Jul 2024 20:00:00 -0400</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/daily-sutra/</guid>
+      <author></author>
+      <description>&lt;p&gt;Last Friday, I found myself a liturgical space while listening to a news podcast.
+&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;style&gt;
+button {
+    font-size: 36px;
+    font-weight: bold;
+    cursor: pointer;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    border-radius: 0.5em;
+    border-width: 0;
+    background-color: hsl(210, 40%, 50%);
+    color: white;
+}
+label {
+    font-size: 0.75em;
+}
+&lt;/style&gt;
+&lt;a href=&quot;https://nytimes.com/the-daily&quot;&gt;The Daily&lt;/a&gt; is a daily news podcast. It’s hit-or-miss, but one segment I do appreciate consistently is the “Here’s What You Need to Know Today” bit at end of each episode. It consists of one or two three-sentence stories describing recent events that can generally be agreed upon as being “big news”. Sometimes, I just skip to that.&lt;/p&gt;
+&lt;p&gt;On Fridays, if Michael Barbaro is hosting, Here’s What You Need to Know Today is followed up by a very long staff credits read.&lt;/p&gt;
+&lt;p&gt;A lot of people work on the Daily, and it is cool that they acknowlege so many of them. But it is weird to just hear names being read for two minutes. Almost no verbs an a sea of names. Because there’s few grammatical waypoints, the segment feels like it goes on for a much longer time than it actually does. The non-verbal, liturgical quality takes the listener to the chant/prayer/incantation space.&lt;/p&gt;
+&lt;p&gt;So I could spend more time in that space, I made a player that shuffles chopped up Michael Barbaro samples so you can hear him reading names for as long as you’d like.&lt;/p&gt;
+&lt;p&gt;Hit play to start the infinite staff credits chant:
+&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;button id=&quot;play-button&quot;&gt;Play&lt;/button&gt; &lt;button id=&quot;stop-button&quot;&gt;Stop&lt;/button&gt;&lt;/p&gt;
+&lt;p&gt;&lt;input type=&quot;checkbox&quot; checked id=&quot;music-checkbox&quot; name=&quot;music-checkbox&quot;&gt;&lt;label for=&quot;music-checkbox&quot;&gt;Background music on&lt;/label&gt;
+&lt;br&gt;&lt;/p&gt;
+&lt;audio id=&quot;theme-loop-media-el&quot; src=&quot;audio/theme-loop.mp3&quot; loop controls style=&quot;display: none&quot;&gt;&lt;/audio&gt;
+
+&lt;p&gt;&lt;noscript&gt;(Folks reading this from RSS: There’s an interactive tool here, probably not displaying in your RSS reader. You have to click through to see it.)&lt;/noscript&gt;&lt;/p&gt;
+&lt;script&gt;
+const queueSize = 30;
+const pauseBetweenNamesMSMin = 1000;
+const pauseBetweenNamesMSRange = 250;
+const musicSpeedPlateauLengthMS = 2000 * 12;
+const musicSpeedShiftLengthMS = 2000 * 2;
+const speedShiftChancePerNameRead = 1/80;
+const maxSpeed = 4.0;
+const minSpeed = 0.5;
+const initialSpeed = 0.9;
+const speedAdjIncrement = 0.0000025;
+var namesRead = 0;
+
+var firstNames = [
+  'Alex',
+  'alicia-2',
+  'astha',
+  'brad-2',
+  'Brendan',
+  'Carlos',
+  'corey-2',
+  'Daniel',
+  'diana',
+  'Elizabeth-full', // edit again
+  'Isabella-full',
+  'jeffrey',
+  'jodie',
+  'Julia',
+  'Larissa',
+  'lexi',
+  'luke',
+  'maddie',
+  'mahima-2',
+  'Marion',
+  'Mary',
+  'michael',
+  'nick',
+  'Nina',
+  'olivia',
+  'page-2',
+  'patricia',
+  'paula',
+  'renan',
+  'ricky-2',
+  'rob',
+  'rochelle',
+  'rowan',
+  'sam-2',
+  'shannon-2',
+  'sophia-2',
+  'Stella-2',
+  'susan',
+  'Will',
+];
+
+var lastNames = [
+  'Anderson,',
+  'Baetube,',
+  'Banja,',
+  'Becker,',
+  'Borelli,',
+  'Calhoun,',
+  'Chablani,',
+  'Chathurvedi,',
+  'dia',
+  'Dolnick,',
+  'Feldman,',
+  'Klinkenberg.',
+  'krupke-2',
+  'Landman,',
+  'Lassam,',
+  'Lee,',
+  'Lozano,',
+  'Masiello,',
+  'Miranda,',
+  'Monday.',
+  'Moore,',
+  'Moxley,',
+  'milan',
+  'Nguyen,',
+  'nat',
+  'namesto-2',
+  'nevetski',
+  'obailen',
+  'Pittman.',
+  'Prieto,',
+  'Ramirez,',
+  'Reed,',
+  'sadie-2',
+  'Schrepple,',
+  'Schuman,',
+  'Simon,',
+  'simon-johnson',
+  'Stern,',
+  'Taylor,',
+  'Tobin,',
+  'vanderploeg-2',
+  'Willens,',
+  'Wilson,',
+  'Wong-2', // edit
+  'zadie',
+  'Zipko,',
+];
+
+var transitions = [
+  'with-help-from',
+  'it-was-edited-by',
+  'contains-original-music-by',
+  'and-was-engineered-by',
+  'special-thanks-to'
+];
+
+var audioByName = {};
+var firstNamesQueue = [];
+var lastNamesQueue = [];
+var transitionsQueue = [];
+
+var lastPlayedKind;
+var introPlayed = false;
+var stopButton = document.getElementById('stop-button');
+var themeLoopMedia = document.getElementById('theme-loop-media-el');
+var musicCheckbox = document.getElementById('music-checkbox');
+
+var adjustSpeedTimeoutKey;
+var playTimeoutKey;
+var playNextTimeoutKey;
+var playing = false;
+
+(function incantation() {
+  getAudio('todays-episode');
+  transitions.forEach(getAudio);
+  firstNames.forEach(getAudio);
+  lastNames.forEach(getAudio);
+  getAudio('and');
+
+  var playButton = document.getElementById('play-button');
+  playButton.addEventListener('click', onPlayClick);
+  themeLoopMedia.playbackRate = initialSpeed;
+  themeLoopMedia.preservesPitch = false;
+
+  musicCheckbox.addEventListener('change', onMusicCheckboxChange);
+
+  async function onPlayClick() {
+    playNext();
+  }
+})();
+
+function playNext() {
+  var audio;
+  const lastNamesQueueJustCompleted = lastNamesQueue.length &lt; 1;
+
+  if (firstNamesQueue.length &lt; 1) {
+    firstNamesQueue = shuffle(firstNames.slice()).slice(0, queueSize);
+  }
+  if (lastNamesQueue.length &lt; 1) {
+    lastNamesQueue = shuffle(lastNames.slice()).slice(0, queueSize);
+  }
+  if (transitionsQueue.length &lt; 1) {
+    transitionsQueue = shuffle(transitions.slice()).slice(0, queueSize);
+  }
+
+  if (!introPlayed) {
+    audio = getAudio('todays-episode');
+    audio.addEventListener('play', setIntroPlayedFlag);
+    play();
+    adjustSpeedTimeoutKey = setTimeout(adjustSpeed, musicSpeedShiftLengthMS);
+    return;
+  }
+
+  var playingKind = 'firstName';
+  var queue = firstNamesQueue;
+  if (lastPlayedKind) {
+    if (lastPlayedKind === 'firstName') {
+      queue = lastNamesQueue;
+      playingKind = 'lastName';
+    } else if (lastPlayedKind === 'lastName') {
+      namesRead += 1;
+      if (lastNamesQueueJustCompleted) {
+        queue = transitionsQueue;
+        playingKind = 'transition';
+      } else if (firstNamesQueue.length === 1 &amp;&amp; lastNamesQueue.length === 1) {
+        audio = getAudio('and');
+        playingKind = 'transition';
+        play();
+        return;
+      }
+    }
+  }
+
+  const name = queue.shift();
+  console.log('playNext playing', name);
+  audio = getAudio(name);
+  if (lastPlayedKind &amp;&amp; lastPlayedKind === 'lastName') {
+    playTimeoutKey = setTimeout(play, pauseBetweenNamesMSMin + Math.random() * pauseBetweenNamesMSRange);
+  } else {
+    play();
+  }
+
+  function play() {
+    stopButton.addEventListener('click', onStopClick);
+    audio.play();
+    playing = true;
+    //console.log('Playing', name);
+    lastPlayedKind = playingKind;
+    if (themeLoopMedia.paused &amp;&amp; musicCheckbox.checked) {
+      themeLoopMedia.play();
+    }
+  }
+
+  function onStopClick() {
+    [playTimeoutKey, playNextTimeoutKey, adjustSpeedTimeoutKey].forEach(key =&gt; key &amp;&amp; clearTimeout(key));
+    audio.pause();
+    themeLoopMedia.pause();
+    playing = false;
+  }
+}
+
+function onMusicCheckboxChange() {
+  if (playing) {
+    if (musicCheckbox.checked) {
+      if (themeLoopMedia.paused) {
+        themeLoopMedia.play();
+      }
+    } else {
+      if (!themeLoopMedia.paused) {
+        themeLoopMedia.pause();
+      }
+    }
+  }
+}
+
+function setIntroPlayedFlag() {
+  introPlayed = true;
+}
+
+function getAudio(name) {
+  var audio = audioByName[name];
+  if (!audio) {
+    const url = getNameURL(name);
+    audio = new Audio(url);
+    // The 'playing' event is sometimes double triggered when starting after
+    // being paused. This doesn't seem to be the case for 'play'.
+    audio.addEventListener('play', onPlay);
+    //audio.addEventListener('ended', playNext);
+
+    audioByName[name] = audio;
+  }
+  return audio;
+
+  function onPlay() {
+    //console.log('Setting next after', name, 'to play in', audio.duration, 'seconds.');
+    playNextTimeoutKey = setTimeout(playNext, audio.duration * 1000);
+  }
+}
+
+function getNameURL(name) {
+  return `audio/${name}.mp3`;
+}
+
+async function downloadAudioBuffer(ctx, url) {
+  try {
+    let res = await fetch(url);
+    let buffer = await res.arrayBuffer();
+    let audioBuffer = await ctx.decodeAudioData(buffer);
+    return audioBuffer;
+  } catch (error) {
+    console.error('Error while downloading and decoding', url, ':', error);
+  }
+}
+
+// From Underscore.js.
+function shuffle(array) {
+  var length = array.length;
+  var shuffled = Array(length);
+  for (var index = 0, rand; index &lt; length; index++) {
+    rand = ~~(Math.random() * (index + 1));
+    if (rand !== index) {
+      shuffled[index] = shuffled[rand];
+    }
+    shuffled[rand] = array[index];
+  }
+  return shuffled;
+}
+
+function adjustSpeed() {
+  if (Math.random() &gt; speedShiftChancePerNameRead * namesRead) {
+    setTimeout(adjustSpeed, musicSpeedPlateauLengthMS);
+    return;
+  }
+
+  const targetSpeedDirection = ~~(Math.random() * 5) &lt; 3 ? -1 : 1;
+  var targetSpeed = 1;
+  if (targetSpeedDirection &lt; 0) {
+    targetSpeed = 0.5 + Math.round(Math.random() * 4)/8.0;
+  } else if (targetSpeedDirection &gt; 0) {
+    targetSpeed = 1.5 + Math.round(Math.random() * 5)/2;
+  }
+  console.log('New target speed of', targetSpeed);
+
+  requestAnimationFrame(moveTowardTargetSpeed);
+
+  function moveTowardTargetSpeed() {
+    if (Math.abs(themeLoopMedia.playbackRate - targetSpeed) &lt; speedAdjIncrement) {
+      themeLoopMedia.playbackRate = targetSpeed;
+      console.log('Reached target speed of', targetSpeed);
+      setTimeout(adjustSpeed, musicSpeedPlateauLengthMS);
+      return;
+    }
+
+    const adjustment = themeLoopMedia.playbackRate &gt; targetSpeed ? -speedAdjIncrement : speedAdjIncrement;
+    themeLoopMedia.playbackRate = themeLoopMedia.playbackRate + adjustment;
+    requestAnimationFrame(moveTowardTargetSpeed);
+  }
+}
+// Wow, wintersmith will freak out and interpet the JS as Markdown is there's not a linebreak after this closing script tag.
+&lt;/script&gt;
+
+&lt;p&gt;&lt;br&gt;
+(The other main host, Sabrina Tavernise, has much sharper enunciation than Michael Barbaro. There’s also generally a lot more life in her voice, so it would be interesting see what kind of vibe an infinite read by her would produce. Unfortunately, as far as I can tell, she never does the long staff credits read.)&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>The mystery of the Confucian Girl</title>
       <link>http://jimkang.com/weblog/articles/mystery-of-the-confucian-girl/</link>
@@ -1265,39 +1624,6 @@ done
 </description>
     </item>
     <item>
-      <title>Civilized Bandcamp file unzipping</title>
-      <link>http://jimkang.com/weblog/articles/bandcamp-unzip/</link>
-      <pubDate>Wed, 17 Feb 2021 19:00:00 -0500</pubDate>
-      <guid isPermaLink="true">http://jimkang.com/weblog/articles/bandcamp-unzip/</guid>
-      <author></author>
-      <description>&lt;p&gt;Here’s a script that’s handy for unzipping stuff you download from Bandcamp.
-&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;Bandcamp gives you zip files that contain no directory structure. So, the files just unzip to whatever directory you’re in. I have found that to get messy, and I now like an &lt;code&gt;artist-dir/album-dir&lt;/code&gt; structure, like I’m in the year 2000.&lt;/p&gt;
-&lt;p&gt;Here’s a script I wrote to unzip Bandcamp zip files into such a structure. It uses the naming scheme of the zip file (&lt;code&gt;&amp;lt;artist name&amp;gt;&lt;/code&gt;-&lt;code&gt;&amp;lt;album name&amp;gt;&lt;/code&gt;) to determine the appropriate directory names.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;#!/bin/bash
-
-for file in *.zip
-  do
-    filename=&amp;quot;${file%.*}&amp;quot;
-    # Filenames can&amp;#39;t contain /. So, I wonder
-    # what Bandcamp would do if they had AC/DC?
-    unzippath=$(echo &amp;quot;$filename&amp;quot; |sed -e &amp;#39;s/ - /\//&amp;#39;)
-    mkdir -p &amp;quot;$unzippath&amp;quot;
-    unzip &amp;quot;$filename&amp;quot; -d &amp;quot;$unzippath&amp;quot;
-  done
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;It will run on all of the zip files in the working directory. You’ll end up with your mp3 files in directory structures like &lt;code&gt;Chaucerian Myth/The Canterbury Tales&lt;/code&gt; now.&lt;/p&gt;
-&lt;p&gt;&lt;hr&gt;&lt;/p&gt;
-&lt;p&gt;&lt;blockquote&gt;Here, we’re about to drift away from that tiny script into background story space! I feel like a guy that responds to “Where is the nearest gas station?” with a long explanation of local zoning policy and their own personal journey away from fossil fuels to a house powered entirely with solar panels. (I actually would like solar panels, BTW.)&lt;/p&gt;
-&lt;p&gt;Unlike that guy, however, there is no way I’ll notice if you just close the tab now!&lt;/blockquote&gt;&lt;/p&gt;
-&lt;hr&gt;
-
-&lt;p&gt;This has come up because I’ve been increasingly enjoying &lt;a href=&quot;https://bandcamp.com/&quot;&gt;Bandcamp&lt;/a&gt; over the last few years, but now I’m all in on them.&lt;/p&gt;
-&lt;p&gt;I’ve usually used their streaming service, but lately I’ve been downloading albums from them and importing them into &lt;a href=&quot;https://plex.tv/&quot;&gt;Plex&lt;/a&gt; to play. (I like it because lets me stream from my Raspberry Pi at home to my phone. The Bandcamp app also lets you stream to your phone but only with music you’ve bought on Bandcamp.)&lt;/p&gt;
-&lt;p&gt;At first, I thought I’d dump all of my files into one directory and let Plex use ID3 tags to organize them, but you still have to get into the files sometimes, and a 4,000-file directory is total hell. Via Bandcamp purchases and CD rips (weird, I know), this pile is growing again after being frozen for half a decade and needs a little structure.&lt;/p&gt;
-&lt;p&gt;I think I like this way of listening to and acquiring music, as backwards as it sounds, because I tend to consider each album more fully and give each one more of a chance, either because I bought it directly or I once bought it long ago and now have put in the work to rip a CD. And in the cases when I buy from a label-less artist, I provide magnitudes more financial compensation to the artist than I would via any streaming service.&lt;/p&gt;
-</description>
-    </item>
-    <item>
       <title>The web actually breathing usability into old tools</title>
       <link>http://jimkang.com/weblog/articles/web-creating-usability/</link>
       <pubDate>Wed, 17 Feb 2021 19:00:00 -0500</pubDate>
@@ -1417,6 +1743,39 @@ For years, I’ve used &lt;a href=&quot;https://graphviz.org/&quot;&gt;Graphviz&
 &lt;p&gt;But that would reduce profits, and Milton Friedman has famously proclaimed that corporations’ sole responsibility is to maximize profit. (And as we all know, Milton Friedman is a god-pharaoh that issues forth waves that &lt;em&gt;compel all to obey&lt;/em&gt; from his sarcophagus underneath the University of Chicago.)&lt;/p&gt;
 &lt;p&gt;For smaller companies, indie developers, and people who just want to make something nice for others, it’s hard to imagine better alternatives, except perhaps offline web apps (which aren’t easy for a lot of users to wrap their heads around &amp;mdash; the association between the web and internet connections is strong) or putting all of their proverbial eggs on a specific platform.&lt;/p&gt;
 &lt;p&gt;I guess all I’m saying is: Web browsers are (sadly?) the closest we’ve ever gotten to a universal app platform, so I hope we can cut away their many excesses and abuses while keeping that part.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Civilized Bandcamp file unzipping</title>
+      <link>http://jimkang.com/weblog/articles/bandcamp-unzip/</link>
+      <pubDate>Wed, 17 Feb 2021 19:00:00 -0500</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/bandcamp-unzip/</guid>
+      <author></author>
+      <description>&lt;p&gt;Here’s a script that’s handy for unzipping stuff you download from Bandcamp.
+&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Bandcamp gives you zip files that contain no directory structure. So, the files just unzip to whatever directory you’re in. I have found that to get messy, and I now like an &lt;code&gt;artist-dir/album-dir&lt;/code&gt; structure, like I’m in the year 2000.&lt;/p&gt;
+&lt;p&gt;Here’s a script I wrote to unzip Bandcamp zip files into such a structure. It uses the naming scheme of the zip file (&lt;code&gt;&amp;lt;artist name&amp;gt;&lt;/code&gt;-&lt;code&gt;&amp;lt;album name&amp;gt;&lt;/code&gt;) to determine the appropriate directory names.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#!/bin/bash
+
+for file in *.zip
+  do
+    filename=&amp;quot;${file%.*}&amp;quot;
+    # Filenames can&amp;#39;t contain /. So, I wonder
+    # what Bandcamp would do if they had AC/DC?
+    unzippath=$(echo &amp;quot;$filename&amp;quot; |sed -e &amp;#39;s/ - /\//&amp;#39;)
+    mkdir -p &amp;quot;$unzippath&amp;quot;
+    unzip &amp;quot;$filename&amp;quot; -d &amp;quot;$unzippath&amp;quot;
+  done
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;It will run on all of the zip files in the working directory. You’ll end up with your mp3 files in directory structures like &lt;code&gt;Chaucerian Myth/The Canterbury Tales&lt;/code&gt; now.&lt;/p&gt;
+&lt;p&gt;&lt;hr&gt;&lt;/p&gt;
+&lt;p&gt;&lt;blockquote&gt;Here, we’re about to drift away from that tiny script into background story space! I feel like a guy that responds to “Where is the nearest gas station?” with a long explanation of local zoning policy and their own personal journey away from fossil fuels to a house powered entirely with solar panels. (I actually would like solar panels, BTW.)&lt;/p&gt;
+&lt;p&gt;Unlike that guy, however, there is no way I’ll notice if you just close the tab now!&lt;/blockquote&gt;&lt;/p&gt;
+&lt;hr&gt;
+
+&lt;p&gt;This has come up because I’ve been increasingly enjoying &lt;a href=&quot;https://bandcamp.com/&quot;&gt;Bandcamp&lt;/a&gt; over the last few years, but now I’m all in on them.&lt;/p&gt;
+&lt;p&gt;I’ve usually used their streaming service, but lately I’ve been downloading albums from them and importing them into &lt;a href=&quot;https://plex.tv/&quot;&gt;Plex&lt;/a&gt; to play. (I like it because lets me stream from my Raspberry Pi at home to my phone. The Bandcamp app also lets you stream to your phone but only with music you’ve bought on Bandcamp.)&lt;/p&gt;
+&lt;p&gt;At first, I thought I’d dump all of my files into one directory and let Plex use ID3 tags to organize them, but you still have to get into the files sometimes, and a 4,000-file directory is total hell. Via Bandcamp purchases and CD rips (weird, I know), this pile is growing again after being frozen for half a decade and needs a little structure.&lt;/p&gt;
+&lt;p&gt;I think I like this way of listening to and acquiring music, as backwards as it sounds, because I tend to consider each album more fully and give each one more of a chance, either because I bought it directly or I once bought it long ago and now have put in the work to rip a CD. And in the cases when I buy from a label-less artist, I provide magnitudes more financial compensation to the artist than I would via any streaming service.&lt;/p&gt;
 </description>
     </item>
     <item>
