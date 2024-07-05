@@ -60,7 +60,7 @@ const pauseBetweenNamesMSMin = 1000;
 const pauseBetweenNamesMSRange = 250;
 const musicSpeedPlateauLengthMS = 2000 * 12;
 const musicSpeedShiftLengthMS = 2000 * 2;
-const speedShiftChancePerNameRead = 1/80;
+const speedShiftChancePerNameRead = 1/50;
 const maxSpeed = 4.0;
 const minSpeed = 0.5;
 const initialSpeed = 0.9;
@@ -77,7 +77,7 @@ var firstNames = [
   'corey-2',
   'Daniel',
   'diana',
-  'Elizabeth-full', // edit again
+  'Elizabeth-full',
   'Isabella-full',
   'jeffrey',
   'jodie',
@@ -153,7 +153,7 @@ var lastNames = [
   'vanderploeg-2',
   'Willens,',
   'Wilson,',
-  'Wong-2', // edit
+  'Wong-2',
   'zadie',
   'Zipko,',
 ];
@@ -244,7 +244,6 @@ function playNext() {
   }
 
   const name = queue.shift();
-  console.log('playNext playing', name);
   audio = getAudio(name);
   if (lastPlayedKind && lastPlayedKind === 'lastName') {
     playTimeoutKey = setTimeout(play, pauseBetweenNamesMSMin + Math.random() * pauseBetweenNamesMSRange);
@@ -373,6 +372,7 @@ function adjustSpeed() {
 
 <p><br>
 (The other main host, Sabrina Tavernise, has much sharper enunciation than Michael Barbaro. There’s also generally a lot more life in her voice, so it would be interesting see what kind of vibe an infinite read by her would produce. Unfortunately, as far as I can tell, she never does the long staff credits&nbsp;read.)</p>
+<p>(Also, I don’t think this works on Mobile Safari. Apple wants people to support Mobile Safari but basically requires people to buy Macs to debug Mobile Safari issues. ¯\<em>(ツ)</em>/¯)</p>
 </section>
         </article>
       </div>

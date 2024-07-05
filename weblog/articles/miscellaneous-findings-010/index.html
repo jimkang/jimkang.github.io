@@ -225,6 +225,28 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="getting-apps-to-show-up-in-ubuntu-search">Getting apps to show up in Ubuntu&nbsp;search</h1>
+<p>You know how when you hit ctrl+space, you can type an app name and then launch it from there? Sometime an app won’t show up there if you’ve installed it as an AppImage or just downloaded it to run from wherever you put it instead of using a&nbsp;Snap.</p>
+<p>That’s not the actual reason, it’s not showing up in desktop search, though. It’s because it doesn’t have a <code>.desktop</code> file.</p>
+<p>You can look at a bunch of <code>.desktop</code> files in <code>/usr/share/applications</code>, then copy and edit one of them to make a new&nbsp;one.</p>
+<p>Here is a minimal one that I made for Obsidian, named <code>obsidian.desktop</code>, which I run as an AppImage because there was no Snap when I first got&nbsp;it:</p>
+<pre><code>[Desktop Entry]
+Name=Obsidian
+GenericName=Notes organizer
+Comment=Organize notes
+Exec=/home/myuserdir/apps/Obsidian-1.0.3.AppImage
+Terminal=false
+Type=Application
+Keywords=notes;organizer;
+Icon=/home/myuserdir/apps/obsidian-meta/obsidian-icon-256.png
+Categories=Utility;TextEditor;
+StartupNotify=false
+MimeType=text/english;text/plain;text/x-markdown;
+</code></pre><p>Now it shows up, and I don’t have to open a new terminal tab to launch it. I’ve done the same for Firefox because I’m now just using a version downloaded from its site to avoid the [issue in which the Snap image makes the mouse cursor really small on Ubuntu&nbsp;22.04.1]</p>
+<p>#ubuntu</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="getting-noita-to-run-on-ubuntu">Getting Noita to run on&nbsp;Ubuntu</h1>
 <ul>
 <li>Get the game from <span class="caps">GOG</span>, not&nbsp;Steam.</li>
@@ -261,25 +283,43 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="getting-apps-to-show-up-in-ubuntu-search">Getting apps to show up in Ubuntu&nbsp;search</h1>
-<p>You know how when you hit ctrl+space, you can type an app name and then launch it from there? Sometime an app won’t show up there if you’ve installed it as an AppImage or just downloaded it to run from wherever you put it instead of using a&nbsp;Snap.</p>
-<p>That’s not the actual reason, it’s not showing up in desktop search, though. It’s because it doesn’t have a <code>.desktop</code> file.</p>
-<p>You can look at a bunch of <code>.desktop</code> files in <code>/usr/share/applications</code>, then copy and edit one of them to make a new&nbsp;one.</p>
-<p>Here is a minimal one that I made for Obsidian, named <code>obsidian.desktop</code>, which I run as an AppImage because there was no Snap when I first got&nbsp;it:</p>
-<pre><code>[Desktop Entry]
-Name=Obsidian
-GenericName=Notes organizer
-Comment=Organize notes
-Exec=/home/myuserdir/apps/Obsidian-1.0.3.AppImage
-Terminal=false
-Type=Application
-Keywords=notes;organizer;
-Icon=/home/myuserdir/apps/obsidian-meta/obsidian-icon-256.png
-Categories=Utility;TextEditor;
-StartupNotify=false
-MimeType=text/english;text/plain;text/x-markdown;
-</code></pre><p>Now it shows up, and I don’t have to open a new terminal tab to launch it. I’ve done the same for Firefox because I’m now just using a version downloaded from its site to avoid the [issue in which the Snap image makes the mouse cursor really small on Ubuntu&nbsp;22.04.1]</p>
-<p>#ubuntu</p>
+            <section class="content"><h1 id="caching-in-github-actions">Caching in GitHub&nbsp;Actions</h1>
+<h2 id="standard-dependency-installs">Standard dependency&nbsp;installs</h2>
+<p>Most of the official setup GitHub Actions that set up an environment for a language have their own caching features. For example, <a href="https://github.com/actions/setup-python#caching-packages-dependencies">setup-python V4</a> lets you cache pip installs by specifying <code>with: cache: pip</code> when you use that&nbsp;action.</p>
+<p>Here is an example config for a Python&nbsp;job:</p>
+<pre><code>jobs:
+  run-job:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: ${{ github.event.client_payload.id }}
+        run: echo run identifier ${{ github.event.client_payload.id }}
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: &quot;3.9&quot;
+          cache: pip
+      - run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+</code></pre><h1 id="arbitrary-caching">Arbitrary&nbsp;caching</h1>
+<p>In the case that an action needs to download an artifact (like statistical models in the case of <a href="https://www.nltk.org/"><span class="caps">NLTK</span></a>), GitHub Actions provides a way to cache arbitary&nbsp;things.</p>
+<p>There is an <code>actions/cache@v3</code> action, which takes <code>key</code> and <code>path</code> parameters. It will check for a cache with the key specified your action. If it can’t find one, it will set a flag that you can use and (counterintuitively, <span class="caps">IMO</span>) <a href="https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows">create a new cache for that key</a>.</p>
+<p>Implicitly (as far as I can tell so far), if your job completes successfully, it will save what’s at <code>path</code> to the cache. So, in the case of a cache miss, your action has an obligation to download whatever it needs and put it at <code>path</code> so that it gets cached for the next run. The action can check for a cache miss with <code>if: steps.&lt;the id of the step in which you use actions/cache@v3&gt;.outputs.cache-hit != &#39;true&#39;</code>.</p>
+<p>Here is an&nbsp;example:</p>
+<pre><code>  - name: Restore cached nltk_data
+    id: restore-nltk-cache
+    uses: actions/cache@v3
+    with:
+      path: |
+        ~/nltk_data
+      key: nltk_data
+  - name: Install nltk_data on cache miss
+    run: |
+      NLTK_DATA=~/nltk_data python -m nltk.downloader punkt
+      NLTK_DATA=~/nltk_data python -m nltk.downloader stopwords
+    if: steps.restore-nltk-cache.outputs.cache-hit != &#39;true&#39;
+</code></pre><p>If it does find a cache for <code>key</code>, then it puts the cache’s content at <code>path</code>.</p>
+<p>Restoring a 27 <span class="caps">MB</span> cache took less than a second, as of&nbsp;2022-07-22.</p>
 </section>
           </article>
           <article class="finding">
@@ -298,48 +338,6 @@ MimeType=text/english;text/plain;text/x-markdown;
 </code></pre>
 <p>This strongly implies that the crawler actually will notice <span class="caps">DOM</span> changes after the page has been loaded, including <code>&lt;meta&gt;</code> tags.</p>
 <p>#crawling&nbsp;#javascript</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="serving-local-web-apps-via-https">Serving local web apps via&nbsp;https</h1>
-<p>If you need to serve a local web page via&nbsp;https:</p>
-<h2 id="create-a-cert">Create a&nbsp;cert</h2>
-<p><a href="https://letsencrypt.org/docs/certificates-for-localhost/">https://letsencrypt.org/docs/certificates-for-localhost/</a></p>
-<pre><code>openssl req -x509 -out localhost.crt -keyout localhost.key \
-  -newkey rsa:2048 -nodes -sha256 \
-  -subj &#39;/CN=localhost&#39; -extensions EXT -config &lt;( \
-   printf &quot;[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth&quot;)
-</code></pre><h2 id="serving-via-python">Serving via&nbsp;Python</h2>
-<ul>
-<li>Mash the crt and key files together: <code></code>cat localhost.crt localhost.key &gt;&nbsp;localhost.pem`</li>
-<li>Create a server script like so:
-<code>`</code>from http.server import HTTPServer, SimpleHTTPRequestHandler
-import&nbsp;ssl</li>
-</ul>
-<p>httpd = HTTPServer((“localhost”, 443), SimpleHTTPRequestHandler)
-httpd.socket = ssl.wrap_socket(
-    httpd.socket, certfile=”./localhost.pem”, server_side=True
-)
-httpd.serve_forever()
-<code>`</code></p>
-<ul>
-<li>Start it with <code>sudo python3 server.py</code>.</li>
-</ul>
-<h2 id="serving-via-node">Serving via&nbsp;Node</h2>
-<p><a href="https://stackoverflow.com/a/61905546/87798">https://stackoverflow.com/a/61905546/87798</a> (Ignore the brew, mkcert&nbsp;stuff)</p>
-<ul>
-<li>Rename the crt and key files to <code>cert.pem</code> and <code>key.pem</code>.</li>
-<li>Run the <code>http-server</code> module with `http-server -P 443 -S -C cert.pem&nbsp;-o’</li>
-</ul>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="moonlander">Moonlander</h1>
-<h2 id="wally-getting-stuck-after-you-re-supposed-to-reset-the-keyboard">Wally getting stuck after you’re supposed to reset the&nbsp;keyboard</h2>
-<p>When this happened to me, it was on a new computer. I never added the udev rule file as described&nbsp;here:</p>
-<p><a href="https://github.com/zsa/wally/wiki/Linux-install">https://github.com/zsa/wally/wiki/Linux-install</a></p>
-<p>After I did that, it&nbsp;worked!</p>
-<p>#keyboard&nbsp;#ubuntu</p>
 </section>
           </article>
           <article class="finding">
@@ -399,6 +397,48 @@ httpd.serve_forever()
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="serving-local-web-apps-via-https">Serving local web apps via&nbsp;https</h1>
+<p>If you need to serve a local web page via&nbsp;https:</p>
+<h2 id="create-a-cert">Create a&nbsp;cert</h2>
+<p><a href="https://letsencrypt.org/docs/certificates-for-localhost/">https://letsencrypt.org/docs/certificates-for-localhost/</a></p>
+<pre><code>openssl req -x509 -out localhost.crt -keyout localhost.key \
+  -newkey rsa:2048 -nodes -sha256 \
+  -subj &#39;/CN=localhost&#39; -extensions EXT -config &lt;( \
+   printf &quot;[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth&quot;)
+</code></pre><h2 id="serving-via-python">Serving via&nbsp;Python</h2>
+<ul>
+<li>Mash the crt and key files together: <code></code>cat localhost.crt localhost.key &gt;&nbsp;localhost.pem`</li>
+<li>Create a server script like so:
+<code>`</code>from http.server import HTTPServer, SimpleHTTPRequestHandler
+import&nbsp;ssl</li>
+</ul>
+<p>httpd = HTTPServer((“localhost”, 443), SimpleHTTPRequestHandler)
+httpd.socket = ssl.wrap_socket(
+    httpd.socket, certfile=”./localhost.pem”, server_side=True
+)
+httpd.serve_forever()
+<code>`</code></p>
+<ul>
+<li>Start it with <code>sudo python3 server.py</code>.</li>
+</ul>
+<h2 id="serving-via-node">Serving via&nbsp;Node</h2>
+<p><a href="https://stackoverflow.com/a/61905546/87798">https://stackoverflow.com/a/61905546/87798</a> (Ignore the brew, mkcert&nbsp;stuff)</p>
+<ul>
+<li>Rename the crt and key files to <code>cert.pem</code> and <code>key.pem</code>.</li>
+<li>Run the <code>http-server</code> module with `http-server -P 443 -S -C cert.pem&nbsp;-o’</li>
+</ul>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="moonlander">Moonlander</h1>
+<h2 id="wally-getting-stuck-after-you-re-supposed-to-reset-the-keyboard">Wally getting stuck after you’re supposed to reset the&nbsp;keyboard</h2>
+<p>When this happened to me, it was on a new computer. I never added the udev rule file as described&nbsp;here:</p>
+<p><a href="https://github.com/zsa/wally/wiki/Linux-install">https://github.com/zsa/wally/wiki/Linux-install</a></p>
+<p>After I did that, it&nbsp;worked!</p>
+<p>#keyboard&nbsp;#ubuntu</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="recording-internal-audio">Recording internal&nbsp;audio</h1>
 <p><a href="https://askubuntu.com/questions/250073/how-to-record-any-internal-sound-in-and-out-using-ubuntu-and-audacity">https://askubuntu.com/questions/250073/how-to-record-any-internal-sound-in-and-out-using-ubuntu-and-audacity</a></p>
 <blockquote>
@@ -410,46 +450,6 @@ httpd.serve_forever()
 </ul>
 <p>Now it’s recording the output of the soundcard instead of the mic connected to the&nbsp;soundcard.</p>
 <p>#ubuntu&nbsp;#audio</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="caching-in-github-actions">Caching in GitHub&nbsp;Actions</h1>
-<h2 id="standard-dependency-installs">Standard dependency&nbsp;installs</h2>
-<p>Most of the official setup GitHub Actions that set up an environment for a language have their own caching features. For example, <a href="https://github.com/actions/setup-python#caching-packages-dependencies">setup-python V4</a> lets you cache pip installs by specifying <code>with: cache: pip</code> when you use that&nbsp;action.</p>
-<p>Here is an example config for a Python&nbsp;job:</p>
-<pre><code>jobs:
-  run-job:
-    runs-on: ubuntu-latest
-    timeout-minutes: 2
-    steps:
-      - name: ${{ github.event.client_payload.id }}
-        run: echo run identifier ${{ github.event.client_payload.id }}
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: &quot;3.9&quot;
-          cache: pip
-      - run: |
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-</code></pre><h1 id="arbitrary-caching">Arbitrary&nbsp;caching</h1>
-<p>In the case that an action needs to download an artifact (like statistical models in the case of <a href="https://www.nltk.org/"><span class="caps">NLTK</span></a>), GitHub Actions provides a way to cache arbitary&nbsp;things.</p>
-<p>There is an <code>actions/cache@v3</code> action, which takes <code>key</code> and <code>path</code> parameters. It will check for a cache with the key specified your action. If it can’t find one, it will set a flag that you can use and (counterintuitively, <span class="caps">IMO</span>) <a href="https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows">create a new cache for that key</a>.</p>
-<p>Implicitly (as far as I can tell so far), if your job completes successfully, it will save what’s at <code>path</code> to the cache. So, in the case of a cache miss, your action has an obligation to download whatever it needs and put it at <code>path</code> so that it gets cached for the next run. The action can check for a cache miss with <code>if: steps.&lt;the id of the step in which you use actions/cache@v3&gt;.outputs.cache-hit != &#39;true&#39;</code>.</p>
-<p>Here is an&nbsp;example:</p>
-<pre><code>  - name: Restore cached nltk_data
-    id: restore-nltk-cache
-    uses: actions/cache@v3
-    with:
-      path: |
-        ~/nltk_data
-      key: nltk_data
-  - name: Install nltk_data on cache miss
-    run: |
-      NLTK_DATA=~/nltk_data python -m nltk.downloader punkt
-      NLTK_DATA=~/nltk_data python -m nltk.downloader stopwords
-    if: steps.restore-nltk-cache.outputs.cache-hit != &#39;true&#39;
-</code></pre><p>If it does find a cache for <code>key</code>, then it puts the cache’s content at <code>path</code>.</p>
-<p>Restoring a 27 <span class="caps">MB</span> cache took less than a second, as of&nbsp;2022-07-22.</p>
 </section>
           </article>
           <article class="finding">
@@ -479,6 +479,11 @@ httpd.serve_forever()
 <li><code>sudo apt install gnome-tweaks</code></li>
 <li>Set up the compose key in settings. (It’s scroll lock in your keyboard&nbsp;config.)</li>
 </ul>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h2 id="dom"><span class="caps">DOM</span></h2>
+<p>If you parse an <span class="caps">SVG</span> document into a tree, then append one of the child nodes to the browser’s current DOM, then the node disappears from the source tree. Sort of a move, rather than a&nbsp;copy.</p>
 </section>
           </article>
           <article class="finding">
@@ -520,11 +525,6 @@ Add 1/2 tea spoon black&nbsp;pepper.</p>
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h2 id="dom"><span class="caps">DOM</span></h2>
-<p>If you parse an <span class="caps">SVG</span> document into a tree, then append one of the child nodes to the browser’s current DOM, then the node disappears from the source tree. Sort of a move, rather than a&nbsp;copy.</p>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="rsync">rsync</h1>
 <h2 id="dealing-with-spaces-in-the-path">Dealing with spaces in the&nbsp;path</h2>
 <p>Use <code>--protect-args</code>.&nbsp;e.g.:</p>
@@ -537,26 +537,6 @@ Add 1/2 tea spoon black&nbsp;pepper.</p>
 <p>You can change this behavior with the <code>--delete</code> option.</p>
 </blockquote>
 <p>#rsync&nbsp;#command</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="find">find</h1>
-<h2 id="excluding-dirs-from-find">Excluding dirs from&nbsp;find</h2>
-<p>Say you want to find all of the directories in which you have a <code>rollup.config.js</code> file.</p>
-<p>You could&nbsp;try</p>
-<pre><code>find . -name rollup.config.js
-</code></pre><p>But that would also search all of the <code>node_modules</code> directories, and you mean to find projects in which you’ve used rollup&nbsp;directly.</p>
-<p>You can add <a href="/weblog/articles/miscellaneous-findings-010/findings/"><code>-path</code> and <code>-not</code></a> to exclude them from the&nbsp;search:</p>
-<pre><code>find . -name rollup.config.js -and -not \( -path &#39;*/node_modules/*&#39; \) -prune
-</code></pre><h2 id="finding-files-using-partial-filenames">Finding files using partial&nbsp;filenames</h2>
-<pre><code>find . -name &quot;appmanifest*&quot;
-</code></pre><p>Not:</p>
-<pre><code>find . -name &quot;appmanifest.*&quot;
-</code></pre><p>It’s not a “normal” regex. The above command would take the <code>.</code> literally.</p>
-<h2 id="deleting">Deleting</h2>
-<p>There’s a <code>-delete</code> flag.</p>
-<pre><code>find . -name &quot;*.pdf&quot; -delete
-</code></pre><p>#search #unix #command&nbsp;#find</p>
 </section>
           </article>
           <article class="finding">
@@ -581,6 +561,32 @@ Add 1/2 tea spoon black&nbsp;pepper.</p>
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="zip">Zip</h1>
+<p><code>-j</code> gets it to not put the directory structure into the zip file.
+<code>-x &lt;pattern&gt;</code> makes it ignore files matching the&nbsp;pattern.</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="find">find</h1>
+<h2 id="excluding-dirs-from-find">Excluding dirs from&nbsp;find</h2>
+<p>Say you want to find all of the directories in which you have a <code>rollup.config.js</code> file.</p>
+<p>You could&nbsp;try</p>
+<pre><code>find . -name rollup.config.js
+</code></pre><p>But that would also search all of the <code>node_modules</code> directories, and you mean to find projects in which you’ve used rollup&nbsp;directly.</p>
+<p>You can add <a href="/weblog/articles/miscellaneous-findings-010/findings/"><code>-path</code> and <code>-not</code></a> to exclude them from the&nbsp;search:</p>
+<pre><code>find . -name rollup.config.js -and -not \( -path &#39;*/node_modules/*&#39; \) -prune
+</code></pre><h2 id="finding-files-using-partial-filenames">Finding files using partial&nbsp;filenames</h2>
+<pre><code>find . -name &quot;appmanifest*&quot;
+</code></pre><p>Not:</p>
+<pre><code>find . -name &quot;appmanifest.*&quot;
+</code></pre><p>It’s not a “normal” regex. The above command would take the <code>.</code> literally.</p>
+<h2 id="deleting">Deleting</h2>
+<p>There’s a <code>-delete</code> flag.</p>
+<pre><code>find . -name &quot;*.pdf&quot; -delete
+</code></pre><p>#search #unix #command&nbsp;#find</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="unrar">unrar</h1>
 <p>If you get “no files to extract”, the problem may actually be that it doesn’t have permission to create a file or directory, rather that there being no files to extract in the rar&nbsp;file.</p>
 <h2 id="unraring-from-multiple-subdirectories">Unraring from multiple&nbsp;subdirectories</h2>
@@ -594,12 +600,6 @@ do
     unrar e &quot;${dir}/*.rar&quot;
 done
 </code></pre><p>#rar #command&nbsp;#shell</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="zip">Zip</h1>
-<p><code>-j</code> gets it to not put the directory structure into the zip file.
-<code>-x &lt;pattern&gt;</code> makes it ignore files matching the&nbsp;pattern.</p>
 </section>
           </article>
           <article class="finding">
