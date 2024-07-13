@@ -35,6 +35,18 @@
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="extracting-audio-from-a-video">Extracting audio from a&nbsp;video</h1>
+<pre><code>ffmpeg -i undefined.ogv -vn -acodec copy out.ogg
+</code></pre><p>Another&nbsp;example:</p>
+<pre><code>ffmpeg -i unfortunate-day.mov -vn -acodec copy out.aac
+</code></pre><p><code>-vn</code> tells ffmpeg to skip video in the output.
+<code>-acodec</code> tells it to set the audio codec in the output, so that players know how to play it.
+<code>copy</code> tells it to copy the output to the following&nbsp;file.</p>
+<p>You can’t have it convert the audio format while it’s extracting the audio as far as I know. If the audio stream is encoded as ogg, then you can extract ogg. If it’s encoded as <span class="caps">AAC</span>, then you can extract&nbsp;AAC.</p>
+<p>#audio #video&nbsp;#ffmpeg</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="extracting-a-still-from-a-video">Extracting a still from a&nbsp;video</h1>
 <p>Use ffmpeg with the <code>-frames:v 1</code> switch to tell it to grab a single frome and a jpg filename as the output to tell it to write it to an image&nbsp;file.</p>
 <p>You can add <code>-ss &lt;seconds into the video&gt;</code> to tell it where in the video to get the frame from. You can specify jpeg quality <code>-qscale:v &lt;2-31&gt;</code>, with 2 being the highest&nbsp;quality.</p>
@@ -47,18 +59,6 @@
 <p>#video</p>
 <p>#editing</p>
 <p>#ffmpeg</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="extracting-audio-from-a-video">Extracting audio from a&nbsp;video</h1>
-<pre><code>ffmpeg -i undefined.ogv -vn -acodec copy out.ogg
-</code></pre><p>Another&nbsp;example:</p>
-<pre><code>ffmpeg -i unfortunate-day.mov -vn -acodec copy out.aac
-</code></pre><p><code>-vn</code> tells ffmpeg to skip video in the output.
-<code>-acodec</code> tells it to set the audio codec in the output, so that players know how to play it.
-<code>copy</code> tells it to copy the output to the following&nbsp;file.</p>
-<p>You can’t have it convert the audio format while it’s extracting the audio as far as I know. If the audio stream is encoded as ogg, then you can extract ogg. If it’s encoded as <span class="caps">AAC</span>, then you can extract&nbsp;AAC.</p>
-<p>#audio #video&nbsp;#ffmpeg</p>
 </section>
           </article>
           <article class="finding">
