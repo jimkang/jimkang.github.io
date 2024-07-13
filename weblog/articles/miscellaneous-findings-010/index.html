@@ -213,6 +213,18 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="flickr">Flickr</h1>
+<h2 id="making-all-public-photos-non-public">Making all public photos&nbsp;non-public</h2>
+<ul>
+<li>Go to&nbsp;Organizr.</li>
+<li>Select “Only show public content” in the bottom&nbsp;bar.</li>
+<li>Select all. Drag the bottom bar selection to the&nbsp;workspace.</li>
+<li>Go to the permissions menu and change the permissions for those&nbsp;photos.</li>
+<li>Seems to run for about an hour (getting through 3000 photos) before it fails, and you have to start&nbsp;over.</li>
+</ul>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="getting-noita-to-run-on-ubuntu">Getting Noita to run on&nbsp;Ubuntu</h1>
 <ul>
 <li>Get the game from <span class="caps">GOG</span>, not&nbsp;Steam.</li>
@@ -246,18 +258,6 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 <p><a href="https://askubuntu.com/questions/1090094/wine-missing-ntlm-auth-3-0-25">Reintalling winbind</a> gets rid of that&nbsp;error:</p>
 <pre><code>sudo apt-get remove winbind &amp;&amp; sudo apt-get install winbind
 </code></pre><p>#game&nbsp;#switch</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="flickr">Flickr</h1>
-<h2 id="making-all-public-photos-non-public">Making all public photos&nbsp;non-public</h2>
-<ul>
-<li>Go to&nbsp;Organizr.</li>
-<li>Select “Only show public content” in the bottom&nbsp;bar.</li>
-<li>Select all. Drag the bottom bar selection to the&nbsp;workspace.</li>
-<li>Go to the permissions menu and change the permissions for those&nbsp;photos.</li>
-<li>Seems to run for about an hour (getting through 3000 photos) before it fails, and you have to start&nbsp;over.</li>
-</ul>
 </section>
           </article>
           <article class="finding">
@@ -453,6 +453,13 @@ httpd.serve_forever()
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="tail-calls">Tail&nbsp;calls</h1>
+<p>If a function ends by calling itself, that’s called a tail&nbsp;call.</p>
+<p>It can usually be optimized by converting the function to just use a loop (or jump in assembly) instead of putting up another stack frame for another function&nbsp;call.</p>
+<p>#programming</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="setting-up-a-new-computer-running-ubuntu">Setting up a new computer running&nbsp;Ubuntu</h1>
 <ul>
 <li>Move over your private&nbsp;key.</li>
@@ -482,6 +489,24 @@ httpd.serve_forever()
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="-jangjorim-">장조림(Jangjorim)</h1>
+<p>From&nbsp;Mom:</p>
+<p>Skirt steak or 결이 있는 good beef stew cut in to big chunk.
+Put it in big pot.
+Minced Garlic, cubic onions,green onions, soy sauce and sugar.
+Do not put water in it.
+Cook it medium high for 20 minutes do not burning  until all the water is&nbsp;gone.</p>
+<blockquote>
+<p><span class="caps">OK</span>! How much sugar for how much beef,&nbsp;about?</p>
+</blockquote>
+<p>Depend on beef.
+1/2 Lbs beef 3 table spoons 1 table spoon.
+Depend on your taste.
+Add 1/2 tea spoon black&nbsp;pepper.</p>
+<p>#cooking</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h2 id="dom"><span class="caps">DOM</span></h2>
 <p>If you parse an <span class="caps">SVG</span> document into a tree, then append one of the child nodes to the browser’s current DOM, then the node disappears from the source tree. Sort of a move, rather than a&nbsp;copy.</p>
 </section>
@@ -504,40 +529,6 @@ httpd.serve_forever()
 </li>
 <li>Run <code>:CheckHealth</code> to make sure things are&nbsp;<span class="caps">OK</span>.</li>
 </ul>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="-jangjorim-">장조림(Jangjorim)</h1>
-<p>From&nbsp;Mom:</p>
-<p>Skirt steak or 결이 있는 good beef stew cut in to big chunk.
-Put it in big pot.
-Minced Garlic, cubic onions,green onions, soy sauce and sugar.
-Do not put water in it.
-Cook it medium high for 20 minutes do not burning  until all the water is&nbsp;gone.</p>
-<blockquote>
-<p><span class="caps">OK</span>! How much sugar for how much beef,&nbsp;about?</p>
-</blockquote>
-<p>Depend on beef.
-1/2 Lbs beef 3 table spoons 1 table spoon.
-Depend on your taste.
-Add 1/2 tea spoon black&nbsp;pepper.</p>
-<p>#cooking</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="unrar">unrar</h1>
-<p>If you get “no files to extract”, the problem may actually be that it doesn’t have permission to create a file or directory, rather that there being no files to extract in the rar&nbsp;file.</p>
-<h2 id="unraring-from-multiple-subdirectories">Unraring from multiple&nbsp;subdirectories</h2>
-<p>Remove the any unwanted subdirectories first, e.g.&nbsp;“Sample”.</p>
-<pre><code>find . -name Sample -exec rm -rf {} \;
-</code></pre><p>Run this&nbsp;script:</p>
-<pre><code>#!/bin/bash
-
-for dir in ./*
-do
-    unrar e &quot;${dir}/*.rar&quot;
-done
-</code></pre><p>#rar #command&nbsp;#shell</p>
 </section>
           </article>
           <article class="finding">
@@ -583,13 +574,6 @@ done
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="tail-calls">Tail&nbsp;calls</h1>
-<p>If a function ends by calling itself, that’s called a tail&nbsp;call.</p>
-<p>It can usually be optimized by converting the function to just use a loop (or jump in assembly) instead of putting up another stack frame for another function&nbsp;call.</p>
-<p>#programming</p>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="find">find</h1>
 <h2 id="excluding-dirs-from-find">Excluding dirs from&nbsp;find</h2>
 <p>Say you want to find all of the directories in which you have a <code>rollup.config.js</code> file.</p>
@@ -607,6 +591,22 @@ done
 <p>There’s a <code>-delete</code> flag.</p>
 <pre><code>find . -name &quot;*.pdf&quot; -delete
 </code></pre><p>#search #unix #command&nbsp;#find</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="unrar">unrar</h1>
+<p>If you get “no files to extract”, the problem may actually be that it doesn’t have permission to create a file or directory, rather that there being no files to extract in the rar&nbsp;file.</p>
+<h2 id="unraring-from-multiple-subdirectories">Unraring from multiple&nbsp;subdirectories</h2>
+<p>Remove the any unwanted subdirectories first, e.g.&nbsp;“Sample”.</p>
+<pre><code>find . -name Sample -exec rm -rf {} \;
+</code></pre><p>Run this&nbsp;script:</p>
+<pre><code>#!/bin/bash
+
+for dir in ./*
+do
+    unrar e &quot;${dir}/*.rar&quot;
+done
+</code></pre><p>#rar #command&nbsp;#shell</p>
 </section>
           </article>
         </article>

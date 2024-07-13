@@ -225,9 +225,7 @@ var breakLengthMS = pauseBetweenNamesMSMin + Math.random() * pauseBetweenNamesMS
 
   musicCheckbox.addEventListener('change', onMusicCheckboxChange);
   // Sync the slider to the initial value.
-  if (breakLengthSlider.value === undefined) {
-    breakLengthSlider.value = breakLengthMS;
-  }
+  breakLengthSlider.value = breakLengthMS;
   onBreakLengthSliderChange();
   breakLengthSlider.addEventListener('change', onBreakLengthSliderChange);
 
