@@ -213,40 +213,6 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="flickr">Flickr</h1>
-<h2 id="making-all-public-photos-non-public">Making all public photos&nbsp;non-public</h2>
-<ul>
-<li>Go to&nbsp;Organizr.</li>
-<li>Select “Only show public content” in the bottom&nbsp;bar.</li>
-<li>Select all. Drag the bottom bar selection to the&nbsp;workspace.</li>
-<li>Go to the permissions menu and change the permissions for those&nbsp;photos.</li>
-<li>Seems to run for about an hour (getting through 3000 photos) before it fails, and you have to start&nbsp;over.</li>
-</ul>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="getting-apps-to-show-up-in-ubuntu-search">Getting apps to show up in Ubuntu&nbsp;search</h1>
-<p>You know how when you hit ctrl+space, you can type an app name and then launch it from there? Sometime an app won’t show up there if you’ve installed it as an AppImage or just downloaded it to run from wherever you put it instead of using a&nbsp;Snap.</p>
-<p>That’s not the actual reason, it’s not showing up in desktop search, though. It’s because it doesn’t have a <code>.desktop</code> file.</p>
-<p>You can look at a bunch of <code>.desktop</code> files in <code>/usr/share/applications</code>, then copy and edit one of them to make a new&nbsp;one.</p>
-<p>Here is a minimal one that I made for Obsidian, named <code>obsidian.desktop</code>, which I run as an AppImage because there was no Snap when I first got&nbsp;it:</p>
-<pre><code>[Desktop Entry]
-Name=Obsidian
-GenericName=Notes organizer
-Comment=Organize notes
-Exec=/home/myuserdir/apps/Obsidian-1.0.3.AppImage
-Terminal=false
-Type=Application
-Keywords=notes;organizer;
-Icon=/home/myuserdir/apps/obsidian-meta/obsidian-icon-256.png
-Categories=Utility;TextEditor;
-StartupNotify=false
-MimeType=text/english;text/plain;text/x-markdown;
-</code></pre><p>Now it shows up, and I don’t have to open a new terminal tab to launch it. I’ve done the same for Firefox because I’m now just using a version downloaded from its site to avoid the [issue in which the Snap image makes the mouse cursor really small on Ubuntu&nbsp;22.04.1]</p>
-<p>#ubuntu</p>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="getting-noita-to-run-on-ubuntu">Getting Noita to run on&nbsp;Ubuntu</h1>
 <ul>
 <li>Get the game from <span class="caps">GOG</span>, not&nbsp;Steam.</li>
@@ -280,6 +246,40 @@ MimeType=text/english;text/plain;text/x-markdown;
 <p><a href="https://askubuntu.com/questions/1090094/wine-missing-ntlm-auth-3-0-25">Reintalling winbind</a> gets rid of that&nbsp;error:</p>
 <pre><code>sudo apt-get remove winbind &amp;&amp; sudo apt-get install winbind
 </code></pre><p>#game&nbsp;#switch</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="flickr">Flickr</h1>
+<h2 id="making-all-public-photos-non-public">Making all public photos&nbsp;non-public</h2>
+<ul>
+<li>Go to&nbsp;Organizr.</li>
+<li>Select “Only show public content” in the bottom&nbsp;bar.</li>
+<li>Select all. Drag the bottom bar selection to the&nbsp;workspace.</li>
+<li>Go to the permissions menu and change the permissions for those&nbsp;photos.</li>
+<li>Seems to run for about an hour (getting through 3000 photos) before it fails, and you have to start&nbsp;over.</li>
+</ul>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="getting-apps-to-show-up-in-ubuntu-search">Getting apps to show up in Ubuntu&nbsp;search</h1>
+<p>You know how when you hit ctrl+space, you can type an app name and then launch it from there? Sometime an app won’t show up there if you’ve installed it as an AppImage or just downloaded it to run from wherever you put it instead of using a&nbsp;Snap.</p>
+<p>That’s not the actual reason, it’s not showing up in desktop search, though. It’s because it doesn’t have a <code>.desktop</code> file.</p>
+<p>You can look at a bunch of <code>.desktop</code> files in <code>/usr/share/applications</code>, then copy and edit one of them to make a new&nbsp;one.</p>
+<p>Here is a minimal one that I made for Obsidian, named <code>obsidian.desktop</code>, which I run as an AppImage because there was no Snap when I first got&nbsp;it:</p>
+<pre><code>[Desktop Entry]
+Name=Obsidian
+GenericName=Notes organizer
+Comment=Organize notes
+Exec=/home/myuserdir/apps/Obsidian-1.0.3.AppImage
+Terminal=false
+Type=Application
+Keywords=notes;organizer;
+Icon=/home/myuserdir/apps/obsidian-meta/obsidian-icon-256.png
+Categories=Utility;TextEditor;
+StartupNotify=false
+MimeType=text/english;text/plain;text/x-markdown;
+</code></pre><p>Now it shows up, and I don’t have to open a new terminal tab to launch it. I’ve done the same for Firefox because I’m now just using a version downloaded from its site to avoid the [issue in which the Snap image makes the mouse cursor really small on Ubuntu&nbsp;22.04.1]</p>
+<p>#ubuntu</p>
 </section>
           </article>
           <article class="finding">
@@ -487,24 +487,6 @@ httpd.serve_forever()
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="-jangjorim-">장조림(Jangjorim)</h1>
-<p>From&nbsp;Mom:</p>
-<p>Skirt steak or 결이 있는 good beef stew cut in to big chunk.
-Put it in big pot.
-Minced Garlic, cubic onions,green onions, soy sauce and sugar.
-Do not put water in it.
-Cook it medium high for 20 minutes do not burning  until all the water is&nbsp;gone.</p>
-<blockquote>
-<p><span class="caps">OK</span>! How much sugar for how much beef,&nbsp;about?</p>
-</blockquote>
-<p>Depend on beef.
-1/2 Lbs beef 3 table spoons 1 table spoon.
-Depend on your taste.
-Add 1/2 tea spoon black&nbsp;pepper.</p>
-<p>#cooking</p>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="neovim">neovim</h1>
 <h2 id="installing-plugins">Installing&nbsp;plugins</h2>
 <ul>
@@ -525,18 +507,37 @@ Add 1/2 tea spoon black&nbsp;pepper.</p>
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="rsync">rsync</h1>
-<h2 id="dealing-with-spaces-in-the-path">Dealing with spaces in the&nbsp;path</h2>
-<p>Use <code>--protect-args</code>.&nbsp;e.g.:</p>
-<pre><code>rsync -avz --protect-args pi@midnight-giant:&quot;/mnt/storage/media/music/Pikmin Sound Team/Pikmin 3 Deluxe&quot; .
-</code></pre><h2 id="keeping-local-files-even-if-they-re-missing-on-remote">Keeping local files even if they’re missing on&nbsp;remote</h2>
-<p>It does this by&nbsp;default!</p>
-<p><a href="https://www.digitalocean.com/community/tutorials/how-to-use-rsync-to-sync-local-and-remote-directories">https://www.digitalocean.com/community/tutorials/how-to-use-rsync-to-sync-local-and-remote-directories</a></p>
+            <section class="content"><h1 id="-jangjorim-">장조림(Jangjorim)</h1>
+<p>From&nbsp;Mom:</p>
+<p>Skirt steak or 결이 있는 good beef stew cut in to big chunk.
+Put it in big pot.
+Minced Garlic, cubic onions,green onions, soy sauce and sugar.
+Do not put water in it.
+Cook it medium high for 20 minutes do not burning  until all the water is&nbsp;gone.</p>
 <blockquote>
-<p>In order to keep two directories truly in sync, it’s necessary to delete files from the destination directory if they are removed from the source. By default, <code>rsync</code> does not delete anything from the destination&nbsp;directory.</p>
-<p>You can change this behavior with the <code>--delete</code> option.</p>
+<p><span class="caps">OK</span>! How much sugar for how much beef,&nbsp;about?</p>
 </blockquote>
-<p>#rsync&nbsp;#command</p>
+<p>Depend on beef.
+1/2 Lbs beef 3 table spoons 1 table spoon.
+Depend on your taste.
+Add 1/2 tea spoon black&nbsp;pepper.</p>
+<p>#cooking</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="unrar">unrar</h1>
+<p>If you get “no files to extract”, the problem may actually be that it doesn’t have permission to create a file or directory, rather that there being no files to extract in the rar&nbsp;file.</p>
+<h2 id="unraring-from-multiple-subdirectories">Unraring from multiple&nbsp;subdirectories</h2>
+<p>Remove the any unwanted subdirectories first, e.g.&nbsp;“Sample”.</p>
+<pre><code>find . -name Sample -exec rm -rf {} \;
+</code></pre><p>Run this&nbsp;script:</p>
+<pre><code>#!/bin/bash
+
+for dir in ./*
+do
+    unrar e &quot;${dir}/*.rar&quot;
+done
+</code></pre><p>#rar #command&nbsp;#shell</p>
 </section>
           </article>
           <article class="finding">
@@ -554,6 +555,21 @@ Add 1/2 tea spoon black&nbsp;pepper.</p>
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="rsync">rsync</h1>
+<h2 id="dealing-with-spaces-in-the-path">Dealing with spaces in the&nbsp;path</h2>
+<p>Use <code>--protect-args</code>.&nbsp;e.g.:</p>
+<pre><code>rsync -avz --protect-args pi@midnight-giant:&quot;/mnt/storage/media/music/Pikmin Sound Team/Pikmin 3 Deluxe&quot; .
+</code></pre><h2 id="keeping-local-files-even-if-they-re-missing-on-remote">Keeping local files even if they’re missing on&nbsp;remote</h2>
+<p>It does this by&nbsp;default!</p>
+<p><a href="https://www.digitalocean.com/community/tutorials/how-to-use-rsync-to-sync-local-and-remote-directories">https://www.digitalocean.com/community/tutorials/how-to-use-rsync-to-sync-local-and-remote-directories</a></p>
+<blockquote>
+<p>In order to keep two directories truly in sync, it’s necessary to delete files from the destination directory if they are removed from the source. By default, <code>rsync</code> does not delete anything from the destination&nbsp;directory.</p>
+<p>You can change this behavior with the <code>--delete</code> option.</p>
+</blockquote>
+<p>#rsync&nbsp;#command</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="wget">wget</h1>
 <h2 id="downloading-all-of-the-links-on-a-web-page">Downloading all of the links on a web&nbsp;page</h2>
 <pre><code>wget -m and robots=off https://the-site-you-want
@@ -564,6 +580,13 @@ Add 1/2 tea spoon black&nbsp;pepper.</p>
             <section class="content"><h1 id="zip">Zip</h1>
 <p><code>-j</code> gets it to not put the directory structure into the zip file.
 <code>-x &lt;pattern&gt;</code> makes it ignore files matching the&nbsp;pattern.</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="tail-calls">Tail&nbsp;calls</h1>
+<p>If a function ends by calling itself, that’s called a tail&nbsp;call.</p>
+<p>It can usually be optimized by converting the function to just use a loop (or jump in assembly) instead of putting up another stack frame for another function&nbsp;call.</p>
+<p>#programming</p>
 </section>
           </article>
           <article class="finding">
@@ -584,29 +607,6 @@ Add 1/2 tea spoon black&nbsp;pepper.</p>
 <p>There’s a <code>-delete</code> flag.</p>
 <pre><code>find . -name &quot;*.pdf&quot; -delete
 </code></pre><p>#search #unix #command&nbsp;#find</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="unrar">unrar</h1>
-<p>If you get “no files to extract”, the problem may actually be that it doesn’t have permission to create a file or directory, rather that there being no files to extract in the rar&nbsp;file.</p>
-<h2 id="unraring-from-multiple-subdirectories">Unraring from multiple&nbsp;subdirectories</h2>
-<p>Remove the any unwanted subdirectories first, e.g.&nbsp;“Sample”.</p>
-<pre><code>find . -name Sample -exec rm -rf {} \;
-</code></pre><p>Run this&nbsp;script:</p>
-<pre><code>#!/bin/bash
-
-for dir in ./*
-do
-    unrar e &quot;${dir}/*.rar&quot;
-done
-</code></pre><p>#rar #command&nbsp;#shell</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="tail-calls">Tail&nbsp;calls</h1>
-<p>If a function ends by calling itself, that’s called a tail&nbsp;call.</p>
-<p>It can usually be optimized by converting the function to just use a loop (or jump in assembly) instead of putting up another stack frame for another function&nbsp;call.</p>
-<p>#programming</p>
 </section>
           </article>
         </article>

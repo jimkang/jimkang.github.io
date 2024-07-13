@@ -38,8 +38,27 @@ button {
     background-color: hsl(210, 40%, 50%);
     color: white;
 }
-label {
+.control-label {
     font-size: 0.75em;
+}
+.opties-box {
+    display: flex;
+    gap: 1em;
+    justify-content: space-between;
+    border: dashed 4px hsl(210, 40%, 70%);
+    border-radius: 8px;
+    padding: 0.5em;
+}
+.optie-box {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: start;
+}
+.optie-title {
+    margin-bottom: 1em;
+    font-weight: bold;
 }
 </style>
 <a href="https://nytimes.com/the-daily">The Daily</a> is a daily news podcast. It’s hit-or-miss, but one segment I do appreciate consistently is the “Here’s What You Need to Know Today” bit at end of each episode. It consists of one or two three-sentence stories describing recent events that can generally be agreed upon as being “big news”. Sometimes, I just skip to&nbsp;that.</p>
@@ -48,22 +67,29 @@ label {
 <p>So I could spend more time in that space, I made a player that shuffles chopped up Michael Barbaro samples so you can hear him reading names for as long as you’d&nbsp;like.</p>
 <p>Hit play to start the infinite staff credits chant:
 <br></p>
-<p><button id="play-button">Play</button> <button id="stop-button">Stop</button></p>
-<p><input type="checkbox" checked id="music-checkbox" name="music-checkbox"><label for="music-checkbox">Background music on</label>
-<br></p>
-<audio id="theme-loop-media-el" src="audio/theme-loop.mp3" loop controls style="display: none"></audio>
+<button id="play-button">Play</button> <button id="stop-button">Stop</button>
 
-<p><noscript>(Folks reading this from <span class="caps">RSS</span>: There’s an interactive tool here, probably not displaying in your RSS reader. You have to click through to see it.)</noscript></p>
+<p><h4 style="margin-bottom: 0.25em">Opties</h4><div class="opties-box">
+    <div class="optie-box">
+      <label for="break-length-silder" class="control-label optie-title">Break between names</label>
+      <input name="break-length-slider" type="range" min="2" max="30000" style="display: block">
+      <div class="control-label slider-value-box"><span id="break-length-text"></span> milliseconds</div>
+    </div>
+    <div class="optie-box">
+      <label for="music-checkbox" class="control-label optie-title">Background music on</label>
+      <input type="checkbox" id="music-checkbox" name="music-checkbox">
+    </div>
+</div><audio id="theme-loop-media-el" src="audio/theme-loop.mp3" loop controls style="display: none"></audio><noscript>(Folks reading this from <span class="caps">RSS</span>: There’s an interactive tool here, probably not displaying in your RSS reader. You have to click through to see it.)</noscript></p>
 <script>
 const queueSize = 30;
-const pauseBetweenNamesMSMin = 1000;
-const pauseBetweenNamesMSRange = 250;
+const pauseBetweenNamesMSMin = 1500;
+const pauseBetweenNamesMSRange = 1000;
 const musicSpeedPlateauLengthMS = 2000 * 12;
 const musicSpeedShiftLengthMS = 2000 * 2;
 const speedShiftChancePerNameRead = 1/50;
 const maxSpeed = 4.0;
 const minSpeed = 0.5;
-const initialSpeed = 0.9;
+const initialSpeed = 0.5;
 const speedAdjIncrement = 0.0000025;
 var namesRead = 0;
 
@@ -176,11 +202,14 @@ var introPlayed = false;
 var stopButton = document.getElementById('stop-button');
 var themeLoopMedia = document.getElementById('theme-loop-media-el');
 var musicCheckbox = document.getElementById('music-checkbox');
+var breakLengthSlider = document.querySelector('input[name=break-length-slider]');
+var breakLengthText = document.getElementById('break-length-text');
 
 var adjustSpeedTimeoutKey;
 var playTimeoutKey;
 var playNextTimeoutKey;
 var playing = false;
+var breakLengthMS = pauseBetweenNamesMSMin + Math.random() * pauseBetweenNamesMSRange;
 
 (function incantation() {
   getAudio('todays-episode');
@@ -195,6 +224,12 @@ var playing = false;
   themeLoopMedia.preservesPitch = false;
 
   musicCheckbox.addEventListener('change', onMusicCheckboxChange);
+  // Sync the slider to the initial value.
+  if (breakLengthSlider.value === undefined) {
+    breakLengthSlider.value = breakLengthMS;
+  }
+  onBreakLengthSliderChange();
+  breakLengthSlider.addEventListener('change', onBreakLengthSliderChange);
 
   async function onPlayClick() {
     playNext();
@@ -246,7 +281,7 @@ function playNext() {
   const name = queue.shift();
   audio = getAudio(name);
   if (lastPlayedKind && lastPlayedKind === 'lastName') {
-    playTimeoutKey = setTimeout(play, pauseBetweenNamesMSMin + Math.random() * pauseBetweenNamesMSRange);
+    playTimeoutKey = setTimeout(play, breakLengthMS);
   } else {
     play();
   }
@@ -282,6 +317,11 @@ function onMusicCheckboxChange() {
       }
     }
   }
+}
+
+function onBreakLengthSliderChange() {
+  breakLengthMS = +breakLengthSlider.value;
+  breakLengthText.textContent = breakLengthSlider.value;
 }
 
 function setIntroPlayedFlag() {
@@ -370,8 +410,7 @@ function adjustSpeed() {
 // Wow, wintersmith will freak out and interpet the <span class="caps">JS</span> as Markdown is there's not a linebreak after this closing script tag.
 </script>
 
-<p><br>
-(The other main host, Sabrina Tavernise, has much sharper enunciation than Michael Barbaro. There’s also generally a lot more life in her voice, so it would be interesting see what kind of vibe an infinite read by her would produce. Unfortunately, as far as I can tell, she never does the long staff credits&nbsp;read.)</p>
+<p>(The other main host, Sabrina Tavernise, has much sharper enunciation than Michael Barbaro. There’s also generally a lot more life in her voice, so it would be interesting see what kind of vibe an infinite read by her would produce. Unfortunately, as far as I can tell, she never does the long staff credits&nbsp;read.)</p>
 <p>(Also, I don’t think this works on Mobile Safari. Apple wants people to support Mobile Safari but basically requires people to buy Macs to debug Mobile Safari issues. ¯\<em>(ツ)</em>/¯)</p>
 </section>
         </article>

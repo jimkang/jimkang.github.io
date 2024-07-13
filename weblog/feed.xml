@@ -30,8 +30,27 @@ button {
     background-color: hsl(210, 40%, 50%);
     color: white;
 }
-label {
+.control-label {
     font-size: 0.75em;
+}
+.opties-box {
+    display: flex;
+    gap: 1em;
+    justify-content: space-between;
+    border: dashed 4px hsl(210, 40%, 70%);
+    border-radius: 8px;
+    padding: 0.5em;
+}
+.optie-box {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: start;
+}
+.optie-title {
+    margin-bottom: 1em;
+    font-weight: bold;
 }
 &lt;/style&gt;
 &lt;a href=&quot;https://nytimes.com/the-daily&quot;&gt;The Daily&lt;/a&gt; is a daily news podcast. It’s hit-or-miss, but one segment I do appreciate consistently is the “Here’s What You Need to Know Today” bit at end of each episode. It consists of one or two three-sentence stories describing recent events that can generally be agreed upon as being “big news”. Sometimes, I just skip to that.&lt;/p&gt;
@@ -40,22 +59,29 @@ label {
 &lt;p&gt;So I could spend more time in that space, I made a player that shuffles chopped up Michael Barbaro samples so you can hear him reading names for as long as you’d like.&lt;/p&gt;
 &lt;p&gt;Hit play to start the infinite staff credits chant:
 &lt;br&gt;&lt;/p&gt;
-&lt;p&gt;&lt;button id=&quot;play-button&quot;&gt;Play&lt;/button&gt; &lt;button id=&quot;stop-button&quot;&gt;Stop&lt;/button&gt;&lt;/p&gt;
-&lt;p&gt;&lt;input type=&quot;checkbox&quot; checked id=&quot;music-checkbox&quot; name=&quot;music-checkbox&quot;&gt;&lt;label for=&quot;music-checkbox&quot;&gt;Background music on&lt;/label&gt;
-&lt;br&gt;&lt;/p&gt;
-&lt;audio id=&quot;theme-loop-media-el&quot; src=&quot;audio/theme-loop.mp3&quot; loop controls style=&quot;display: none&quot;&gt;&lt;/audio&gt;
+&lt;button id=&quot;play-button&quot;&gt;Play&lt;/button&gt; &lt;button id=&quot;stop-button&quot;&gt;Stop&lt;/button&gt;
 
-&lt;p&gt;&lt;noscript&gt;(Folks reading this from RSS: There’s an interactive tool here, probably not displaying in your RSS reader. You have to click through to see it.)&lt;/noscript&gt;&lt;/p&gt;
+&lt;p&gt;&lt;h4 style=&quot;margin-bottom: 0.25em&quot;&gt;Opties&lt;/h4&gt;&lt;div class=&quot;opties-box&quot;&gt;
+    &lt;div class=&quot;optie-box&quot;&gt;
+      &lt;label for=&quot;break-length-silder&quot; class=&quot;control-label optie-title&quot;&gt;Break between names&lt;/label&gt;
+      &lt;input name=&quot;break-length-slider&quot; type=&quot;range&quot; min=&quot;2&quot; max=&quot;30000&quot; style=&quot;display: block&quot;&gt;
+      &lt;div class=&quot;control-label slider-value-box&quot;&gt;&lt;span id=&quot;break-length-text&quot;&gt;&lt;/span&gt; milliseconds&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;optie-box&quot;&gt;
+      &lt;label for=&quot;music-checkbox&quot; class=&quot;control-label optie-title&quot;&gt;Background music on&lt;/label&gt;
+      &lt;input type=&quot;checkbox&quot; id=&quot;music-checkbox&quot; name=&quot;music-checkbox&quot;&gt;
+    &lt;/div&gt;
+&lt;/div&gt;&lt;audio id=&quot;theme-loop-media-el&quot; src=&quot;audio/theme-loop.mp3&quot; loop controls style=&quot;display: none&quot;&gt;&lt;/audio&gt;&lt;noscript&gt;(Folks reading this from RSS: There’s an interactive tool here, probably not displaying in your RSS reader. You have to click through to see it.)&lt;/noscript&gt;&lt;/p&gt;
 &lt;script&gt;
 const queueSize = 30;
-const pauseBetweenNamesMSMin = 1000;
-const pauseBetweenNamesMSRange = 250;
+const pauseBetweenNamesMSMin = 1500;
+const pauseBetweenNamesMSRange = 1000;
 const musicSpeedPlateauLengthMS = 2000 * 12;
 const musicSpeedShiftLengthMS = 2000 * 2;
 const speedShiftChancePerNameRead = 1/50;
 const maxSpeed = 4.0;
 const minSpeed = 0.5;
-const initialSpeed = 0.9;
+const initialSpeed = 0.5;
 const speedAdjIncrement = 0.0000025;
 var namesRead = 0;
 
@@ -168,11 +194,14 @@ var introPlayed = false;
 var stopButton = document.getElementById('stop-button');
 var themeLoopMedia = document.getElementById('theme-loop-media-el');
 var musicCheckbox = document.getElementById('music-checkbox');
+var breakLengthSlider = document.querySelector('input[name=break-length-slider]');
+var breakLengthText = document.getElementById('break-length-text');
 
 var adjustSpeedTimeoutKey;
 var playTimeoutKey;
 var playNextTimeoutKey;
 var playing = false;
+var breakLengthMS = pauseBetweenNamesMSMin + Math.random() * pauseBetweenNamesMSRange;
 
 (function incantation() {
   getAudio('todays-episode');
@@ -187,6 +216,12 @@ var playing = false;
   themeLoopMedia.preservesPitch = false;
 
   musicCheckbox.addEventListener('change', onMusicCheckboxChange);
+  // Sync the slider to the initial value.
+  if (breakLengthSlider.value === undefined) {
+    breakLengthSlider.value = breakLengthMS;
+  }
+  onBreakLengthSliderChange();
+  breakLengthSlider.addEventListener('change', onBreakLengthSliderChange);
 
   async function onPlayClick() {
     playNext();
@@ -238,7 +273,7 @@ function playNext() {
   const name = queue.shift();
   audio = getAudio(name);
   if (lastPlayedKind &amp;&amp; lastPlayedKind === 'lastName') {
-    playTimeoutKey = setTimeout(play, pauseBetweenNamesMSMin + Math.random() * pauseBetweenNamesMSRange);
+    playTimeoutKey = setTimeout(play, breakLengthMS);
   } else {
     play();
   }
@@ -274,6 +309,11 @@ function onMusicCheckboxChange() {
       }
     }
   }
+}
+
+function onBreakLengthSliderChange() {
+  breakLengthMS = +breakLengthSlider.value;
+  breakLengthText.textContent = breakLengthSlider.value;
 }
 
 function setIntroPlayedFlag() {
@@ -362,8 +402,7 @@ function adjustSpeed() {
 // Wow, wintersmith will freak out and interpet the JS as Markdown is there's not a linebreak after this closing script tag.
 &lt;/script&gt;
 
-&lt;p&gt;&lt;br&gt;
-(The other main host, Sabrina Tavernise, has much sharper enunciation than Michael Barbaro. There’s also generally a lot more life in her voice, so it would be interesting see what kind of vibe an infinite read by her would produce. Unfortunately, as far as I can tell, she never does the long staff credits read.)&lt;/p&gt;
+&lt;p&gt;(The other main host, Sabrina Tavernise, has much sharper enunciation than Michael Barbaro. There’s also generally a lot more life in her voice, so it would be interesting see what kind of vibe an infinite read by her would produce. Unfortunately, as far as I can tell, she never does the long staff credits read.)&lt;/p&gt;
 &lt;p&gt;(Also, I don’t think this works on Mobile Safari. Apple wants people to support Mobile Safari but basically requires people to buy Macs to debug Mobile Safari issues. ¯\&lt;em&gt;(ツ)&lt;/em&gt;/¯)&lt;/p&gt;
 </description>
     </item>
@@ -1624,6 +1663,39 @@ done
 </description>
     </item>
     <item>
+      <title>Civilized Bandcamp file unzipping</title>
+      <link>http://jimkang.com/weblog/articles/bandcamp-unzip/</link>
+      <pubDate>Wed, 17 Feb 2021 19:00:00 -0500</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/bandcamp-unzip/</guid>
+      <author></author>
+      <description>&lt;p&gt;Here’s a script that’s handy for unzipping stuff you download from Bandcamp.
+&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Bandcamp gives you zip files that contain no directory structure. So, the files just unzip to whatever directory you’re in. I have found that to get messy, and I now like an &lt;code&gt;artist-dir/album-dir&lt;/code&gt; structure, like I’m in the year 2000.&lt;/p&gt;
+&lt;p&gt;Here’s a script I wrote to unzip Bandcamp zip files into such a structure. It uses the naming scheme of the zip file (&lt;code&gt;&amp;lt;artist name&amp;gt;&lt;/code&gt;-&lt;code&gt;&amp;lt;album name&amp;gt;&lt;/code&gt;) to determine the appropriate directory names.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#!/bin/bash
+
+for file in *.zip
+  do
+    filename=&amp;quot;${file%.*}&amp;quot;
+    # Filenames can&amp;#39;t contain /. So, I wonder
+    # what Bandcamp would do if they had AC/DC?
+    unzippath=$(echo &amp;quot;$filename&amp;quot; |sed -e &amp;#39;s/ - /\//&amp;#39;)
+    mkdir -p &amp;quot;$unzippath&amp;quot;
+    unzip &amp;quot;$filename&amp;quot; -d &amp;quot;$unzippath&amp;quot;
+  done
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;It will run on all of the zip files in the working directory. You’ll end up with your mp3 files in directory structures like &lt;code&gt;Chaucerian Myth/The Canterbury Tales&lt;/code&gt; now.&lt;/p&gt;
+&lt;p&gt;&lt;hr&gt;&lt;/p&gt;
+&lt;p&gt;&lt;blockquote&gt;Here, we’re about to drift away from that tiny script into background story space! I feel like a guy that responds to “Where is the nearest gas station?” with a long explanation of local zoning policy and their own personal journey away from fossil fuels to a house powered entirely with solar panels. (I actually would like solar panels, BTW.)&lt;/p&gt;
+&lt;p&gt;Unlike that guy, however, there is no way I’ll notice if you just close the tab now!&lt;/blockquote&gt;&lt;/p&gt;
+&lt;hr&gt;
+
+&lt;p&gt;This has come up because I’ve been increasingly enjoying &lt;a href=&quot;https://bandcamp.com/&quot;&gt;Bandcamp&lt;/a&gt; over the last few years, but now I’m all in on them.&lt;/p&gt;
+&lt;p&gt;I’ve usually used their streaming service, but lately I’ve been downloading albums from them and importing them into &lt;a href=&quot;https://plex.tv/&quot;&gt;Plex&lt;/a&gt; to play. (I like it because lets me stream from my Raspberry Pi at home to my phone. The Bandcamp app also lets you stream to your phone but only with music you’ve bought on Bandcamp.)&lt;/p&gt;
+&lt;p&gt;At first, I thought I’d dump all of my files into one directory and let Plex use ID3 tags to organize them, but you still have to get into the files sometimes, and a 4,000-file directory is total hell. Via Bandcamp purchases and CD rips (weird, I know), this pile is growing again after being frozen for half a decade and needs a little structure.&lt;/p&gt;
+&lt;p&gt;I think I like this way of listening to and acquiring music, as backwards as it sounds, because I tend to consider each album more fully and give each one more of a chance, either because I bought it directly or I once bought it long ago and now have put in the work to rip a CD. And in the cases when I buy from a label-less artist, I provide magnitudes more financial compensation to the artist than I would via any streaming service.&lt;/p&gt;
+</description>
+    </item>
+    <item>
       <title>The web actually breathing usability into old tools</title>
       <link>http://jimkang.com/weblog/articles/web-creating-usability/</link>
       <pubDate>Wed, 17 Feb 2021 19:00:00 -0500</pubDate>
@@ -1743,39 +1815,6 @@ For years, I’ve used &lt;a href=&quot;https://graphviz.org/&quot;&gt;Graphviz&
 &lt;p&gt;But that would reduce profits, and Milton Friedman has famously proclaimed that corporations’ sole responsibility is to maximize profit. (And as we all know, Milton Friedman is a god-pharaoh that issues forth waves that &lt;em&gt;compel all to obey&lt;/em&gt; from his sarcophagus underneath the University of Chicago.)&lt;/p&gt;
 &lt;p&gt;For smaller companies, indie developers, and people who just want to make something nice for others, it’s hard to imagine better alternatives, except perhaps offline web apps (which aren’t easy for a lot of users to wrap their heads around &amp;mdash; the association between the web and internet connections is strong) or putting all of their proverbial eggs on a specific platform.&lt;/p&gt;
 &lt;p&gt;I guess all I’m saying is: Web browsers are (sadly?) the closest we’ve ever gotten to a universal app platform, so I hope we can cut away their many excesses and abuses while keeping that part.&lt;/p&gt;
-</description>
-    </item>
-    <item>
-      <title>Civilized Bandcamp file unzipping</title>
-      <link>http://jimkang.com/weblog/articles/bandcamp-unzip/</link>
-      <pubDate>Wed, 17 Feb 2021 19:00:00 -0500</pubDate>
-      <guid isPermaLink="true">http://jimkang.com/weblog/articles/bandcamp-unzip/</guid>
-      <author></author>
-      <description>&lt;p&gt;Here’s a script that’s handy for unzipping stuff you download from Bandcamp.
-&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;Bandcamp gives you zip files that contain no directory structure. So, the files just unzip to whatever directory you’re in. I have found that to get messy, and I now like an &lt;code&gt;artist-dir/album-dir&lt;/code&gt; structure, like I’m in the year 2000.&lt;/p&gt;
-&lt;p&gt;Here’s a script I wrote to unzip Bandcamp zip files into such a structure. It uses the naming scheme of the zip file (&lt;code&gt;&amp;lt;artist name&amp;gt;&lt;/code&gt;-&lt;code&gt;&amp;lt;album name&amp;gt;&lt;/code&gt;) to determine the appropriate directory names.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;#!/bin/bash
-
-for file in *.zip
-  do
-    filename=&amp;quot;${file%.*}&amp;quot;
-    # Filenames can&amp;#39;t contain /. So, I wonder
-    # what Bandcamp would do if they had AC/DC?
-    unzippath=$(echo &amp;quot;$filename&amp;quot; |sed -e &amp;#39;s/ - /\//&amp;#39;)
-    mkdir -p &amp;quot;$unzippath&amp;quot;
-    unzip &amp;quot;$filename&amp;quot; -d &amp;quot;$unzippath&amp;quot;
-  done
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;It will run on all of the zip files in the working directory. You’ll end up with your mp3 files in directory structures like &lt;code&gt;Chaucerian Myth/The Canterbury Tales&lt;/code&gt; now.&lt;/p&gt;
-&lt;p&gt;&lt;hr&gt;&lt;/p&gt;
-&lt;p&gt;&lt;blockquote&gt;Here, we’re about to drift away from that tiny script into background story space! I feel like a guy that responds to “Where is the nearest gas station?” with a long explanation of local zoning policy and their own personal journey away from fossil fuels to a house powered entirely with solar panels. (I actually would like solar panels, BTW.)&lt;/p&gt;
-&lt;p&gt;Unlike that guy, however, there is no way I’ll notice if you just close the tab now!&lt;/blockquote&gt;&lt;/p&gt;
-&lt;hr&gt;
-
-&lt;p&gt;This has come up because I’ve been increasingly enjoying &lt;a href=&quot;https://bandcamp.com/&quot;&gt;Bandcamp&lt;/a&gt; over the last few years, but now I’m all in on them.&lt;/p&gt;
-&lt;p&gt;I’ve usually used their streaming service, but lately I’ve been downloading albums from them and importing them into &lt;a href=&quot;https://plex.tv/&quot;&gt;Plex&lt;/a&gt; to play. (I like it because lets me stream from my Raspberry Pi at home to my phone. The Bandcamp app also lets you stream to your phone but only with music you’ve bought on Bandcamp.)&lt;/p&gt;
-&lt;p&gt;At first, I thought I’d dump all of my files into one directory and let Plex use ID3 tags to organize them, but you still have to get into the files sometimes, and a 4,000-file directory is total hell. Via Bandcamp purchases and CD rips (weird, I know), this pile is growing again after being frozen for half a decade and needs a little structure.&lt;/p&gt;
-&lt;p&gt;I think I like this way of listening to and acquiring music, as backwards as it sounds, because I tend to consider each album more fully and give each one more of a chance, either because I bought it directly or I once bought it long ago and now have put in the work to rip a CD. And in the cases when I buy from a label-less artist, I provide magnitudes more financial compensation to the artist than I would via any streaming service.&lt;/p&gt;
 </description>
     </item>
     <item>
