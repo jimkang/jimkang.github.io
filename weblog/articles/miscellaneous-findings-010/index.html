@@ -49,88 +49,6 @@
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="cat-health">Cat&nbsp;health</h1>
-<h2 id="glucosamine">Glucosamine</h2>
-<p>Glucosamine is labeled with a disclaimer that the <span class="caps">FDA</span> cannot verify that it actually helps with joint&nbsp;health.</p>
-<h3 id="dosage">Dosage</h3>
-<p><a href="https://www.chewy.com/nutramax-cosequin-chicken-flavored/dp/101450?clickref=1011liJCDraU">This cat-branded glucosamine</a> recommends a dosage of 125-250 mg per day. Regular glucosamin comes in pills that are 750 mg&nbsp;each.</p>
-<ul>
-<li>Cat-branded glucosamine has 125 mg glucosamine hydrochloride per 100 mg sodium chondroitin sulfate and 1 mg manganese.<ul>
-<li>It’s $17.95 for 80 capsules; $0.001795 per mg of&nbsp;glucosamine.</li>
-</ul>
-</li>
-<li><a href="https://www.target.com/p/extra-strength-glucosamine-chondroitin-sulfate-dietary-supplement-tablets-180ct-up-38-up-8482/-/A-75001681">Generic human glucosamine</a> has the same ratio: 750 mg glucosamine hydrochloride per 600 mg sodium chondroitin sulfate. No manganese, though.<ul>
-<li>It’s $17.99 for 180 capsules; $0.000133259 per mg of glucosamine. Cat-branded glucosamine is 13.47 times more expensive than regular&nbsp;glucosamine.</li>
-</ul>
-</li>
-</ul>
-<h2 id="pimobendan">Pimobendan</h2>
-<ul>
-<li><a href="https://en.wikipedia.org/wiki/Pimobendan">https://en.wikipedia.org/wiki/Pimobendan</a><ul>
-<li><blockquote>
-<p>In normal hearts it increases the consumption of oxygen and energy to the same degree as dobutamine but in diseased hearts it may not.<a href="https://en.wikipedia.org/wiki/Pimobendan#cite_note-4">[4]</a><a href="https://en.wikipedia.org/wiki/Pimobendan#cite_note-5">[5]</a> Pimobendan also causes peripheral <a href="https://en.wikipedia.org/wiki/Vasodilation" title="Vasodilation">vasodilation</a> by inhibiting the function of <span class="caps">PDE3</span>. This results in decreased resistance to blood flow through systemic arterioles, which decreases <a href="https://en.wikipedia.org/wiki/Afterload" title="Afterload">afterload</a> (decreases the failing heart’s workload) and reduces the amount of mitral regurgitation.<a href="https://en.wikipedia.org/wiki/Pimobendan#cite_note-6">[6]</a><a href="https://en.wikipedia.org/wiki/Pimobendan#cite_note-7">[7]</a></p>
-</blockquote>
-</li>
-</ul>
-</li>
-<li>1.25mg twice a day, one hour before meals.<ul>
-<li>Chewy does not sell tablets in this size. They have the liquid kind,&nbsp;though.</li>
-<li>Cost from Porter Sq.:&nbsp;?</li>
-</ul>
-</li>
-</ul>
-<h2 id="amlodipine">Amlodipine</h2>
-<ul>
-<li><a href="https://en.wikipedia.org/wiki/Amlodipine">https://en.wikipedia.org/wiki/Amlodipine</a><ul>
-<li>It is a calcium channel blocker. <a href="https://en.wikipedia.org/wiki/Calcium_channel_blocker">https://en.wikipedia.org/wiki/Calcium_channel_blocker</a><ul>
-<li><blockquote>
-<p>Calcium channel blockers are used as <a href="https://en.wikipedia.org/wiki/Antihypertensive_drug" title="Antihypertensive drug">antihypertensive drugs</a>, i.e., as medications to decrease <a href="https://en.wikipedia.org/wiki/Blood_pressure" title="Blood pressure">blood pressure</a> in patients with <a href="https://en.wikipedia.org/wiki/Hypertension" title="Hypertension">hypertension</a>. CCBs are particularly effective against large vessel stiffness, one of the common causes of elevated <a href="https://en.wikipedia.org/wiki/Systolic" title="Systolic">systolic</a> blood pressure in <a href="https://en.wikipedia.org/wiki/Elderly_care" title="Elderly care">elderly patients</a>.<a href="https://en.wikipedia.org/wiki/Calcium_channel_blocker#cite_note-nps01-4">[4]</a></p>
-</blockquote>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>0.625mg per&nbsp;day.</li>
-<li>$37.20 for a 60-day supply from&nbsp;Chewy.</li>
-</ul>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="c-">C++</h1>
-<h2 id="complex-numbers">Complex&nbsp;numbers</h2>
-<p><a href="https://en.cppreference.com/w/c/numeric/complex">C (not jjust C++) has supported complex numbers since&nbsp;1999!</a></p>
-<p><code>creal</code> and <code>cimag</code> will get you the components of a complex&nbsp;number.</p>
-<h2 id="mapping">Mapping</h2>
-<p><a href="https://en.cppreference.com/w/cpp/algorithm/transform">std::transform</a> seems to be the closest thing to <span class="caps">JS</span> <code>map</code>. e.g. Plucking the imaginary value from an array of complex&nbsp;values:</p>
-<pre><code> static void getImaginary(const array&lt;complex&gt;&amp; inComplexVals, array&lt;float&gt;&amp; outimagVals) {
-    transform(inComplexVals.begin(), inComplexVals.end(), outimagVals.begin(), [](Complex&lt;float&gt; c) -&gt; float { return c.imag(); });
-}
-</code></pre><p>In C++ 11, you must specify the range to operate on in the input container (the first two params). Later versions, let you skip&nbsp;that.</p>
-<h2 id="anonymous-inline-functions">Anonymous inline&nbsp;functions</h2>
-<p>(By “inline,” I mean that the function can be defined in the body of another function, not that they’ll be <a href="https://en.wikipedia.org/wiki/Inline_expansion">inlined</a>.)
-These were introduced in C++ 2011. They go like&nbsp;this:</p>
-<pre><code>    [](type param) -&gt; returnType { &lt;function body&gt; }
-</code></pre><p>The <code>[]</code> at the beginning is necessary for the compiler to parse it as an anonymous&nbsp;function.</p>
-<h2 id="misleading-overload-compiler-errors">Misleading overload compiler&nbsp;errors</h2>
-<p>Sometimes an error&nbsp;like:</p>
-<pre><code>    error: cannot resolve overloaded function ‘imag’ based on conversion to type ‘std::array&lt;float, 1024&gt;::value_type’ {aka ‘float’}
-</code></pre><p>In reference to code&nbsp;like:</p>
-<pre><code>    imagVals[i] = complexFFTData[i].imag;
-</code></pre><p>Just means that you used a function as a value. For example, here’s the&nbsp;fix:</p>
-<h2 id="appending-to-files">Appending to&nbsp;files</h2>
-<p>When calling <code>ofstream::open</code> or the constructor, pass <a href="https://en.cppreference.com/w/cpp/io/ios_base/openmode"><code>std::ios_base::app</code></a> as the second param. (The <code>ios_base</code> namespace refers to input-output streams, not to iOS. <code>app</code> is append, not&nbsp;application.)</p>
-<h2 id="terms">Terms</h2>
-<ul>
-<li><span class="caps">POD</span>: plain old&nbsp;data</li>
-</ul>
-<h2 id="const">const</h2>
-<ul>
-<li>When you create an object inline in a function call, that object is implicitly&nbsp;const.</li>
-</ul>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="data-privacy-policies">Data privacy&nbsp;policies</h1>
 <h2 id="microsoft-and-google">Microsoft and&nbsp;Google</h2>
 <p>One thing that’s better about using Excel instead of Google Sheets (other than better features, of which I don’t really know how to take advantage) is the <a href="https://support.microsoft.com/en-us/office/diagnostic-data-in-microsoft-365-f409137d-15d3-4803-a8ae-d26fcbfc91dd">data policy</a>:</p>
@@ -204,6 +122,54 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="cat-health">Cat&nbsp;health</h1>
+<h2 id="glucosamine">Glucosamine</h2>
+<p>Glucosamine is labeled with a disclaimer that the <span class="caps">FDA</span> cannot verify that it actually helps with joint&nbsp;health.</p>
+<h3 id="dosage">Dosage</h3>
+<p><a href="https://www.chewy.com/nutramax-cosequin-chicken-flavored/dp/101450?clickref=1011liJCDraU">This cat-branded glucosamine</a> recommends a dosage of 125-250 mg per day. Regular glucosamin comes in pills that are 750 mg&nbsp;each.</p>
+<ul>
+<li>Cat-branded glucosamine has 125 mg glucosamine hydrochloride per 100 mg sodium chondroitin sulfate and 1 mg manganese.<ul>
+<li>It’s $17.95 for 80 capsules; $0.001795 per mg of&nbsp;glucosamine.</li>
+</ul>
+</li>
+<li><a href="https://www.target.com/p/extra-strength-glucosamine-chondroitin-sulfate-dietary-supplement-tablets-180ct-up-38-up-8482/-/A-75001681">Generic human glucosamine</a> has the same ratio: 750 mg glucosamine hydrochloride per 600 mg sodium chondroitin sulfate. No manganese, though.<ul>
+<li>It’s $17.99 for 180 capsules; $0.000133259 per mg of glucosamine. Cat-branded glucosamine is 13.47 times more expensive than regular&nbsp;glucosamine.</li>
+</ul>
+</li>
+</ul>
+<h2 id="pimobendan">Pimobendan</h2>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Pimobendan">https://en.wikipedia.org/wiki/Pimobendan</a><ul>
+<li><blockquote>
+<p>In normal hearts it increases the consumption of oxygen and energy to the same degree as dobutamine but in diseased hearts it may not.<a href="https://en.wikipedia.org/wiki/Pimobendan#cite_note-4">[4]</a><a href="https://en.wikipedia.org/wiki/Pimobendan#cite_note-5">[5]</a> Pimobendan also causes peripheral <a href="https://en.wikipedia.org/wiki/Vasodilation" title="Vasodilation">vasodilation</a> by inhibiting the function of <span class="caps">PDE3</span>. This results in decreased resistance to blood flow through systemic arterioles, which decreases <a href="https://en.wikipedia.org/wiki/Afterload" title="Afterload">afterload</a> (decreases the failing heart’s workload) and reduces the amount of mitral regurgitation.<a href="https://en.wikipedia.org/wiki/Pimobendan#cite_note-6">[6]</a><a href="https://en.wikipedia.org/wiki/Pimobendan#cite_note-7">[7]</a></p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>1.25mg twice a day, one hour before meals.<ul>
+<li>Chewy does not sell tablets in this size. They have the liquid kind,&nbsp;though.</li>
+<li>Cost from Porter Sq.:&nbsp;?</li>
+</ul>
+</li>
+</ul>
+<h2 id="amlodipine">Amlodipine</h2>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Amlodipine">https://en.wikipedia.org/wiki/Amlodipine</a><ul>
+<li>It is a calcium channel blocker. <a href="https://en.wikipedia.org/wiki/Calcium_channel_blocker">https://en.wikipedia.org/wiki/Calcium_channel_blocker</a><ul>
+<li><blockquote>
+<p>Calcium channel blockers are used as <a href="https://en.wikipedia.org/wiki/Antihypertensive_drug" title="Antihypertensive drug">antihypertensive drugs</a>, i.e., as medications to decrease <a href="https://en.wikipedia.org/wiki/Blood_pressure" title="Blood pressure">blood pressure</a> in patients with <a href="https://en.wikipedia.org/wiki/Hypertension" title="Hypertension">hypertension</a>. CCBs are particularly effective against large vessel stiffness, one of the common causes of elevated <a href="https://en.wikipedia.org/wiki/Systolic" title="Systolic">systolic</a> blood pressure in <a href="https://en.wikipedia.org/wiki/Elderly_care" title="Elderly care">elderly patients</a>.<a href="https://en.wikipedia.org/wiki/Calcium_channel_blocker#cite_note-nps01-4">[4]</a></p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>0.625mg per&nbsp;day.</li>
+<li>$37.20 for a 60-day supply from&nbsp;Chewy.</li>
+</ul>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="finding-out-what-s-using-a-port">Finding out what’s using a&nbsp;port</h1>
 <p>There’s <code>lsof -i TCP</code>, but that sometimes misses it. Maybe that’s for active&nbsp;connections?</p>
 <p>This seems&nbsp;better:</p>
@@ -213,25 +179,37 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="getting-apps-to-show-up-in-ubuntu-search">Getting apps to show up in Ubuntu&nbsp;search</h1>
-<p>You know how when you hit ctrl+space, you can type an app name and then launch it from there? Sometime an app won’t show up there if you’ve installed it as an AppImage or just downloaded it to run from wherever you put it instead of using a&nbsp;Snap.</p>
-<p>That’s not the actual reason, it’s not showing up in desktop search, though. It’s because it doesn’t have a <code>.desktop</code> file.</p>
-<p>You can look at a bunch of <code>.desktop</code> files in <code>/usr/share/applications</code>, then copy and edit one of them to make a new&nbsp;one.</p>
-<p>Here is a minimal one that I made for Obsidian, named <code>obsidian.desktop</code>, which I run as an AppImage because there was no Snap when I first got&nbsp;it:</p>
-<pre><code>[Desktop Entry]
-Name=Obsidian
-GenericName=Notes organizer
-Comment=Organize notes
-Exec=/home/myuserdir/apps/Obsidian-1.0.3.AppImage
-Terminal=false
-Type=Application
-Keywords=notes;organizer;
-Icon=/home/myuserdir/apps/obsidian-meta/obsidian-icon-256.png
-Categories=Utility;TextEditor;
-StartupNotify=false
-MimeType=text/english;text/plain;text/x-markdown;
-</code></pre><p>Now it shows up, and I don’t have to open a new terminal tab to launch it. I’ve done the same for Firefox because I’m now just using a version downloaded from its site to avoid the [issue in which the Snap image makes the mouse cursor really small on Ubuntu&nbsp;22.04.1]</p>
-<p>#ubuntu</p>
+            <section class="content"><h1 id="c-">C++</h1>
+<h2 id="complex-numbers">Complex&nbsp;numbers</h2>
+<p><a href="https://en.cppreference.com/w/c/numeric/complex">C (not jjust C++) has supported complex numbers since&nbsp;1999!</a></p>
+<p><code>creal</code> and <code>cimag</code> will get you the components of a complex&nbsp;number.</p>
+<h2 id="mapping">Mapping</h2>
+<p><a href="https://en.cppreference.com/w/cpp/algorithm/transform">std::transform</a> seems to be the closest thing to <span class="caps">JS</span> <code>map</code>. e.g. Plucking the imaginary value from an array of complex&nbsp;values:</p>
+<pre><code> static void getImaginary(const array&lt;complex&gt;&amp; inComplexVals, array&lt;float&gt;&amp; outimagVals) {
+    transform(inComplexVals.begin(), inComplexVals.end(), outimagVals.begin(), [](Complex&lt;float&gt; c) -&gt; float { return c.imag(); });
+}
+</code></pre><p>In C++ 11, you must specify the range to operate on in the input container (the first two params). Later versions, let you skip&nbsp;that.</p>
+<h2 id="anonymous-inline-functions">Anonymous inline&nbsp;functions</h2>
+<p>(By “inline,” I mean that the function can be defined in the body of another function, not that they’ll be <a href="https://en.wikipedia.org/wiki/Inline_expansion">inlined</a>.)
+These were introduced in C++ 2011. They go like&nbsp;this:</p>
+<pre><code>    [](type param) -&gt; returnType { &lt;function body&gt; }
+</code></pre><p>The <code>[]</code> at the beginning is necessary for the compiler to parse it as an anonymous&nbsp;function.</p>
+<h2 id="misleading-overload-compiler-errors">Misleading overload compiler&nbsp;errors</h2>
+<p>Sometimes an error&nbsp;like:</p>
+<pre><code>    error: cannot resolve overloaded function ‘imag’ based on conversion to type ‘std::array&lt;float, 1024&gt;::value_type’ {aka ‘float’}
+</code></pre><p>In reference to code&nbsp;like:</p>
+<pre><code>    imagVals[i] = complexFFTData[i].imag;
+</code></pre><p>Just means that you used a function as a value. For example, here’s the&nbsp;fix:</p>
+<h2 id="appending-to-files">Appending to&nbsp;files</h2>
+<p>When calling <code>ofstream::open</code> or the constructor, pass <a href="https://en.cppreference.com/w/cpp/io/ios_base/openmode"><code>std::ios_base::app</code></a> as the second param. (The <code>ios_base</code> namespace refers to input-output streams, not to iOS. <code>app</code> is append, not&nbsp;application.)</p>
+<h2 id="terms">Terms</h2>
+<ul>
+<li><span class="caps">POD</span>: plain old&nbsp;data</li>
+</ul>
+<h2 id="const">const</h2>
+<ul>
+<li>When you create an object inline in a function call, that object is implicitly&nbsp;const.</li>
+</ul>
 </section>
           </article>
           <article class="finding">
@@ -268,46 +246,6 @@ MimeType=text/english;text/plain;text/x-markdown;
 <p><a href="https://askubuntu.com/questions/1090094/wine-missing-ntlm-auth-3-0-25">Reintalling winbind</a> gets rid of that&nbsp;error:</p>
 <pre><code>sudo apt-get remove winbind &amp;&amp; sudo apt-get install winbind
 </code></pre><p>#game&nbsp;#switch</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="caching-in-github-actions">Caching in GitHub&nbsp;Actions</h1>
-<h2 id="standard-dependency-installs">Standard dependency&nbsp;installs</h2>
-<p>Most of the official setup GitHub Actions that set up an environment for a language have their own caching features. For example, <a href="https://github.com/actions/setup-python#caching-packages-dependencies">setup-python V4</a> lets you cache pip installs by specifying <code>with: cache: pip</code> when you use that&nbsp;action.</p>
-<p>Here is an example config for a Python&nbsp;job:</p>
-<pre><code>jobs:
-  run-job:
-    runs-on: ubuntu-latest
-    timeout-minutes: 2
-    steps:
-      - name: ${{ github.event.client_payload.id }}
-        run: echo run identifier ${{ github.event.client_payload.id }}
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: &quot;3.9&quot;
-          cache: pip
-      - run: |
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-</code></pre><h1 id="arbitrary-caching">Arbitrary&nbsp;caching</h1>
-<p>In the case that an action needs to download an artifact (like statistical models in the case of <a href="https://www.nltk.org/"><span class="caps">NLTK</span></a>), GitHub Actions provides a way to cache arbitary&nbsp;things.</p>
-<p>There is an <code>actions/cache@v3</code> action, which takes <code>key</code> and <code>path</code> parameters. It will check for a cache with the key specified your action. If it can’t find one, it will set a flag that you can use and (counterintuitively, <span class="caps">IMO</span>) <a href="https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows">create a new cache for that key</a>.</p>
-<p>Implicitly (as far as I can tell so far), if your job completes successfully, it will save what’s at <code>path</code> to the cache. So, in the case of a cache miss, your action has an obligation to download whatever it needs and put it at <code>path</code> so that it gets cached for the next run. The action can check for a cache miss with <code>if: steps.&lt;the id of the step in which you use actions/cache@v3&gt;.outputs.cache-hit != &#39;true&#39;</code>.</p>
-<p>Here is an&nbsp;example:</p>
-<pre><code>  - name: Restore cached nltk_data
-    id: restore-nltk-cache
-    uses: actions/cache@v3
-    with:
-      path: |
-        ~/nltk_data
-      key: nltk_data
-  - name: Install nltk_data on cache miss
-    run: |
-      NLTK_DATA=~/nltk_data python -m nltk.downloader punkt
-      NLTK_DATA=~/nltk_data python -m nltk.downloader stopwords
-    if: steps.restore-nltk-cache.outputs.cache-hit != &#39;true&#39;
-</code></pre><p>If it does find a cache for <code>key</code>, then it puts the cache’s content at <code>path</code>.</p>
-<p>Restoring a 27 <span class="caps">MB</span> cache took less than a second, as of&nbsp;2022-07-22.</p>
 </section>
           </article>
           <article class="finding">
@@ -397,6 +335,120 @@ MimeType=text/english;text/plain;text/x-markdown;
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="caching-in-github-actions">Caching in GitHub&nbsp;Actions</h1>
+<h2 id="standard-dependency-installs">Standard dependency&nbsp;installs</h2>
+<p>Most of the official setup GitHub Actions that set up an environment for a language have their own caching features. For example, <a href="https://github.com/actions/setup-python#caching-packages-dependencies">setup-python V4</a> lets you cache pip installs by specifying <code>with: cache: pip</code> when you use that&nbsp;action.</p>
+<p>Here is an example config for a Python&nbsp;job:</p>
+<pre><code>jobs:
+  run-job:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: ${{ github.event.client_payload.id }}
+        run: echo run identifier ${{ github.event.client_payload.id }}
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: &quot;3.9&quot;
+          cache: pip
+      - run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+</code></pre><h1 id="arbitrary-caching">Arbitrary&nbsp;caching</h1>
+<p>In the case that an action needs to download an artifact (like statistical models in the case of <a href="https://www.nltk.org/"><span class="caps">NLTK</span></a>), GitHub Actions provides a way to cache arbitary&nbsp;things.</p>
+<p>There is an <code>actions/cache@v3</code> action, which takes <code>key</code> and <code>path</code> parameters. It will check for a cache with the key specified your action. If it can’t find one, it will set a flag that you can use and (counterintuitively, <span class="caps">IMO</span>) <a href="https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows">create a new cache for that key</a>.</p>
+<p>Implicitly (as far as I can tell so far), if your job completes successfully, it will save what’s at <code>path</code> to the cache. So, in the case of a cache miss, your action has an obligation to download whatever it needs and put it at <code>path</code> so that it gets cached for the next run. The action can check for a cache miss with <code>if: steps.&lt;the id of the step in which you use actions/cache@v3&gt;.outputs.cache-hit != &#39;true&#39;</code>.</p>
+<p>Here is an&nbsp;example:</p>
+<pre><code>  - name: Restore cached nltk_data
+    id: restore-nltk-cache
+    uses: actions/cache@v3
+    with:
+      path: |
+        ~/nltk_data
+      key: nltk_data
+  - name: Install nltk_data on cache miss
+    run: |
+      NLTK_DATA=~/nltk_data python -m nltk.downloader punkt
+      NLTK_DATA=~/nltk_data python -m nltk.downloader stopwords
+    if: steps.restore-nltk-cache.outputs.cache-hit != &#39;true&#39;
+</code></pre><p>If it does find a cache for <code>key</code>, then it puts the cache’s content at <code>path</code>.</p>
+<p>Restoring a 27 <span class="caps">MB</span> cache took less than a second, as of&nbsp;2022-07-22.</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="getting-apps-to-show-up-in-ubuntu-search">Getting apps to show up in Ubuntu&nbsp;search</h1>
+<p>You know how when you hit ctrl+space, you can type an app name and then launch it from there? Sometime an app won’t show up there if you’ve installed it as an AppImage or just downloaded it to run from wherever you put it instead of using a&nbsp;Snap.</p>
+<p>That’s not the actual reason, it’s not showing up in desktop search, though. It’s because it doesn’t have a <code>.desktop</code> file.</p>
+<p>You can look at a bunch of <code>.desktop</code> files in <code>/usr/share/applications</code>, then copy and edit one of them to make a new&nbsp;one.</p>
+<p>Here is a minimal one that I made for Obsidian, named <code>obsidian.desktop</code>, which I run as an AppImage because there was no Snap when I first got&nbsp;it:</p>
+<pre><code>[Desktop Entry]
+Name=Obsidian
+GenericName=Notes organizer
+Comment=Organize notes
+Exec=/home/myuserdir/apps/Obsidian-1.0.3.AppImage
+Terminal=false
+Type=Application
+Keywords=notes;organizer;
+Icon=/home/myuserdir/apps/obsidian-meta/obsidian-icon-256.png
+Categories=Utility;TextEditor;
+StartupNotify=false
+MimeType=text/english;text/plain;text/x-markdown;
+</code></pre><p>Now it shows up, and I don’t have to open a new terminal tab to launch it. I’ve done the same for Firefox because I’m now just using a version downloaded from its site to avoid the [issue in which the Snap image makes the mouse cursor really small on Ubuntu&nbsp;22.04.1]</p>
+<p>#ubuntu</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="moonlander">Moonlander</h1>
+<h2 id="wally-getting-stuck-after-you-re-supposed-to-reset-the-keyboard">Wally getting stuck after you’re supposed to reset the&nbsp;keyboard</h2>
+<p>When this happened to me, it was on a new computer. I never added the udev rule file as described&nbsp;here:</p>
+<p><a href="https://github.com/zsa/wally/wiki/Linux-install">https://github.com/zsa/wally/wiki/Linux-install</a></p>
+<p>After I did that, it&nbsp;worked!</p>
+<p>#keyboard&nbsp;#ubuntu</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="recording-internal-audio">Recording internal&nbsp;audio</h1>
+<p><a href="https://askubuntu.com/questions/250073/how-to-record-any-internal-sound-in-and-out-using-ubuntu-and-audacity">https://askubuntu.com/questions/250073/how-to-record-any-internal-sound-in-and-out-using-ubuntu-and-audacity</a></p>
+<blockquote>
+<p>As soon as we record any audio stream the name of the recording application and the source from where it records will be shown in the <em>Recording</em> tab. We then may be able to change the source to <code>Monitor of &lt;your soundcard&gt;</code> to record the output of our&nbsp;soundcard:</p>
+</blockquote>
+<ul>
+<li>First, start recording in&nbsp;Audacity.</li>
+<li>Then, in <code>pavucontrol</code>, in the Recording tab, in the Audacity entry, select “Monitor of soundcard” (instead of&nbsp;soundcard).</li>
+</ul>
+<p>Now it’s recording the output of the soundcard instead of the mic connected to the&nbsp;soundcard.</p>
+<p>#ubuntu&nbsp;#audio</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="setting-up-a-new-computer-running-ubuntu">Setting up a new computer running&nbsp;Ubuntu</h1>
+<ul>
+<li>Move over your private&nbsp;key.</li>
+<li>Install&nbsp;git.</li>
+<li>Clone password&nbsp;store.</li>
+<li>Install <code>pass</code>.</li>
+<li>Clone <code>dotfiles</code> to <code>~</code>.</li>
+<li><code>sudo apt install zsh</code></li>
+<li><code>chsh -s /bin/zsh</code><ul>
+<li>You need to log out and log back in for this to take effect. You can’t just close and reopen a&nbsp;terminal.</li>
+</ul>
+</li>
+<li>In terminal preferences:<ul>
+<li>Change the copy shortcut to&nbsp;alt+c</li>
+<li>Change the epaste shortcut to&nbsp;alt+v</li>
+</ul>
+</li>
+<li><code>sudo apt install curl</code></li>
+<li>Install&nbsp;[[neovim]].</li>
+<li>Install ssh, then rsync your old home directory&nbsp;over.</li>
+<li>Install&nbsp;make.</li>
+<li>Install&nbsp;lame.</li>
+<li>Uninstall&nbsp;ssh.</li>
+<li><code>sudo apt install gnome-tweaks</code></li>
+<li>Set up the compose key in settings. (It’s scroll lock in your keyboard&nbsp;config.)</li>
+</ul>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="serving-local-web-apps-via-https">Serving local web apps via&nbsp;https</h1>
 <p>If you need to serve a local web page via&nbsp;https:</p>
 <h2 id="create-a-cert">Create a&nbsp;cert</h2>
@@ -430,55 +482,73 @@ httpd.serve_forever()
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="moonlander">Moonlander</h1>
-<h2 id="wally-getting-stuck-after-you-re-supposed-to-reset-the-keyboard">Wally getting stuck after you’re supposed to reset the&nbsp;keyboard</h2>
-<p>When this happened to me, it was on a new computer. I never added the udev rule file as described&nbsp;here:</p>
-<p><a href="https://github.com/zsa/wally/wiki/Linux-install">https://github.com/zsa/wally/wiki/Linux-install</a></p>
-<p>After I did that, it&nbsp;worked!</p>
-<p>#keyboard&nbsp;#ubuntu</p>
+            <section class="content"><h1 id="tail-calls">Tail&nbsp;calls</h1>
+<p>If a function ends by calling itself, that’s called a tail&nbsp;call.</p>
+<p>It can usually be optimized by converting the function to just use a loop (or jump in assembly) instead of putting up another stack frame for another function&nbsp;call.</p>
+<p>#programming</p>
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="setting-up-a-new-computer-running-ubuntu">Setting up a new computer running&nbsp;Ubuntu</h1>
-<ul>
-<li>Move over your private&nbsp;key.</li>
-<li>Install&nbsp;git.</li>
-<li>Clone password&nbsp;store.</li>
-<li>Install <code>pass</code>.</li>
-<li>Clone <code>dotfiles</code> to <code>~</code>.</li>
-<li><code>sudo apt install zsh</code></li>
-<li><code>chsh -s /bin/zsh</code><ul>
-<li>You need to log out and log back in for this to take effect. You can’t just close and reopen a&nbsp;terminal.</li>
-</ul>
-</li>
-<li>In terminal preferences:<ul>
-<li>Change the copy shortcut to&nbsp;alt+c</li>
-<li>Change the epaste shortcut to&nbsp;alt+v</li>
-</ul>
-</li>
-<li><code>sudo apt install curl</code></li>
-<li>Install&nbsp;[[neovim]].</li>
-<li>Install ssh, then rsync your old home directory&nbsp;over.</li>
-<li>Install&nbsp;make.</li>
-<li>Install&nbsp;lame.</li>
-<li>Uninstall&nbsp;ssh.</li>
-<li><code>sudo apt install gnome-tweaks</code></li>
-<li>Set up the compose key in settings. (It’s scroll lock in your keyboard&nbsp;config.)</li>
-</ul>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="recording-internal-audio">Recording internal&nbsp;audio</h1>
-<p><a href="https://askubuntu.com/questions/250073/how-to-record-any-internal-sound-in-and-out-using-ubuntu-and-audacity">https://askubuntu.com/questions/250073/how-to-record-any-internal-sound-in-and-out-using-ubuntu-and-audacity</a></p>
+            <section class="content"><h1 id="rsync">rsync</h1>
+<h2 id="dealing-with-spaces-in-the-path">Dealing with spaces in the&nbsp;path</h2>
+<p>Use <code>--protect-args</code>.&nbsp;e.g.:</p>
+<pre><code>rsync -avz --protect-args pi@midnight-giant:&quot;/mnt/storage/media/music/Pikmin Sound Team/Pikmin 3 Deluxe&quot; .
+</code></pre><h2 id="keeping-local-files-even-if-they-re-missing-on-remote">Keeping local files even if they’re missing on&nbsp;remote</h2>
+<p>It does this by&nbsp;default!</p>
+<p><a href="https://www.digitalocean.com/community/tutorials/how-to-use-rsync-to-sync-local-and-remote-directories">https://www.digitalocean.com/community/tutorials/how-to-use-rsync-to-sync-local-and-remote-directories</a></p>
 <blockquote>
-<p>As soon as we record any audio stream the name of the recording application and the source from where it records will be shown in the <em>Recording</em> tab. We then may be able to change the source to <code>Monitor of &lt;your soundcard&gt;</code> to record the output of our&nbsp;soundcard:</p>
+<p>In order to keep two directories truly in sync, it’s necessary to delete files from the destination directory if they are removed from the source. By default, <code>rsync</code> does not delete anything from the destination&nbsp;directory.</p>
+<p>You can change this behavior with the <code>--delete</code> option.</p>
 </blockquote>
-<ul>
-<li>First, start recording in&nbsp;Audacity.</li>
-<li>Then, in <code>pavucontrol</code>, in the Recording tab, in the Audacity entry, select “Monitor of soundcard” (instead of&nbsp;soundcard).</li>
-</ul>
-<p>Now it’s recording the output of the soundcard instead of the mic connected to the&nbsp;soundcard.</p>
-<p>#ubuntu&nbsp;#audio</p>
+<p>#rsync&nbsp;#command</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="-jangjorim-">장조림(Jangjorim)</h1>
+<p>From&nbsp;Mom:</p>
+<p>Skirt steak or 결이 있는 good beef stew cut in to big chunk.
+Put it in big pot.
+Minced Garlic, cubic onions,green onions, soy sauce and sugar.
+Do not put water in it.
+Cook it medium high for 20 minutes do not burning  until all the water is&nbsp;gone.</p>
+<blockquote>
+<p><span class="caps">OK</span>! How much sugar for how much beef,&nbsp;about?</p>
+</blockquote>
+<p>Depend on beef.
+1/2 Lbs beef 3 table spoons 1 table spoon.
+Depend on your taste.
+Add 1/2 tea spoon black&nbsp;pepper.</p>
+<p>#cooking</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="making-a-video-from-images-in-multiple-directories">Making a video from images in multiple&nbsp;directories</h1>
+<p><a href="https://stackoverflow.com/a/37478183/87798">https://stackoverflow.com/a/37478183/87798</a></p>
+<pre><code>ffmpeg -framerate 30 -pattern_type glob -i &#39;**/*.JPG&#39; \
+  -c:v libx264 -pix_fmt yuv420p out.mp4
+</code></pre><h1 id="rotating-video">Rotating&nbsp;video</h1>
+<p>`ffmpeg -i input.mp4 -vf “transpose=1, transpose=1”&nbsp;output.mp4</p>
+<p>The above rotates the input 90° twice. <code>transpose=0</code> rotates it&nbsp;counterclockwise.</p>
+<p><code>&quot;rotate=PI:bilinear=0&quot;</code> will rotate it 180° and turn off bilinear interpolation to avoid&nbsp;blurriness.</p>
+<h1 id="scaling-down">Scaling&nbsp;down</h1>
+<pre><code>ffmpeg big2840.mp4 -vf scale=3840:1080 -c:v libx264 -crf 20 -preset slow smaller.mp4
+</code></pre><p>The <code>scale</code> value is the target&nbsp;size.</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="unrar">unrar</h1>
+<p>If you get “no files to extract”, the problem may actually be that it doesn’t have permission to create a file or directory, rather that there being no files to extract in the rar&nbsp;file.</p>
+<h2 id="unraring-from-multiple-subdirectories">Unraring from multiple&nbsp;subdirectories</h2>
+<p>Remove the any unwanted subdirectories first, e.g.&nbsp;“Sample”.</p>
+<pre><code>find . -name Sample -exec rm -rf {} \;
+</code></pre><p>Run this&nbsp;script:</p>
+<pre><code>#!/bin/bash
+
+for dir in ./*
+do
+    unrar e &quot;${dir}/*.rar&quot;
+done
+</code></pre><p>#rar #command&nbsp;#shell</p>
 </section>
           </article>
           <article class="finding">
@@ -502,86 +572,10 @@ httpd.serve_forever()
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="-jangjorim-">장조림(Jangjorim)</h1>
-<p>From&nbsp;Mom:</p>
-<p>Skirt steak or 결이 있는 good beef stew cut in to big chunk.
-Put it in big pot.
-Minced Garlic, cubic onions,green onions, soy sauce and sugar.
-Do not put water in it.
-Cook it medium high for 20 minutes do not burning  until all the water is&nbsp;gone.</p>
-<blockquote>
-<p><span class="caps">OK</span>! How much sugar for how much beef,&nbsp;about?</p>
-</blockquote>
-<p>Depend on beef.
-1/2 Lbs beef 3 table spoons 1 table spoon.
-Depend on your taste.
-Add 1/2 tea spoon black&nbsp;pepper.</p>
-<p>#cooking</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="tail-calls">Tail&nbsp;calls</h1>
-<p>If a function ends by calling itself, that’s called a tail&nbsp;call.</p>
-<p>It can usually be optimized by converting the function to just use a loop (or jump in assembly) instead of putting up another stack frame for another function&nbsp;call.</p>
-<p>#programming</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="rsync">rsync</h1>
-<h2 id="dealing-with-spaces-in-the-path">Dealing with spaces in the&nbsp;path</h2>
-<p>Use <code>--protect-args</code>.&nbsp;e.g.:</p>
-<pre><code>rsync -avz --protect-args pi@midnight-giant:&quot;/mnt/storage/media/music/Pikmin Sound Team/Pikmin 3 Deluxe&quot; .
-</code></pre><h2 id="keeping-local-files-even-if-they-re-missing-on-remote">Keeping local files even if they’re missing on&nbsp;remote</h2>
-<p>It does this by&nbsp;default!</p>
-<p><a href="https://www.digitalocean.com/community/tutorials/how-to-use-rsync-to-sync-local-and-remote-directories">https://www.digitalocean.com/community/tutorials/how-to-use-rsync-to-sync-local-and-remote-directories</a></p>
-<blockquote>
-<p>In order to keep two directories truly in sync, it’s necessary to delete files from the destination directory if they are removed from the source. By default, <code>rsync</code> does not delete anything from the destination&nbsp;directory.</p>
-<p>You can change this behavior with the <code>--delete</code> option.</p>
-</blockquote>
-<p>#rsync&nbsp;#command</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="making-a-video-from-images-in-multiple-directories">Making a video from images in multiple&nbsp;directories</h1>
-<p><a href="https://stackoverflow.com/a/37478183/87798">https://stackoverflow.com/a/37478183/87798</a></p>
-<pre><code>ffmpeg -framerate 30 -pattern_type glob -i &#39;**/*.JPG&#39; \
-  -c:v libx264 -pix_fmt yuv420p out.mp4
-</code></pre><h1 id="rotating-video">Rotating&nbsp;video</h1>
-<p>`ffmpeg -i input.mp4 -vf “transpose=1, transpose=1”&nbsp;output.mp4</p>
-<p>The above rotates the input 90° twice. <code>transpose=0</code> rotates it&nbsp;counterclockwise.</p>
-<p><code>&quot;rotate=PI:bilinear=0&quot;</code> will rotate it 180° and turn off bilinear interpolation to avoid&nbsp;blurriness.</p>
-<h1 id="scaling-down">Scaling&nbsp;down</h1>
-<pre><code>ffmpeg big2840.mp4 -vf scale=3840:1080 -c:v libx264 -crf 20 -preset slow smaller.mp4
-</code></pre><p>The <code>scale</code> value is the target&nbsp;size.</p>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="wget">wget</h1>
 <h2 id="downloading-all-of-the-links-on-a-web-page">Downloading all of the links on a web&nbsp;page</h2>
 <pre><code>wget -m and robots=off https://the-site-you-want
 </code></pre><p>#bash </p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="zip">Zip</h1>
-<p><code>-j</code> gets it to not put the directory structure into the zip file.
-<code>-x &lt;pattern&gt;</code> makes it ignore files matching the&nbsp;pattern.</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="unrar">unrar</h1>
-<p>If you get “no files to extract”, the problem may actually be that it doesn’t have permission to create a file or directory, rather that there being no files to extract in the rar&nbsp;file.</p>
-<h2 id="unraring-from-multiple-subdirectories">Unraring from multiple&nbsp;subdirectories</h2>
-<p>Remove the any unwanted subdirectories first, e.g.&nbsp;“Sample”.</p>
-<pre><code>find . -name Sample -exec rm -rf {} \;
-</code></pre><p>Run this&nbsp;script:</p>
-<pre><code>#!/bin/bash
-
-for dir in ./*
-do
-    unrar e &quot;${dir}/*.rar&quot;
-done
-</code></pre><p>#rar #command&nbsp;#shell</p>
 </section>
           </article>
           <article class="finding">
@@ -605,6 +599,12 @@ done
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="zip">Zip</h1>
+<p><code>-j</code> gets it to not put the directory structure into the zip file.
+<code>-x &lt;pattern&gt;</code> makes it ignore files matching the&nbsp;pattern.</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h2 id="dom"><span class="caps">DOM</span></h2>
 <p>If you parse an <span class="caps">SVG</span> document into a tree, then append one of the child nodes to the browser’s current DOM, then the node disappears from the source tree. Sort of a move, rather than a&nbsp;copy.</p>
 </section>
@@ -619,7 +619,7 @@ done
         <!--section.about-->
         <!--  !=contents['about.md'].html-->
         <section class="copy">
-          <p>&copy; 2024 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          <p>&copy; 2025 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
           </p>
           <p><a href='/weblog/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
         </section>

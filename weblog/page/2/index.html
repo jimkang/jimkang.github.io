@@ -22,6 +22,29 @@
       <div class="content-wrap">
         <article class="article intro">
           <header>
+            <p class="date"><span>05. July 2024</span></p>
+            <h2><a href="/weblog/articles/daily-sutra/">The Daily Sutra</a>
+            </h2>
+          </header>
+          <section class="content"><p>Last Friday, I found myself a liturgical space while listening to a news&nbsp;podcast.
+
+            <p class="more"><a href="/weblog/articles/daily-sutra/">more</a></p>
+          </section>
+        </article>
+        <article class="article intro">
+          <header>
+            <p class="date"><span>08. February 2024</span></p>
+            <h2><a href="/weblog/articles/mystery-of-the-confucian-girl/">The mystery of the Confucian Girl</a>
+            </h2>
+          </header>
+          <section class="content"><p>We finished Season 1 of <a href="https://baechusquad.download/girls_high_mystery_class/">Girls’ High Mystery Class</a>, which was fun. The mysteries were well-designed (though, I don’t think I actually solved any of them), and it was good times to watch the characters interacting. (The players play versions of themselves as if they were mystery-solving high school&nbsp;students.)</p>
+<p>There was one small meta-mystery I did solve just now,&nbsp;though.
+
+            <p class="more"><a href="/weblog/articles/mystery-of-the-confucian-girl/">more</a></p>
+          </section>
+        </article>
+        <article class="article intro">
+          <header>
             <p class="date"><span>01. December 2023</span></p>
             <h2><a href="/weblog/articles/ultimate-bandcamp-fridays/">Ultimate Bandcamp Fridays</a>
             </h2>
@@ -30,84 +53,6 @@
 <p>So, today, here is what I picked&nbsp;up.</p>
 <p>
             <p class="more"><a href="/weblog/articles/ultimate-bandcamp-fridays/">more</a></p>
-          </section>
-        </article>
-        <article class="article intro">
-          <header>
-            <p class="date"><span>26. August 2023</span></p>
-            <h2><a href="/weblog/articles/literal-edge-case/">A literal edge case</a>
-            </h2>
-          </header>
-          <section class="content"><p>The other day, I was in an <code>&lt;svg&gt;</code>, trying to make the end of a line into a triangle, like that of a&nbsp;pencil.</p>
-<p>I eventually realized that the most elegant way to do it was with a <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Element/marker">marker definition</a> like&nbsp;this:</p>
-<pre><code>&lt;svg width=&quot;100%&quot; height=&quot;50&quot;&gt;
-  &lt;title&gt;Line with triangular point diagram&lt;/title&gt;
-  &lt;defs&gt;
-    &lt;marker
-      id=&quot;pencil-point&quot;
-      viewBox=&quot;0 0 10 10&quot;
-      refX=&quot;0&quot;
-      refY=&quot;5&quot;
-      markerWidth=&quot;1&quot;
-      markerHeight=&quot;1&quot;
-      orient=&quot;auto-start-reverse&quot;
-    &gt;
-      &lt;path d=&quot;M 0 0 L 10 5 L 0 10 z&quot; fill=&quot;context-stroke&quot; /&gt;
-    &lt;/marker&gt;
-  &lt;/defs&gt;
-  &lt;line
-    x1=&quot;40&quot;
-    x2=&quot;200&quot;
-    y1=&quot;25&quot;
-    y2=&quot;25&quot;
-    stroke=&quot;hsl(35, 80%, 60%)&quot;
-    stroke-width=&quot;20&quot;
-    marker-start=&quot;url(#pencil-point)&quot;
-  &gt;&lt;/line&gt;
-&lt;/svg&gt;
-</code></pre><svg width="100%" height="50">
-  <title>Line with triangular point diagram</title>
-  <defs>
-    <marker
-      id="pencil-point"
-      viewBox="0 0 10 10"
-      refX="0"
-      refY="5"
-      markerWidth="1"
-      markerHeight="1"
-      orient="auto-start-reverse"
-    >
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke" />
-    </marker>
-  </defs>
-  <line
-    x1="40"
-    x2="200"
-    y1="25"
-    y2="25"
-    stroke="hsl(35, 80%, 60%)"
-    stroke-width="20"
-    marker-start="url(#pencil-point)"
-  ></line>
-</svg>
-
-<p>If you just wanted to know how to cut a triangle into the end of a line efficiently, there’s no need to read further. Close the tab <em>immediately</em>.</p>
-<p>The rest of this post is about a <code>&lt;clipPath&gt;</code> mystery that I encountered back when I was trying to do this the wrong&nbsp;way.
-
-            <p class="more"><a href="/weblog/articles/literal-edge-case/">more</a></p>
-          </section>
-        </article>
-        <article class="article intro">
-          <header>
-            <p class="date"><span>17. August 2023</span></p>
-            <h2><a href="/weblog/articles/obscura/">Obscura and the extrasonic part of music</a>
-            </h2>
-          </header>
-          <section class="content"><p>I’m listening to Gorguts’s <a href="https://www.discogs.com/master/32447-Gorguts-Obscura">Obscura</a>.</p>
-<p>I often don’t listen to it because I can’t listen to it while doing other things, but I am on a plane now, not doing other&nbsp;things.</p>
-<p>A lot has been said about this album because it is a landmark progressive metal album. And yet now I feel like saying even more about it and about how we perceive&nbsp;music.
-
-            <p class="more"><a href="/weblog/articles/obscura/">more</a></p>
           </section>
         </article>
       </div>
@@ -119,7 +64,7 @@
         <!--section.about-->
         <!--  !=contents['about.md'].html-->
         <section class="copy">
-          <p>&copy; 2024 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          <p>&copy; 2025 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
           </p>
           <p><a href='/weblog/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
         </section>
