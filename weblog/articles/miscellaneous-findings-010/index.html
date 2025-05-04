@@ -122,6 +122,15 @@
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="finding-out-what-s-using-a-port">Finding out what’s using a&nbsp;port</h1>
+<p>There’s <code>lsof -i TCP</code>, but that sometimes misses it. Maybe that’s for active&nbsp;connections?</p>
+<p>This seems&nbsp;better:</p>
+<p><code>ss -lntp</code></p>
+<p>It should list the processes bound to <span class="caps">TCP</span> ports. But sometimes the process field is blank. If you run it with <code>sudo</code>, you’ll probably be able to see the&nbsp;processes.</p>
+<p>#port #unix&nbsp;#network</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="cat-health">Cat&nbsp;health</h1>
 <h2 id="glucosamine">Glucosamine</h2>
 <p>Glucosamine is labeled with a disclaimer that the <span class="caps">FDA</span> cannot verify that it actually helps with joint&nbsp;health.</p>
@@ -166,49 +175,6 @@
 </li>
 <li>0.625mg per&nbsp;day.</li>
 <li>$37.20 for a 60-day supply from&nbsp;Chewy.</li>
-</ul>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="finding-out-what-s-using-a-port">Finding out what’s using a&nbsp;port</h1>
-<p>There’s <code>lsof -i TCP</code>, but that sometimes misses it. Maybe that’s for active&nbsp;connections?</p>
-<p>This seems&nbsp;better:</p>
-<p><code>ss -lntp</code></p>
-<p>It should list the processes bound to <span class="caps">TCP</span> ports. But sometimes the process field is blank. If you run it with <code>sudo</code>, you’ll probably be able to see the&nbsp;processes.</p>
-<p>#port #unix&nbsp;#network</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="c-">C++</h1>
-<h2 id="complex-numbers">Complex&nbsp;numbers</h2>
-<p><a href="https://en.cppreference.com/w/c/numeric/complex">C (not jjust C++) has supported complex numbers since&nbsp;1999!</a></p>
-<p><code>creal</code> and <code>cimag</code> will get you the components of a complex&nbsp;number.</p>
-<h2 id="mapping">Mapping</h2>
-<p><a href="https://en.cppreference.com/w/cpp/algorithm/transform">std::transform</a> seems to be the closest thing to <span class="caps">JS</span> <code>map</code>. e.g. Plucking the imaginary value from an array of complex&nbsp;values:</p>
-<pre><code> static void getImaginary(const array&lt;complex&gt;&amp; inComplexVals, array&lt;float&gt;&amp; outimagVals) {
-    transform(inComplexVals.begin(), inComplexVals.end(), outimagVals.begin(), [](Complex&lt;float&gt; c) -&gt; float { return c.imag(); });
-}
-</code></pre><p>In C++ 11, you must specify the range to operate on in the input container (the first two params). Later versions, let you skip&nbsp;that.</p>
-<h2 id="anonymous-inline-functions">Anonymous inline&nbsp;functions</h2>
-<p>(By “inline,” I mean that the function can be defined in the body of another function, not that they’ll be <a href="https://en.wikipedia.org/wiki/Inline_expansion">inlined</a>.)
-These were introduced in C++ 2011. They go like&nbsp;this:</p>
-<pre><code>    [](type param) -&gt; returnType { &lt;function body&gt; }
-</code></pre><p>The <code>[]</code> at the beginning is necessary for the compiler to parse it as an anonymous&nbsp;function.</p>
-<h2 id="misleading-overload-compiler-errors">Misleading overload compiler&nbsp;errors</h2>
-<p>Sometimes an error&nbsp;like:</p>
-<pre><code>    error: cannot resolve overloaded function ‘imag’ based on conversion to type ‘std::array&lt;float, 1024&gt;::value_type’ {aka ‘float’}
-</code></pre><p>In reference to code&nbsp;like:</p>
-<pre><code>    imagVals[i] = complexFFTData[i].imag;
-</code></pre><p>Just means that you used a function as a value. For example, here’s the&nbsp;fix:</p>
-<h2 id="appending-to-files">Appending to&nbsp;files</h2>
-<p>When calling <code>ofstream::open</code> or the constructor, pass <a href="https://en.cppreference.com/w/cpp/io/ios_base/openmode"><code>std::ios_base::app</code></a> as the second param. (The <code>ios_base</code> namespace refers to input-output streams, not to iOS. <code>app</code> is append, not&nbsp;application.)</p>
-<h2 id="terms">Terms</h2>
-<ul>
-<li><span class="caps">POD</span>: plain old&nbsp;data</li>
-</ul>
-<h2 id="const">const</h2>
-<ul>
-<li>When you create an object inline in a function call, that object is implicitly&nbsp;const.</li>
 </ul>
 </section>
           </article>
@@ -261,6 +227,68 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="getting-apps-to-show-up-in-ubuntu-search">Getting apps to show up in Ubuntu&nbsp;search</h1>
+<p>You know how when you hit ctrl+space, you can type an app name and then launch it from there? Sometime an app won’t show up there if you’ve installed it as an AppImage or just downloaded it to run from wherever you put it instead of using a&nbsp;Snap.</p>
+<p>That’s not the actual reason, it’s not showing up in desktop search, though. It’s because it doesn’t have a <code>.desktop</code> file.</p>
+<p>You can look at a bunch of <code>.desktop</code> files in <code>/usr/share/applications</code>, then copy and edit one of them to make a new&nbsp;one.</p>
+<p>Here is a minimal one that I made for Obsidian, named <code>obsidian.desktop</code>, which I run as an AppImage because there was no Snap when I first got&nbsp;it:</p>
+<pre><code>[Desktop Entry]
+Name=Obsidian
+GenericName=Notes organizer
+Comment=Organize notes
+Exec=/home/myuserdir/apps/Obsidian-1.0.3.AppImage
+Terminal=false
+Type=Application
+Keywords=notes;organizer;
+Icon=/home/myuserdir/apps/obsidian-meta/obsidian-icon-256.png
+Categories=Utility;TextEditor;
+StartupNotify=false
+MimeType=text/english;text/plain;text/x-markdown;
+</code></pre><p>Now it shows up, and I don’t have to open a new terminal tab to launch it. I’ve done the same for Firefox because I’m now just using a version downloaded from its site to avoid the [issue in which the Snap image makes the mouse cursor really small on Ubuntu&nbsp;22.04.1]</p>
+<p>#ubuntu</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="caching-in-github-actions">Caching in GitHub&nbsp;Actions</h1>
+<h2 id="standard-dependency-installs">Standard dependency&nbsp;installs</h2>
+<p>Most of the official setup GitHub Actions that set up an environment for a language have their own caching features. For example, <a href="https://github.com/actions/setup-python#caching-packages-dependencies">setup-python V4</a> lets you cache pip installs by specifying <code>with: cache: pip</code> when you use that&nbsp;action.</p>
+<p>Here is an example config for a Python&nbsp;job:</p>
+<pre><code>jobs:
+  run-job:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: ${{ github.event.client_payload.id }}
+        run: echo run identifier ${{ github.event.client_payload.id }}
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: &quot;3.9&quot;
+          cache: pip
+      - run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+</code></pre><h1 id="arbitrary-caching">Arbitrary&nbsp;caching</h1>
+<p>In the case that an action needs to download an artifact (like statistical models in the case of <a href="https://www.nltk.org/"><span class="caps">NLTK</span></a>), GitHub Actions provides a way to cache arbitary&nbsp;things.</p>
+<p>There is an <code>actions/cache@v3</code> action, which takes <code>key</code> and <code>path</code> parameters. It will check for a cache with the key specified your action. If it can’t find one, it will set a flag that you can use and (counterintuitively, <span class="caps">IMO</span>) <a href="https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows">create a new cache for that key</a>.</p>
+<p>Implicitly (as far as I can tell so far), if your job completes successfully, it will save what’s at <code>path</code> to the cache. So, in the case of a cache miss, your action has an obligation to download whatever it needs and put it at <code>path</code> so that it gets cached for the next run. The action can check for a cache miss with <code>if: steps.&lt;the id of the step in which you use actions/cache@v3&gt;.outputs.cache-hit != &#39;true&#39;</code>.</p>
+<p>Here is an&nbsp;example:</p>
+<pre><code>  - name: Restore cached nltk_data
+    id: restore-nltk-cache
+    uses: actions/cache@v3
+    with:
+      path: |
+        ~/nltk_data
+      key: nltk_data
+  - name: Install nltk_data on cache miss
+    run: |
+      NLTK_DATA=~/nltk_data python -m nltk.downloader punkt
+      NLTK_DATA=~/nltk_data python -m nltk.downloader stopwords
+    if: steps.restore-nltk-cache.outputs.cache-hit != &#39;true&#39;
+</code></pre><p>If it does find a cache for <code>key</code>, then it puts the cache’s content at <code>path</code>.</p>
+<p>Restoring a 27 <span class="caps">MB</span> cache took less than a second, as of&nbsp;2022-07-22.</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="googlebot-and-avoiding-indexing-content-from-your-spa">Googlebot and avoiding indexing content from your&nbsp;<span class="caps">SPA</span></h1>
 <p>In their <a href="/weblog/articles/miscellaneous-findings-010/findings/%5B%3Chttps://developers.google.com/search/docs/crawling-indexing/javascript/fix-search-javascript%3E%5D(%3Chttps://developers.google.com/search/docs/crawling-indexing/javascript/fix-search-javascript%3E">suggestions for handling missing content in SPAs</a>), Google recommends dynamically adding a meta tag to the page like&nbsp;so:</p>
 <pre><code class="lang-jsx">fetch(`https://api.kitten.club/cats/${id}`)
@@ -276,6 +304,40 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 </code></pre>
 <p>This strongly implies that the crawler actually will notice <span class="caps">DOM</span> changes after the page has been loaded, including <code>&lt;meta&gt;</code> tags.</p>
 <p>#crawling&nbsp;#javascript</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="c-">C++</h1>
+<h2 id="complex-numbers">Complex&nbsp;numbers</h2>
+<p><a href="https://en.cppreference.com/w/c/numeric/complex">C (not jjust C++) has supported complex numbers since&nbsp;1999!</a></p>
+<p><code>creal</code> and <code>cimag</code> will get you the components of a complex&nbsp;number.</p>
+<h2 id="mapping">Mapping</h2>
+<p><a href="https://en.cppreference.com/w/cpp/algorithm/transform">std::transform</a> seems to be the closest thing to <span class="caps">JS</span> <code>map</code>. e.g. Plucking the imaginary value from an array of complex&nbsp;values:</p>
+<pre><code> static void getImaginary(const array&lt;complex&gt;&amp; inComplexVals, array&lt;float&gt;&amp; outimagVals) {
+    transform(inComplexVals.begin(), inComplexVals.end(), outimagVals.begin(), [](Complex&lt;float&gt; c) -&gt; float { return c.imag(); });
+}
+</code></pre><p>In C++ 11, you must specify the range to operate on in the input container (the first two params). Later versions, let you skip&nbsp;that.</p>
+<h2 id="anonymous-inline-functions">Anonymous inline&nbsp;functions</h2>
+<p>(By “inline,” I mean that the function can be defined in the body of another function, not that they’ll be <a href="https://en.wikipedia.org/wiki/Inline_expansion">inlined</a>.)
+These were introduced in C++ 2011. They go like&nbsp;this:</p>
+<pre><code>    [](type param) -&gt; returnType { &lt;function body&gt; }
+</code></pre><p>The <code>[]</code> at the beginning is necessary for the compiler to parse it as an anonymous&nbsp;function.</p>
+<h2 id="misleading-overload-compiler-errors">Misleading overload compiler&nbsp;errors</h2>
+<p>Sometimes an error&nbsp;like:</p>
+<pre><code>    error: cannot resolve overloaded function ‘imag’ based on conversion to type ‘std::array&lt;float, 1024&gt;::value_type’ {aka ‘float’}
+</code></pre><p>In reference to code&nbsp;like:</p>
+<pre><code>    imagVals[i] = complexFFTData[i].imag;
+</code></pre><p>Just means that you used a function as a value. For example, here’s the&nbsp;fix:</p>
+<h2 id="appending-to-files">Appending to&nbsp;files</h2>
+<p>When calling <code>ofstream::open</code> or the constructor, pass <a href="https://en.cppreference.com/w/cpp/io/ios_base/openmode"><code>std::ios_base::app</code></a> as the second param. (The <code>ios_base</code> namespace refers to input-output streams, not to iOS. <code>app</code> is append, not&nbsp;application.)</p>
+<h2 id="terms">Terms</h2>
+<ul>
+<li><span class="caps">POD</span>: plain old&nbsp;data</li>
+</ul>
+<h2 id="const">const</h2>
+<ul>
+<li>When you create an object inline in a function call, that object is implicitly&nbsp;const.</li>
+</ul>
 </section>
           </article>
           <article class="finding">
@@ -335,65 +397,36 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="caching-in-github-actions">Caching in GitHub&nbsp;Actions</h1>
-<h2 id="standard-dependency-installs">Standard dependency&nbsp;installs</h2>
-<p>Most of the official setup GitHub Actions that set up an environment for a language have their own caching features. For example, <a href="https://github.com/actions/setup-python#caching-packages-dependencies">setup-python V4</a> lets you cache pip installs by specifying <code>with: cache: pip</code> when you use that&nbsp;action.</p>
-<p>Here is an example config for a Python&nbsp;job:</p>
-<pre><code>jobs:
-  run-job:
-    runs-on: ubuntu-latest
-    timeout-minutes: 2
-    steps:
-      - name: ${{ github.event.client_payload.id }}
-        run: echo run identifier ${{ github.event.client_payload.id }}
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: &quot;3.9&quot;
-          cache: pip
-      - run: |
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-</code></pre><h1 id="arbitrary-caching">Arbitrary&nbsp;caching</h1>
-<p>In the case that an action needs to download an artifact (like statistical models in the case of <a href="https://www.nltk.org/"><span class="caps">NLTK</span></a>), GitHub Actions provides a way to cache arbitary&nbsp;things.</p>
-<p>There is an <code>actions/cache@v3</code> action, which takes <code>key</code> and <code>path</code> parameters. It will check for a cache with the key specified your action. If it can’t find one, it will set a flag that you can use and (counterintuitively, <span class="caps">IMO</span>) <a href="https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows">create a new cache for that key</a>.</p>
-<p>Implicitly (as far as I can tell so far), if your job completes successfully, it will save what’s at <code>path</code> to the cache. So, in the case of a cache miss, your action has an obligation to download whatever it needs and put it at <code>path</code> so that it gets cached for the next run. The action can check for a cache miss with <code>if: steps.&lt;the id of the step in which you use actions/cache@v3&gt;.outputs.cache-hit != &#39;true&#39;</code>.</p>
-<p>Here is an&nbsp;example:</p>
-<pre><code>  - name: Restore cached nltk_data
-    id: restore-nltk-cache
-    uses: actions/cache@v3
-    with:
-      path: |
-        ~/nltk_data
-      key: nltk_data
-  - name: Install nltk_data on cache miss
-    run: |
-      NLTK_DATA=~/nltk_data python -m nltk.downloader punkt
-      NLTK_DATA=~/nltk_data python -m nltk.downloader stopwords
-    if: steps.restore-nltk-cache.outputs.cache-hit != &#39;true&#39;
-</code></pre><p>If it does find a cache for <code>key</code>, then it puts the cache’s content at <code>path</code>.</p>
-<p>Restoring a 27 <span class="caps">MB</span> cache took less than a second, as of&nbsp;2022-07-22.</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="getting-apps-to-show-up-in-ubuntu-search">Getting apps to show up in Ubuntu&nbsp;search</h1>
-<p>You know how when you hit ctrl+space, you can type an app name and then launch it from there? Sometime an app won’t show up there if you’ve installed it as an AppImage or just downloaded it to run from wherever you put it instead of using a&nbsp;Snap.</p>
-<p>That’s not the actual reason, it’s not showing up in desktop search, though. It’s because it doesn’t have a <code>.desktop</code> file.</p>
-<p>You can look at a bunch of <code>.desktop</code> files in <code>/usr/share/applications</code>, then copy and edit one of them to make a new&nbsp;one.</p>
-<p>Here is a minimal one that I made for Obsidian, named <code>obsidian.desktop</code>, which I run as an AppImage because there was no Snap when I first got&nbsp;it:</p>
-<pre><code>[Desktop Entry]
-Name=Obsidian
-GenericName=Notes organizer
-Comment=Organize notes
-Exec=/home/myuserdir/apps/Obsidian-1.0.3.AppImage
-Terminal=false
-Type=Application
-Keywords=notes;organizer;
-Icon=/home/myuserdir/apps/obsidian-meta/obsidian-icon-256.png
-Categories=Utility;TextEditor;
-StartupNotify=false
-MimeType=text/english;text/plain;text/x-markdown;
-</code></pre><p>Now it shows up, and I don’t have to open a new terminal tab to launch it. I’ve done the same for Firefox because I’m now just using a version downloaded from its site to avoid the [issue in which the Snap image makes the mouse cursor really small on Ubuntu&nbsp;22.04.1]</p>
-<p>#ubuntu</p>
+            <section class="content"><h1 id="serving-local-web-apps-via-https">Serving local web apps via&nbsp;https</h1>
+<p>If you need to serve a local web page via&nbsp;https:</p>
+<h2 id="create-a-cert">Create a&nbsp;cert</h2>
+<p><a href="https://letsencrypt.org/docs/certificates-for-localhost/">https://letsencrypt.org/docs/certificates-for-localhost/</a></p>
+<pre><code>openssl req -x509 -out localhost.crt -keyout localhost.key \
+  -newkey rsa:2048 -nodes -sha256 \
+  -subj &#39;/CN=localhost&#39; -extensions EXT -config &lt;( \
+   printf &quot;[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth&quot;)
+</code></pre><h2 id="serving-via-python">Serving via&nbsp;Python</h2>
+<ul>
+<li>Mash the crt and key files together: <code></code>cat localhost.crt localhost.key &gt;&nbsp;localhost.pem`</li>
+<li>Create a server script like so:
+<code>`</code>from http.server import HTTPServer, SimpleHTTPRequestHandler
+import&nbsp;ssl</li>
+</ul>
+<p>httpd = HTTPServer((“localhost”, 443), SimpleHTTPRequestHandler)
+httpd.socket = ssl.wrap_socket(
+    httpd.socket, certfile=”./localhost.pem”, server_side=True
+)
+httpd.serve_forever()
+<code>`</code></p>
+<ul>
+<li>Start it with <code>sudo python3 server.py</code>.</li>
+</ul>
+<h2 id="serving-via-node">Serving via&nbsp;Node</h2>
+<p><a href="https://stackoverflow.com/a/61905546/87798">https://stackoverflow.com/a/61905546/87798</a> (Ignore the brew, mkcert&nbsp;stuff)</p>
+<ul>
+<li>Rename the crt and key files to <code>cert.pem</code> and <code>key.pem</code>.</li>
+<li>Run the <code>http-server</code> module with `http-server -P 443 -S -C cert.pem&nbsp;-o’</li>
+</ul>
 </section>
           </article>
           <article class="finding">
@@ -449,58 +482,10 @@ MimeType=text/english;text/plain;text/x-markdown;
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="serving-local-web-apps-via-https">Serving local web apps via&nbsp;https</h1>
-<p>If you need to serve a local web page via&nbsp;https:</p>
-<h2 id="create-a-cert">Create a&nbsp;cert</h2>
-<p><a href="https://letsencrypt.org/docs/certificates-for-localhost/">https://letsencrypt.org/docs/certificates-for-localhost/</a></p>
-<pre><code>openssl req -x509 -out localhost.crt -keyout localhost.key \
-  -newkey rsa:2048 -nodes -sha256 \
-  -subj &#39;/CN=localhost&#39; -extensions EXT -config &lt;( \
-   printf &quot;[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth&quot;)
-</code></pre><h2 id="serving-via-python">Serving via&nbsp;Python</h2>
-<ul>
-<li>Mash the crt and key files together: <code></code>cat localhost.crt localhost.key &gt;&nbsp;localhost.pem`</li>
-<li>Create a server script like so:
-<code>`</code>from http.server import HTTPServer, SimpleHTTPRequestHandler
-import&nbsp;ssl</li>
-</ul>
-<p>httpd = HTTPServer((“localhost”, 443), SimpleHTTPRequestHandler)
-httpd.socket = ssl.wrap_socket(
-    httpd.socket, certfile=”./localhost.pem”, server_side=True
-)
-httpd.serve_forever()
-<code>`</code></p>
-<ul>
-<li>Start it with <code>sudo python3 server.py</code>.</li>
-</ul>
-<h2 id="serving-via-node">Serving via&nbsp;Node</h2>
-<p><a href="https://stackoverflow.com/a/61905546/87798">https://stackoverflow.com/a/61905546/87798</a> (Ignore the brew, mkcert&nbsp;stuff)</p>
-<ul>
-<li>Rename the crt and key files to <code>cert.pem</code> and <code>key.pem</code>.</li>
-<li>Run the <code>http-server</code> module with `http-server -P 443 -S -C cert.pem&nbsp;-o’</li>
-</ul>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="tail-calls">Tail&nbsp;calls</h1>
 <p>If a function ends by calling itself, that’s called a tail&nbsp;call.</p>
 <p>It can usually be optimized by converting the function to just use a loop (or jump in assembly) instead of putting up another stack frame for another function&nbsp;call.</p>
 <p>#programming</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="rsync">rsync</h1>
-<h2 id="dealing-with-spaces-in-the-path">Dealing with spaces in the&nbsp;path</h2>
-<p>Use <code>--protect-args</code>.&nbsp;e.g.:</p>
-<pre><code>rsync -avz --protect-args pi@midnight-giant:&quot;/mnt/storage/media/music/Pikmin Sound Team/Pikmin 3 Deluxe&quot; .
-</code></pre><h2 id="keeping-local-files-even-if-they-re-missing-on-remote">Keeping local files even if they’re missing on&nbsp;remote</h2>
-<p>It does this by&nbsp;default!</p>
-<p><a href="https://www.digitalocean.com/community/tutorials/how-to-use-rsync-to-sync-local-and-remote-directories">https://www.digitalocean.com/community/tutorials/how-to-use-rsync-to-sync-local-and-remote-directories</a></p>
-<blockquote>
-<p>In order to keep two directories truly in sync, it’s necessary to delete files from the destination directory if they are removed from the source. By default, <code>rsync</code> does not delete anything from the destination&nbsp;directory.</p>
-<p>You can change this behavior with the <code>--delete</code> option.</p>
-</blockquote>
-<p>#rsync&nbsp;#command</p>
 </section>
           </article>
           <article class="finding">
@@ -522,33 +507,8 @@ Add 1/2 tea spoon black&nbsp;pepper.</p>
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="making-a-video-from-images-in-multiple-directories">Making a video from images in multiple&nbsp;directories</h1>
-<p><a href="https://stackoverflow.com/a/37478183/87798">https://stackoverflow.com/a/37478183/87798</a></p>
-<pre><code>ffmpeg -framerate 30 -pattern_type glob -i &#39;**/*.JPG&#39; \
-  -c:v libx264 -pix_fmt yuv420p out.mp4
-</code></pre><h1 id="rotating-video">Rotating&nbsp;video</h1>
-<p>`ffmpeg -i input.mp4 -vf “transpose=1, transpose=1”&nbsp;output.mp4</p>
-<p>The above rotates the input 90° twice. <code>transpose=0</code> rotates it&nbsp;counterclockwise.</p>
-<p><code>&quot;rotate=PI:bilinear=0&quot;</code> will rotate it 180° and turn off bilinear interpolation to avoid&nbsp;blurriness.</p>
-<h1 id="scaling-down">Scaling&nbsp;down</h1>
-<pre><code>ffmpeg big2840.mp4 -vf scale=3840:1080 -c:v libx264 -crf 20 -preset slow smaller.mp4
-</code></pre><p>The <code>scale</code> value is the target&nbsp;size.</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="unrar">unrar</h1>
-<p>If you get “no files to extract”, the problem may actually be that it doesn’t have permission to create a file or directory, rather that there being no files to extract in the rar&nbsp;file.</p>
-<h2 id="unraring-from-multiple-subdirectories">Unraring from multiple&nbsp;subdirectories</h2>
-<p>Remove the any unwanted subdirectories first, e.g.&nbsp;“Sample”.</p>
-<pre><code>find . -name Sample -exec rm -rf {} \;
-</code></pre><p>Run this&nbsp;script:</p>
-<pre><code>#!/bin/bash
-
-for dir in ./*
-do
-    unrar e &quot;${dir}/*.rar&quot;
-done
-</code></pre><p>#rar #command&nbsp;#shell</p>
+            <section class="content"><h2 id="dom"><span class="caps">DOM</span></h2>
+<p>If you parse an <span class="caps">SVG</span> document into a tree, then append one of the child nodes to the browser’s current DOM, then the node disappears from the source tree. Sort of a move, rather than a&nbsp;copy.</p>
 </section>
           </article>
           <article class="finding">
@@ -572,10 +532,32 @@ done
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="wget">wget</h1>
-<h2 id="downloading-all-of-the-links-on-a-web-page">Downloading all of the links on a web&nbsp;page</h2>
-<pre><code>wget -m and robots=off https://the-site-you-want
-</code></pre><p>#bash </p>
+            <section class="content"><h1 id="rsync">rsync</h1>
+<h2 id="dealing-with-spaces-in-the-path">Dealing with spaces in the&nbsp;path</h2>
+<p>Use <code>--protect-args</code>.&nbsp;e.g.:</p>
+<pre><code>rsync -avz --protect-args pi@midnight-giant:&quot;/mnt/storage/media/music/Pikmin Sound Team/Pikmin 3 Deluxe&quot; .
+</code></pre><h2 id="keeping-local-files-even-if-they-re-missing-on-remote">Keeping local files even if they’re missing on&nbsp;remote</h2>
+<p>It does this by&nbsp;default!</p>
+<p><a href="https://www.digitalocean.com/community/tutorials/how-to-use-rsync-to-sync-local-and-remote-directories">https://www.digitalocean.com/community/tutorials/how-to-use-rsync-to-sync-local-and-remote-directories</a></p>
+<blockquote>
+<p>In order to keep two directories truly in sync, it’s necessary to delete files from the destination directory if they are removed from the source. By default, <code>rsync</code> does not delete anything from the destination&nbsp;directory.</p>
+<p>You can change this behavior with the <code>--delete</code> option.</p>
+</blockquote>
+<p>#rsync&nbsp;#command</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="making-a-video-from-images-in-multiple-directories">Making a video from images in multiple&nbsp;directories</h1>
+<p><a href="https://stackoverflow.com/a/37478183/87798">https://stackoverflow.com/a/37478183/87798</a></p>
+<pre><code>ffmpeg -framerate 30 -pattern_type glob -i &#39;**/*.JPG&#39; \
+  -c:v libx264 -pix_fmt yuv420p out.mp4
+</code></pre><h1 id="rotating-video">Rotating&nbsp;video</h1>
+<p>`ffmpeg -i input.mp4 -vf “transpose=1, transpose=1”&nbsp;output.mp4</p>
+<p>The above rotates the input 90° twice. <code>transpose=0</code> rotates it&nbsp;counterclockwise.</p>
+<p><code>&quot;rotate=PI:bilinear=0&quot;</code> will rotate it 180° and turn off bilinear interpolation to avoid&nbsp;blurriness.</p>
+<h1 id="scaling-down">Scaling&nbsp;down</h1>
+<pre><code>ffmpeg big2840.mp4 -vf scale=3840:1080 -c:v libx264 -crf 20 -preset slow smaller.mp4
+</code></pre><p>The <code>scale</code> value is the target&nbsp;size.</p>
 </section>
           </article>
           <article class="finding">
@@ -599,14 +581,32 @@ done
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="wget">wget</h1>
+<h2 id="downloading-all-of-the-links-on-a-web-page">Downloading all of the links on a web&nbsp;page</h2>
+<pre><code>wget -m and robots=off https://the-site-you-want
+</code></pre><p>#bash </p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="zip">Zip</h1>
 <p><code>-j</code> gets it to not put the directory structure into the zip file.
 <code>-x &lt;pattern&gt;</code> makes it ignore files matching the&nbsp;pattern.</p>
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h2 id="dom"><span class="caps">DOM</span></h2>
-<p>If you parse an <span class="caps">SVG</span> document into a tree, then append one of the child nodes to the browser’s current DOM, then the node disappears from the source tree. Sort of a move, rather than a&nbsp;copy.</p>
+            <section class="content"><h1 id="unrar">unrar</h1>
+<p>If you get “no files to extract”, the problem may actually be that it doesn’t have permission to create a file or directory, rather that there being no files to extract in the rar&nbsp;file.</p>
+<h2 id="unraring-from-multiple-subdirectories">Unraring from multiple&nbsp;subdirectories</h2>
+<p>Remove the any unwanted subdirectories first, e.g.&nbsp;“Sample”.</p>
+<pre><code>find . -name Sample -exec rm -rf {} \;
+</code></pre><p>Run this&nbsp;script:</p>
+<pre><code>#!/bin/bash
+
+for dir in ./*
+do
+    unrar e &quot;${dir}/*.rar&quot;
+done
+</code></pre><p>#rar #command&nbsp;#shell</p>
 </section>
           </article>
         </article>

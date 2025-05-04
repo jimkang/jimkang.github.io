@@ -1,0 +1,179 @@
+<svg width="483pt" height="933pt" viewBox="0.00 0.00 483.00 932.67" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 928.67)">
+<title>G</title>
+<polygon fill="#000418" stroke="none" points="-4,4 -4,-928.67 479,-928.67 479,4 -4,4"/>
+<g id="clust1" class="cluster">
+<title>cluster</title>
+<polygon fill="#60df98" stroke="#60df98" stroke-width="3" points="8.37,-8 8.37,-570.27 453.97,-570.27 453.97,-8 8.37,-8"/>
+<text text-anchor="middle" x="52.54" y="-553.67" font-family="Helvetica,sans-Serif" font-size="14.00">form.html/js</text>
+</g>
+<g id="clust2" class="cluster">
+<title>cluster_1</title>
+<polygon fill="#e0e070" stroke="#e0e070" stroke-width="3" points="44.98,-589.27 44.98,-916.67 418.4,-916.67 418.4,-589.27 44.98,-589.27"/>
+<text text-anchor="middle" x="121.86" y="-900.07" font-family="Helvetica,sans-Serif" font-size="14.00">get-photo-download.js</text>
+</g>
+<!-- fOnMessage -->
+<g id="node1" class="node">
+<title>fOnMessage</title>
+<polygon fill="#f0ffff" stroke="#f0ffff" points="220.19,-519 131.81,-519 131.81,-483 220.19,-483 220.19,-519"/>
+<text text-anchor="middle" x="176" y="-496.8" font-family="Helvetica,sans-Serif" font-size="14.00">onMessage</text>
+</g>
+<!-- Store media binary in closure -->
+<g id="node6" class="node">
+<title>Store media binary in closure</title>
+<polygon fill="#f0ffff" stroke="#f0ffff" points="218.65,-427 21.35,-427 21.35,-391 218.65,-391 218.65,-427"/>
+<text text-anchor="middle" x="120" y="-404.8" font-family="Helvetica,sans-Serif" font-size="14.00">Store media binary in closure</text>
+</g>
+<!-- fOnMessage&#45;&gt;Store media binary in closure -->
+<g id="edge3" class="edge">
+<title>fOnMessage-&gt;Store media binary in closure</title>
+<path fill="none" stroke="white" stroke-width="2" d="M165.2,-482.65C157.38,-470.07 146.63,-452.79 137.57,-438.24"/>
+<polygon fill="white" stroke="white" stroke-width="2" points="140.62,-436.51 132.36,-429.87 134.67,-440.21 140.62,-436.51"/>
+</g>
+<!-- init -->
+<g id="node2" class="node">
+<title>init</title>
+<polygon fill="#e0b050" stroke="#e0b050" points="344,-537.8 297.32,-501 344,-464.2 390.68,-501 344,-537.8"/>
+<polyline fill="none" stroke="#e0b050" points="306.74,-508.43 306.74,-493.57"/>
+<polyline fill="none" stroke="#e0b050" points="334.58,-471.63 353.42,-471.63"/>
+<polyline fill="none" stroke="#e0b050" points="381.26,-493.57 381.26,-508.43"/>
+<polyline fill="none" stroke="#e0b050" points="353.42,-530.37 334.58,-530.37"/>
+<text text-anchor="middle" x="344" y="-493.8" font-family="Helvetica,sans-Serif" font-size="24.00">init</text>
+</g>
+<!-- sendMessageToDownloader -->
+<g id="node4" class="node">
+<title>sendMessageToDownloader</title>
+<polygon fill="#f0ffff" stroke="#f0ffff" points="441.11,-427 246.89,-427 246.89,-391 441.11,-391 441.11,-427"/>
+<text text-anchor="middle" x="344" y="-404.8" font-family="Helvetica,sans-Serif" font-size="14.00">sendMessageToDownloader</text>
+</g>
+<!-- init&#45;&gt;sendMessageToDownloader -->
+<g id="edge1" class="edge">
+<title>init-&gt;sendMessageToDownloader</title>
+<path fill="none" stroke="white" stroke-width="2" d="M344,-463.65C344,-455.94 344,-447.88 344,-440.42"/>
+<polygon fill="white" stroke="white" stroke-width="2" points="347.5,-440.49 344,-430.49 340.5,-440.49 347.5,-440.49"/>
+</g>
+<!-- lastStep -->
+<g id="node3" class="node">
+<title>lastStep</title>
+<polygon fill="#e0b050" stroke="#e0b050" points="208.03,-192.03 31.97,-192.03 31.97,-15.97 208.03,-15.97 208.03,-192.03"/>
+<polyline fill="none" stroke="#e0b050" points="43.97,-192.03 31.97,-180.03"/>
+<polyline fill="none" stroke="#e0b050" points="31.97,-27.97 43.97,-15.97"/>
+<polyline fill="none" stroke="#e0b050" points="196.03,-15.97 208.03,-27.97"/>
+<polyline fill="none" stroke="#e0b050" points="208.03,-180.03 196.03,-192.03"/>
+<text text-anchor="middle" x="120" y="-120.2" font-family="Helvetica,sans-Serif" font-size="18.00">Assemble form data</text>
+<text text-anchor="middle" x="120" y="-98.6" font-family="Helvetica,sans-Serif" font-size="18.00">and post it to</text>
+<text text-anchor="middle" x="120" y="-77" font-family="Helvetica,sans-Serif" font-size="18.00">the note-taker API</text>
+</g>
+<!-- sendMessage(start command) -->
+<g id="node5" class="node">
+<title>sendMessage(start command)</title>
+<polygon fill="#f0ffff" stroke="#f0ffff" points="440.54,-338 235.46,-338 235.46,-302 440.54,-302 440.54,-338"/>
+<text text-anchor="middle" x="338" y="-315.8" font-family="Helvetica,sans-Serif" font-size="14.00">sendMessage(start command)</text>
+</g>
+<!-- sendMessageToDownloader&#45;&gt;sendMessage(start command) -->
+<g id="edge2" class="edge">
+<title>sendMessageToDownloader-&gt;sendMessage(start command)</title>
+<path fill="none" stroke="white" stroke-width="2" d="M342.81,-390.81C342.04,-379.57 341,-364.56 340.09,-351.34"/>
+<polygon fill="white" stroke="white" stroke-width="2" points="343.59,-351.21 339.41,-341.47 336.61,-351.69 343.59,-351.21"/>
+</g>
+<!-- dlOnMessage -->
+<g id="node9" class="node">
+<title>dlOnMessage</title>
+<polygon fill="#080018" stroke="#080018" points="404.19,-884 315.81,-884 315.81,-848 404.19,-848 404.19,-884"/>
+<text text-anchor="middle" x="360" y="-861.8" font-family="Helvetica,sans-Serif" font-size="14.00" fill="white">onMessage</text>
+</g>
+<!-- sendMessage(start command)&#45;&gt;dlOnMessage -->
+<g id="edge11" class="edge">
+<title>sendMessage(start command)-&gt;dlOnMessage</title>
+<path fill="none" stroke="#ffa000" stroke-width="4" d="M408.91,-338.36C442.34,-351.21 475,-372.78 475,-408 475,-778 475,-778 475,-778 475,-809.45 447.32,-830.98 419.11,-844.75"/>
+<polygon fill="#ffa000" stroke="#ffa000" stroke-width="4" points="417.71,-841.55 409.99,-848.8 420.55,-847.94 417.71,-841.55"/>
+</g>
+<!-- User clicks Note! button -->
+<g id="node7" class="node">
+<title>User clicks Note! button</title>
+<polygon fill="#f0ffff" stroke="#f0ffff" points="201.92,-338 38.08,-338 38.08,-302 201.92,-302 201.92,-338"/>
+<text text-anchor="middle" x="120" y="-315.8" font-family="Helvetica,sans-Serif" font-size="14.00">User clicks Note! button</text>
+</g>
+<!-- Store media binary in closure&#45;&gt;User clicks Note! button -->
+<g id="edge4" class="edge">
+<title>Store media binary in closure-&gt;User clicks Note! button</title>
+<path fill="none" stroke="white" stroke-width="2" stroke-dasharray="1,5" d="M120,-390.81C120,-379.57 120,-364.56 120,-351.34"/>
+<polygon fill="white" stroke="white" stroke-width="2" points="123.5,-351.48 120,-341.48 116.5,-351.48 123.5,-351.48"/>
+<text text-anchor="middle" x="170.58" y="-359.8" font-family="Helvetica,sans-Serif" font-size="14.00" fill="#303030">Idle time passes</text>
+</g>
+<!-- onSubmitClick -->
+<g id="node8" class="node">
+<title>onSubmitClick</title>
+<polygon fill="#f0ffff" stroke="#f0ffff" points="172.74,-265 67.26,-265 67.26,-229 172.74,-229 172.74,-265"/>
+<text text-anchor="middle" x="120" y="-242.8" font-family="Helvetica,sans-Serif" font-size="14.00">onSubmitClick</text>
+</g>
+<!-- User clicks Note! button&#45;&gt;onSubmitClick -->
+<g id="edge5" class="edge">
+<title>User clicks Note! button-&gt;onSubmitClick</title>
+<path fill="none" stroke="white" stroke-width="2" d="M120,-301.81C120,-294.66 120,-286.15 120,-278.02"/>
+<polygon fill="white" stroke="white" stroke-width="2" points="123.5,-278.06 120,-268.06 116.5,-278.06 123.5,-278.06"/>
+</g>
+<!-- onSubmitClick&#45;&gt;lastStep -->
+<g id="edge6" class="edge">
+<title>onSubmitClick-&gt;lastStep</title>
+<path fill="none" stroke="white" stroke-width="2" d="M120,-228.71C120,-222.11 120,-214.03 120,-205.18"/>
+<polygon fill="white" stroke="white" stroke-width="2" points="123.5,-205.27 120,-195.27 116.5,-205.27 123.5,-205.27"/>
+</g>
+<!-- showDlMenu -->
+<g id="node10" class="node">
+<title>showDlMenu</title>
+<polygon fill="#080018" stroke="#080018" points="377.46,-795 280.54,-795 280.54,-759 377.46,-759 377.46,-795"/>
+<text text-anchor="middle" x="329" y="-772.8" font-family="Helvetica,sans-Serif" font-size="14.00" fill="white">showDlMenu</text>
+</g>
+<!-- dlOnMessage&#45;&gt;showDlMenu -->
+<g id="edge7" class="edge">
+<title>dlOnMessage-&gt;showDlMenu</title>
+<path fill="none" stroke="#080018" stroke-width="2" stroke-dasharray="5,2" d="M353.88,-847.81C349.78,-836.33 344.3,-820.93 339.52,-807.51"/>
+<polygon fill="#080018" stroke="#080018" stroke-width="2" points="342.89,-806.55 336.23,-798.3 336.29,-808.9 342.89,-806.55"/>
+<text text-anchor="middle" x="370.23" y="-816.8" font-family="Helvetica,sans-Serif" font-size="14.00">timeout</text>
+</g>
+<!-- getMediaDownload -->
+<g id="node11" class="node">
+<title>getMediaDownload</title>
+<polygon fill="#080018" stroke="#080018" points="377.93,-706 242.07,-706 242.07,-670 377.93,-670 377.93,-706"/>
+<text text-anchor="middle" x="310" y="-683.8" font-family="Helvetica,sans-Serif" font-size="14.00" fill="white">getMediaDownload</text>
+</g>
+<!-- showDlMenu&#45;&gt;getMediaDownload -->
+<g id="edge8" class="edge">
+<title>showDlMenu-&gt;getMediaDownload</title>
+<path fill="none" stroke="#080018" stroke-width="2" stroke-dasharray="5,2" d="M325.25,-758.81C322.76,-747.45 319.44,-732.24 316.54,-718.93"/>
+<polygon fill="#080018" stroke="#080018" stroke-width="2" points="320.01,-718.43 314.46,-709.41 313.17,-719.92 320.01,-718.43"/>
+<text text-anchor="middle" x="344.16" y="-728.8" font-family="Helvetica,sans-Serif" font-size="14.00">timeout</text>
+</g>
+<!-- fetch media binary -->
+<g id="node12" class="node">
+<title>fetch media binary</title>
+<polygon fill="#080018" stroke="#080018" points="186.2,-633 55.8,-633 55.8,-597 186.2,-597 186.2,-633"/>
+<text text-anchor="middle" x="121" y="-610.8" font-family="Helvetica,sans-Serif" font-size="14.00" fill="white">fetch media binary</text>
+</g>
+<!-- getMediaDownload&#45;&gt;fetch media binary -->
+<g id="edge9" class="edge">
+<title>getMediaDownload-&gt;fetch media binary</title>
+<path fill="none" stroke="#080018" stroke-width="2" d="M263.77,-669.63C238.37,-660.09 206.61,-648.16 179.5,-637.98"/>
+<polygon fill="#080018" stroke="#080018" stroke-width="2" points="180.84,-634.74 170.25,-634.5 178.38,-641.29 180.84,-634.74"/>
+</g>
+<!-- sendMessage(media binary) -->
+<g id="node13" class="node">
+<title>sendMessage(media binary)</title>
+<polygon fill="#080018" stroke="#080018" points="406.32,-633 213.68,-633 213.68,-597 406.32,-597 406.32,-633"/>
+<text text-anchor="middle" x="310" y="-610.8" font-family="Helvetica,sans-Serif" font-size="14.00" fill="white">sendMessage(media binary)</text>
+</g>
+<!-- getMediaDownload&#45;&gt;sendMessage(media binary) -->
+<g id="edge10" class="edge">
+<title>getMediaDownload-&gt;sendMessage(media binary)</title>
+<path fill="none" stroke="#080018" stroke-width="2" d="M310,-669.81C310,-662.66 310,-654.15 310,-646.02"/>
+<polygon fill="#080018" stroke="#080018" stroke-width="2" points="313.5,-646.06 310,-636.06 306.5,-646.06 313.5,-646.06"/>
+</g>
+<!-- sendMessage(media binary)&#45;&gt;fOnMessage -->
+<g id="edge12" class="edge">
+<title>sendMessage(media binary)-&gt;fOnMessage</title>
+<path fill="none" stroke="#ffa000" stroke-width="4" d="M289.06,-596.5C267.63,-578.58 233.99,-550.47 208.98,-529.56"/>
+<polygon fill="#ffa000" stroke="#ffa000" stroke-width="4" points="211.35,-526.99 201.44,-523.26 206.86,-532.36 211.35,-526.99"/>
+</g>
+</g>
+</svg>

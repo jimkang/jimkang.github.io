@@ -312,7 +312,7 @@ footer .copy, footer .copy a {
 
 code {
   font-family: 'Lucida Console', 'Anonymous Pro', monospace;
-  font-size: 0.75em;
+  font-size: 1em;
   color: #000;
 }
 
@@ -406,6 +406,17 @@ ol.alpha {
 }
 
 .finding h1 {
+  margin-top: 0;
+}
+
+.aside {
+  border: 1px gray dotted;
+  font-size: small;
+  padding: 1em;
+  color: #555;
+}
+
+.aside h3 {
   margin-top: 0;
 }
 

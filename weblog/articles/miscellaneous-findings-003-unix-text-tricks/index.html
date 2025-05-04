@@ -42,24 +42,6 @@
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="replacing-all-with-sed">Replacing all with&nbsp;sed</h1>
-<p>To replace all instances of a string in a directory tree with another string, do a <code>find</code> for the file types you want to target, pipe that to <a href="/weblog/articles/miscellaneous-findings-003-unix-text-tricks/findings/2020-04-03----00:51__xargs.md"><code>xargs</code></a> to run <code>sed</code> on the files it&nbsp;finds.</p>
-<p>Example:</p>
-<pre><code>find . -type f \( -name &#39;*.md&#39; -o -name &#39;*.js&#39; -o -name &#39;*.json&#39; -o -name &#39;Makefile&#39; \) | xargs sed -i &quot;s/small-findings/smallfindings/g&quot;
-</code></pre><p>Where:</p>
-<ul>
-<li>md, js, json, and Makefile are the kinds of files in which the replacement should be&nbsp;made.</li>
-<li>xargs is telling <code>sed</code> to run with:<ul>
-<li>A regular expression that replaces <code>small-findings</code> with <code>smallfindings</code></li>
-<li>A list of files that is whatever the <code>find</code> command&nbsp;found.</li>
-</ul>
-</li>
-</ul>
-<p><a href="https://gist.github.com/jimkang/4c636302815924e5aa995ccfecc068a8">Shell script&nbsp;example.</a></p>
-<p>#unix #bash #programming&nbsp;#text</p>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="tr-for-replacing-text">tr for replacing&nbsp;text</h1>
 <p>There is a Unix command called <code>tr</code>. You pipe in input text and give it two&nbsp;arguments:</p>
 <ul>
@@ -104,6 +86,24 @@
 ]
 </code></pre><p>And that is valid&nbsp;<span class="caps">JSON</span>.</p>
 <p>#tr #shell #unix #sed #text&nbsp;#bash</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="replacing-all-with-sed">Replacing all with&nbsp;sed</h1>
+<p>To replace all instances of a string in a directory tree with another string, do a <code>find</code> for the file types you want to target, pipe that to <a href="/weblog/articles/miscellaneous-findings-003-unix-text-tricks/findings/2020-04-03----00:51__xargs.md"><code>xargs</code></a> to run <code>sed</code> on the files it&nbsp;finds.</p>
+<p>Example:</p>
+<pre><code>find . -type f \( -name &#39;*.md&#39; -o -name &#39;*.js&#39; -o -name &#39;*.json&#39; -o -name &#39;Makefile&#39; \) | xargs sed -i &quot;s/small-findings/smallfindings/g&quot;
+</code></pre><p>Where:</p>
+<ul>
+<li>md, js, json, and Makefile are the kinds of files in which the replacement should be&nbsp;made.</li>
+<li>xargs is telling <code>sed</code> to run with:<ul>
+<li>A regular expression that replaces <code>small-findings</code> with <code>smallfindings</code></li>
+<li>A list of files that is whatever the <code>find</code> command&nbsp;found.</li>
+</ul>
+</li>
+</ul>
+<p><a href="https://gist.github.com/jimkang/4c636302815924e5aa995ccfecc068a8">Shell script&nbsp;example.</a></p>
+<p>#unix #bash #programming&nbsp;#text</p>
 </section>
           </article>
           <article class="finding">

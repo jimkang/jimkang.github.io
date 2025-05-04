@@ -5,9 +5,288 @@
     <atom:link href="http://jimkang.com/weblog/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Sat, 01 Mar 2025 19:00:00 -0500</pubDate>
+    <pubDate>Sat, 03 May 2025 20:00:00 -0400</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Making a Firefox extension in 2025</title>
+      <link>http://jimkang.com/weblog/articles/firefox-extension/</link>
+      <pubDate>Sat, 03 May 2025 20:00:00 -0400</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/firefox-extension/</guid>
+      <author></author>
+      <description>&lt;p&gt;A few weeks ago, I found myself having to do a thing over and over again in my browser. It was cumbersome.&lt;/p&gt;
+&lt;p&gt;And so, it was time for me to reduce this pain by making &lt;a id=&quot;linkorigin-find&quot; href=&quot;/weblog/articles/firefox-extension/#footnote-find&quot;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; a browser extension.&lt;/p&gt;
+&lt;p&gt;However, the last browser extension I wrote was in 2013 &lt;a id=&quot;linkorigin-last-ext&quot; href=&quot;/weblog/articles/firefox-extension/#footnote-last-ext&quot;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;. &lt;span class=&quot;more&quot;&gt;&lt;/span&gt;(It was a &lt;a href=&quot;https://lifehacker.com/back-again-tracks-every-time-you-visit-a-site-1588729519&quot;&gt;web habits tracker&lt;/a&gt;.) Here in 2025, I had no idea what browser extension development was like.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://jimkang.com/weblog/articles/writing-dom-modifying-extensions/&quot;&gt;This is what extension development was like back then, at least for Chrome.&lt;/a&gt; How different is it now?&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Not that different, actually!&lt;/em&gt; That’s amazingly stable for a software platform. Those of you that just wanted to know that can close the tab now.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;But if you need to re-learn how extension development works, like I did, here is how my 2025 Firefox extension &lt;a id=&quot;linkorigin-addon&quot; href=&quot;#footnote-addon&quot;&gt;&lt;sup&gt;3&lt;/sup&gt;&lt;/a&gt; was put together.&lt;/p&gt;
+&lt;p&gt;&lt;style&gt;
+img,video {
+    max-width: 100%;
+}
+[type=a] {
+    margin-top: 0.5em;
+    font-size: 0.85em;
+}
+&lt;/style&gt;&lt;/p&gt;
+&lt;h1 id=&quot;contents&quot;&gt;Contents&lt;/h1&gt;
+&lt;ol type=&quot;I&quot;&gt;
+    &lt;li&gt;&lt;a href=&quot;#problem&quot;&gt;The problem&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#how&quot;&gt;How the extension is made&lt;/a&gt;
+        &lt;ol type=&quot;a&quot;&gt;
+            &lt;li&gt;&lt;a href=&quot;#anatomy&quot;&gt;Anatomy and manifest&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;#ui&quot;&gt;UI&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;#page-work&quot;&gt;Page work&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;#sequence-diagram&quot;&gt;Sequence diagram&lt;/a&gt;&lt;/li&gt;
+        &lt;/ol&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#packaging&quot;&gt;Packaging&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#all-together&quot;&gt;All together now&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;a id=&quot;problem&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;i-the-problem-why-i-need-the-extension-&quot;&gt;I. The problem (why I need the extension)&lt;/h2&gt;
+&lt;p&gt;&lt;/a&gt;
+I use &lt;a href=&quot;https://github.com/jimkang/note-sender&quot;&gt;note-sender&lt;/a&gt; to post to my weblogs. Here’s what note-sender looks like.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;note-sender.png&quot; alt=&quot;A web page with archive, password, and note text fields and a browse for media button&quot;&gt;&lt;/p&gt;
+&lt;p&gt;note-sender posts to note-taker &lt;a id=&quot;linkorigin-note-taker&quot; href=&quot;#footnote-note-taker&quot;&gt;&lt;sup&gt;4&lt;/sup&gt;&lt;/a&gt; which handles the actual updating of the weblogs. It is an API that is the ultimate destination for the content that the extension captures from the web page.&lt;/p&gt;
+&lt;p&gt;Five years ago or so, my picture-posting process usually went like this:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;I took a picture on my phone.&lt;/li&gt;
+&lt;li&gt;I immediately opened note-sender (also on my phone).&lt;/li&gt;
+&lt;li&gt;In note-sender, I:&lt;br&gt;&lt;br&gt;&lt;ul&gt;
+&lt;li&gt;Uploaded a photo or video&lt;/li&gt;
+&lt;li&gt;Wrote a note about it&lt;/li&gt;
+&lt;li&gt;Posted it&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;For whatever reason, the process evolved into:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Take picture on my phone.&lt;/li&gt;
+&lt;li&gt;Put away my phone and forget I took the photo.&lt;/li&gt;
+&lt;li&gt;Let hours or days pass.&lt;/li&gt;
+&lt;li&gt;Let my phone &lt;a href=&quot;https://www.flickrhelp.com/hc/en-us/articles/4404064061076-About-the-Auto-Uploadr-Flickr-app&quot;&gt;auto-upload&lt;/a&gt; all of my photos to Flickr in the background.&lt;/li&gt;
+&lt;li&gt;Look at Flickr on my computer and notice the picture; realize that I’d like to post it to a blog.&lt;/li&gt;
+&lt;li&gt;Either:&lt;ul&gt;
+&lt;li&gt;Get my phone out&lt;/li&gt;
+&lt;li&gt;Open note-sender&lt;/li&gt;
+&lt;li&gt;Hit the media browse button&lt;/li&gt;
+&lt;li&gt;Scroll through the many pictures taken since that particular photo was taken to find the photo (I often gave up at this step)&lt;/li&gt;
+&lt;li&gt;Write some text and post&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Or:&lt;ul&gt;
+&lt;li&gt;Stay on the Flickr page on my computer&lt;/li&gt;
+&lt;li&gt;Click on the download button&lt;/li&gt;
+&lt;li&gt;Select a size&lt;/li&gt;
+&lt;li&gt;Confirm that it is OK to the download to the computer&lt;/li&gt;
+&lt;li&gt;Open note-sender&lt;/li&gt;
+&lt;li&gt;Hit the media browse button&lt;/li&gt;
+&lt;li&gt;Find the photo file in the file system&lt;/li&gt;
+&lt;li&gt;Write some text and post&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In a sense, the extension doesn’t actually save me that much work. It lets me skip:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Downloading a photo&lt;/li&gt;
+&lt;li&gt;Leaving the page I’m on to go to another page (note-sender)&lt;/li&gt;
+&lt;li&gt;Searching the Photo Roll or file system for a photo
+&lt;br&gt;&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Does that really matter?&lt;/p&gt;
+&lt;p&gt;Actually, &lt;em&gt;yes&lt;/em&gt;. That’s enough friction to make me skip posting. Especially if it’s the second or third time I’m posting during the photo browsing session. Sad but real!&lt;/p&gt;
+&lt;h3 id=&quot;what-my-extension-needed-to-do-to-fix-this&quot;&gt;What my extension needed to do to fix this&lt;/h3&gt;
+&lt;p&gt;From a Flickr photo page (&lt;a href=&quot;https://flickr.com/photos/ignignokt/54441124850/&quot;&gt;example&lt;/a&gt;), the extension needed to enable me to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Click on a button (without leaving the Flickr page)&lt;/li&gt;
+&lt;li&gt;Write some text in a box&lt;/li&gt;
+&lt;li&gt;Select a saved login&lt;/li&gt;
+&lt;li&gt;Hit a button to post to a weblog&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a id=&quot;how&quot;&gt;&lt;/p&gt;
+&lt;h1 id=&quot;ii-how-the-extension-is-made&quot;&gt;II. How the extension is made&lt;/h1&gt;
+&lt;p&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;the-source&quot;&gt;The source&lt;/h2&gt;
+&lt;p&gt;In case you just want the source, &lt;a href=&quot;https://github.com/jimkang/flickr-to-note-taker-extension/&quot;&gt;here it is.&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a id=&quot;anatomy&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;extension-anatomy&quot;&gt;Extension anatomy&lt;/h2&gt;
+&lt;p&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Just like eleven years ago, the extension has a manifest. There is a version 3 format, but if, like me, you don’t want to bother with learning version 3, you can still use version 2, at least in Firefox. The manifest describes what scripts are in the extension, where they are, and what resources they need.&lt;/p&gt;
+&lt;p&gt;Here is mine, annotated.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;{
+  &amp;quot;manifest_version&amp;quot;: 2,
+
+  &amp;quot;name&amp;quot;: &amp;quot;Flickr to note-taker&amp;quot;,
+  &amp;quot;description&amp;quot;: &amp;quot;Posts images from the Flickr page you&amp;#39;re on to note-taker&amp;quot;,
+  &amp;quot;version&amp;quot;: &amp;quot;1.0.0&amp;quot;,
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The &lt;code&gt;permissions&lt;/code&gt; state what the extension needs to touch and where they need to act.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+  &amp;quot;permissions&amp;quot;: [
+    &amp;quot;tabs&amp;quot;,
+    &amp;quot;https://*.flickr.com/*&amp;quot;,
+    &amp;quot;https://*.staticflickr.com/*&amp;quot;
+  ],
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The &lt;code&gt;page_action&lt;/code&gt; object below says that when the browser is at a url starting with &lt;code&gt;https://flickr.com/photos/&lt;/code&gt;, it should show an icon in the URL bar that has the tooltip “Send to notes”. When that button is clicked, a web page defined in &lt;code&gt;form.html&lt;/code&gt; should show up in a popup.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;  &amp;quot;page_action&amp;quot;: {
+    &amp;quot;default_icon&amp;quot;: {
+      &amp;quot;19&amp;quot;: &amp;quot;flickr-to-note-taker_icon_19.png&amp;quot;,
+      &amp;quot;38&amp;quot;: &amp;quot;flickr-to-note-taker_icon_38.png&amp;quot;
+    },
+    &amp;quot;default_title&amp;quot;: &amp;quot;Send to notes&amp;quot;,
+    &amp;quot;default_popup&amp;quot;: &amp;quot;form.html&amp;quot;,
+    &amp;quot;show_matches&amp;quot;: [&amp;quot;https://flickr.com/photos/*&amp;quot;]
+  },
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This &lt;code&gt;content_scripts&lt;/code&gt; object tells the browser what script to run in the context of pages starting &lt;code&gt;https://flickr.com/photos/&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;  &amp;quot;content_scripts&amp;quot;: [
+    {
+      &amp;quot;matches&amp;quot;: [&amp;quot;https://flickr.com/photos/*&amp;quot;],
+      &amp;quot;js&amp;quot;: [&amp;quot;get-photo-download.js&amp;quot;]
+    }
+  ],
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;These are the icons the browser should display in various contexts, like the url bar button.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;  &amp;quot;icons&amp;quot;: {
+    &amp;quot;16&amp;quot;: &amp;quot;flickr-to-note-taker_icon_16.png&amp;quot;,
+    &amp;quot;48&amp;quot;: &amp;quot;flickr-to-note-taker_icon_48.png&amp;quot;,
+    &amp;quot;128&amp;quot;: &amp;quot;flickr-to-note-taker_icon_128.png&amp;quot;
+  },
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img alt=&quot;URL bar with the extension icon on the right side of it&quot; src=&quot;url-bar-icon.png&quot;&gt;
+&lt;br&gt;&lt;br&gt;
+The id in &lt;code&gt;browser_specific_settings&lt;/code&gt; needs to be unique if you want to sign it, which we’ll talk about &lt;a href=&quot;http://jimkang.com/articles/firefox-extension/#signing&quot;&gt;later&lt;/a&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;  &amp;quot;browser_specific_settings&amp;quot;: {
+    &amp;quot;gecko&amp;quot;: {
+      &amp;quot;id&amp;quot;: &amp;quot;flickr-to-note-taker@smidgeo.com&amp;quot;
+    }
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;a id=&quot;ui&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;ui&quot;&gt;UI&lt;/h2&gt;
+&lt;p&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Now that we have toured the parts of the extension, let’s look more closely at the UI part.&lt;/p&gt;
+&lt;p&gt;When the user clicks the popup button in the url bar, &lt;code&gt;form.html&lt;/code&gt; is diplayed. Here is what that looks like.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;popup.png&quot; alt=&quot;A Flickr photo page with a form showing in a popup extening from the browser url bar.&quot;&gt;&lt;/p&gt;
+&lt;p&gt;And this is the code for &lt;code&gt;form.html&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;html&amp;gt;
+&amp;lt;head&amp;gt;
+  &amp;lt;title&amp;gt;Note Sender, Jr.&amp;lt;/title&amp;gt;
+  &amp;lt;link rel=&amp;quot;stylesheet&amp;quot; type=&amp;quot;text/css&amp;quot; href=&amp;quot;app.css&amp;quot;&amp;gt;&amp;lt;/link&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+
+&amp;lt;h2&amp;gt;Status&amp;lt;/h2&amp;gt;
+&amp;lt;div id=&amp;quot;status&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+
+
+&amp;lt;section class=&amp;quot;global-props ccol&amp;quot;&amp;gt;
+  &amp;lt;h4&amp;gt;Archive&amp;lt;/h4&amp;gt;
+  &amp;lt;input type=&amp;quot;text&amp;quot; id=&amp;quot;archive&amp;quot; value=&amp;quot;&amp;quot; /&amp;gt;
+  &amp;lt;h4&amp;gt;Password&amp;lt;/h4&amp;gt;
+  &amp;lt;input type=&amp;quot;password&amp;quot; id=&amp;quot;password&amp;quot; value=&amp;quot;&amp;quot; /&amp;gt;
+  &amp;lt;h3&amp;gt;Alt text&amp;lt;/h3&amp;gt;
+  &amp;lt;input class=&amp;quot;alt-text&amp;quot; type=&amp;quot;text&amp;quot; /&amp;gt;
+  &amp;lt;textarea class=&amp;quot;note-area&amp;quot; data-of=&amp;quot;caption&amp;quot;&amp;gt;&amp;lt;/textarea&amp;gt;
+  &amp;lt;button class=&amp;quot;submit-note-button&amp;quot;&amp;gt;Note!&amp;lt;/button&amp;gt;
+&amp;lt;/section&amp;gt;
+
+(FYI: For the purposes of managed passwords, the url of this form is &amp;lt;span id=&amp;quot;popup-url&amp;quot;&amp;gt;&amp;lt;/span&amp;gt;.)
+
+&amp;lt;script src=&amp;quot;form.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The event handler for clicking on the Note! button in &lt;a href=&quot;https://github.com/jimkang/flickr-to-note-taker-extension/blob/main/extension/form.js&quot;&gt;&lt;code&gt;form.js&lt;/code&gt;&lt;/a&gt; takes stuff from the inputs and posts it to an API endpoint. If you are familiar with web apps, you’ve seen this kind of thing over and over. But there are a couple of functions that are specific to extensions in that file that we should look at.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;sendMessageToDownloader&lt;/code&gt; runs as soon as the page loads. It looks for the active browser tab that has the Flickr photo page loaded, and sends it a message to the content script telling it to start downloading the media.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;async function sendMessageToDownloader() {
+  try {
+    var activeTabs = await browser.tabs.query({ active: true, url: &amp;#39;https://flickr.com/photos/*&amp;#39; });
+    var tab = activeTabs?.[0];
+    if (!tab) {
+      throw new Error(&amp;#39;Could not find the Flickr tab.&amp;#39;);
+    }
+    await browser.tabs.sendMessage(tab.id, { command: &amp;#39;start&amp;#39; });
+  } catch (error) {
+    console.error(error);
+    statusEl.textContent = error.message + &amp;#39; tab &amp;#39; + tab.id;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;form.js&lt;/code&gt; has another event handler, &lt;code&gt;onMessage&lt;/code&gt;, which we register with &lt;code&gt;browser.runtime.onMessage.addListener(onMessage)&lt;/code&gt;. It will receive the reply from the content script in &lt;code&gt;onMessage&lt;/code&gt; and will save binary form that message as well as some metadata for later use by the &lt;code&gt;onSubmitClick&lt;/code&gt; handler.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;function onMessage({ mediaBuffer, type, filename }) {
+  buffer = mediaBuffer;
+  mediaType = type;
+  mediaFilename = filename;
+
+  statusEl.textContent = &amp;#39;Media with length &amp;#39; + buffer.byteLength + &amp;#39; and type &amp;#39; + mediaType + &amp;#39; is ready to post.&amp;#39;;
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;div class=&quot;aside&quot;&gt;There is one more unusual bit that you may be interested in if you’re making an extension that requires the user to fill out a password:
+&lt;br&gt;&lt;br&gt;
+&lt;code&gt;document.getElementById(&amp;#39;popup-url&amp;#39;).textContent = window.location.href;&lt;/code&gt;
+&lt;br&gt;&lt;br&gt;
+Extension popups have a weird url of the form &lt;code&gt;moz-extension://[uuid]&lt;/code&gt; and aren’t exposed to the user. The reason the user might want to know that url is so they can associate passwords with that url in Firefox’s password manager. Once they’ve saved passwords for the extension url, they can easily fill in the password by right-clicking on the password field and selecting “Use saved password.” I personally use &lt;a href=&quot;https://www.passwordstore.org/&quot;&gt;pass&lt;/a&gt; for “important” passwords, but I use Firefox’s password manager for blog passwords.&lt;/div&gt;
+
+&lt;p&gt;&lt;a id=&quot;page-work&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;page-work-simulating-the-user&quot;&gt;Page work: Simulating the user&lt;/h2&gt;
+&lt;p&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The code that gets the photo or video binary and gets it to &lt;code&gt;form.js&lt;/code&gt; is in content script, &lt;a href=&quot;https://github.com/jimkang/flickr-to-note-taker-extension/blob/main/extension/get-photo-download.js&quot;&gt;get-photo-download.js&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;It is mostly DOM querying and timeouts, the kind of code you tend to see in programs like end-to-end tests that mimic a person clicking on a sequence of things in a web page.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;get-photo-download.js&lt;/code&gt; clicks on this button (circled in red) —&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;flickr-download-button.png&quot; alt=&quot;Flickr photo page with download button&quot;&gt;&lt;/p&gt;
+&lt;p&gt;— in order to make this menu appear:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;flickr-download-menu.png&quot; alt=&quot;Flickr download menu listing various image sizes&quot;&gt;
+Once it finds the menu items, it grabs the &lt;code&gt;href&lt;/code&gt; value of the Large size link and fetches the image from that URL. Then, it passes the ArrayBuffer containing the image to the listener in &lt;code&gt;form.js&lt;/code&gt; via a &lt;code&gt;browser.runtime.sendMessage&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&quot;aside&quot;&gt;In the case of a Flickr video page, there won’t be a download menu because there aren’t multiple sizes available. There will be a single download link, but the video file there is not playable on some platforms.&lt;br&gt;&lt;br&gt;Instead of getting the media binary from a download link like we do in the photo case, we grab the video file from the &lt;code&gt;&amp;lt;video&amp;gt;&lt;/code&gt; player element’s &lt;code&gt;src&lt;/code&gt; attribute because the version Flickr puts there will be widely playable. I know it plays in Firefox on Ubuntu and on Mobile Safari, at least.&lt;/div&gt;
+
+&lt;h2 id=&quot;workflow-completion-in-the-ui&quot;&gt;Workflow completion in the UI&lt;/h2&gt;
+&lt;p&gt;Back in &lt;code&gt;form.js&lt;/code&gt;, the message is received, and the media ArrayBuffer is saved to the module closure. Whenever the user clicks the “Note!” button, that ArrayBuffer is packed into the form data for a POST to the note-taker endpoint. Other than status updates about how that POST went, the extension’s work is done.&lt;/p&gt;
+&lt;p&gt;&lt;a id=&quot;sequence-diagram&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;informal-sequence-diagram&quot;&gt;Informal sequence diagram&lt;/h2&gt;
+&lt;p&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;In short, the action in the extension flows like this (start following from “init”):&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;flickr-to-note-taker.svg&quot; alt=&quot;Function flow diagram&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a id=&quot;packaging&quot;&gt;&lt;/p&gt;
+&lt;h1 id=&quot;iii-packaging&quot;&gt;III. Packaging&lt;/h1&gt;
+&lt;p&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Extension files are just zip files, even though they have an &lt;code&gt;.xpi&lt;/code&gt; extension. There’s a couple of other considerations, though.&lt;/p&gt;
+&lt;h2 id=&quot;development&quot;&gt;Development&lt;/h2&gt;
+&lt;p&gt;While you are developing your extension, you can load it without having to zip it by going to &lt;a href=&quot;about:debugging#/runtime/this-firefox&quot;&gt;about:debugging#/runtime/this-firefox&lt;/a&gt;, clicking “Load Temporary Add-on…”, and pointing the file dialog to the directory where you extension files are.&lt;/p&gt;
+&lt;p&gt;&lt;a id=&quot;signing&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;signing&quot;&gt;Signing&lt;/h2&gt;
+&lt;p&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Because this extension is just for myself, I wanted to just load it unpacked and be done. But unpacked debug extensions do not persist after you close and reopen the browser, so I needed to zip and sign the extension.&lt;/p&gt;
+&lt;p&gt;When zipping, make sure the zip structure is flat — no subdirectories.&lt;/p&gt;
+&lt;p&gt;Signing an extension, while nowhere near nightmarish as signing an iOS app, is still a hassle. &lt;a href=&quot;https://extensionworkshop.com/documentation/publish/signing-and-distribution-overview/&quot;&gt;You can read about it here.&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Here’s a couple of things that tripped me up about it:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The docs are ambiguous about how long you have to wait after you submit the zip file for approval. (Approval for signing, not for public consumption.) Mine was approved in five minutes by an automated process.&lt;/li&gt;
+&lt;li&gt;The approval email will say that it is available at a url of the form &lt;code&gt;https://addons.mozilla.org/developers/addon/&amp;lt;some numbers&amp;gt;/versions&lt;/code&gt;. This is probably a me thing, but I had trouble finding the actual extension file.&lt;br&gt;&lt;br&gt;Click on an item in the version history. On the version page, there will be a small Files section with the link to the xpi file. (The xpi file is just the zip file with a different extension.)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;installation&quot;&gt;Installation&lt;/h2&gt;
+&lt;p&gt;Once you have that file, install it by going to &lt;a href=&quot;about:addons&quot;&gt;about:addons&lt;/a&gt;, clicking the gear icon, selecting “Install Add-on From File”, and selecting the zip file.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;addons-config.png&quot; alt=&quot;Add-ons configuration page&quot;&gt;&lt;/p&gt;
+&lt;p&gt;You can go a step further and make it available to other people by &lt;a href=&quot;https://extensionworkshop.com/documentation/publish/submitting-an-add-on/&quot;&gt;submitting it to the Add-Ons Developer Hub&lt;/a&gt;, but that’s a whole thing that requires you to create a Firefox account and set up 2FA, etc.&lt;/p&gt;
+&lt;p&gt;&lt;a id=&quot;all-together&quot;&gt;&lt;/p&gt;
+&lt;h1 id=&quot;all-together-now&quot;&gt;All together now&lt;/h1&gt;
+&lt;p&gt;&lt;/a&gt;
+Once the extension is installed, here’s how it works.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;extension-at-work-1.png&quot; alt=&quot;Firefox add-ons config page with Flickr to note-taker selected&quot;&gt;
+&lt;img src=&quot;extension-at-work-2.png&quot; alt=&quot;Flickr page with photo of cats and mouse pointer on extension button in url bar&quot;&gt;
+&lt;img src=&quot;extension-at-work-3.png&quot; alt=&quot;Flickr page with extension popup in front showing Archive, Password, and Alt text input field and status text about media being ready to post&quot;&gt;
+&lt;img src=&quot;extension-at-work-4.png&quot; alt=&quot;Flickr page with extension popup in front showing text area filled in and mouse pointer over the Note! button&quot;&gt;
+&lt;img src=&quot;extension-at-work-5.png&quot; alt=&quot;Flickr page with extension popup in front showing 'Post success!' status&quot;&gt;
+&lt;img src=&quot;extension-at-work-6.png&quot; alt=&quot;Daily Mrrp! page showing cats photo from Flickr page&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Here is a video of the extension in action.&lt;/p&gt;
+&lt;video src=&quot;posting-with-extension.webm&quot; controls&gt;&lt;/video&gt;
+
+&lt;p&gt;It’s saved me a lot of time and allowed me to make posts I otherwise would not have bothered with. If there’s some cumbersome web doings in your life,
+consider making something like this yourself!&lt;a href=&quot;#footnote-find&quot;&gt;&lt;b&gt;*&lt;/b&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;aside&quot;&gt;&lt;b id=&quot;footnote-find&quot;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/b&gt; An even better way to make your life easier is to find an extension that already exists, but that wasn’t an option for me. If you can read code, it’s a good idea to &lt;a href=&quot;https://jimkang.com/weblog/articles/making-sure-an-add-on-is-safe/&quot;&gt;make sure that the extension you find is safe&lt;/a&gt;, though. &lt;a href=&quot;#linkorigin-find&quot;&gt;⤴&lt;/a&gt;&lt;/div&gt;
+&lt;div class=&quot;aside&quot;&gt;&lt;b id=&quot;footnote-last-ext&quot;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/b&gt; After writing this entire post, I looked at Back Again? again and realized that I had actually &lt;a href=&quot;https://github.com/jimkang/backagain/commits/master/&quot;&gt;updated it in 2021&lt;/a&gt; but completely forgot about that.&lt;a href=&quot;#linkorigin-last-ext&quot;&gt;⤴&lt;/a&gt;&lt;/div&gt;
+
+&lt;div class=&quot;aside&quot;&gt;&lt;b id=&quot;footnote-addon&quot;&gt;&lt;sup&gt;3&lt;/sup&gt;&lt;/b&gt; Extensions are called “add-ons” in Firefox, but I’m used to saying extension, so I’ll stick to that).&lt;a href=&quot;#linkorigin-addon&quot;&gt;⤴&lt;/a&gt;&lt;/div&gt;
+&lt;div class=&quot;aside&quot;&gt;&lt;b&gt;&lt;sup id=&quot;footnote-note-taker&quot;&gt;4&lt;/sup&gt;&lt;/b&gt; &lt;a href=&quot;https://github.com/jimkang/note-taker&quot;&gt;note-taker&lt;/a&gt; is a REST service that uses &lt;a href=&quot;https://github.com/jimkang/static-web-archive&quot;&gt;static-web-archive&lt;/a&gt;, a static site generator. It was &lt;a href=&quot;https://jimkang.com/weblog/articles/platform-free-bots/&quot;&gt;originally written&lt;/a&gt; to be easy for bots to post to, but now I use it for my own non-automated microblogs, like &lt;a href=&quot;https://smidgeo.com/daily-mrrp/&quot;&gt;my cats blog&lt;/a&gt;, a &lt;a href=&quot;https://smidgeo.com/take-a-break/&quot;&gt;relaxation videos collection&lt;/a&gt;, a &lt;a href=&quot;https://smidgeo.com/notes/argh-i-forgot/&quot;&gt;record of things I couldn’t remember&lt;/a&gt;, &lt;a href=&quot;https://ghostcrab.io/devlogs/&quot;&gt;various devlogs&lt;/a&gt;, and some family microblogs.&lt;br&gt;&lt;br&gt;Most static site generators require you to run a build on your laptop after you write something and then upload the built site to your web server. note-taker runs 24/7 on a server to receive posts so that I can post to it from my phone. I do not have to be at my laptop to rebuild and upload a site.&lt;br&gt;&lt;br&gt;&lt;div class=&quot;aside&quot;&gt;You could put a service like this up in front of any static site generator and get the same benefits. Maybe people are doing this! I didn’t see it happening at the time I wrote note-taker, though.&lt;/div&gt;&lt;/div&gt;
+</description>
+    </item>
     <item>
       <title>Ukraine donations</title>
       <link>http://jimkang.com/weblog/articles/ukraine-donations/</link>
@@ -1046,25 +1325,6 @@ Here is a new EP for you!&lt;/p&gt;
 </description>
     </item>
     <item>
-      <title>Build the bomb</title>
-      <link>http://jimkang.com/weblog/articles/build-the-bomb/</link>
-      <pubDate>Thu, 13 Jul 2023 20:00:00 -0400</pubDate>
-      <guid isPermaLink="true">http://jimkang.com/weblog/articles/build-the-bomb/</guid>
-      <author></author>
-      <description>&lt;p&gt;It’s well-documented phenomenon that many Americans will balk at a public spending measure that costs over a trillion dollars but are totally OK with that if it is for the military. Adam Tooze discusses this in a &lt;a href=&quot;https://chartable.com/podcasts/ones-and-tooze/episodes/145999477-trillion-dollar-sticker-shock-lets-all-get-over-it&quot;&gt;recent episode&lt;/a&gt; of his podcast. If it’s for the military, then it it’s essential and maybe even exciting, like the F-35 or the Manhattan Project.&lt;/p&gt;
-&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;Trump may not need help capturing all the right-leaning votes in the US, but a tact that could work for him is to pick up some disgraced physicist and push for a &lt;strong&gt;Manhattan Project 2&lt;/strong&gt;. It would be &lt;em&gt;just like&lt;/em&gt; the original Manhattan Project, except they’d really do it in Manhattan this time, in some Trump hotel’s spacious event space.&lt;/p&gt;
-&lt;p&gt;The other difference would be that the new bomb could wipe out &lt;em&gt;all of China&lt;/em&gt;. (&lt;strong&gt;“CHI-na!”&lt;/strong&gt; said with a sneer, of course.) This bomb would cost trillions, maybe a quadrillion.&lt;/p&gt;
-&lt;p&gt;Trump would “be frank with you” and say “that’s a lotta money” but it would make us &lt;strong&gt;safe from China&lt;/strong&gt; and put &lt;strong&gt;America&lt;/strong&gt; &lt;em&gt;back on top&lt;/em&gt;.&lt;/p&gt;
-&lt;p&gt;What if it turned out you couldn’t actually make a bomb like that, and some pedantic wonk pointed it out?&lt;/p&gt;
-&lt;p&gt;Well, what of it? Trump would just ask Dr. Scientist if we could really make the Superbomb, and Dr. Scientist would say yes, but the science &lt;em&gt;deep state&lt;/em&gt; is &lt;strong&gt;holding back&lt;/strong&gt;. Then, Trump would chant &lt;strong&gt;BUILD! THE! BOMB!&lt;/strong&gt; and so would half of America.&lt;/p&gt;
-&lt;hr&gt;
-
-&lt;p&gt;But what if it turned out that you &lt;em&gt;could&lt;/em&gt; build a bomb like that?&lt;/p&gt;
-&lt;p&gt;-*-&lt;/p&gt;
-</description>
-    </item>
-    <item>
       <title>Bold marketing</title>
       <link>http://jimkang.com/weblog/articles/bold-marketing/</link>
       <pubDate>Sat, 08 Jul 2023 20:00:00 -0400</pubDate>
@@ -1797,6 +2057,39 @@ done
 </description>
     </item>
     <item>
+      <title>Civilized Bandcamp file unzipping</title>
+      <link>http://jimkang.com/weblog/articles/bandcamp-unzip/</link>
+      <pubDate>Wed, 17 Feb 2021 19:00:00 -0500</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/bandcamp-unzip/</guid>
+      <author></author>
+      <description>&lt;p&gt;Here’s a script that’s handy for unzipping stuff you download from Bandcamp.
+&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Bandcamp gives you zip files that contain no directory structure. So, the files just unzip to whatever directory you’re in. I have found that to get messy, and I now like an &lt;code&gt;artist-dir/album-dir&lt;/code&gt; structure, like I’m in the year 2000.&lt;/p&gt;
+&lt;p&gt;Here’s a script I wrote to unzip Bandcamp zip files into such a structure. It uses the naming scheme of the zip file (&lt;code&gt;&amp;lt;artist name&amp;gt;&lt;/code&gt;-&lt;code&gt;&amp;lt;album name&amp;gt;&lt;/code&gt;) to determine the appropriate directory names.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#!/bin/bash
+
+for file in *.zip
+  do
+    filename=&amp;quot;${file%.*}&amp;quot;
+    # Filenames can&amp;#39;t contain /. So, I wonder
+    # what Bandcamp would do if they had AC/DC?
+    unzippath=$(echo &amp;quot;$filename&amp;quot; |sed -e &amp;#39;s/ - /\//&amp;#39;)
+    mkdir -p &amp;quot;$unzippath&amp;quot;
+    unzip &amp;quot;$filename&amp;quot; -d &amp;quot;$unzippath&amp;quot;
+  done
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;It will run on all of the zip files in the working directory. You’ll end up with your mp3 files in directory structures like &lt;code&gt;Chaucerian Myth/The Canterbury Tales&lt;/code&gt; now.&lt;/p&gt;
+&lt;p&gt;&lt;hr&gt;&lt;/p&gt;
+&lt;p&gt;&lt;blockquote&gt;Here, we’re about to drift away from that tiny script into background story space! I feel like a guy that responds to “Where is the nearest gas station?” with a long explanation of local zoning policy and their own personal journey away from fossil fuels to a house powered entirely with solar panels. (I actually would like solar panels, BTW.)&lt;/p&gt;
+&lt;p&gt;Unlike that guy, however, there is no way I’ll notice if you just close the tab now!&lt;/blockquote&gt;&lt;/p&gt;
+&lt;hr&gt;
+
+&lt;p&gt;This has come up because I’ve been increasingly enjoying &lt;a href=&quot;https://bandcamp.com/&quot;&gt;Bandcamp&lt;/a&gt; over the last few years, but now I’m all in on them.&lt;/p&gt;
+&lt;p&gt;I’ve usually used their streaming service, but lately I’ve been downloading albums from them and importing them into &lt;a href=&quot;https://plex.tv/&quot;&gt;Plex&lt;/a&gt; to play. (I like it because lets me stream from my Raspberry Pi at home to my phone. The Bandcamp app also lets you stream to your phone but only with music you’ve bought on Bandcamp.)&lt;/p&gt;
+&lt;p&gt;At first, I thought I’d dump all of my files into one directory and let Plex use ID3 tags to organize them, but you still have to get into the files sometimes, and a 4,000-file directory is total hell. Via Bandcamp purchases and CD rips (weird, I know), this pile is growing again after being frozen for half a decade and needs a little structure.&lt;/p&gt;
+&lt;p&gt;I think I like this way of listening to and acquiring music, as backwards as it sounds, because I tend to consider each album more fully and give each one more of a chance, either because I bought it directly or I once bought it long ago and now have put in the work to rip a CD. And in the cases when I buy from a label-less artist, I provide magnitudes more financial compensation to the artist than I would via any streaming service.&lt;/p&gt;
+</description>
+    </item>
+    <item>
       <title>The web actually breathing usability into old tools</title>
       <link>http://jimkang.com/weblog/articles/web-creating-usability/</link>
       <pubDate>Wed, 17 Feb 2021 19:00:00 -0500</pubDate>
@@ -1916,39 +2209,6 @@ For years, I’ve used &lt;a href=&quot;https://graphviz.org/&quot;&gt;Graphviz&
 &lt;p&gt;But that would reduce profits, and Milton Friedman has famously proclaimed that corporations’ sole responsibility is to maximize profit. (And as we all know, Milton Friedman is a god-pharaoh that issues forth waves that &lt;em&gt;compel all to obey&lt;/em&gt; from his sarcophagus underneath the University of Chicago.)&lt;/p&gt;
 &lt;p&gt;For smaller companies, indie developers, and people who just want to make something nice for others, it’s hard to imagine better alternatives, except perhaps offline web apps (which aren’t easy for a lot of users to wrap their heads around &amp;mdash; the association between the web and internet connections is strong) or putting all of their proverbial eggs on a specific platform.&lt;/p&gt;
 &lt;p&gt;I guess all I’m saying is: Web browsers are (sadly?) the closest we’ve ever gotten to a universal app platform, so I hope we can cut away their many excesses and abuses while keeping that part.&lt;/p&gt;
-</description>
-    </item>
-    <item>
-      <title>Civilized Bandcamp file unzipping</title>
-      <link>http://jimkang.com/weblog/articles/bandcamp-unzip/</link>
-      <pubDate>Wed, 17 Feb 2021 19:00:00 -0500</pubDate>
-      <guid isPermaLink="true">http://jimkang.com/weblog/articles/bandcamp-unzip/</guid>
-      <author></author>
-      <description>&lt;p&gt;Here’s a script that’s handy for unzipping stuff you download from Bandcamp.
-&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;Bandcamp gives you zip files that contain no directory structure. So, the files just unzip to whatever directory you’re in. I have found that to get messy, and I now like an &lt;code&gt;artist-dir/album-dir&lt;/code&gt; structure, like I’m in the year 2000.&lt;/p&gt;
-&lt;p&gt;Here’s a script I wrote to unzip Bandcamp zip files into such a structure. It uses the naming scheme of the zip file (&lt;code&gt;&amp;lt;artist name&amp;gt;&lt;/code&gt;-&lt;code&gt;&amp;lt;album name&amp;gt;&lt;/code&gt;) to determine the appropriate directory names.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;#!/bin/bash
-
-for file in *.zip
-  do
-    filename=&amp;quot;${file%.*}&amp;quot;
-    # Filenames can&amp;#39;t contain /. So, I wonder
-    # what Bandcamp would do if they had AC/DC?
-    unzippath=$(echo &amp;quot;$filename&amp;quot; |sed -e &amp;#39;s/ - /\//&amp;#39;)
-    mkdir -p &amp;quot;$unzippath&amp;quot;
-    unzip &amp;quot;$filename&amp;quot; -d &amp;quot;$unzippath&amp;quot;
-  done
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;It will run on all of the zip files in the working directory. You’ll end up with your mp3 files in directory structures like &lt;code&gt;Chaucerian Myth/The Canterbury Tales&lt;/code&gt; now.&lt;/p&gt;
-&lt;p&gt;&lt;hr&gt;&lt;/p&gt;
-&lt;p&gt;&lt;blockquote&gt;Here, we’re about to drift away from that tiny script into background story space! I feel like a guy that responds to “Where is the nearest gas station?” with a long explanation of local zoning policy and their own personal journey away from fossil fuels to a house powered entirely with solar panels. (I actually would like solar panels, BTW.)&lt;/p&gt;
-&lt;p&gt;Unlike that guy, however, there is no way I’ll notice if you just close the tab now!&lt;/blockquote&gt;&lt;/p&gt;
-&lt;hr&gt;
-
-&lt;p&gt;This has come up because I’ve been increasingly enjoying &lt;a href=&quot;https://bandcamp.com/&quot;&gt;Bandcamp&lt;/a&gt; over the last few years, but now I’m all in on them.&lt;/p&gt;
-&lt;p&gt;I’ve usually used their streaming service, but lately I’ve been downloading albums from them and importing them into &lt;a href=&quot;https://plex.tv/&quot;&gt;Plex&lt;/a&gt; to play. (I like it because lets me stream from my Raspberry Pi at home to my phone. The Bandcamp app also lets you stream to your phone but only with music you’ve bought on Bandcamp.)&lt;/p&gt;
-&lt;p&gt;At first, I thought I’d dump all of my files into one directory and let Plex use ID3 tags to organize them, but you still have to get into the files sometimes, and a 4,000-file directory is total hell. Via Bandcamp purchases and CD rips (weird, I know), this pile is growing again after being frozen for half a decade and needs a little structure.&lt;/p&gt;
-&lt;p&gt;I think I like this way of listening to and acquiring music, as backwards as it sounds, because I tend to consider each album more fully and give each one more of a chance, either because I bought it directly or I once bought it long ago and now have put in the work to rip a CD. And in the cases when I buy from a label-less artist, I provide magnitudes more financial compensation to the artist than I would via any streaming service.&lt;/p&gt;
 </description>
     </item>
     <item>

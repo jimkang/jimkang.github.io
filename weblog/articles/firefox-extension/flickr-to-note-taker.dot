@@ -1,0 +1,46 @@
+digraph G {
+  rankdir=TB;
+  ratio=2.;
+  splines=spline;
+  bgcolor="#000418";
+  graph [fontsize=14, fontname="Helvetica", penwidth=3];
+  node [fontname="Helvetica", shape=box, style=filled, color="#f0ffff"];
+  edge [fontname="Helvetica", color="#ffa000", fontcolor="white", penwidth=4];
+  
+  subgraph cluster {
+    label = "form.html/js";
+    labeljust=l;
+    style=filled;
+    color="#60df98";
+    edge [fontcolor="#303030", color="white", penwidth=2];
+  
+    fOnMessage[label="onMessage"];
+    init [shape=Mdiamond, fontsize=24, color="#e0b050"];
+    lastStep [shape=Msquare, label="Assemble form data\nand post it to\nthe note-taker API",
+    fontsize="18", color="#e0b050"];
+    init -> sendMessageToDownloader -> "sendMessage(start command)";
+    fOnMessage -> "Store media binary in closure";
+    "Store media binary in closure" -> "User clicks Note! button" [style=dotted label="Idle time passes"];
+    "User clicks Note! button" -> onSubmitClick -> lastStep;
+    
+
+  }
+    
+  subgraph cluster_1 {
+    label = "get-photo-download.js";
+    labeljust=l;
+    style=filled;
+    color="#e0e070";
+    node [color="#080018", fontcolor="white"];
+    edge [color="#080018", fontcolor="black", penwidth=2];
+    
+    dlOnMessage[label="onMessage"];
+    dlOnMessage -> showDlMenu [style=dashed, label="timeout"];
+    showDlMenu -> getMediaDownload [style=dashed, label="timeout"];
+    getMediaDownload -> "fetch media binary";
+    getMediaDownload -> "sendMessage(media binary)";
+  }
+
+  "sendMessage(start command)" -> dlOnMessage;
+  "sendMessage(media binary)" -> fOnMessage;
+}
