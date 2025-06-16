@@ -5,9 +5,36 @@
     <atom:link href="http://jimkang.com/weblog/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Sat, 03 May 2025 20:00:00 -0400</pubDate>
+    <pubDate>Sun, 15 Jun 2025 20:00:00 -0400</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Ghosts and lists</title>
+      <link>http://jimkang.com/weblog/articles/ghosts-and-lists/</link>
+      <pubDate>Sun, 15 Jun 2025 20:00:00 -0400</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/ghosts-and-lists/</guid>
+      <author></author>
+      <description>&lt;p&gt;&lt;em&gt;This was also sent out as a newsletter. If you’d like to get project updates like this as email, you can &lt;a href=&quot;https://smidgeo.com/misc/signup/?list=jimkang-projects&quot;&gt;subscribe&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;
+ Oyez! It’s me, Jim (&lt;a href=&quot;https://jimkang.com/)&quot;&gt;https://jimkang.com/)&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt; I last emailed you about two years ago when TinyLetter, the newsletter service I used, shut down.&lt;/p&gt;
+&lt;p&gt;But I’ve finally gotten around to writing my own bare bones mailing list service&lt;b&gt;*&lt;/b&gt;, which you can &lt;a href=&quot;https://github.com/jimkang/franz-list&quot;&gt;fork and run&lt;/a&gt;) for yourself. So, once again, I can email you. (Unless you unsubscribe, which you can do easily with the link at the bottom of this email.)&lt;/p&gt;
+&lt;h1 id=&quot;art&quot;&gt;Art&lt;/h1&gt;
+&lt;p&gt;I call these guys Mote Ghosts:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://jimkang.com/gallery/#focusPiece=mote-ghosts&amp;amp;showWIP=no&quot;&gt;https://jimkang.com/gallery/#focusPiece=mote-ghosts&amp;amp;showWIP=no&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;This piece is basically a screen saver. Have a few quiet minutes watching it!&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;I’ve been learning how to make fragment shaders via the classic &lt;a href=&quot;https://thebookofshaders.com/&quot;&gt;Book of Shaders&lt;/a&gt;. Shaders are ultra-focused programs that are responsible for answering the question “What color goes at this pixel?” Hundreds of GPU cores run these shaders simultaneously to create a picture about 60 times a second.&lt;/p&gt;
+&lt;p&gt;One of the exercises in the book is creating “animals” that move in unique ways. Doing that exercise eventually yielded Mote Ghosts. if you’re interested, &lt;a href=&quot;https://github.com/jimkang/gallery/blob/main/renderers/shaders/mote-ghosts-fragment-shader.js&quot;&gt;here’s the source&lt;/a&gt;.&lt;/p&gt;
+&lt;h1 id=&quot;music&quot;&gt;Music&lt;/h1&gt;
+&lt;p&gt;Near the end of last year, I finished a &lt;a href=&quot;https://jimkang.bandcamp.com/track/clearing-the-neighbourhood&quot;&gt;song&lt;/a&gt; about planet formation. &lt;a href=&quot;https://sparklemarkers.com/&quot;&gt;Katt&lt;/a&gt; made the album cover. It’s long, but by ambient music standards, it’s short. &lt;a href=&quot;https://jimkang.com/music/deathmtn-dYDyOzQS.html&quot;&gt;Some background background information here.&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;general-living&quot;&gt;General living&lt;/h1&gt;
+&lt;p&gt;In non-projects, I went to a judo club cookout, where some kid ate &lt;a href=&quot;https://www.flickr.com/gp/ignignokt/32rg0o9q30&quot;&gt;exactly half of a burger and half of a hot dog&lt;/a&gt;, &lt;a href=&quot;https://smidgeo.com/notes/deathmtn/deathmtn-iTjKgHjl.html&quot;&gt;protested with some nice folks&lt;/a&gt;, and judged at a math circle event in which the kids tried to solve a thousand problems. (I think they collectively got to 400-something?) I also discovered &lt;a href=&quot;https://smidgeo.com/notes/deathmtn/deathmtn-SfzKIBMP.html&quot;&gt;how my camera got knocked down&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Let me know &lt;strong&gt;A)&lt;/strong&gt; if you actually receive this email and &lt;strong&gt;B)&lt;/strong&gt; what you’ve been up to!&lt;/p&gt;
+&lt;p&gt;It’s good to be able to write to you again! Next week (hopefully), I’ll talk about some more projects I’ve been doing or have done.&lt;/p&gt;
+&lt;p&gt;Jim&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Making a Firefox extension in 2025</title>
       <link>http://jimkang.com/weblog/articles/firefox-extension/</link>
@@ -1664,33 +1691,6 @@ function homemadeLinearRamp({ param, targetVal, ctx, durationSeconds }) {
 &lt;p&gt;Would the idea of doing something evil attract people who would otherwise not try meditation? And would these new meditation students fascinated by evil compensate for the possible group of potential students turned off by evil?&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;To be honest, I don’t know the answer&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;However&lt;/strong&gt;, I think we can agree that no one else can know either, with the exception of &lt;em&gt;bold investors&lt;/em&gt;. And though not all bold investors will be interested in finding out, &lt;em&gt;perhaps &lt;strong&gt;evil bold investors&lt;/strong&gt; (which make up only 80-90% of bold investors) will.&lt;/em&gt;&lt;/p&gt;
-</description>
-    </item>
-    <item>
-      <title>Eight small things</title>
-      <link>http://jimkang.com/weblog/articles/ghosts-and-lists/</link>
-      <pubDate>Mon, 14 Feb 2022 19:00:00 -0500</pubDate>
-      <guid isPermaLink="true">http://jimkang.com/weblog/articles/ghosts-and-lists/</guid>
-      <author></author>
-      <description>&lt;p&gt;&lt;em&gt;This was also sent out as a newsletter. If you’d like to get project updates like this as email, you can &lt;a href=&quot;https://smidgeo.com/misc/signup/?list=jimkang-projects&quot;&gt;subscribe&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;
- Oyez! It’s me, Jim (&lt;a href=&quot;https://jimkang.com/)&quot;&gt;https://jimkang.com/)&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt; I last emailed you about two years ago when TinyLetter, the newsletter service I used, shut down.&lt;/p&gt;
-&lt;p&gt;But I’ve finally gotten around to writing my own bare bones mailing list service&lt;b&gt;*&lt;/b&gt;, which you can &lt;a href=&quot;https://github.com/jimkang/franz-list&quot;&gt;fork and run&lt;/a&gt;) for yourself. So, once again, I can email you. (Unless you unsubscribe, which you can do easily with the link at the bottom of this email.)&lt;/p&gt;
-&lt;h1 id=&quot;art&quot;&gt;Art&lt;/h1&gt;
-&lt;p&gt;I call these guys Mote Ghosts:&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://jimkang.com/gallery/#focusPiece=mote-ghosts&amp;amp;showWIP=no&quot;&gt;https://jimkang.com/gallery/#focusPiece=mote-ghosts&amp;amp;showWIP=no&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;This piece is basically a screen saver. Have a few quiet minutes watching it!&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;I’ve been learning how to make fragment shaders via the classic &lt;a href=&quot;https://thebookofshaders.com/&quot;&gt;Book of Shaders&lt;/a&gt;. Shaders are ultra-focused programs that are responsible for answering the question “What color goes at this pixel?” Hundreds of GPU cores run these shaders simultaneously to create a picture about 60 times a second.&lt;/p&gt;
-&lt;p&gt;One of the exercises in the book is creating “animals” that move in unique ways. Doing that exercise eventually yielded Mote Ghosts. if you’re interested, &lt;a href=&quot;https://github.com/jimkang/gallery/blob/main/renderers/shaders/mote-ghosts-fragment-shader.js&quot;&gt;here’s the source&lt;/a&gt;.&lt;/p&gt;
-&lt;h1 id=&quot;music&quot;&gt;Music&lt;/h1&gt;
-&lt;p&gt;Near the end of last year, I finished a &lt;a href=&quot;https://jimkang.bandcamp.com/track/clearing-the-neighbourhood&quot;&gt;song&lt;/a&gt; about planet formation. &lt;a href=&quot;https://sparklemarkers.com/&quot;&gt;Katt&lt;/a&gt; made the album cover. It’s long, but by ambient music standards, it’s short. &lt;a href=&quot;https://jimkang.com/music/deathmtn-dYDyOzQS.html&quot;&gt;Some background background information here.&lt;/a&gt;&lt;/p&gt;
-&lt;h1 id=&quot;general-living&quot;&gt;General living&lt;/h1&gt;
-&lt;p&gt;In non-projects, I went to a judo club cookout, where some kid ate &lt;a href=&quot;https://www.flickr.com/gp/ignignokt/32rg0o9q30&quot;&gt;exactly half of a burger and half of a hot dog&lt;/a&gt;, &lt;a href=&quot;https://smidgeo.com/notes/deathmtn/deathmtn-iTjKgHjl.html&quot;&gt;protested with some nice folks&lt;/a&gt;, and judged at a math circle event in which the kids tried to solve a thousand problems. (I think they collectively got to 400-something?) I also discovered &lt;a href=&quot;https://smidgeo.com/notes/deathmtn/deathmtn-SfzKIBMP.html&quot;&gt;how my camera got knocked down&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Let me know &lt;strong&gt;A)&lt;/strong&gt; if you actually receive this email and &lt;strong&gt;B)&lt;/strong&gt; what you’ve been up to!&lt;/p&gt;
-&lt;p&gt;It’s good to be able to write to you again! Next week (hopefully), I’ll talk about some more projects I’ve been doing or have done.&lt;/p&gt;
-&lt;p&gt;Jim&lt;/p&gt;
 </description>
     </item>
     <item>
