@@ -23,76 +23,29 @@
 <p>Well, I forgot about doing this, so it’s been <a href="http://localhost:8080/weblog/articles/miscellaneous-findings-009/">over a year</a> since I’ve posted findings. So, here’s 17 of&nbsp;them!</p>
 </section>
           <article class="finding">
-            <section class="content"><h1 id="data-privacy-policies">Data privacy&nbsp;policies</h1>
-<h2 id="microsoft-and-google">Microsoft and&nbsp;Google</h2>
-<p>One thing that’s better about using Excel instead of Google Sheets (other than better features, of which I don’t really know how to take advantage) is the <a href="https://support.microsoft.com/en-us/office/diagnostic-data-in-microsoft-365-f409137d-15d3-4803-a8ae-d26fcbfc91dd">data policy</a>:</p>
-<blockquote>
-<p>This data does not include your name or email address, the content of your files, or information about apps unrelated to Microsoft 365 or&nbsp;OneDrive.</p>
-</blockquote>
-<p>Google’s <a href="https://support.google.com/docs/answer/10381817?hl=en">privacy policy</a> is more complex and&nbsp;includes:</p>
-<blockquote>
-<p>To provide <em>services like</em> spam filtering, virus detection, malware protection and the ability to search for files within your individual account, we process your&nbsp;content.</p>
-</blockquote>
-<p>(Emphasis&nbsp;added.)</p>
-<h2 id="atlassian">Atlassian</h2>
-<p><a href="https://www.atlassian.com/legal/privacy-policy#how-we-use-information-we-collect">https://www.atlassian.com/legal/privacy-policy#how-we-use-information-we-collect</a></p>
-<blockquote>
-<p>Our Services also include tailored features that personalize your experience, enhance your productivity, and improve your ability to collaborate effectively with others by automatically analyzing the activities of your team to provide search results, activity feeds, notifications, connections and recommendations that are most relevant for you and your&nbsp;team.</p>
-</blockquote>
-<h2 id="dropbox">Dropbox</h2>
-<p><a href="https://www.dropbox.com/privacy">https://www.dropbox.com/privacy</a></p>
-<blockquote>
-<p>We collect and use the following information to provide, improve, protect, and promote our&nbsp;Services.</p>
-</blockquote>
-<blockquote>
-<p>Account information. We collect, and associate with your account, the information you provide to us when you do things such as sign up for your account, upgrade to a paid plan, and set up two-factor authentication (like your name, email address, phone number, payment info, and physical&nbsp;address).</p>
-</blockquote>
-<blockquote>
-<p>Your Stuff. Our Services are designed as a simple and personalized way for you to store your files, documents, photos, comments, messages, and so on (“Your Stuff”), collaborate with others, and work across multiple devices and services. To make that possible, we store, process, and transmit Your Stuff as well as information related to it. This related information includes your <a href="https://help.dropbox.com/accounts-billing/settings-sign-in/change-profile-information">profile information</a> that makes it easier to collaborate and share Your Stuff with others, as well as things like the size of the file, the time it was uploaded, collaborators, and usage&nbsp;activity.</p>
-</blockquote>
-<p>What about the contents of “Your&nbsp;Stuff”?</p>
-<p><a href="https://www.pcworld.com/article/447666/dropbox-takes-a-peek-at-files.html">https://www.pcworld.com/article/447666/dropbox-takes-a-peek-at-files.html</a>
-<a href="https://arstechnica.com/tech-policy/2014/03/dropbox-clarifies-its-policy-on-reviewing-shared-files-for-dmca-issues/">https://arstechnica.com/tech-policy/2014/03/dropbox-clarifies-its-policy-on-reviewing-shared-files-for-dmca-issues/</a></p>
-<p>2013: employee access is intended to be&nbsp;restricted.</p>
-<p>But what about process&nbsp;access?</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="eye-massagers">Eye&nbsp;massagers</h1>
+            <section class="content"><h1 id="audio-latency">Audio&nbsp;latency</h1>
+<p>In QJackCtl’s setup dialog, there are two params that affect audio&nbsp;latency:</p>
 <ul>
-<li>Optometrist office wouldn’t say they’re great, but did say “you can buy&nbsp;one”.</li>
-<li>They encouraged buying the only <span class="caps">FDA</span>-approved one at their&nbsp;office.</li>
-<li><span class="caps">FDA</span> has a device-approval search site (seems to give errors on finding no&nbsp;results)</li>
-<li>Found the <span class="caps">FDA</span>-approved one:<ul>
-<li><a href="https://www.accessdata.fda.gov/scripts/cdrh/devicesatfda/index.cfm?db=pmn&amp;id=K142228">https://www.accessdata.fda.gov/scripts/cdrh/devicesatfda/index.cfm?db=pmn&amp;id=K142228</a><ul>
-<li>Approved in&nbsp;2015.</li>
-<li>“Substantially equivalent”?<ul>
-<li>Statement: <a href="https://www.accessdata.fda.gov/cdrh_docs/pdf14/K142228.pdf">https://www.accessdata.fda.gov/cdrh_docs/pdf14/K142228.pdf</a></li>
-<li>Means they found it’s similar to existing devices that have already been&nbsp;approved.</li>
-<li><a href="https://www.ecfr.gov/current/title-21/chapter-I/subchapter-H/part-807/subpart-E/section-807.97">https://www.ecfr.gov/current/title-21/chapter-I/subchapter-H/part-807/subpart-E/section-807.97</a><ul>
-<li>“…does not in any way denote official approval of the device. Any representation that creates an impression of official approval of a device because of complying with the premarket notification regulations is misleading and constitutes misbranding.”<ul>
-<li>The <span class="caps">FDA</span> said they don’t disapprove of it, but they don’t officially approve it. Digital Heat Corporation looks like they did exactly what this warns not to&nbsp;do.</li>
+<li>Frames/period</li>
+<li>Periods/buffer</li>
 </ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>It was crowdfunded in 2017: <a href="https://www.indiegogo.com/projects/heated-eye-pad-relief-for-digital-eye-strain#/">https://www.indiegogo.com/projects/heated-eye-pad-relief-for-digital-eye-strain#/</a><ul>
-<li>Only 6&nbsp;backers.</li>
-<li>Not clear from the page that it went into&nbsp;production.</li>
-</ul>
-</li>
-<li>Digital Heat Corporation’s site is&nbsp;gone.</li>
-</ul>
-</li>
-<li><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8133878/">There is a paper on “automated eye massager” benefits.</a><ul>
-<li>They use one from “<span class="caps">MTG</span> Co.&nbsp;Ltd.”</li>
-</ul>
-</li>
-</ul>
+<p>If the sample rate is 44,100 Hz, then a frame takes 1/44,100 seconds. So, how long does it take to get a frame through the&nbsp;computer?</p>
+<p>If frames/period is 1024 and periods/buffer is 2, each buffer carries 1024 * 2 frames. That’s 2048 frames. Since each frame takes 1/44,100 seconds, the buffer takes 2048/44,100 seconds = 46.44 ms to&nbsp;process.</p>
+<p><span class="caps">TODO</span>: What is involved in processing exactly,&nbsp;though?</p>
+<p>So, sound input goes in, then at least 46.44 ms later, something comes&nbsp;out.</p>
+<p>That’s kind of a lot! If you are playing a guitar into your computer, then having an amp modeler process it and send it back out, you may notice a delay which will throw you off. I read that <a href="http://mountainbikesandtrombones.blogspot.com/2012/03/problems-with-xrun.html">every 10ms of latency corresponds with being ~10 feet further from an analog source</a>. So, 10ms is acceptable for&nbsp;me.</p>
+<p>When I set frames/period to 128 and frames/period to 2 to get a latency of 5.8 msec, I started getting <a href="https://discourse.ardour.org/t/xruns-cadence-vs-qjackctl-in-kxstudio/89465/4">xruns</a> when using Guitarix. The computer was not keeping up with the incoming buffers, so it’d dump zeroes to the output, which sound like pops in the&nbsp;output.</p>
+<p>I found out that my computer, by default, dynamically slows down the <span class="caps">CPU</span> to save power, which causes latency&nbsp;issues. </p>
+<p>I was getting pops in my guitar amp modeler (and sometimes in pd), and that seemed to take care of&nbsp;it.</p>
+<p>I was clued in by the install script for Ardour, which said&nbsp;this:</p>
+<blockquote>
+<p>!!! <span class="caps">WARNING</span> !!! - Your system seems to use frequency scaling.<br>This can have a serious impact on audio latency.<br>For best results turn it off, e.g. by chosing the ‘performance’&nbsp;governor.”</p>
+</blockquote>
+<p>So, even though that app crashes when I try to create a project in it, I’m thankful to&nbsp;it.</p>
+<p>There’s this <code>indicator-cpufreq</code> package you can install, which puts a thing in the system menu bar to turn that&nbsp;off!</p>
+<pre><code>sudo apt-get install indicator-cpufreq
+</code></pre><p>When I turn set the governor to “Performance” via that applet, I don’t get the pops&nbsp;anymore.</p>
+<p>#cpu #frequencyscaling #audio #ubuntu&nbsp;#jack</p>
 </section>
           </article>
           <article class="finding">
@@ -130,29 +83,47 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="audio-latency">Audio&nbsp;latency</h1>
-<p>In QJackCtl’s setup dialog, there are two params that affect audio&nbsp;latency:</p>
-<ul>
-<li>Frames/period</li>
-<li>Periods/buffer</li>
-</ul>
-<p>If the sample rate is 44,100 Hz, then a frame takes 1/44,100 seconds. So, how long does it take to get a frame through the&nbsp;computer?</p>
-<p>If frames/period is 1024 and periods/buffer is 2, each buffer carries 1024 * 2 frames. That’s 2048 frames. Since each frame takes 1/44,100 seconds, the buffer takes 2048/44,100 seconds = 46.44 ms to&nbsp;process.</p>
-<p><span class="caps">TODO</span>: What is involved in processing exactly,&nbsp;though?</p>
-<p>So, sound input goes in, then at least 46.44 ms later, something comes&nbsp;out.</p>
-<p>That’s kind of a lot! If you are playing a guitar into your computer, then having an amp modeler process it and send it back out, you may notice a delay which will throw you off. I read that <a href="http://mountainbikesandtrombones.blogspot.com/2012/03/problems-with-xrun.html">every 10ms of latency corresponds with being ~10 feet further from an analog source</a>. So, 10ms is acceptable for&nbsp;me.</p>
-<p>When I set frames/period to 128 and frames/period to 2 to get a latency of 5.8 msec, I started getting <a href="https://discourse.ardour.org/t/xruns-cadence-vs-qjackctl-in-kxstudio/89465/4">xruns</a> when using Guitarix. The computer was not keeping up with the incoming buffers, so it’d dump zeroes to the output, which sound like pops in the&nbsp;output.</p>
-<p>I found out that my computer, by default, dynamically slows down the <span class="caps">CPU</span> to save power, which causes latency&nbsp;issues. </p>
-<p>I was getting pops in my guitar amp modeler (and sometimes in pd), and that seemed to take care of&nbsp;it.</p>
-<p>I was clued in by the install script for Ardour, which said&nbsp;this:</p>
+            <section class="content"><h1 id="data-privacy-policies">Data privacy&nbsp;policies</h1>
+<h2 id="microsoft-and-google">Microsoft and&nbsp;Google</h2>
+<p>One thing that’s better about using Excel instead of Google Sheets (other than better features, of which I don’t really know how to take advantage) is the <a href="https://support.microsoft.com/en-us/office/diagnostic-data-in-microsoft-365-f409137d-15d3-4803-a8ae-d26fcbfc91dd">data policy</a>:</p>
 <blockquote>
-<p>!!! <span class="caps">WARNING</span> !!! - Your system seems to use frequency scaling.<br>This can have a serious impact on audio latency.<br>For best results turn it off, e.g. by chosing the ‘performance’&nbsp;governor.”</p>
+<p>This data does not include your name or email address, the content of your files, or information about apps unrelated to Microsoft 365 or&nbsp;OneDrive.</p>
 </blockquote>
-<p>So, even though that app crashes when I try to create a project in it, I’m thankful to&nbsp;it.</p>
-<p>There’s this <code>indicator-cpufreq</code> package you can install, which puts a thing in the system menu bar to turn that&nbsp;off!</p>
-<pre><code>sudo apt-get install indicator-cpufreq
-</code></pre><p>When I turn set the governor to “Performance” via that applet, I don’t get the pops&nbsp;anymore.</p>
-<p>#cpu #frequencyscaling #audio #ubuntu&nbsp;#jack</p>
+<p>Google’s <a href="https://support.google.com/docs/answer/10381817?hl=en">privacy policy</a> is more complex and&nbsp;includes:</p>
+<blockquote>
+<p>To provide <em>services like</em> spam filtering, virus detection, malware protection and the ability to search for files within your individual account, we process your&nbsp;content.</p>
+</blockquote>
+<p>(Emphasis&nbsp;added.)</p>
+<h2 id="atlassian">Atlassian</h2>
+<p><a href="https://www.atlassian.com/legal/privacy-policy#how-we-use-information-we-collect">https://www.atlassian.com/legal/privacy-policy#how-we-use-information-we-collect</a></p>
+<blockquote>
+<p>Our Services also include tailored features that personalize your experience, enhance your productivity, and improve your ability to collaborate effectively with others by automatically analyzing the activities of your team to provide search results, activity feeds, notifications, connections and recommendations that are most relevant for you and your&nbsp;team.</p>
+</blockquote>
+<h2 id="dropbox">Dropbox</h2>
+<p><a href="https://www.dropbox.com/privacy">https://www.dropbox.com/privacy</a></p>
+<blockquote>
+<p>We collect and use the following information to provide, improve, protect, and promote our&nbsp;Services.</p>
+</blockquote>
+<blockquote>
+<p>Account information. We collect, and associate with your account, the information you provide to us when you do things such as sign up for your account, upgrade to a paid plan, and set up two-factor authentication (like your name, email address, phone number, payment info, and physical&nbsp;address).</p>
+</blockquote>
+<blockquote>
+<p>Your Stuff. Our Services are designed as a simple and personalized way for you to store your files, documents, photos, comments, messages, and so on (“Your Stuff”), collaborate with others, and work across multiple devices and services. To make that possible, we store, process, and transmit Your Stuff as well as information related to it. This related information includes your <a href="https://help.dropbox.com/accounts-billing/settings-sign-in/change-profile-information">profile information</a> that makes it easier to collaborate and share Your Stuff with others, as well as things like the size of the file, the time it was uploaded, collaborators, and usage&nbsp;activity.</p>
+</blockquote>
+<p>What about the contents of “Your&nbsp;Stuff”?</p>
+<p><a href="https://www.pcworld.com/article/447666/dropbox-takes-a-peek-at-files.html">https://www.pcworld.com/article/447666/dropbox-takes-a-peek-at-files.html</a>
+<a href="https://arstechnica.com/tech-policy/2014/03/dropbox-clarifies-its-policy-on-reviewing-shared-files-for-dmca-issues/">https://arstechnica.com/tech-policy/2014/03/dropbox-clarifies-its-policy-on-reviewing-shared-files-for-dmca-issues/</a></p>
+<p>2013: employee access is intended to be&nbsp;restricted.</p>
+<p>But what about process&nbsp;access?</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="finding-out-what-s-using-a-port">Finding out what’s using a&nbsp;port</h1>
+<p>There’s <code>lsof -i TCP</code>, but that sometimes misses it. Maybe that’s for active&nbsp;connections?</p>
+<p>This seems&nbsp;better:</p>
+<p><code>ss -lntp</code></p>
+<p>It should list the processes bound to <span class="caps">TCP</span> ports. But sometimes the process field is blank. If you run it with <code>sudo</code>, you’ll probably be able to see the&nbsp;processes.</p>
+<p>#port #unix&nbsp;#network</p>
 </section>
           </article>
           <article class="finding">
@@ -204,15 +175,6 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="finding-out-what-s-using-a-port">Finding out what’s using a&nbsp;port</h1>
-<p>There’s <code>lsof -i TCP</code>, but that sometimes misses it. Maybe that’s for active&nbsp;connections?</p>
-<p>This seems&nbsp;better:</p>
-<p><code>ss -lntp</code></p>
-<p>It should list the processes bound to <span class="caps">TCP</span> ports. But sometimes the process field is blank. If you run it with <code>sudo</code>, you’ll probably be able to see the&nbsp;processes.</p>
-<p>#port #unix&nbsp;#network</p>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="flickr">Flickr</h1>
 <h2 id="making-all-public-photos-non-public">Making all public photos&nbsp;non-public</h2>
 <ul>
@@ -225,21 +187,39 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="googlebot-and-avoiding-indexing-content-from-your-spa">Googlebot and avoiding indexing content from your&nbsp;<span class="caps">SPA</span></h1>
-<p>In their <a href="/weblog/articles/miscellaneous-findings-010/findings/%5B%3Chttps://developers.google.com/search/docs/crawling-indexing/javascript/fix-search-javascript%3E%5D(%3Chttps://developers.google.com/search/docs/crawling-indexing/javascript/fix-search-javascript%3E">suggestions for handling missing content in SPAs</a>), Google recommends dynamically adding a meta tag to the page like&nbsp;so:</p>
-<pre><code class="lang-jsx">fetch(`https://api.kitten.club/cats/${id}`)
- .then(res =&gt; res.json())
- .then((cat) =&gt; {
-   if (!cat.exists) {
-     const metaRobots = document.createElement(&#39;meta&#39;);
-     metaRobots.name = &#39;robots&#39;;
-     metaRobots.content = &#39;noindex&#39;;
-     document.head.appendChild(metaRobots);
-   }
- });
-</code></pre>
-<p>This strongly implies that the crawler actually will notice <span class="caps">DOM</span> changes after the page has been loaded, including <code>&lt;meta&gt;</code> tags.</p>
-<p>#crawling&nbsp;#javascript</p>
+            <section class="content"><h1 id="getting-noita-to-run-on-ubuntu">Getting Noita to run on&nbsp;Ubuntu</h1>
+<ul>
+<li>Get the game from <span class="caps">GOG</span>, not&nbsp;Steam.</li>
+<li>Run it with wine. <code>wine noita.exe</code></li>
+</ul>
+<h2 id="getting-the-switch-pro-controller-to-work-with-it">Getting the Switch Pro Controller to work with&nbsp;it</h2>
+<ul>
+<li>Install <a href="https://github.com/nicman23/dkms-hid-nintendo">https://github.com/nicman23/dkms-hid-nintendo</a></li>
+<li>Install <a href="https://github.com/DanielOgorchock/joycond">https://github.com/DanielOgorchock/joycond</a></li>
+<li>Turn on Bluetooth in&nbsp;Ubuntu.</li>
+<li>Hit the small circle button on the controller next to the <span class="caps">USB</span> port to put it in pairing&nbsp;mode.</li>
+<li>Pair with it from the Bluetooth system panel in Ubuntu. The green lights on the bottom will “move” left and&nbsp;right.</li>
+<li>In Noita, go to Settings | Input and Choose “Nintendo Switch Pro Controller&nbsp;(js)”</li>
+<li>Press the shoulder buttons on the controller together to complete the pairing on the controller&nbsp;side.</li>
+<li>You may have to start a new game for these settings to take&nbsp;effect.</li>
+</ul>
+<h2 id="wine-issues">Wine&nbsp;issues</h2>
+<p><strong>One</strong> of the possible causes of Noita running really slowly is Wine not being able to use an Intel graphics tool. Once, after a Wine update, I got this in the&nbsp;console:</p>
+<blockquote>
+<p><span class="caps">MESA</span>-INTEL: warning: Performance support disabled, consider sysctl&nbsp;dev.i915.perf_stream_paranoid=0</p>
+</blockquote>
+<p>Here, it’s talking about trying to use a <a href="https://www.intel.com/content/www/us/en/develop/documentation/gpa-user-guide/top/introduction.html">graphics analysis tool</a>. Does this matter? In one case, I ran <code>sudo apt-get install git libvulkan1 mesa-vulkan-drivers vulkan-utils</code> and <code>sysctl -n dev.i915.perf_stream_paranoid</code>, Noita ran at normal speed again. But there was another time that it&nbsp;didn’t.</p>
+<p>Though the next time you reboot, the warning comes back, so maybe it’s working putting it in&nbsp;init.something?</p>
+<p>Was installing the Vulkan stuff really what fixed it? It is a&nbsp;mystery.</p>
+<p><a href="https://www.intel.com/content/www/us/en/developer/articles/technical/enabling-vulkan-vk-intel-performance-query-extension-in-ubuntu.html">Intel has a long article</a> about setting up the tool, which involves compiling the Linux kernel somehow? Fortunately, that wasn’t necessary for&nbsp;me.</p>
+<h2 id="ntlm_auth">ntlm_auth</h2>
+<blockquote>
+<p>0118:err:winediag:ntlm_check_version ntlm_auth was not found or is outdated. Make sure that ntlm_auth &gt;= 3.0.25 is in your path. Usually, you can find it in the winbind package of your distribution.
+ 0118:err:ntlm:ntlm_LsaApInitializePackage no <span class="caps">NTLM</span> support, expect&nbsp;problems</p>
+</blockquote>
+<p><a href="https://askubuntu.com/questions/1090094/wine-missing-ntlm-auth-3-0-25">Reintalling winbind</a> gets rid of that&nbsp;error:</p>
+<pre><code>sudo apt-get remove winbind &amp;&amp; sudo apt-get install winbind
+</code></pre><p>#game&nbsp;#switch</p>
 </section>
           </article>
           <article class="finding">
@@ -305,6 +285,62 @@ MimeType=text/english;text/plain;text/x-markdown;
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="googlebot-and-avoiding-indexing-content-from-your-spa">Googlebot and avoiding indexing content from your&nbsp;<span class="caps">SPA</span></h1>
+<p>In their <a href="/weblog/articles/miscellaneous-findings-010/findings/%5B%3Chttps://developers.google.com/search/docs/crawling-indexing/javascript/fix-search-javascript%3E%5D(%3Chttps://developers.google.com/search/docs/crawling-indexing/javascript/fix-search-javascript%3E">suggestions for handling missing content in SPAs</a>), Google recommends dynamically adding a meta tag to the page like&nbsp;so:</p>
+<pre><code class="lang-jsx">fetch(`https://api.kitten.club/cats/${id}`)
+ .then(res =&gt; res.json())
+ .then((cat) =&gt; {
+   if (!cat.exists) {
+     const metaRobots = document.createElement(&#39;meta&#39;);
+     metaRobots.name = &#39;robots&#39;;
+     metaRobots.content = &#39;noindex&#39;;
+     document.head.appendChild(metaRobots);
+   }
+ });
+</code></pre>
+<p>This strongly implies that the crawler actually will notice <span class="caps">DOM</span> changes after the page has been loaded, including <code>&lt;meta&gt;</code> tags.</p>
+<p>#crawling&nbsp;#javascript</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="eye-massagers">Eye&nbsp;massagers</h1>
+<ul>
+<li>Optometrist office wouldn’t say they’re great, but did say “you can buy&nbsp;one”.</li>
+<li>They encouraged buying the only <span class="caps">FDA</span>-approved one at their&nbsp;office.</li>
+<li><span class="caps">FDA</span> has a device-approval search site (seems to give errors on finding no&nbsp;results)</li>
+<li>Found the <span class="caps">FDA</span>-approved one:<ul>
+<li><a href="https://www.accessdata.fda.gov/scripts/cdrh/devicesatfda/index.cfm?db=pmn&amp;id=K142228">https://www.accessdata.fda.gov/scripts/cdrh/devicesatfda/index.cfm?db=pmn&amp;id=K142228</a><ul>
+<li>Approved in&nbsp;2015.</li>
+<li>“Substantially equivalent”?<ul>
+<li>Statement: <a href="https://www.accessdata.fda.gov/cdrh_docs/pdf14/K142228.pdf">https://www.accessdata.fda.gov/cdrh_docs/pdf14/K142228.pdf</a></li>
+<li>Means they found it’s similar to existing devices that have already been&nbsp;approved.</li>
+<li><a href="https://www.ecfr.gov/current/title-21/chapter-I/subchapter-H/part-807/subpart-E/section-807.97">https://www.ecfr.gov/current/title-21/chapter-I/subchapter-H/part-807/subpart-E/section-807.97</a><ul>
+<li>“…does not in any way denote official approval of the device. Any representation that creates an impression of official approval of a device because of complying with the premarket notification regulations is misleading and constitutes misbranding.”<ul>
+<li>The <span class="caps">FDA</span> said they don’t disapprove of it, but they don’t officially approve it. Digital Heat Corporation looks like they did exactly what this warns not to&nbsp;do.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>It was crowdfunded in 2017: <a href="https://www.indiegogo.com/projects/heated-eye-pad-relief-for-digital-eye-strain#/">https://www.indiegogo.com/projects/heated-eye-pad-relief-for-digital-eye-strain#/</a><ul>
+<li>Only 6&nbsp;backers.</li>
+<li>Not clear from the page that it went into&nbsp;production.</li>
+</ul>
+</li>
+<li>Digital Heat Corporation’s site is&nbsp;gone.</li>
+</ul>
+</li>
+<li><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8133878/">There is a paper on “automated eye massager” benefits.</a><ul>
+<li>They use one from “<span class="caps">MTG</span> Co.&nbsp;Ltd.”</li>
+</ul>
+</li>
+</ul>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="area-high-schools">Area high&nbsp;schools</h1>
 <h2 id="bbn"><span class="caps">BB</span>&amp;N</h2>
 <ul>
@@ -361,39 +397,55 @@ MimeType=text/english;text/plain;text/x-markdown;
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="getting-noita-to-run-on-ubuntu">Getting Noita to run on&nbsp;Ubuntu</h1>
+            <section class="content"><h1 id="setting-up-a-new-computer-running-ubuntu">Setting up a new computer running&nbsp;Ubuntu</h1>
 <ul>
-<li>Get the game from <span class="caps">GOG</span>, not&nbsp;Steam.</li>
-<li>Run it with wine. <code>wine noita.exe</code></li>
+<li>Move over your private&nbsp;key.</li>
+<li>Install&nbsp;git.</li>
+<li>Clone password&nbsp;store.</li>
+<li>Install <code>pass</code>.</li>
+<li>Clone <code>dotfiles</code> to <code>~</code>.</li>
+<li><code>sudo apt install zsh</code></li>
+<li><code>chsh -s /bin/zsh</code><ul>
+<li>You need to log out and log back in for this to take effect. You can’t just close and reopen a&nbsp;terminal.</li>
 </ul>
-<h2 id="getting-the-switch-pro-controller-to-work-with-it">Getting the Switch Pro Controller to work with&nbsp;it</h2>
+</li>
+<li>In terminal preferences:<ul>
+<li>Change the copy shortcut to&nbsp;alt+c</li>
+<li>Change the epaste shortcut to&nbsp;alt+v</li>
+</ul>
+</li>
+<li><code>sudo apt install curl</code></li>
+<li>Install&nbsp;[[neovim]].</li>
+<li>Install ssh, then rsync your old home directory&nbsp;over.</li>
+<li>Install&nbsp;make.</li>
+<li>Install&nbsp;lame.</li>
+<li>Uninstall&nbsp;ssh.</li>
+<li><code>sudo apt install gnome-tweaks</code></li>
+<li>Set up the compose key in settings. (It’s scroll lock in your keyboard&nbsp;config.)</li>
+</ul>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="moonlander">Moonlander</h1>
+<h2 id="wally-getting-stuck-after-you-re-supposed-to-reset-the-keyboard">Wally getting stuck after you’re supposed to reset the&nbsp;keyboard</h2>
+<p>When this happened to me, it was on a new computer. I never added the udev rule file as described&nbsp;here:</p>
+<p><a href="https://github.com/zsa/wally/wiki/Linux-install">https://github.com/zsa/wally/wiki/Linux-install</a></p>
+<p>After I did that, it&nbsp;worked!</p>
+<p>#keyboard&nbsp;#ubuntu</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="recording-internal-audio">Recording internal&nbsp;audio</h1>
+<p><a href="https://askubuntu.com/questions/250073/how-to-record-any-internal-sound-in-and-out-using-ubuntu-and-audacity">https://askubuntu.com/questions/250073/how-to-record-any-internal-sound-in-and-out-using-ubuntu-and-audacity</a></p>
+<blockquote>
+<p>As soon as we record any audio stream the name of the recording application and the source from where it records will be shown in the <em>Recording</em> tab. We then may be able to change the source to <code>Monitor of &lt;your soundcard&gt;</code> to record the output of our&nbsp;soundcard:</p>
+</blockquote>
 <ul>
-<li>Install <a href="https://github.com/nicman23/dkms-hid-nintendo">https://github.com/nicman23/dkms-hid-nintendo</a></li>
-<li>Install <a href="https://github.com/DanielOgorchock/joycond">https://github.com/DanielOgorchock/joycond</a></li>
-<li>Turn on Bluetooth in&nbsp;Ubuntu.</li>
-<li>Hit the small circle button on the controller next to the <span class="caps">USB</span> port to put it in pairing&nbsp;mode.</li>
-<li>Pair with it from the Bluetooth system panel in Ubuntu. The green lights on the bottom will “move” left and&nbsp;right.</li>
-<li>In Noita, go to Settings | Input and Choose “Nintendo Switch Pro Controller&nbsp;(js)”</li>
-<li>Press the shoulder buttons on the controller together to complete the pairing on the controller&nbsp;side.</li>
-<li>You may have to start a new game for these settings to take&nbsp;effect.</li>
+<li>First, start recording in&nbsp;Audacity.</li>
+<li>Then, in <code>pavucontrol</code>, in the Recording tab, in the Audacity entry, select “Monitor of soundcard” (instead of&nbsp;soundcard).</li>
 </ul>
-<h2 id="wine-issues">Wine&nbsp;issues</h2>
-<p><strong>One</strong> of the possible causes of Noita running really slowly is Wine not being able to use an Intel graphics tool. Once, after a Wine update, I got this in the&nbsp;console:</p>
-<blockquote>
-<p><span class="caps">MESA</span>-INTEL: warning: Performance support disabled, consider sysctl&nbsp;dev.i915.perf_stream_paranoid=0</p>
-</blockquote>
-<p>Here, it’s talking about trying to use a <a href="https://www.intel.com/content/www/us/en/develop/documentation/gpa-user-guide/top/introduction.html">graphics analysis tool</a>. Does this matter? In one case, I ran <code>sudo apt-get install git libvulkan1 mesa-vulkan-drivers vulkan-utils</code> and <code>sysctl -n dev.i915.perf_stream_paranoid</code>, Noita ran at normal speed again. But there was another time that it&nbsp;didn’t.</p>
-<p>Though the next time you reboot, the warning comes back, so maybe it’s working putting it in&nbsp;init.something?</p>
-<p>Was installing the Vulkan stuff really what fixed it? It is a&nbsp;mystery.</p>
-<p><a href="https://www.intel.com/content/www/us/en/developer/articles/technical/enabling-vulkan-vk-intel-performance-query-extension-in-ubuntu.html">Intel has a long article</a> about setting up the tool, which involves compiling the Linux kernel somehow? Fortunately, that wasn’t necessary for&nbsp;me.</p>
-<h2 id="ntlm_auth">ntlm_auth</h2>
-<blockquote>
-<p>0118:err:winediag:ntlm_check_version ntlm_auth was not found or is outdated. Make sure that ntlm_auth &gt;= 3.0.25 is in your path. Usually, you can find it in the winbind package of your distribution.
- 0118:err:ntlm:ntlm_LsaApInitializePackage no <span class="caps">NTLM</span> support, expect&nbsp;problems</p>
-</blockquote>
-<p><a href="https://askubuntu.com/questions/1090094/wine-missing-ntlm-auth-3-0-25">Reintalling winbind</a> gets rid of that&nbsp;error:</p>
-<pre><code>sudo apt-get remove winbind &amp;&amp; sudo apt-get install winbind
-</code></pre><p>#game&nbsp;#switch</p>
+<p>Now it’s recording the output of the soundcard instead of the mic connected to the&nbsp;soundcard.</p>
+<p>#ubuntu&nbsp;#audio</p>
 </section>
           </article>
           <article class="finding">
@@ -430,62 +482,10 @@ httpd.serve_forever()
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="recording-internal-audio">Recording internal&nbsp;audio</h1>
-<p><a href="https://askubuntu.com/questions/250073/how-to-record-any-internal-sound-in-and-out-using-ubuntu-and-audacity">https://askubuntu.com/questions/250073/how-to-record-any-internal-sound-in-and-out-using-ubuntu-and-audacity</a></p>
-<blockquote>
-<p>As soon as we record any audio stream the name of the recording application and the source from where it records will be shown in the <em>Recording</em> tab. We then may be able to change the source to <code>Monitor of &lt;your soundcard&gt;</code> to record the output of our&nbsp;soundcard:</p>
-</blockquote>
-<ul>
-<li>First, start recording in&nbsp;Audacity.</li>
-<li>Then, in <code>pavucontrol</code>, in the Recording tab, in the Audacity entry, select “Monitor of soundcard” (instead of&nbsp;soundcard).</li>
-</ul>
-<p>Now it’s recording the output of the soundcard instead of the mic connected to the&nbsp;soundcard.</p>
-<p>#ubuntu&nbsp;#audio</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="moonlander">Moonlander</h1>
-<h2 id="wally-getting-stuck-after-you-re-supposed-to-reset-the-keyboard">Wally getting stuck after you’re supposed to reset the&nbsp;keyboard</h2>
-<p>When this happened to me, it was on a new computer. I never added the udev rule file as described&nbsp;here:</p>
-<p><a href="https://github.com/zsa/wally/wiki/Linux-install">https://github.com/zsa/wally/wiki/Linux-install</a></p>
-<p>After I did that, it&nbsp;worked!</p>
-<p>#keyboard&nbsp;#ubuntu</p>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="tail-calls">Tail&nbsp;calls</h1>
 <p>If a function ends by calling itself, that’s called a tail&nbsp;call.</p>
 <p>It can usually be optimized by converting the function to just use a loop (or jump in assembly) instead of putting up another stack frame for another function&nbsp;call.</p>
 <p>#programming</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="setting-up-a-new-computer-running-ubuntu">Setting up a new computer running&nbsp;Ubuntu</h1>
-<ul>
-<li>Move over your private&nbsp;key.</li>
-<li>Install&nbsp;git.</li>
-<li>Clone password&nbsp;store.</li>
-<li>Install <code>pass</code>.</li>
-<li>Clone <code>dotfiles</code> to <code>~</code>.</li>
-<li><code>sudo apt install zsh</code></li>
-<li><code>chsh -s /bin/zsh</code><ul>
-<li>You need to log out and log back in for this to take effect. You can’t just close and reopen a&nbsp;terminal.</li>
-</ul>
-</li>
-<li>In terminal preferences:<ul>
-<li>Change the copy shortcut to&nbsp;alt+c</li>
-<li>Change the epaste shortcut to&nbsp;alt+v</li>
-</ul>
-</li>
-<li><code>sudo apt install curl</code></li>
-<li>Install&nbsp;[[neovim]].</li>
-<li>Install ssh, then rsync your old home directory&nbsp;over.</li>
-<li>Install&nbsp;make.</li>
-<li>Install&nbsp;lame.</li>
-<li>Uninstall&nbsp;ssh.</li>
-<li><code>sudo apt install gnome-tweaks</code></li>
-<li>Set up the compose key in settings. (It’s scroll lock in your keyboard&nbsp;config.)</li>
-</ul>
 </section>
           </article>
           <article class="finding">
@@ -527,8 +527,16 @@ Add 1/2 tea spoon black&nbsp;pepper.</p>
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h2 id="dom"><span class="caps">DOM</span></h2>
-<p>If you parse an <span class="caps">SVG</span> document into a tree, then append one of the child nodes to the browser’s current DOM, then the node disappears from the source tree. Sort of a move, rather than a&nbsp;copy.</p>
+            <section class="content"><h1 id="wget">wget</h1>
+<h2 id="downloading-all-of-the-links-on-a-web-page">Downloading all of the links on a web&nbsp;page</h2>
+<pre><code>wget -m and robots=off https://the-site-you-want
+</code></pre><p>#bash </p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="zip">Zip</h1>
+<p><code>-j</code> gets it to not put the directory structure into the zip file.
+<code>-x &lt;pattern&gt;</code> makes it ignore files matching the&nbsp;pattern.</p>
 </section>
           </article>
           <article class="finding">
@@ -561,19 +569,6 @@ Add 1/2 tea spoon black&nbsp;pepper.</p>
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="zip">Zip</h1>
-<p><code>-j</code> gets it to not put the directory structure into the zip file.
-<code>-x &lt;pattern&gt;</code> makes it ignore files matching the&nbsp;pattern.</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="wget">wget</h1>
-<h2 id="downloading-all-of-the-links-on-a-web-page">Downloading all of the links on a web&nbsp;page</h2>
-<pre><code>wget -m and robots=off https://the-site-you-want
-</code></pre><p>#bash </p>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="find">find</h1>
 <h2 id="excluding-dirs-from-find">Excluding dirs from&nbsp;find</h2>
 <p>Say you want to find all of the directories in which you have a <code>rollup.config.js</code> file.</p>
@@ -591,6 +586,11 @@ Add 1/2 tea spoon black&nbsp;pepper.</p>
 <p>There’s a <code>-delete</code> flag.</p>
 <pre><code>find . -name &quot;*.pdf&quot; -delete
 </code></pre><p>#search #unix #command&nbsp;#find</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h2 id="dom"><span class="caps">DOM</span></h2>
+<p>If you parse an <span class="caps">SVG</span> document into a tree, then append one of the child nodes to the browser’s current DOM, then the node disappears from the source tree. Sort of a move, rather than a&nbsp;copy.</p>
 </section>
           </article>
           <article class="finding">

@@ -23,6 +23,33 @@
 <p><em>This is a roundup of miscellaneous things that I’ve found out about (or have rediscovered).<span class="more"></span> I take notes on findings regularly, and I put the findings that translate well to speech on my podcast, <span style="text-decoration: underline"><strong><a href="https://jimkang.com/smallfindings/">Small Findings</a></strong></span>. The rest (which are often technical findings), I put here. They’re not always written up for maximum comprehension as a blog post, but if anything is hard to understand, please <a href="mailto:jimkang@fastmail.com">email me</a> if you need&nbsp;clarification.</em></p>
 </section>
           <article class="finding">
+            <section class="content"><h1 id="git-shortlog">Git&nbsp;shortlog</h1>
+<p><a href="https://git-scm.com/docs/git-shortlog">https://git-scm.com/docs/git-shortlog</a></p>
+<p>It’s surprisingly nice to read.&nbsp;e.g.:</p>
+<pre><code>Jim Kang (54):
+      Hacked up Field. Have a minimally viable TypeScript rollup config.
+      Add make target and rollup config for working on a small piece of the app independetly.
+      Renaming again.
+      Start basic card layout.
+      Start move to svelte. Get watch working.
+      Convert card to svelte component.
+      Move experiments to vats.
+      Stub out stores vat.
+      Type checking finally working in Svelte components?? Next: Single multi-page rollup config for vats.
+      Get multiple rollup configs to work.
+      Start stores. Bind to card store in component.
+      Drop unneeded crud.
+      Stub in all cards store.
+      Start persisting to localStorage in stores.
+      Hack in a delete.
+      Move persistent state stuff into state, take that out of the stores to make them responsible for mostly notifying subscribers.
+      Start an export cards component.
+      Start import component. Reporting conflicts but not doing anything with them yet.
+      Fix wrong set of cards being imported (cards from file, not the ones already in the store), enable Card component to render read-only.
+</code></pre><p>#git&nbsp;#command</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="excluding-dirs-from-find">Excluding dirs from&nbsp;find</h1>
 <p>Say you want to find all of the directories in which you have a <code>rollup.config.js</code> file.</p>
 <p>You could&nbsp;try</p>
@@ -151,33 +178,6 @@ static domain_name_servers=&lt;router ip&gt; 8.8.8.8
 <p>I somehow ended up with <code>music</code> in the media directory being owned by the <code>503</code> user, which prevented the <code>pi</code> user from creating dirs&nbsp;there.</p>
 <pre><code>drwxrwxr-x 587 503 staff 20480 Mar 27 01:52 music
 </code></pre><p>I chmodded it to&nbsp;pi.</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="git-shortlog">Git&nbsp;shortlog</h1>
-<p><a href="https://git-scm.com/docs/git-shortlog">https://git-scm.com/docs/git-shortlog</a></p>
-<p>It’s surprisingly nice to read.&nbsp;e.g.:</p>
-<pre><code>Jim Kang (54):
-      Hacked up Field. Have a minimally viable TypeScript rollup config.
-      Add make target and rollup config for working on a small piece of the app independetly.
-      Renaming again.
-      Start basic card layout.
-      Start move to svelte. Get watch working.
-      Convert card to svelte component.
-      Move experiments to vats.
-      Stub out stores vat.
-      Type checking finally working in Svelte components?? Next: Single multi-page rollup config for vats.
-      Get multiple rollup configs to work.
-      Start stores. Bind to card store in component.
-      Drop unneeded crud.
-      Stub in all cards store.
-      Start persisting to localStorage in stores.
-      Hack in a delete.
-      Move persistent state stuff into state, take that out of the stores to make them responsible for mostly notifying subscribers.
-      Start an export cards component.
-      Start import component. Reporting conflicts but not doing anything with them yet.
-      Fix wrong set of cards being imported (cards from file, not the ones already in the store), enable Card component to render read-only.
-</code></pre><p>#git&nbsp;#command</p>
 </section>
           </article>
         </article>
