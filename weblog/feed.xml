@@ -5,9 +5,46 @@
     <atom:link href="http://jimkang.com/weblog/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Tue, 24 Jun 2025 20:00:00 -0400</pubDate>
+    <pubDate>Thu, 26 Jun 2025 20:00:00 -0400</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Turtles and an electrical party</title>
+      <link>http://jimkang.com/weblog/articles/electrical-party/</link>
+      <pubDate>Thu, 26 Jun 2025 20:00:00 -0400</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/electrical-party/</guid>
+      <author></author>
+      <description>&lt;p&gt;&lt;em&gt;This was also sent out as a newsletter. If you’d like to get project updates like this as email, you can &lt;a href=&quot;https://smidgeo.com/misc/signup/?list=jimkang-projects&quot;&gt;subscribe&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;Oyez!&lt;/p&gt;
+&lt;p&gt;Half of our week was extremely hot here in the Northeast United States. So, I went to the pool twice, which is a lot for me.&lt;/p&gt;
+&lt;p&gt;There, I happened to unlock the mystery of the people that seem to just go to the pool to sit by it: They actually &lt;em&gt;do&lt;/em&gt; go in the pool! But only about once an hour. Then, they immediately come out and sit in the sun again.&lt;/p&gt;
+&lt;p&gt;They may have lifted this technique from the &lt;a href=&quot;https://smidgeo.com/notes/deathmtn/deathmtn-NfPCcmcr.html&quot;&gt;turtles&lt;/a&gt;, who I’m guessing have been doing this for 200 million years.&lt;/p&gt;
+&lt;p&gt;I don’t know this for sure, though. Turtles have existed for 200 million years, but maybe they didn’t do this right at the start and only just started last year, based on observations of human poolside loungers. If you know for sure, let me know!&lt;/p&gt;
+&lt;h1 id=&quot;electrical-party&quot;&gt;Electrical Party&lt;/h1&gt;
+&lt;p&gt;I made another bit of shader art, Electrical Party:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://jimkang.com/gallery/#focusPiece=electrical-party&amp;amp;showWIP=no&quot;&gt;https://jimkang.com/gallery/#focusPiece=electrical-party&amp;amp;showWIP=no&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;It does have flashing lights, so do not click the checkbox to start the animation if you have epilepsy or other sensitivity to flashing lights.&lt;/p&gt;
+&lt;p&gt;It is basically &lt;a href=&quot;https://github.com/jimkang/gallery/blob/main/renderers/shaders/electrical-party-fragment-shader.js#L65&quot;&gt;two sine waves and a triangle wave&lt;/a&gt;  with various things done to them, but it still gets strange if you leave it running for a while.&lt;/p&gt;
+&lt;p&gt;(BTW, I relish any opportunity to &lt;a href=&quot;https://github.com/jimkang/gallery/blob/main/renderers/shaders/electrical-party-fragment-shader.js#L35&quot;&gt;illustrate code with ASCII art&lt;/a&gt;.)&lt;/p&gt;
+&lt;p&gt;One thing I like about it is that sometimes it appears that there’s are two or more lines. But there is always only one line. (You can check by either taking a screenshot or unchecking the checkbox to pause it.)&lt;/p&gt;
+&lt;p&gt;I think the brain aggregates some visual frames if they happen within a certain timespan of each other. (I’m not a brainologist; let me know if you really know what the visual cortex does here!)&lt;/p&gt;
+&lt;p&gt;While I was making this, I had figure out &lt;a href=&quot;https://jimkang.com/weblog/articles/triangle-wave/&quot;&gt;how a triangle wave is constructed&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In its single equation form, it’s kinda busy. &lt;a href=&quot;https://www.hughrawlinson.me/&quot;&gt;Hugh&lt;/a&gt;, however, pointed out that the triangle wave can be approximated by &lt;a href=&quot;https://en.wikipedia.org/wiki/Triangle_wave#Harmonics&quot;&gt;adding up a bunch of successively shifted sine waves&lt;/a&gt;, which is a lot more elegant! I might do that next time.&lt;/p&gt;
+&lt;h1 id=&quot;object-art&quot;&gt;Object art&lt;/h1&gt;
+&lt;p&gt;I did a tiny bit of sculpture yesterday. And by sculpture, I mean gluing odd and ends together.&lt;/p&gt;
+&lt;p&gt;A while back, I collected some broken glass from my backyard and glued it together to make something that looked vaguely like a bird wizard. Then, I layered epoxy over it and painted that. (I regret painting a little too heavily and obscuring some the the glass nature.)&lt;/p&gt;
+&lt;p&gt;Yesterday, I took some rubbery dried paint and &lt;a href=&quot;https://flickr.com/photos/ignignokt/54616564262/&quot;&gt;gave it an orange scarf&lt;/a&gt;. Then, I added a wooden wing. Why? I have no idea. I’m just obeying the exhortations of my soul.&lt;/p&gt;
+&lt;p&gt;The process of making object art is good times, though for me, the results are often bad.&lt;/p&gt;
+&lt;p&gt;e.g. I put a lot into this &lt;a href=&quot;https://jimkang.com/object-art/object-art-ALstgtzA.html&quot;&gt;hard drive-based sculpture&lt;/a&gt;. Now it just looks to me  like the kind of prop they put in a TV show when they’re trying to make the point that ~&lt;em&gt;Art&lt;/em&gt;~ sucks.&lt;/p&gt;
+&lt;p&gt;Oh, well. I still think &lt;a href=&quot;https://jimkang.com/object-art/object-art-McvqiEgW.html&quot;&gt;this guy&lt;/a&gt; is cool, though.&lt;/p&gt;
+&lt;h1 id=&quot;welcome-re-added-people&quot;&gt;Welcome, re-added people&lt;/h1&gt;
+&lt;p&gt;As a non-vigilant user of a commercial service (remember: commercial services can go away at any time), I did not often export my email list from TinyLetter. So, when I set up Franz List (&lt;a href=&quot;https://jimkang.com/weblog/articles/ghosts-and-lists/&quot;&gt;see previous newsletter&lt;/a&gt;), I had the list as of 2021. But since then, I’ve found notifications that TinyLetter that have some of the subscribers since then. If that’s one of you, I’ve added you to my current mailing list! And if you want off, you can easily unsubscribe with the link at the bottom of this emali.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Well, I hope you have stayed cool. (Both while reading this email and in general.)&lt;/p&gt;
+&lt;p&gt;I’m going to Toronto and the GTA next week. Let me know if there’s stuff you think I should go see!&lt;/p&gt;
+&lt;p&gt;Jim&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Triangle wave</title>
       <link>http://jimkang.com/weblog/articles/triangle-wave/</link>
