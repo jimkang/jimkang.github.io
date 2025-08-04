@@ -55,4 +55,8 @@ a:visited {
   .project {
     max-width: 320px;
   }
+  ul {
+    margin-top: 0;
+  }
+
 }
