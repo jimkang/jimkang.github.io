@@ -15,6 +15,7 @@ body {
   margin: 0;
   height: 100%;
   text-shadow: 0px 0px 2px hsla(0, 0%, 0%, 0.5);
+  word-break: break-all;
 }
 
 ul {
