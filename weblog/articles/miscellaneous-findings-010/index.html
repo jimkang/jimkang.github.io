@@ -49,6 +49,50 @@
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="data-privacy-policies">Data privacy&nbsp;policies</h1>
+<h2 id="microsoft-and-google">Microsoft and&nbsp;Google</h2>
+<p>One thing that’s better about using Excel instead of Google Sheets (other than better features, of which I don’t really know how to take advantage) is the <a href="https://support.microsoft.com/en-us/office/diagnostic-data-in-microsoft-365-f409137d-15d3-4803-a8ae-d26fcbfc91dd">data policy</a>:</p>
+<blockquote>
+<p>This data does not include your name or email address, the content of your files, or information about apps unrelated to Microsoft 365 or&nbsp;OneDrive.</p>
+</blockquote>
+<p>Google’s <a href="https://support.google.com/docs/answer/10381817?hl=en">privacy policy</a> is more complex and&nbsp;includes:</p>
+<blockquote>
+<p>To provide <em>services like</em> spam filtering, virus detection, malware protection and the ability to search for files within your individual account, we process your&nbsp;content.</p>
+</blockquote>
+<p>(Emphasis&nbsp;added.)</p>
+<h2 id="atlassian">Atlassian</h2>
+<p><a href="https://www.atlassian.com/legal/privacy-policy#how-we-use-information-we-collect">https://www.atlassian.com/legal/privacy-policy#how-we-use-information-we-collect</a></p>
+<blockquote>
+<p>Our Services also include tailored features that personalize your experience, enhance your productivity, and improve your ability to collaborate effectively with others by automatically analyzing the activities of your team to provide search results, activity feeds, notifications, connections and recommendations that are most relevant for you and your&nbsp;team.</p>
+</blockquote>
+<h2 id="dropbox">Dropbox</h2>
+<p><a href="https://www.dropbox.com/privacy">https://www.dropbox.com/privacy</a></p>
+<blockquote>
+<p>We collect and use the following information to provide, improve, protect, and promote our&nbsp;Services.</p>
+</blockquote>
+<blockquote>
+<p>Account information. We collect, and associate with your account, the information you provide to us when you do things such as sign up for your account, upgrade to a paid plan, and set up two-factor authentication (like your name, email address, phone number, payment info, and physical&nbsp;address).</p>
+</blockquote>
+<blockquote>
+<p>Your Stuff. Our Services are designed as a simple and personalized way for you to store your files, documents, photos, comments, messages, and so on (“Your Stuff”), collaborate with others, and work across multiple devices and services. To make that possible, we store, process, and transmit Your Stuff as well as information related to it. This related information includes your <a href="https://help.dropbox.com/accounts-billing/settings-sign-in/change-profile-information">profile information</a> that makes it easier to collaborate and share Your Stuff with others, as well as things like the size of the file, the time it was uploaded, collaborators, and usage&nbsp;activity.</p>
+</blockquote>
+<p>What about the contents of “Your&nbsp;Stuff”?</p>
+<p><a href="https://www.pcworld.com/article/447666/dropbox-takes-a-peek-at-files.html">https://www.pcworld.com/article/447666/dropbox-takes-a-peek-at-files.html</a>
+<a href="https://arstechnica.com/tech-policy/2014/03/dropbox-clarifies-its-policy-on-reviewing-shared-files-for-dmca-issues/">https://arstechnica.com/tech-policy/2014/03/dropbox-clarifies-its-policy-on-reviewing-shared-files-for-dmca-issues/</a></p>
+<p>2013: employee access is intended to be&nbsp;restricted.</p>
+<p>But what about process&nbsp;access?</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="finding-out-what-s-using-a-port">Finding out what’s using a&nbsp;port</h1>
+<p>There’s <code>lsof -i TCP</code>, but that sometimes misses it. Maybe that’s for active&nbsp;connections?</p>
+<p>This seems&nbsp;better:</p>
+<p><code>ss -lntp</code></p>
+<p>It should list the processes bound to <span class="caps">TCP</span> ports. But sometimes the process field is blank. If you run it with <code>sudo</code>, you’ll probably be able to see the&nbsp;processes.</p>
+<p>#port #unix&nbsp;#network</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="c-">C++</h1>
 <h2 id="complex-numbers">Complex&nbsp;numbers</h2>
 <p><a href="https://en.cppreference.com/w/c/numeric/complex">C (not jjust C++) has supported complex numbers since&nbsp;1999!</a></p>
@@ -169,50 +213,6 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="data-privacy-policies">Data privacy&nbsp;policies</h1>
-<h2 id="microsoft-and-google">Microsoft and&nbsp;Google</h2>
-<p>One thing that’s better about using Excel instead of Google Sheets (other than better features, of which I don’t really know how to take advantage) is the <a href="https://support.microsoft.com/en-us/office/diagnostic-data-in-microsoft-365-f409137d-15d3-4803-a8ae-d26fcbfc91dd">data policy</a>:</p>
-<blockquote>
-<p>This data does not include your name or email address, the content of your files, or information about apps unrelated to Microsoft 365 or&nbsp;OneDrive.</p>
-</blockquote>
-<p>Google’s <a href="https://support.google.com/docs/answer/10381817?hl=en">privacy policy</a> is more complex and&nbsp;includes:</p>
-<blockquote>
-<p>To provide <em>services like</em> spam filtering, virus detection, malware protection and the ability to search for files within your individual account, we process your&nbsp;content.</p>
-</blockquote>
-<p>(Emphasis&nbsp;added.)</p>
-<h2 id="atlassian">Atlassian</h2>
-<p><a href="https://www.atlassian.com/legal/privacy-policy#how-we-use-information-we-collect">https://www.atlassian.com/legal/privacy-policy#how-we-use-information-we-collect</a></p>
-<blockquote>
-<p>Our Services also include tailored features that personalize your experience, enhance your productivity, and improve your ability to collaborate effectively with others by automatically analyzing the activities of your team to provide search results, activity feeds, notifications, connections and recommendations that are most relevant for you and your&nbsp;team.</p>
-</blockquote>
-<h2 id="dropbox">Dropbox</h2>
-<p><a href="https://www.dropbox.com/privacy">https://www.dropbox.com/privacy</a></p>
-<blockquote>
-<p>We collect and use the following information to provide, improve, protect, and promote our&nbsp;Services.</p>
-</blockquote>
-<blockquote>
-<p>Account information. We collect, and associate with your account, the information you provide to us when you do things such as sign up for your account, upgrade to a paid plan, and set up two-factor authentication (like your name, email address, phone number, payment info, and physical&nbsp;address).</p>
-</blockquote>
-<blockquote>
-<p>Your Stuff. Our Services are designed as a simple and personalized way for you to store your files, documents, photos, comments, messages, and so on (“Your Stuff”), collaborate with others, and work across multiple devices and services. To make that possible, we store, process, and transmit Your Stuff as well as information related to it. This related information includes your <a href="https://help.dropbox.com/accounts-billing/settings-sign-in/change-profile-information">profile information</a> that makes it easier to collaborate and share Your Stuff with others, as well as things like the size of the file, the time it was uploaded, collaborators, and usage&nbsp;activity.</p>
-</blockquote>
-<p>What about the contents of “Your&nbsp;Stuff”?</p>
-<p><a href="https://www.pcworld.com/article/447666/dropbox-takes-a-peek-at-files.html">https://www.pcworld.com/article/447666/dropbox-takes-a-peek-at-files.html</a>
-<a href="https://arstechnica.com/tech-policy/2014/03/dropbox-clarifies-its-policy-on-reviewing-shared-files-for-dmca-issues/">https://arstechnica.com/tech-policy/2014/03/dropbox-clarifies-its-policy-on-reviewing-shared-files-for-dmca-issues/</a></p>
-<p>2013: employee access is intended to be&nbsp;restricted.</p>
-<p>But what about process&nbsp;access?</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="finding-out-what-s-using-a-port">Finding out what’s using a&nbsp;port</h1>
-<p>There’s <code>lsof -i TCP</code>, but that sometimes misses it. Maybe that’s for active&nbsp;connections?</p>
-<p>This seems&nbsp;better:</p>
-<p><code>ss -lntp</code></p>
-<p>It should list the processes bound to <span class="caps">TCP</span> ports. But sometimes the process field is blank. If you run it with <code>sudo</code>, you’ll probably be able to see the&nbsp;processes.</p>
-<p>#port #unix&nbsp;#network</p>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="getting-noita-to-run-on-ubuntu">Getting Noita to run on&nbsp;Ubuntu</h1>
 <ul>
 <li>Get the game from <span class="caps">GOG</span>, not&nbsp;Steam.</li>
@@ -249,6 +249,18 @@ These were introduced in C++ 2011. They go like&nbsp;this:</p>
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="flickr">Flickr</h1>
+<h2 id="making-all-public-photos-non-public">Making all public photos&nbsp;non-public</h2>
+<ul>
+<li>Go to&nbsp;Organizr.</li>
+<li>Select “Only show public content” in the bottom&nbsp;bar.</li>
+<li>Select all. Drag the bottom bar selection to the&nbsp;workspace.</li>
+<li>Go to the permissions menu and change the permissions for those&nbsp;photos.</li>
+<li>Seems to run for about an hour (getting through 3000 photos) before it fails, and you have to start&nbsp;over.</li>
+</ul>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="getting-apps-to-show-up-in-ubuntu-search">Getting apps to show up in Ubuntu&nbsp;search</h1>
 <p>You know how when you hit ctrl+space, you can type an app name and then launch it from there? Sometime an app won’t show up there if you’ve installed it as an AppImage or just downloaded it to run from wherever you put it instead of using a&nbsp;Snap.</p>
 <p>That’s not the actual reason, it’s not showing up in desktop search, though. It’s because it doesn’t have a <code>.desktop</code> file.</p>
@@ -268,18 +280,6 @@ StartupNotify=false
 MimeType=text/english;text/plain;text/x-markdown;
 </code></pre><p>Now it shows up, and I don’t have to open a new terminal tab to launch it. I’ve done the same for Firefox because I’m now just using a version downloaded from its site to avoid the [issue in which the Snap image makes the mouse cursor really small on Ubuntu&nbsp;22.04.1]</p>
 <p>#ubuntu</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="flickr">Flickr</h1>
-<h2 id="making-all-public-photos-non-public">Making all public photos&nbsp;non-public</h2>
-<ul>
-<li>Go to&nbsp;Organizr.</li>
-<li>Select “Only show public content” in the bottom&nbsp;bar.</li>
-<li>Select all. Drag the bottom bar selection to the&nbsp;workspace.</li>
-<li>Go to the permissions menu and change the permissions for those&nbsp;photos.</li>
-<li>Seems to run for about an hour (getting through 3000 photos) before it fails, and you have to start&nbsp;over.</li>
-</ul>
 </section>
           </article>
           <article class="finding">
@@ -320,6 +320,24 @@ MimeType=text/english;text/plain;text/x-markdown;
     if: steps.restore-nltk-cache.outputs.cache-hit != &#39;true&#39;
 </code></pre><p>If it does find a cache for <code>key</code>, then it puts the cache’s content at <code>path</code>.</p>
 <p>Restoring a 27 <span class="caps">MB</span> cache took less than a second, as of&nbsp;2022-07-22.</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="googlebot-and-avoiding-indexing-content-from-your-spa">Googlebot and avoiding indexing content from your&nbsp;<span class="caps">SPA</span></h1>
+<p>In their <a href="/weblog/articles/miscellaneous-findings-010/findings/%5B%3Chttps://developers.google.com/search/docs/crawling-indexing/javascript/fix-search-javascript%3E%5D(%3Chttps://developers.google.com/search/docs/crawling-indexing/javascript/fix-search-javascript%3E">suggestions for handling missing content in SPAs</a>), Google recommends dynamically adding a meta tag to the page like&nbsp;so:</p>
+<pre><code class="lang-jsx">fetch(`https://api.kitten.club/cats/${id}`)
+ .then(res =&gt; res.json())
+ .then((cat) =&gt; {
+   if (!cat.exists) {
+     const metaRobots = document.createElement(&#39;meta&#39;);
+     metaRobots.name = &#39;robots&#39;;
+     metaRobots.content = &#39;noindex&#39;;
+     document.head.appendChild(metaRobots);
+   }
+ });
+</code></pre>
+<p>This strongly implies that the crawler actually will notice <span class="caps">DOM</span> changes after the page has been loaded, including <code>&lt;meta&gt;</code> tags.</p>
+<p>#crawling&nbsp;#javascript</p>
 </section>
           </article>
           <article class="finding">
@@ -379,33 +397,6 @@ MimeType=text/english;text/plain;text/x-markdown;
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="googlebot-and-avoiding-indexing-content-from-your-spa">Googlebot and avoiding indexing content from your&nbsp;<span class="caps">SPA</span></h1>
-<p>In their <a href="/weblog/articles/miscellaneous-findings-010/findings/%5B%3Chttps://developers.google.com/search/docs/crawling-indexing/javascript/fix-search-javascript%3E%5D(%3Chttps://developers.google.com/search/docs/crawling-indexing/javascript/fix-search-javascript%3E">suggestions for handling missing content in SPAs</a>), Google recommends dynamically adding a meta tag to the page like&nbsp;so:</p>
-<pre><code class="lang-jsx">fetch(`https://api.kitten.club/cats/${id}`)
- .then(res =&gt; res.json())
- .then((cat) =&gt; {
-   if (!cat.exists) {
-     const metaRobots = document.createElement(&#39;meta&#39;);
-     metaRobots.name = &#39;robots&#39;;
-     metaRobots.content = &#39;noindex&#39;;
-     document.head.appendChild(metaRobots);
-   }
- });
-</code></pre>
-<p>This strongly implies that the crawler actually will notice <span class="caps">DOM</span> changes after the page has been loaded, including <code>&lt;meta&gt;</code> tags.</p>
-<p>#crawling&nbsp;#javascript</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="moonlander">Moonlander</h1>
-<h2 id="wally-getting-stuck-after-you-re-supposed-to-reset-the-keyboard">Wally getting stuck after you’re supposed to reset the&nbsp;keyboard</h2>
-<p>When this happened to me, it was on a new computer. I never added the udev rule file as described&nbsp;here:</p>
-<p><a href="https://github.com/zsa/wally/wiki/Linux-install">https://github.com/zsa/wally/wiki/Linux-install</a></p>
-<p>After I did that, it&nbsp;worked!</p>
-<p>#keyboard&nbsp;#ubuntu</p>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="serving-local-web-apps-via-https">Serving local web apps via&nbsp;https</h1>
 <p>If you need to serve a local web page via&nbsp;https:</p>
 <h2 id="create-a-cert">Create a&nbsp;cert</h2>
@@ -439,20 +430,6 @@ httpd.serve_forever()
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="recording-internal-audio">Recording internal&nbsp;audio</h1>
-<p><a href="https://askubuntu.com/questions/250073/how-to-record-any-internal-sound-in-and-out-using-ubuntu-and-audacity">https://askubuntu.com/questions/250073/how-to-record-any-internal-sound-in-and-out-using-ubuntu-and-audacity</a></p>
-<blockquote>
-<p>As soon as we record any audio stream the name of the recording application and the source from where it records will be shown in the <em>Recording</em> tab. We then may be able to change the source to <code>Monitor of &lt;your soundcard&gt;</code> to record the output of our&nbsp;soundcard:</p>
-</blockquote>
-<ul>
-<li>First, start recording in&nbsp;Audacity.</li>
-<li>Then, in <code>pavucontrol</code>, in the Recording tab, in the Audacity entry, select “Monitor of soundcard” (instead of&nbsp;soundcard).</li>
-</ul>
-<p>Now it’s recording the output of the soundcard instead of the mic connected to the&nbsp;soundcard.</p>
-<p>#ubuntu&nbsp;#audio</p>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="setting-up-a-new-computer-running-ubuntu">Setting up a new computer running&nbsp;Ubuntu</h1>
 <ul>
 <li>Move over your private&nbsp;key.</li>
@@ -482,6 +459,72 @@ httpd.serve_forever()
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="moonlander">Moonlander</h1>
+<h2 id="wally-getting-stuck-after-you-re-supposed-to-reset-the-keyboard">Wally getting stuck after you’re supposed to reset the&nbsp;keyboard</h2>
+<p>When this happened to me, it was on a new computer. I never added the udev rule file as described&nbsp;here:</p>
+<p><a href="https://github.com/zsa/wally/wiki/Linux-install">https://github.com/zsa/wally/wiki/Linux-install</a></p>
+<p>After I did that, it&nbsp;worked!</p>
+<p>#keyboard&nbsp;#ubuntu</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="recording-internal-audio">Recording internal&nbsp;audio</h1>
+<p><a href="https://askubuntu.com/questions/250073/how-to-record-any-internal-sound-in-and-out-using-ubuntu-and-audacity">https://askubuntu.com/questions/250073/how-to-record-any-internal-sound-in-and-out-using-ubuntu-and-audacity</a></p>
+<blockquote>
+<p>As soon as we record any audio stream the name of the recording application and the source from where it records will be shown in the <em>Recording</em> tab. We then may be able to change the source to <code>Monitor of &lt;your soundcard&gt;</code> to record the output of our&nbsp;soundcard:</p>
+</blockquote>
+<ul>
+<li>First, start recording in&nbsp;Audacity.</li>
+<li>Then, in <code>pavucontrol</code>, in the Recording tab, in the Audacity entry, select “Monitor of soundcard” (instead of&nbsp;soundcard).</li>
+</ul>
+<p>Now it’s recording the output of the soundcard instead of the mic connected to the&nbsp;soundcard.</p>
+<p>#ubuntu&nbsp;#audio</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="tail-calls">Tail&nbsp;calls</h1>
+<p>If a function ends by calling itself, that’s called a tail&nbsp;call.</p>
+<p>It can usually be optimized by converting the function to just use a loop (or jump in assembly) instead of putting up another stack frame for another function&nbsp;call.</p>
+<p>#programming</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="find">find</h1>
+<h2 id="excluding-dirs-from-find">Excluding dirs from&nbsp;find</h2>
+<p>Say you want to find all of the directories in which you have a <code>rollup.config.js</code> file.</p>
+<p>You could&nbsp;try</p>
+<pre><code>find . -name rollup.config.js
+</code></pre><p>But that would also search all of the <code>node_modules</code> directories, and you mean to find projects in which you’ve used rollup&nbsp;directly.</p>
+<p>You can add <a href="/weblog/articles/miscellaneous-findings-010/findings/"><code>-path</code> and <code>-not</code></a> to exclude them from the&nbsp;search:</p>
+<pre><code>find . -name rollup.config.js -and -not \( -path &#39;*/node_modules/*&#39; \) -prune
+</code></pre><h2 id="finding-files-using-partial-filenames">Finding files using partial&nbsp;filenames</h2>
+<pre><code>find . -name &quot;appmanifest*&quot;
+</code></pre><p>Not:</p>
+<pre><code>find . -name &quot;appmanifest.*&quot;
+</code></pre><p>It’s not a “normal” regex. The above command would take the <code>.</code> literally.</p>
+<h2 id="deleting">Deleting</h2>
+<p>There’s a <code>-delete</code> flag.</p>
+<pre><code>find . -name &quot;*.pdf&quot; -delete
+</code></pre><p>#search #unix #command&nbsp;#find</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="unrar">unrar</h1>
+<p>If you get “no files to extract”, the problem may actually be that it doesn’t have permission to create a file or directory, rather that there being no files to extract in the rar&nbsp;file.</p>
+<h2 id="unraring-from-multiple-subdirectories">Unraring from multiple&nbsp;subdirectories</h2>
+<p>Remove the any unwanted subdirectories first, e.g.&nbsp;“Sample”.</p>
+<pre><code>find . -name Sample -exec rm -rf {} \;
+</code></pre><p>Run this&nbsp;script:</p>
+<pre><code>#!/bin/bash
+
+for dir in ./*
+do
+    unrar e &quot;${dir}/*.rar&quot;
+done
+</code></pre><p>#rar #command&nbsp;#shell</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="-jangjorim-">장조림(Jangjorim)</h1>
 <p>From&nbsp;Mom:</p>
 <p>Skirt steak or 결이 있는 good beef stew cut in to big chunk.
@@ -497,6 +540,11 @@ Cook it medium high for 20 minutes do not burning  until all the water is&nbsp;g
 Depend on your taste.
 Add 1/2 tea spoon black&nbsp;pepper.</p>
 <p>#cooking</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h2 id="dom"><span class="caps">DOM</span></h2>
+<p>If you parse an <span class="caps">SVG</span> document into a tree, then append one of the child nodes to the browser’s current DOM, then the node disappears from the source tree. Sort of a move, rather than a&nbsp;copy.</p>
 </section>
           </article>
           <article class="finding">
@@ -535,13 +583,6 @@ Add 1/2 tea spoon black&nbsp;pepper.</p>
 </section>
           </article>
           <article class="finding">
-            <section class="content"><h1 id="tail-calls">Tail&nbsp;calls</h1>
-<p>If a function ends by calling itself, that’s called a tail&nbsp;call.</p>
-<p>It can usually be optimized by converting the function to just use a loop (or jump in assembly) instead of putting up another stack frame for another function&nbsp;call.</p>
-<p>#programming</p>
-</section>
-          </article>
-          <article class="finding">
             <section class="content"><h1 id="making-a-video-from-images-in-multiple-directories">Making a video from images in multiple&nbsp;directories</h1>
 <p><a href="https://stackoverflow.com/a/37478183/87798">https://stackoverflow.com/a/37478183/87798</a></p>
 <pre><code>ffmpeg -framerate 30 -pattern_type glob -i &#39;**/*.JPG&#39; \
@@ -566,47 +607,6 @@ Add 1/2 tea spoon black&nbsp;pepper.</p>
             <section class="content"><h1 id="zip">Zip</h1>
 <p><code>-j</code> gets it to not put the directory structure into the zip file.
 <code>-x &lt;pattern&gt;</code> makes it ignore files matching the&nbsp;pattern.</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h2 id="dom"><span class="caps">DOM</span></h2>
-<p>If you parse an <span class="caps">SVG</span> document into a tree, then append one of the child nodes to the browser’s current DOM, then the node disappears from the source tree. Sort of a move, rather than a&nbsp;copy.</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="find">find</h1>
-<h2 id="excluding-dirs-from-find">Excluding dirs from&nbsp;find</h2>
-<p>Say you want to find all of the directories in which you have a <code>rollup.config.js</code> file.</p>
-<p>You could&nbsp;try</p>
-<pre><code>find . -name rollup.config.js
-</code></pre><p>But that would also search all of the <code>node_modules</code> directories, and you mean to find projects in which you’ve used rollup&nbsp;directly.</p>
-<p>You can add <a href="/weblog/articles/miscellaneous-findings-010/findings/"><code>-path</code> and <code>-not</code></a> to exclude them from the&nbsp;search:</p>
-<pre><code>find . -name rollup.config.js -and -not \( -path &#39;*/node_modules/*&#39; \) -prune
-</code></pre><h2 id="finding-files-using-partial-filenames">Finding files using partial&nbsp;filenames</h2>
-<pre><code>find . -name &quot;appmanifest*&quot;
-</code></pre><p>Not:</p>
-<pre><code>find . -name &quot;appmanifest.*&quot;
-</code></pre><p>It’s not a “normal” regex. The above command would take the <code>.</code> literally.</p>
-<h2 id="deleting">Deleting</h2>
-<p>There’s a <code>-delete</code> flag.</p>
-<pre><code>find . -name &quot;*.pdf&quot; -delete
-</code></pre><p>#search #unix #command&nbsp;#find</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="unrar">unrar</h1>
-<p>If you get “no files to extract”, the problem may actually be that it doesn’t have permission to create a file or directory, rather that there being no files to extract in the rar&nbsp;file.</p>
-<h2 id="unraring-from-multiple-subdirectories">Unraring from multiple&nbsp;subdirectories</h2>
-<p>Remove the any unwanted subdirectories first, e.g.&nbsp;“Sample”.</p>
-<pre><code>find . -name Sample -exec rm -rf {} \;
-</code></pre><p>Run this&nbsp;script:</p>
-<pre><code>#!/bin/bash
-
-for dir in ./*
-do
-    unrar e &quot;${dir}/*.rar&quot;
-done
-</code></pre><p>#rar #command&nbsp;#shell</p>
 </section>
           </article>
         </article>
