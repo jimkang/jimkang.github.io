@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width" initial-scale="1">
+    <title>Hue shifting when you have to work in RGB - jimkang.com
+    </title>
+    <link rel="alternate" href="http://jimkang.com/weblog/feed.xml" type="application/rss+xml" title="It's dot com.">
+    <link rel="stylesheet" href="/weblog/css/main.css">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <!-- include author-->
+        <h1>Hue shifting when you have to work in RGB</h1>
+        <!-- p.author-->
+        <!--  | #{ "Written by " }-->
+        <!--  mixin author(page.metadata.author)-->
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><div class="boxed">
+I work on the web and usually have access to <span class="caps">CSS</span> color, which lets you specify colors in the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hsl"><span class="caps">HSL</span> (hue, saturation, lightness) space</a>. That makes it easy to shift a color to make it redder by nudging the H value toward 0 or to send it closer to purple by moving it toward 360.
+<br><br>
+Recently, I needed to shift hue in <a href="https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_on_the_web/GLSL_Shaders"><span class="caps">GLSL</span></a>, and which doesn’t have <span class="caps">HSL</span>. You only get the RGB (red, green, blue) color space. Fortunately, on a previous blog, I had written a post about hue shifting in RGB. I relearned how to do it from that.
+<br><br>
+So, I’m reproducing the original 2010 post here with added commentary. If you don’t want to read about how this works and just want to mess with a spectrum, here is my <a href="https://jimkang.com/gallery/#drawRGBWaves=yes&focusPiece=hue-shift&rgbWaveStyle=1">new tool</a> for doing that.
+</div>
+
+<p><span class="more"></span></p>
+<style>
+img {
+    margin-left: auto;
+    margin-right: auto;
+}
+</style>
+
+<h1 id="how-rgb-is-related-to-hsv-and-how-to-implement-hue-shifting-on-the-iphone">How <span class="caps">RGB</span> is related to HSV, and how to implement hue shifting on the&nbsp;iPhone</h1>
+<p> Last weekend, I wrote some code that shifted hues in existing colors. To do that, I needed to improve my understanding of hue, saturation, and lightness. I had to go on a journey of learning! So, I thought I’d share my rainbow voyage with you&nbsp;here.</p>
+<p>I started by poking around in Photoshop. If you’re familiar with Photoshop, you may recognize this&nbsp;dialog:</p>
+<p><img alt="Hue/Saturation dialog showing a slider for Hue, Saturation, and Lightness" src="Photoshop_HSV.png"></p>
+<p>If you move around the Hue slider, your image changes color without changing either saturation (which can be described as ‘colorfulness’, sort of) or value (lightness). That is exactly the functionality I wanted to implement. In Photoshop, it’s also fun stuff that can make your photos look&nbsp;psychedelic.</p>
+<p>Then, there’s this guy, the Color&nbsp;Picker:</p>
+<p><img alt="Color picker dialog with HSB values" src="Photoshop_colorpicker.png"></p>
+<p>To pick your color, you click around in the box on the left and move the rainbow slider up and down. The number-containing boxes in the middle show you the <a href="https://en.wikipedia.org/wiki/RGB_color_model"><span class="caps">RGB</span></a> (red green blue) values of the color currently specified, which is handy. The rainbow slider is a hue controller, and the big box on the left represents lightness on its Y-axis and saturation on its&nbsp;X-axis.</p>
+<p>When you sit down to code something like this, though, you can’t manipulate the hue directly like that, at least not on the iPhone. You can’t just say “give me this existing color’s hue” and then use that to compose a new color. Whether you’re using UIColor, CGColor, or cocos2d’s ccColor3B, the only way to manipulate the hue of an existing color is via <span class="caps">RGB</span>. Thus, you need to figure out how RGB affects HSV (hue saturation&nbsp;value/lightness).</p>
+<div class="boxed">
+Update from 2025: <a href="https://developer.apple.com/documentation/uikit/uicolor/init(hue:saturation:brightness:alpha:">Looks like UIColor supports <span class="caps">HSL</span></a> and did so early as iOS 2.0, which came out in 2009 (a year before the post was written).
+<br><br>
+At the time, I was making a pattern-making app with Cocos2D though, which <a href="https://cocos2d-x.org/reference/native-cpp/V3.0alpha0/db/dc5/structcocos2d_1_1_color3_b.html">only supports <span class="caps">RGB</span> to this day in 2025</a>. UIColor didn’t <a href="https://developer.apple.com/documentation/uikit/uicolor/getred(_:green:blue:alpha:">support extracting <span class="caps">RGB</span> components until iOS 5.0</a>) in 2011. So, I still would have learned how to hue shift with <span class="caps">RGB</span> even if I had known about UIColor’s HSL support.
+</div>
+
+<p>Moving the hue slider in Photoshop’s color picker and noting the <span class="caps">RGB</span> value changes is a good way to do this. Try it, and you’ll notice that among the RGB values, there’s always a constant highest number, a constant lowest number, and a variable middle&nbsp;number.</p>
+<p>Let’s say the color you start off with has an <span class="caps">RGB</span> of 57-181-107 (a <span style="background-color: #39b56b; color: #ffffff">mildly-bluish green</span>). You can move the hue slider anywhere you want, but two of the <span class="caps">RGB</span> values will always be 57 and 181. If you slide it toward the orange spectrum, you’ll end up with something like <span style="background-color: #b56b39; color: #ffffff"><b>181</b>-107-<b>57</b></span>. 181 and 57 are still in the mix, yet it’s an entirely different&nbsp;color.</p>
+<p>When moving the hue slider, the limits remain constant because <strong>changing the upper and lower limits will affect the lightness and saturation of a color</strong>. If you move the cursor in the saturation/lightness color panel, however, those limits will&nbsp;change.</p>
+<h2 id="lightness">Lightness</h2>
+<p>On a display, if you max out red, green, and blue, the result is pure white. It follows that raising the upper limit among the <span class="caps">RGB</span> components of a given color will move it closer to white, whereas lowering the lower limit will move it further away from white. “Moving a color further away from white” is also known as “darkening a&nbsp;color.”</p>
+<h2 id="saturation">Saturation</h2>
+<p>Saturation is also affected by the upper and lower <span class="caps">RGB</span> limits, but by the two limits’ relative distance from each other, rather than by the limit’s absolute values. In RGB terms, gray occurs when each of the components’ values are close to one another. <span style="background-color: #abb0a1">177-171-161</span> is a kind of gray, for example. When all three components of a color have matching values, as in <span style="background-color: #ababab">177-177-177</span>, that color is said to be totally&nbsp;desaturated.</p>
+<p>Conversely, the further apart the <span class="caps">RGB</span> components are, the more saturated the colors become. e.g. <span style="background-color: #ff7011">255-112-17</span> is a very intense orange. 255 and 17 are about as far apart as you can&nbsp;get.</p>
+<h2 id="hue">Hue</h2>
+<p>If we want to change the hue while freezing saturation and lightness, we can’t change the upper and lower limits, as explained above. That leaves us just the&nbsp;following:</p>
+<ol>
+<li><p>We can change the variable middle value. e.g. 112 in a color like <span style="background-color: #7043e9; color: #ffffff">112-67-233</span>. If we change 112 to 150, we get <span style="background-color: #9643e9; color: #ffffff">150-67-233</span>.</p>
+</li>
+<li><p>We can’t change the upper and lower limits, but we can swap their positions. e.g. In <span style="background-color: #7043e9; color: #ffffff">112-67-233</span>, we can move 67 and 233 and get<br>
+<span style="background-color: #43e970">67-233-112</span>.</p>
+<p>Now we know how to change the hue without messing with saturation or lightness, but we’re changing it haphazardly. To find out how to move the hue along the spectrum the way the Photoshop slider does, look at the <span class="caps">RGB</span> value changes that happen when the slider is slowly moved in the red-to-blue direction. You’ll see&nbsp;that:</p>
+</li>
+<li><p>One value (either R, G, or B) changes at a&nbsp;time.</p>
+</li>
+<li>That value is either moves up until it hits the upper limit, or it moves down until it hits the lower&nbsp;limit.</li>
+<li>Once a value hits a limit, that value stops changing momentarily, and a different value starts&nbsp;moving.</li>
+</ol>
+<p>Here’s a graph of the changes in the <span class="caps">RGB</span> values as the color is moved along the&nbsp;spectrum:</p>
+<p><img id="rgb-graph-sketch" alt="Crappy rgb graph" src="crappy_rgb_graph.png"></p>
+<p>(I apologize for the graph’s crapulence. I bet you there’s a good version of this somewhere on the web, but it wasn’t on the first page of search results, so I just scriggled this&nbsp;out.)</p>
+<p>The lines represent the amounts of R, G, and B components that are present in each point along the spectrum. The vertical bars at the top are the colors that (approximately) result from those <span class="caps">RGB</span>&nbsp;combinations.</p>
+<p>The graph shows the following behavior: <b>For each component (R, G, and&nbsp;B):</b></p>
+<ul>
+<li><p><strong>If the component is not at the the lower limit and the next component (e.g. the next component after the R component is G) is at the upper limit, that component will&nbsp;descend.</strong></p>
+</li>
+<li><p><strong>If the component is not at the upper limit and the next component is at the lower limit, that component will&nbsp;ascend.</strong></p>
+</li>
+<li><p><strong>Otherwise, that component doesn’t&nbsp;change.</strong></p>
+</li>
+</ul>
+<h2 id="implementation">Implementation</h2>
+<p>Once you know the above, implementation is fairly straightforward. If you want an example, though, here’s my cocos2d-oriented implementation in Objective-C on <a href="https://gist.github.com/585828">github</a>.</p>
+<p>OGColorTools contains the code that does the color shifting. The meat of the code is in the method color:shiftHue:inDirection:. OGHueShiftExampleLayer is a simple example layer that creates a sprite and shifts its color every time the layer is tapped. You will need to provide your own bitmap and load it into the sprite for this to&nbsp;work.</p>
+<p>Enjoy your hue&nbsp;shifting!</p>
+<div class="boxed">Update from 2025: I made a more flexible implementation in <span class="caps">GLSL</span>.
+<br><br>
+Instead of deciding the value of each color component via a logical structure (if/then) that uses each component’s state relative to the other color components, the <span class="caps">GLSL</span> implementation just plugs the hue shift into an equation.
+<br>
+<br>
+That equation describes <a href="/weblog/articles/hue-shifting/#rgb-graph-sketch">the graph of the <span class="caps">RGB</span> changes from the original post</a>. Here it is graphed out nicely on Desmos:
+<br><br>
+<a href="https://www.desmos.com/calculator/sykrohqdst"><img alt="Triangle wave graph" src="triangle-graph.png" width="100%"></a>
+<br>
+Each line (R, G, and B) is a <a href="https://jimkang.com/weblog/articles/triangle-wave/">triangle wave equation</a> with a clamp to keep it inside 0.0 and 1.0, so you get these half-hexagon shapes. Here’s the equation for the green component:
+<br><br>
+<img src="green-triangle-wave-equation.png" alt="Triangle wave equation">
+<br>
+Here, <em>a</em> is amplitude (set to 1.5 in the graph above), and <em>p</em> is period (set to 1 in the graph above).
+<br>
+Depending on your background, the equation may be a little easier to read in <span class="caps">GLSL</span>:
+<br>
+<pre>
+#define RGB_PERIOD 1.
+#define RGB_AMP 1.5
+
+float rgbWave(float x, float phaseShift) {
+  float y = mod(x + RGB_PERIOD/2. + phaseShift, RGB_PERIOD);
+  y = abs(y - RGB_PERIOD/2.);
+  y = 4. * RGB_AMP * y - RGB_AMP + .5;
+  return clamp(y, 0., 1.);
+}
+</pre>
+<code>rgbWave</code> takes a value, <code>x</code>, from 0 to 1 that represents the hue, with 0 being the hue at the start of the spectrum and 1 being the hue at the end of the spectrum. It returns the value of one component of the color at <code>x</code>.
+<br><br>
+The particular color component is specified by the <code>phaseShift</code> parameter because each component’s wave is the same; they just have different phase shifts. For green, <code>phaseShift</code> will be -1/6. At an <code>x</code> of 0, the green value will be 0, and an <code>x</code> of 1 will also yield 0. At <code>x</code> = 0.5, the green value will be 1. (Blue will also be 1 at that point, and the resulting color will be a <span style="background-color: #0ff">cyan</span>.)
+<br><br>
+Though the equation looks complex, from an implementation standpoint, this is simpler than the old Objective-C implementation, which had to track state. And fortunately, there’s a simpler equation we can use in place of this sawed-off triangles equation.
+<br>
+<h3>Sine wave&nbsp;simplicity</h3>
+The triangle waves can be approximated with sine waves. Here’s some sine waves (in dashed lines) superimposed over the triangle waves.
+<br>
+<br>
+<a href="https://www.desmos.com/calculator/ghicgn09f0"><img alt="Triangle waves and sine waves over them" src="triangles-and-sines-graph.png" width="100%"></a>
+<br>
+Here is the equation for the green sine wave (with clamping between 0 and 1 added):
+<br>
+<br>
+<img src="green-sine-wave-equation.png" alt="Sine equation">
+In <span class="caps">GLSL</span>:
+<br>
+<pre>
+float rgbSineWave(float x, float phaseShift, float amp) {
+  return clamp(amp * sin(2. &ast; PI &ast; x + phaseShift) + .5, 0., 1.);
+}
+</pre>
+That’s it! So small a function.
+<br>
+<h3>Alternative&nbsp;spectrums</h3>
+
+An upside to this equation-based implementation is that you can easily create alternative spectrums for your own use by changing various coefficients. Here’s a few.
+<br>
+<br>
+<a href="https://jimkang.com/gallery/#bShift=-0.09&density=0.5&drawRGBWaves=yes&focusPiece=hue-shift&gShift=0.73&rShift=-0.66&rgbAmp=0.37&rgbWaveStyle=1&seed=kaZcVOxN&showWIP=no"><img src="five-alive.png" alt="Five Alive" width="100%"></a>
+<br>
+<a href="https://jimkang.com/gallery/#bShift=-0.92&density=0.5&drawRGBWaves=yes&focusPiece=hue-shift&gShift=-1.1&rShift=0.16&rgbAmp=0.31&rgbWaveStyle=1&seed=kaZcVOxN&showWIP=no"><img src="aurora.png" alt="Aurora" width="100%"></a>
+<br>
+<a href="https://jimkang.com/gallery/#bPeriod=1.77&bShift=-0.8333333333333334&density=0.5&drawRGBWaves=no&focusPiece=hue-shift&gPeriod=0.79&gShift=-1.78&rPeriod=0.25&rShift=0.5&rgbAmp=0.29&rgbWaveStyle=1&seed=uZJuAlHj&showWIP=no"><img src="rothko.png" alt="Rothko style" width="100%"></a>
+<br>
+<a href="https://jimkang.com/gallery/#bPeriod=1.32&bShift=0.62&density=0.5&drawRGBWaves=no&focusPiece=hue-shift&gPeriod=0.95&gShift=0.26&rPeriod=0.69&rShift=2&rgbAmp=0.57&rgbWaveStyle=1&seed=hgcHeNOn&showWIP=no"><img src="dark-alley.png" alt="Dark alley" width="100%"></a>
+<br>
+<a href="https://jimkang.com/gallery/#bPeriod=1.13&bShift=-1.64&density=0.5&drawRGBWaves=no&focusPiece=hue-shift&gPeriod=0.88&gShift=-2&rPeriod=0.04&rShift=2&rgbAmp=0.43&rgbWaveStyle=1&seed=hgcHeNOn&showWIP=no"><img src="exposed-film.png" alt="Exposed film" width="100%"></a>
+<br>
+As discussed in the original post, the further apart the highest and lowest components of the <span class="caps">RGB</span> value are, the more saturated the resulting color is. So, increasing the amplitude of the sine wave will increase the saturation; decreasing it will get you a grayer spectrum.
+<br><br>
+The phase shift of each wave determines how it’ll combine with other waves. By altering the default phase shifts of the R, G, and B waves, you can create points in the graph at which everything comes close to being in sync (and has peaks and troughs at nearly the same point). You can also find shift combinations that’ll eliminate certain colors, like the mostly red and blue one above.
+<br><br>
+The period size of the waves can spread out a color component’s intensity across the spectrum if you make it large. If you make it small, it will form small repeating bands.
+<br><br>
+<a href="https://jimkang.com/gallery/#drawRGBWaves=yes&focusPiece=hue-shift&rgbWaveStyle=1">Here is a tool</a> that you can use to see what happens when you manipulate the phase shifts and amplitude of the waves.
+<br><br>
+And here is the code for the shader in that tool:
+<pre>
+#version 300 es
+precision mediump float;
+
+#define RGB_PERIOD 1.
+#define RGB_AMP 1.5
+#define PI 3.1415927
+
+out vec4 outColor;
+
+uniform vec2 u_resolution;
+uniform int u_rgbWaveStyle;
+<span class="code-comment">// Wave amplitude input variable</span>
+uniform float u_rgbAmp;
+<span class="code-comment">// Wave phase shift input variables</span>
+uniform float u_rShift;
+uniform float u_gShift;
+uniform float u_bShift;
+<span class="code-comment">// Input variable that tells us whether we should draw the <span class="caps">RGB</span> waves over</span>
+<span class="code-comment">// the colors or not.</span>
+uniform int u_drawRGBWaves;
+
+<span class="code-comment">// Given a value from 0 to 1 that represents progress along the spectrum,</span>
+<span class="code-comment">// find out what the value of the <span class="caps">RGB</span> component should be, assuming a</span>
+<span class="code-comment">// clamped triangle wave model of the spectrum.</span>
+float rgbWave(float x, float phaseShift) {
+  float y = mod(x + RGB_PERIOD/2. + phaseShift, RGB_PERIOD);
+  y = abs(y - RGB_PERIOD/2.);
+  y = 4. * RGB_AMP * y - RGB_AMP + .5;
+  return clamp(y, 0., 1.);
+}
+
+<span class="code-comment">// Given a value from 0 to 1 that represents progress along the spectrum, find</span>
+<span class="code-comment">// out what the value of the <span class="caps">RGB</span> component should be, assuming a clamped</span>
+<span class="code-comment">// sine wave model of the spectrum.</span>
+float rgbSineWave(float x, float phaseShift, float amp) {
+  return clamp(amp * sin(2. * <span class="caps">PI</span> * x + phaseShift) + .5, 0., 1.);
+}
+
+<span class="code-comment">// Main function, which answers the question: What should the color be at</span>
+<span class="code-comment">// this location on the drawing surface?</span>
+void main() {
+  vec2 st = gl_FragCoord.xy/u_resolution.xy;
+
+  <span class="code-comment">// Get the R, G, and B values, passing the horizontal location as the</span>
+  <span class="code-comment">// progress through the spectrum and a different phase shift for each</span>
+  <span id="rgbsinewave-usage" class="code-comment">// color component.</span>
+  float r = rgbSineWave(st.x, u_rShift * <span class="caps">PI</span>, u_rgbAmp);
+  float g = rgbSineWave(st.x, u_gShift * PI, u_rgbAmp);
+  float b = rgbSineWave(st.x, u_bShift * PI, u_rgbAmp);
+
+  <span class="code-comment">// If the wave style is set to triangle (instead of sine), get the <span class="caps">RGB</span></span>
+  <span class="code-comment">// values using the triangle wave equation.</span>
+  if (u_rgbWaveStyle == 0) {
+    r = rgbWave(st.x, u_rShift);
+    g = rgbWave(st.x, u_gShift);
+    b = rgbWave(st.x, u_bShift);
+  }
+
+  <span class="code-comment">// Compose the color with the three color components.</span>
+  vec3 color = vec3(r, g, b);
+
+  <span class="code-comment">// If we should be graphing the color compontent waves, draw over the</span>
+  <span class="code-comment">// color with either pure red, green, or blue if the given y value is</span>
+  <span class="code-comment">// near the r, g, or b value.</span>
+  if (u_drawRGBWaves == 1) {
+    float greenLineOn = 1. - step(.01, abs(st.y - g));
+    if (greenLineOn &gt; 0.) {
+      color = vec3(0., 1., 0.);
+    } else {
+      float redLineOn = 1. - step(.01, abs(st.y - r));
+      if (redLineOn &gt; 0.) {
+        color = vec3(1., 0., 0.);
+      } else {
+        float blueLineOn = 1. - step(.01, abs(st.y - b));
+        if (blueLineOn &gt; 0.) {
+          color = vec3(0., 0., 1.);
+        }
+      }
+    }
+  }
+
+  <span class="code-comment">// Set the output color.</span>
+  outColor = vec4(color, 1.);
+}
+</pre>
+To use it in your own shader, you can just copy out the <code>rgbSineWave</code> and pass it a hue value and a phase shift, as you see <a href="#rgbsinewave-usage">above</a> in the main function.
+<br><br>
+Once again, enjoy shifting hues, this time in <span class="caps">GLSL</span> and maybe on alternative spectrums!
+</div>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <p>If this helped you, consider <a href="https://ko-fi.com/jimkang">sending me a tip</a>!</p><a href='https://ko-fi.com/B0B12GNVQ' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi2.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+        <div class="nav"><a href="/weblog/">« Full blog</a></div>
+        <!--section.about-->
+        <!--  !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2025 <a href="http://jimkang.com">Jim Kang</a> &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+          <p><a href='/weblog/feed.xml'><strong>RSS feed.</strong></a> And good for you for still using RSS!</p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>

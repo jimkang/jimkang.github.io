@@ -60,6 +60,16 @@
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="regex-in-sed">Regex in&nbsp;sed</h1>
+<p>If you use <code>sed</code> without the <code>-r</code> switch, it does support a sort of regex, but doesn’t support capture groups. If you do, you can do something like this to replace all instances of <code>var something = require(&#39;somepackage&#39;)</code> with <code>import something from &#39;somepackage&#39;</code> in a&nbsp;file:</p>
+<pre><code>xargs sed -r &quot;s/var (\w+) = require\(&#39;(.*)&#39;\)/import \1 from &#39;\2&#39;/g&quot; -i myfile.js
+</code></pre><p>(You use <code>\1</code>, <code>\2</code>, et al to point to capture groups in the replacement clause instead of <code>$1</code>, <code>$2</code>.)</p>
+<p>If you want to run that on every <span class="caps">JS</span> file in a directory tree, you can pipe the output of a find command that looks for all <code>.js</code> files into xargs, which will run the sed command you give it and add each output from <code>find</code> to the commands. It’s sort of like&nbsp;currying.</p>
+<pre><code>find . -type f \( -name &#39;*.js&#39; \) | xargs sed -r &quot;s/var (\w+) = require\(&#39;(.*)&#39;\)/import \1 from &#39;\2&#39;/g&quot; -i
+</code></pre><p>#command #shell #regex&nbsp;#unix</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="tr-for-replacing-text">tr for replacing&nbsp;text</h1>
 <p>There is a Unix command called <code>tr</code>. You pipe in input text and give it two&nbsp;arguments:</p>
 <ul>
@@ -104,16 +114,6 @@
 ]
 </code></pre><p>And that is valid&nbsp;<span class="caps">JSON</span>.</p>
 <p>#tr #shell #unix #sed #text&nbsp;#bash</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="regex-in-sed">Regex in&nbsp;sed</h1>
-<p>If you use <code>sed</code> without the <code>-r</code> switch, it does support a sort of regex, but doesn’t support capture groups. If you do, you can do something like this to replace all instances of <code>var something = require(&#39;somepackage&#39;)</code> with <code>import something from &#39;somepackage&#39;</code> in a&nbsp;file:</p>
-<pre><code>xargs sed -r &quot;s/var (\w+) = require\(&#39;(.*)&#39;\)/import \1 from &#39;\2&#39;/g&quot; -i myfile.js
-</code></pre><p>(You use <code>\1</code>, <code>\2</code>, et al to point to capture groups in the replacement clause instead of <code>$1</code>, <code>$2</code>.)</p>
-<p>If you want to run that on every <span class="caps">JS</span> file in a directory tree, you can pipe the output of a find command that looks for all <code>.js</code> files into xargs, which will run the sed command you give it and add each output from <code>find</code> to the commands. It’s sort of like&nbsp;currying.</p>
-<pre><code>find . -type f \( -name &#39;*.js&#39; \) | xargs sed -r &quot;s/var (\w+) = require\(&#39;(.*)&#39;\)/import \1 from &#39;\2&#39;/g&quot; -i
-</code></pre><p>#command #shell #regex&nbsp;#unix</p>
 </section>
           </article>
         </article>

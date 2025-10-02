@@ -23,6 +23,78 @@
 <em>This is a roundup of miscellaneous things that I’ve found out about (or have rediscovered).<span class="more"></span> I take notes on findings regularly, and I put the findings that translate well to speech on my podcast, <span style="text-decoration: underline"><strong><a href="https://jimkang.com/smallfindings/">Small Findings</a></strong></span>. The rest (which are often technical findings), I put here. They’re not always written up for maximum comprehension as a blog post, but if anything is hard to understand, please <a href="mailto:jimkang@fastmail.com">email me</a> if you need&nbsp;clarification.</em></p>
 </section>
           <article class="finding">
+            <section class="content"><h1 id="ncat">ncat</h1>
+<p><code>ncat</code> is a command that can be used to watch network connections and pass requests to a script to&nbsp;respond!</p>
+<p>For example, this would pass http requests to <code>respond.sh</code>:</p>
+<pre><code>ncat -e respond.sh -kl 80
+</code></pre><p><code>respond.sh</code> can then use <code>read</code> to put stdin into a variable (e.g. <code>read -r request _</code>) then write the http response to&nbsp;stdout.</p>
+<p>It’s minimum viable web&nbsp;server!</p>
+<p><a href="https://github.com/izabera/ynaas/blob/master/ynaas">Single-serving site maker that serves subdomains&nbsp;dynamically</a></p>
+<p>#unix #command #network&nbsp;#bash</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="boardman-oregon">Boardman,&nbsp;Oregon</h1>
+<p>If you see traffic from Boardman, Oregon in your server logs, keep in mind that there are at least <a href="https://www.oregonlive.com/silicon-forest/2015/02/amazon_plans_up_to_11_more_ore.html">four Amazon data centers</a> at Port of Morrow in Oregon, which is near&nbsp;Boardman.</p>
+<p>#oregon&nbsp;#web-traffic</p>
+</section>
+          </article>
+          <article class="finding">
+            <section class="content"><h1 id="playwright">Playwright</h1>
+<p>Playwright, a headless browser runner, like Puppeteer, might “just work” on a laptop, as it did for me. But it does have a lot of dependencies, which might not be there, as it was in the case of my <span class="caps">VPS</span>&nbsp;instance.</p>
+<p><a href="https://github.com/microsoft/playwright/blob/master/docs/docker/Dockerfile.bionic">Here’s a list of the&nbsp;dependencies.</a></p>
+<pre><code># 2. Install WebKit dependencies
+RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
+    libwoff1 \
+    libopus0 \
+    libwebp6 \
+    libwebpdemux2 \
+    libenchant1c2a \
+    libgudev-1.0-0 \
+    libsecret-1-0 \
+    libhyphen0 \
+    libgdk-pixbuf2.0-0 \
+    libegl1 \
+    libnotify4 \
+    libxslt1.1 \
+    libevent-2.1-6 \
+    libgles2 \
+    libvpx5
+
+# 3. Install gstreamer and plugins to support video playback in WebKit.
+RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
+    libgstreamer-gl1.0-0 \
+    libgstreamer-plugins-bad1.0-0 \
+    gstreamer1.0-plugins-good
+
+# 4. Install Chromium dependencies
+RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
+    libnss3 \
+    libxss1 \
+    libasound2 \
+    fonts-noto-color-emoji
+
+# 5. Install Firefox dependencies
+RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
+    libdbus-glib-1-2 \
+    libxt6
+
+# 6. Install ffmpeg to bring in audio and video codecs necessary for playing videos in Firefox.
+RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
+    ffmpeg
+
+# 7. Add user so we don&#39;t need --no-sandbox in Chromium
+RUN groupadd -r pwuser &amp;&amp; useradd -r -g pwuser -G audio,video pwuser \
+    &amp;&amp; mkdir -p /home/pwuser/Downloads \
+    &amp;&amp; chown -R pwuser:pwuser /home/pwuser
+
+# 8. (Optional) Install XVFB if there&#39;s a need to run browsers in headful mode
+RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
+    xvfb
+</code></pre><p>#automation #browser&nbsp;#configuration</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="web-site-delivery-speed">Web site delivery&nbsp;speed</h1>
 <p>You can easily find out how fast your web page loads (and how fast it becomes usable) to your own computer by simply loading your web page in your browser. Sadly, most people aren’t loading your web page from your computer. So, you need to find oUt how it loads on other computers&nbsp;somehow.</p>
 <h2 id="testing-web-page-speed">Testing web page&nbsp;speed</h2>
@@ -150,78 +222,6 @@
 <p>So, CDNs don’t always make a difference. To be clear, I’m not saying they’re some sort of scam; they usually make a big difference when serving media files. They’re not a silver bullet it all situations, though. Definitely test before shelling out&nbsp;cash.</p>
 <p>Reducing your page size, however, is a <em>very</em> reliable way to improve your global load&nbsp;times.</p>
 <p>#web #usability&nbsp;#performance</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="boardman-oregon">Boardman,&nbsp;Oregon</h1>
-<p>If you see traffic from Boardman, Oregon in your server logs, keep in mind that there are at least <a href="https://www.oregonlive.com/silicon-forest/2015/02/amazon_plans_up_to_11_more_ore.html">four Amazon data centers</a> at Port of Morrow in Oregon, which is near&nbsp;Boardman.</p>
-<p>#oregon&nbsp;#web-traffic</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="playwright">Playwright</h1>
-<p>Playwright, a headless browser runner, like Puppeteer, might “just work” on a laptop, as it did for me. But it does have a lot of dependencies, which might not be there, as it was in the case of my <span class="caps">VPS</span>&nbsp;instance.</p>
-<p><a href="https://github.com/microsoft/playwright/blob/master/docs/docker/Dockerfile.bionic">Here’s a list of the&nbsp;dependencies.</a></p>
-<pre><code># 2. Install WebKit dependencies
-RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
-    libwoff1 \
-    libopus0 \
-    libwebp6 \
-    libwebpdemux2 \
-    libenchant1c2a \
-    libgudev-1.0-0 \
-    libsecret-1-0 \
-    libhyphen0 \
-    libgdk-pixbuf2.0-0 \
-    libegl1 \
-    libnotify4 \
-    libxslt1.1 \
-    libevent-2.1-6 \
-    libgles2 \
-    libvpx5
-
-# 3. Install gstreamer and plugins to support video playback in WebKit.
-RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
-    libgstreamer-gl1.0-0 \
-    libgstreamer-plugins-bad1.0-0 \
-    gstreamer1.0-plugins-good
-
-# 4. Install Chromium dependencies
-RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
-    libnss3 \
-    libxss1 \
-    libasound2 \
-    fonts-noto-color-emoji
-
-# 5. Install Firefox dependencies
-RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
-    libdbus-glib-1-2 \
-    libxt6
-
-# 6. Install ffmpeg to bring in audio and video codecs necessary for playing videos in Firefox.
-RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
-    ffmpeg
-
-# 7. Add user so we don&#39;t need --no-sandbox in Chromium
-RUN groupadd -r pwuser &amp;&amp; useradd -r -g pwuser -G audio,video pwuser \
-    &amp;&amp; mkdir -p /home/pwuser/Downloads \
-    &amp;&amp; chown -R pwuser:pwuser /home/pwuser
-
-# 8. (Optional) Install XVFB if there&#39;s a need to run browsers in headful mode
-RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
-    xvfb
-</code></pre><p>#automation #browser&nbsp;#configuration</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="ncat">ncat</h1>
-<p><code>ncat</code> is a command that can be used to watch network connections and pass requests to a script to&nbsp;respond!</p>
-<p>For example, this would pass http requests to <code>respond.sh</code>:</p>
-<pre><code>ncat -e respond.sh -kl 80
-</code></pre><p><code>respond.sh</code> can then use <code>read</code> to put stdin into a variable (e.g. <code>read -r request _</code>) then write the http response to&nbsp;stdout.</p>
-<p>It’s minimum viable web&nbsp;server!</p>
-<p><a href="https://github.com/izabera/ynaas/blob/master/ynaas">Single-serving site maker that serves subdomains&nbsp;dynamically</a></p>
-<p>#unix #command #network&nbsp;#bash</p>
 </section>
           </article>
         </article>

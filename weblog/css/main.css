@@ -7,7 +7,7 @@ body {
 }
 
 .content-wrap {
-  width: 34rem;
+  width: 50rem;
   margin: 0 auto;
 }
 
@@ -418,6 +418,20 @@ ol.alpha {
 
 .aside h3 {
   margin-top: 0;
+}
+
+.boxed {
+  border: 2px gray dashed;
+  background-color: hsl(20, 10%, 96%);
+  color: #555;
+  padding: 1em;
+  margin-top: 1em;
+}
+
+.code-comment {
+  color: hsl(126.9, 63.5%, 42.9%);
+  font-weight: 600;
+  font-size: 1.1em;
 }
 
 /* media queries */

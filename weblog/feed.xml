@@ -5,9 +5,254 @@
     <atom:link href="http://jimkang.com/weblog/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://jimkang.com</link>
     <description>It's dot com.</description>
-    <pubDate>Mon, 15 Sep 2025 20:00:00 -0400</pubDate>
+    <pubDate>Tue, 30 Sep 2025 20:00:00 -0400</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Hue shifting when you have to work in RGB</title>
+      <link>http://jimkang.com/weblog/articles/hue-shifting/</link>
+      <pubDate>Tue, 30 Sep 2025 20:00:00 -0400</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/hue-shifting/</guid>
+      <author></author>
+      <description>&lt;div class=&quot;boxed&quot;&gt;
+I work on the web and usually have access to CSS color, which lets you specify colors in the &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hsl&quot;&gt;HSL (hue, saturation, lightness) space&lt;/a&gt;. That makes it easy to shift a color to make it redder by nudging the H value toward 0 or to send it closer to purple by moving it toward 360.
+&lt;br&gt;&lt;br&gt;
+Recently, I needed to shift hue in &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_on_the_web/GLSL_Shaders&quot;&gt;GLSL&lt;/a&gt;, and which doesn’t have HSL. You only get the RGB (red, green, blue) color space. Fortunately, on a previous blog, I had written a post about hue shifting in RGB. I relearned how to do it from that.
+&lt;br&gt;&lt;br&gt;
+So, I’m reproducing the original 2010 post here with added commentary. If you don’t want to read about how this works and just want to mess with a spectrum, here is my &lt;a href=&quot;https://jimkang.com/gallery/#drawRGBWaves=yes&amp;focusPiece=hue-shift&amp;rgbWaveStyle=1&quot;&gt;new tool&lt;/a&gt; for doing that.
+&lt;/div&gt;
+
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;style&gt;
+img {
+    margin-left: auto;
+    margin-right: auto;
+}
+&lt;/style&gt;
+
+&lt;h1 id=&quot;how-rgb-is-related-to-hsv-and-how-to-implement-hue-shifting-on-the-iphone&quot;&gt;How RGB is related to HSV, and how to implement hue shifting on the iPhone&lt;/h1&gt;
+&lt;p&gt; Last weekend, I wrote some code that shifted hues in existing colors. To do that, I needed to improve my understanding of hue, saturation, and lightness. I had to go on a journey of learning! So, I thought I’d share my rainbow voyage with you here.&lt;/p&gt;
+&lt;p&gt;I started by poking around in Photoshop. If you’re familiar with Photoshop, you may recognize this dialog:&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;Hue/Saturation dialog showing a slider for Hue, Saturation, and Lightness&quot; src=&quot;Photoshop_HSV.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;If you move around the Hue slider, your image changes color without changing either saturation (which can be described as ‘colorfulness’, sort of) or value (lightness). That is exactly the functionality I wanted to implement. In Photoshop, it’s also fun stuff that can make your photos look psychedelic.&lt;/p&gt;
+&lt;p&gt;Then, there’s this guy, the Color Picker:&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;Color picker dialog with HSB values&quot; src=&quot;Photoshop_colorpicker.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;To pick your color, you click around in the box on the left and move the rainbow slider up and down. The number-containing boxes in the middle show you the &lt;a href=&quot;https://en.wikipedia.org/wiki/RGB_color_model&quot;&gt;RGB&lt;/a&gt; (red green blue) values of the color currently specified, which is handy. The rainbow slider is a hue controller, and the big box on the left represents lightness on its Y-axis and saturation on its X-axis.&lt;/p&gt;
+&lt;p&gt;When you sit down to code something like this, though, you can’t manipulate the hue directly like that, at least not on the iPhone. You can’t just say “give me this existing color’s hue” and then use that to compose a new color. Whether you’re using UIColor, CGColor, or cocos2d’s ccColor3B, the only way to manipulate the hue of an existing color is via RGB. Thus, you need to figure out how RGB affects HSV (hue saturation value/lightness).&lt;/p&gt;
+&lt;div class=&quot;boxed&quot;&gt;
+Update from 2025: &lt;a href=&quot;https://developer.apple.com/documentation/uikit/uicolor/init(hue:saturation:brightness:alpha:&quot;&gt;Looks like UIColor supports HSL&lt;/a&gt; and did so early as iOS 2.0, which came out in 2009 (a year before the post was written).
+&lt;br&gt;&lt;br&gt;
+At the time, I was making a pattern-making app with Cocos2D though, which &lt;a href=&quot;https://cocos2d-x.org/reference/native-cpp/V3.0alpha0/db/dc5/structcocos2d_1_1_color3_b.html&quot;&gt;only supports RGB to this day in 2025&lt;/a&gt;. UIColor didn’t &lt;a href=&quot;https://developer.apple.com/documentation/uikit/uicolor/getred(_:green:blue:alpha:&quot;&gt;support extracting RGB components until iOS 5.0&lt;/a&gt;) in 2011. So, I still would have learned how to hue shift with RGB even if I had known about UIColor’s HSL support.
+&lt;/div&gt;
+
+&lt;p&gt;Moving the hue slider in Photoshop’s color picker and noting the RGB value changes is a good way to do this. Try it, and you’ll notice that among the RGB values, there’s always a constant highest number, a constant lowest number, and a variable middle number.&lt;/p&gt;
+&lt;p&gt;Let’s say the color you start off with has an RGB of 57-181-107 (a &lt;span style=&quot;background-color: #39b56b; color: #ffffff&quot;&gt;mildly-bluish green&lt;/span&gt;). You can move the hue slider anywhere you want, but two of the RGB values will always be 57 and 181. If you slide it toward the orange spectrum, you’ll end up with something like &lt;span style=&quot;background-color: #b56b39; color: #ffffff&quot;&gt;&lt;b&gt;181&lt;/b&gt;-107-&lt;b&gt;57&lt;/b&gt;&lt;/span&gt;. 181 and 57 are still in the mix, yet it’s an entirely different color.&lt;/p&gt;
+&lt;p&gt;When moving the hue slider, the limits remain constant because &lt;strong&gt;changing the upper and lower limits will affect the lightness and saturation of a color&lt;/strong&gt;. If you move the cursor in the saturation/lightness color panel, however, those limits will change.&lt;/p&gt;
+&lt;h2 id=&quot;lightness&quot;&gt;Lightness&lt;/h2&gt;
+&lt;p&gt;On a display, if you max out red, green, and blue, the result is pure white. It follows that raising the upper limit among the RGB components of a given color will move it closer to white, whereas lowering the lower limit will move it further away from white. “Moving a color further away from white” is also known as “darkening a color.”&lt;/p&gt;
+&lt;h2 id=&quot;saturation&quot;&gt;Saturation&lt;/h2&gt;
+&lt;p&gt;Saturation is also affected by the upper and lower RGB limits, but by the two limits’ relative distance from each other, rather than by the limit’s absolute values. In RGB terms, gray occurs when each of the components’ values are close to one another. &lt;span style=&quot;background-color: #abb0a1&quot;&gt;177-171-161&lt;/span&gt; is a kind of gray, for example. When all three components of a color have matching values, as in &lt;span style=&quot;background-color: #ababab&quot;&gt;177-177-177&lt;/span&gt;, that color is said to be totally desaturated.&lt;/p&gt;
+&lt;p&gt;Conversely, the further apart the RGB components are, the more saturated the colors become. e.g. &lt;span style=&quot;background-color: #ff7011&quot;&gt;255-112-17&lt;/span&gt; is a very intense orange. 255 and 17 are about as far apart as you can get.&lt;/p&gt;
+&lt;h2 id=&quot;hue&quot;&gt;Hue&lt;/h2&gt;
+&lt;p&gt;If we want to change the hue while freezing saturation and lightness, we can’t change the upper and lower limits, as explained above. That leaves us just the following:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;We can change the variable middle value. e.g. 112 in a color like &lt;span style=&quot;background-color: #7043e9; color: #ffffff&quot;&gt;112-67-233&lt;/span&gt;. If we change 112 to 150, we get &lt;span style=&quot;background-color: #9643e9; color: #ffffff&quot;&gt;150-67-233&lt;/span&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;We can’t change the upper and lower limits, but we can swap their positions. e.g. In &lt;span style=&quot;background-color: #7043e9; color: #ffffff&quot;&gt;112-67-233&lt;/span&gt;, we can move 67 and 233 and get&lt;br&gt;
+&lt;span style=&quot;background-color: #43e970&quot;&gt;67-233-112&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Now we know how to change the hue without messing with saturation or lightness, but we’re changing it haphazardly. To find out how to move the hue along the spectrum the way the Photoshop slider does, look at the RGB value changes that happen when the slider is slowly moved in the red-to-blue direction. You’ll see that:&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;One value (either R, G, or B) changes at a time.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;That value is either moves up until it hits the upper limit, or it moves down until it hits the lower limit.&lt;/li&gt;
+&lt;li&gt;Once a value hits a limit, that value stops changing momentarily, and a different value starts moving.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Here’s a graph of the changes in the RGB values as the color is moved along the spectrum:&lt;/p&gt;
+&lt;p&gt;&lt;img id=&quot;rgb-graph-sketch&quot; alt=&quot;Crappy rgb graph&quot; src=&quot;crappy_rgb_graph.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;(I apologize for the graph’s crapulence. I bet you there’s a good version of this somewhere on the web, but it wasn’t on the first page of search results, so I just scriggled this out.)&lt;/p&gt;
+&lt;p&gt;The lines represent the amounts of R, G, and B components that are present in each point along the spectrum. The vertical bars at the top are the colors that (approximately) result from those RGB combinations.&lt;/p&gt;
+&lt;p&gt;The graph shows the following behavior: &lt;b&gt;For each component (R, G, and B):&lt;/b&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;If the component is not at the the lower limit and the next component (e.g. the next component after the R component is G) is at the upper limit, that component will descend.&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;If the component is not at the upper limit and the next component is at the lower limit, that component will ascend.&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Otherwise, that component doesn’t change.&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;implementation&quot;&gt;Implementation&lt;/h2&gt;
+&lt;p&gt;Once you know the above, implementation is fairly straightforward. If you want an example, though, here’s my cocos2d-oriented implementation in Objective-C on &lt;a href=&quot;https://gist.github.com/585828&quot;&gt;github&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;OGColorTools contains the code that does the color shifting. The meat of the code is in the method color:shiftHue:inDirection:. OGHueShiftExampleLayer is a simple example layer that creates a sprite and shifts its color every time the layer is tapped. You will need to provide your own bitmap and load it into the sprite for this to work.&lt;/p&gt;
+&lt;p&gt;Enjoy your hue shifting!&lt;/p&gt;
+&lt;div class=&quot;boxed&quot;&gt;Update from 2025: I made a more flexible implementation in GLSL.
+&lt;br&gt;&lt;br&gt;
+Instead of deciding the value of each color component via a logical structure (if/then) that uses each component’s state relative to the other color components, the GLSL implementation just plugs the hue shift into an equation.
+&lt;br&gt;
+&lt;br&gt;
+That equation describes &lt;a href=&quot;http://jimkang.com/articles/hue-shifting/#rgb-graph-sketch&quot;&gt;the graph of the RGB changes from the original post&lt;/a&gt;. Here it is graphed out nicely on Desmos:
+&lt;br&gt;&lt;br&gt;
+&lt;a href=&quot;https://www.desmos.com/calculator/sykrohqdst&quot;&gt;&lt;img alt=&quot;Triangle wave graph&quot; src=&quot;triangle-graph.png&quot; width=&quot;100%&quot;&gt;&lt;/a&gt;
+&lt;br&gt;
+Each line (R, G, and B) is a &lt;a href=&quot;https://jimkang.com/weblog/articles/triangle-wave/&quot;&gt;triangle wave equation&lt;/a&gt; with a clamp to keep it inside 0.0 and 1.0, so you get these half-hexagon shapes. Here’s the equation for the green component:
+&lt;br&gt;&lt;br&gt;
+&lt;img src=&quot;green-triangle-wave-equation.png&quot; alt=&quot;Triangle wave equation&quot;&gt;
+&lt;br&gt;
+Here, &lt;em&gt;a&lt;/em&gt; is amplitude (set to 1.5 in the graph above), and &lt;em&gt;p&lt;/em&gt; is period (set to 1 in the graph above).
+&lt;br&gt;
+Depending on your background, the equation may be a little easier to read in GLSL:
+&lt;br&gt;
+&lt;pre&gt;
+#define RGB_PERIOD 1.
+#define RGB_AMP 1.5
+
+float rgbWave(float x, float phaseShift) {
+  float y = mod(x + RGB_PERIOD/2. + phaseShift, RGB_PERIOD);
+  y = abs(y - RGB_PERIOD/2.);
+  y = 4. * RGB_AMP * y - RGB_AMP + .5;
+  return clamp(y, 0., 1.);
+}
+&lt;/pre&gt;
+&lt;code&gt;rgbWave&lt;/code&gt; takes a value, &lt;code&gt;x&lt;/code&gt;, from 0 to 1 that represents the hue, with 0 being the hue at the start of the spectrum and 1 being the hue at the end of the spectrum. It returns the value of one component of the color at &lt;code&gt;x&lt;/code&gt;.
+&lt;br&gt;&lt;br&gt;
+The particular color component is specified by the &lt;code&gt;phaseShift&lt;/code&gt; parameter because each component’s wave is the same; they just have different phase shifts. For green, &lt;code&gt;phaseShift&lt;/code&gt; will be -1/6. At an &lt;code&gt;x&lt;/code&gt; of 0, the green value will be 0, and an &lt;code&gt;x&lt;/code&gt; of 1 will also yield 0. At &lt;code&gt;x&lt;/code&gt; = 0.5, the green value will be 1. (Blue will also be 1 at that point, and the resulting color will be a &lt;span style=&quot;background-color: #0ff&quot;&gt;cyan&lt;/span&gt;.)
+&lt;br&gt;&lt;br&gt;
+Though the equation looks complex, from an implementation standpoint, this is simpler than the old Objective-C implementation, which had to track state. And fortunately, there’s a simpler equation we can use in place of this sawed-off triangles equation.
+&lt;br&gt;
+&lt;h3&gt;Sine wave simplicity&lt;/h3&gt;
+The triangle waves can be approximated with sine waves. Here’s some sine waves (in dashed lines) superimposed over the triangle waves.
+&lt;br&gt;
+&lt;br&gt;
+&lt;a href=&quot;https://www.desmos.com/calculator/ghicgn09f0&quot;&gt;&lt;img alt=&quot;Triangle waves and sine waves over them&quot; src=&quot;triangles-and-sines-graph.png&quot; width=&quot;100%&quot;&gt;&lt;/a&gt;
+&lt;br&gt;
+Here is the equation for the green sine wave (with clamping between 0 and 1 added):
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src=&quot;green-sine-wave-equation.png&quot; alt=&quot;Sine equation&quot;&gt;
+In GLSL:
+&lt;br&gt;
+&lt;pre&gt;
+float rgbSineWave(float x, float phaseShift, float amp) {
+  return clamp(amp * sin(2. &amp;ast; PI &amp;ast; x + phaseShift) + .5, 0., 1.);
+}
+&lt;/pre&gt;
+That’s it! So small a function.
+&lt;br&gt;
+&lt;h3&gt;Alternative spectrums&lt;/h3&gt;
+
+An upside to this equation-based implementation is that you can easily create alternative spectrums for your own use by changing various coefficients. Here’s a few.
+&lt;br&gt;
+&lt;br&gt;
+&lt;a href=&quot;https://jimkang.com/gallery/#bShift=-0.09&amp;density=0.5&amp;drawRGBWaves=yes&amp;focusPiece=hue-shift&amp;gShift=0.73&amp;rShift=-0.66&amp;rgbAmp=0.37&amp;rgbWaveStyle=1&amp;seed=kaZcVOxN&amp;showWIP=no&quot;&gt;&lt;img src=&quot;five-alive.png&quot; alt=&quot;Five Alive&quot; width=&quot;100%&quot;&gt;&lt;/a&gt;
+&lt;br&gt;
+&lt;a href=&quot;https://jimkang.com/gallery/#bShift=-0.92&amp;density=0.5&amp;drawRGBWaves=yes&amp;focusPiece=hue-shift&amp;gShift=-1.1&amp;rShift=0.16&amp;rgbAmp=0.31&amp;rgbWaveStyle=1&amp;seed=kaZcVOxN&amp;showWIP=no&quot;&gt;&lt;img src=&quot;aurora.png&quot; alt=&quot;Aurora&quot; width=&quot;100%&quot;&gt;&lt;/a&gt;
+&lt;br&gt;
+&lt;a href=&quot;https://jimkang.com/gallery/#bPeriod=1.77&amp;bShift=-0.8333333333333334&amp;density=0.5&amp;drawRGBWaves=no&amp;focusPiece=hue-shift&amp;gPeriod=0.79&amp;gShift=-1.78&amp;rPeriod=0.25&amp;rShift=0.5&amp;rgbAmp=0.29&amp;rgbWaveStyle=1&amp;seed=uZJuAlHj&amp;showWIP=no&quot;&gt;&lt;img src=&quot;rothko.png&quot; alt=&quot;Rothko style&quot; width=&quot;100%&quot;&gt;&lt;/a&gt;
+&lt;br&gt;
+&lt;a href=&quot;https://jimkang.com/gallery/#bPeriod=1.32&amp;bShift=0.62&amp;density=0.5&amp;drawRGBWaves=no&amp;focusPiece=hue-shift&amp;gPeriod=0.95&amp;gShift=0.26&amp;rPeriod=0.69&amp;rShift=2&amp;rgbAmp=0.57&amp;rgbWaveStyle=1&amp;seed=hgcHeNOn&amp;showWIP=no&quot;&gt;&lt;img src=&quot;dark-alley.png&quot; alt=&quot;Dark alley&quot; width=&quot;100%&quot;&gt;&lt;/a&gt;
+&lt;br&gt;
+&lt;a href=&quot;https://jimkang.com/gallery/#bPeriod=1.13&amp;bShift=-1.64&amp;density=0.5&amp;drawRGBWaves=no&amp;focusPiece=hue-shift&amp;gPeriod=0.88&amp;gShift=-2&amp;rPeriod=0.04&amp;rShift=2&amp;rgbAmp=0.43&amp;rgbWaveStyle=1&amp;seed=hgcHeNOn&amp;showWIP=no&quot;&gt;&lt;img src=&quot;exposed-film.png&quot; alt=&quot;Exposed film&quot; width=&quot;100%&quot;&gt;&lt;/a&gt;
+&lt;br&gt;
+As discussed in the original post, the further apart the highest and lowest components of the RGB value are, the more saturated the resulting color is. So, increasing the amplitude of the sine wave will increase the saturation; decreasing it will get you a grayer spectrum.
+&lt;br&gt;&lt;br&gt;
+The phase shift of each wave determines how it’ll combine with other waves. By altering the default phase shifts of the R, G, and B waves, you can create points in the graph at which everything comes close to being in sync (and has peaks and troughs at nearly the same point). You can also find shift combinations that’ll eliminate certain colors, like the mostly red and blue one above.
+&lt;br&gt;&lt;br&gt;
+The period size of the waves can spread out a color component’s intensity across the spectrum if you make it large. If you make it small, it will form small repeating bands.
+&lt;br&gt;&lt;br&gt;
+&lt;a href=&quot;https://jimkang.com/gallery/#drawRGBWaves=yes&amp;focusPiece=hue-shift&amp;rgbWaveStyle=1&quot;&gt;Here is a tool&lt;/a&gt; that you can use to see what happens when you manipulate the phase shifts and amplitude of the waves.
+&lt;br&gt;&lt;br&gt;
+And here is the code for the shader in that tool:
+&lt;pre&gt;
+#version 300 es
+precision mediump float;
+
+#define RGB_PERIOD 1.
+#define RGB_AMP 1.5
+#define PI 3.1415927
+
+out vec4 outColor;
+
+uniform vec2 u_resolution;
+uniform int u_rgbWaveStyle;
+&lt;span class=&quot;code-comment&quot;&gt;// Wave amplitude input variable&lt;/span&gt;
+uniform float u_rgbAmp;
+&lt;span class=&quot;code-comment&quot;&gt;// Wave phase shift input variables&lt;/span&gt;
+uniform float u_rShift;
+uniform float u_gShift;
+uniform float u_bShift;
+&lt;span class=&quot;code-comment&quot;&gt;// Input variable that tells us whether we should draw the RGB waves over&lt;/span&gt;
+&lt;span class=&quot;code-comment&quot;&gt;// the colors or not.&lt;/span&gt;
+uniform int u_drawRGBWaves;
+
+&lt;span class=&quot;code-comment&quot;&gt;// Given a value from 0 to 1 that represents progress along the spectrum,&lt;/span&gt;
+&lt;span class=&quot;code-comment&quot;&gt;// find out what the value of the RGB component should be, assuming a&lt;/span&gt;
+&lt;span class=&quot;code-comment&quot;&gt;// clamped triangle wave model of the spectrum.&lt;/span&gt;
+float rgbWave(float x, float phaseShift) {
+  float y = mod(x + RGB_PERIOD/2. + phaseShift, RGB_PERIOD);
+  y = abs(y - RGB_PERIOD/2.);
+  y = 4. * RGB_AMP * y - RGB_AMP + .5;
+  return clamp(y, 0., 1.);
+}
+
+&lt;span class=&quot;code-comment&quot;&gt;// Given a value from 0 to 1 that represents progress along the spectrum, find&lt;/span&gt;
+&lt;span class=&quot;code-comment&quot;&gt;// out what the value of the RGB component should be, assuming a clamped&lt;/span&gt;
+&lt;span class=&quot;code-comment&quot;&gt;// sine wave model of the spectrum.&lt;/span&gt;
+float rgbSineWave(float x, float phaseShift, float amp) {
+  return clamp(amp * sin(2. * PI * x + phaseShift) + .5, 0., 1.);
+}
+
+&lt;span class=&quot;code-comment&quot;&gt;// Main function, which answers the question: What should the color be at&lt;/span&gt;
+&lt;span class=&quot;code-comment&quot;&gt;// this location on the drawing surface?&lt;/span&gt;
+void main() {
+  vec2 st = gl_FragCoord.xy/u_resolution.xy;
+
+  &lt;span class=&quot;code-comment&quot;&gt;// Get the R, G, and B values, passing the horizontal location as the&lt;/span&gt;
+  &lt;span class=&quot;code-comment&quot;&gt;// progress through the spectrum and a different phase shift for each&lt;/span&gt;
+  &lt;span id=&quot;rgbsinewave-usage&quot; class=&quot;code-comment&quot;&gt;// color component.&lt;/span&gt;
+  float r = rgbSineWave(st.x, u_rShift * PI, u_rgbAmp);
+  float g = rgbSineWave(st.x, u_gShift * PI, u_rgbAmp);
+  float b = rgbSineWave(st.x, u_bShift * PI, u_rgbAmp);
+
+  &lt;span class=&quot;code-comment&quot;&gt;// If the wave style is set to triangle (instead of sine), get the RGB&lt;/span&gt;
+  &lt;span class=&quot;code-comment&quot;&gt;// values using the triangle wave equation.&lt;/span&gt;
+  if (u_rgbWaveStyle == 0) {
+    r = rgbWave(st.x, u_rShift);
+    g = rgbWave(st.x, u_gShift);
+    b = rgbWave(st.x, u_bShift);
+  }
+
+  &lt;span class=&quot;code-comment&quot;&gt;// Compose the color with the three color components.&lt;/span&gt;
+  vec3 color = vec3(r, g, b);
+
+  &lt;span class=&quot;code-comment&quot;&gt;// If we should be graphing the color compontent waves, draw over the&lt;/span&gt;
+  &lt;span class=&quot;code-comment&quot;&gt;// color with either pure red, green, or blue if the given y value is&lt;/span&gt;
+  &lt;span class=&quot;code-comment&quot;&gt;// near the r, g, or b value.&lt;/span&gt;
+  if (u_drawRGBWaves == 1) {
+    float greenLineOn = 1. - step(.01, abs(st.y - g));
+    if (greenLineOn &amp;gt; 0.) {
+      color = vec3(0., 1., 0.);
+    } else {
+      float redLineOn = 1. - step(.01, abs(st.y - r));
+      if (redLineOn &amp;gt; 0.) {
+        color = vec3(1., 0., 0.);
+      } else {
+        float blueLineOn = 1. - step(.01, abs(st.y - b));
+        if (blueLineOn &amp;gt; 0.) {
+          color = vec3(0., 0., 1.);
+        }
+      }
+    }
+  }
+
+  &lt;span class=&quot;code-comment&quot;&gt;// Set the output color.&lt;/span&gt;
+  outColor = vec4(color, 1.);
+}
+&lt;/pre&gt;
+To use it in your own shader, you can just copy out the &lt;code&gt;rgbSineWave&lt;/code&gt; and pass it a hue value and a phase shift, as you see &lt;a href=&quot;#rgbsinewave-usage&quot;&gt;above&lt;/a&gt; in the main function.
+&lt;br&gt;&lt;br&gt;
+Once again, enjoy shifting hues, this time in GLSL and maybe on alternative spectrums!
+&lt;/div&gt;
+</description>
+    </item>
     <item>
       <title>An open letter about AI grading children's essays</title>
       <link>http://jimkang.com/weblog/articles/ai-mcas/</link>
@@ -2218,39 +2463,6 @@ done
 </description>
     </item>
     <item>
-      <title>Civilized Bandcamp file unzipping</title>
-      <link>http://jimkang.com/weblog/articles/bandcamp-unzip/</link>
-      <pubDate>Wed, 17 Feb 2021 19:00:00 -0500</pubDate>
-      <guid isPermaLink="true">http://jimkang.com/weblog/articles/bandcamp-unzip/</guid>
-      <author></author>
-      <description>&lt;p&gt;Here’s a script that’s handy for unzipping stuff you download from Bandcamp.
-&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;Bandcamp gives you zip files that contain no directory structure. So, the files just unzip to whatever directory you’re in. I have found that to get messy, and I now like an &lt;code&gt;artist-dir/album-dir&lt;/code&gt; structure, like I’m in the year 2000.&lt;/p&gt;
-&lt;p&gt;Here’s a script I wrote to unzip Bandcamp zip files into such a structure. It uses the naming scheme of the zip file (&lt;code&gt;&amp;lt;artist name&amp;gt;&lt;/code&gt;-&lt;code&gt;&amp;lt;album name&amp;gt;&lt;/code&gt;) to determine the appropriate directory names.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;#!/bin/bash
-
-for file in *.zip
-  do
-    filename=&amp;quot;${file%.*}&amp;quot;
-    # Filenames can&amp;#39;t contain /. So, I wonder
-    # what Bandcamp would do if they had AC/DC?
-    unzippath=$(echo &amp;quot;$filename&amp;quot; |sed -e &amp;#39;s/ - /\//&amp;#39;)
-    mkdir -p &amp;quot;$unzippath&amp;quot;
-    unzip &amp;quot;$filename&amp;quot; -d &amp;quot;$unzippath&amp;quot;
-  done
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;It will run on all of the zip files in the working directory. You’ll end up with your mp3 files in directory structures like &lt;code&gt;Chaucerian Myth/The Canterbury Tales&lt;/code&gt; now.&lt;/p&gt;
-&lt;p&gt;&lt;hr&gt;&lt;/p&gt;
-&lt;p&gt;&lt;blockquote&gt;Here, we’re about to drift away from that tiny script into background story space! I feel like a guy that responds to “Where is the nearest gas station?” with a long explanation of local zoning policy and their own personal journey away from fossil fuels to a house powered entirely with solar panels. (I actually would like solar panels, BTW.)&lt;/p&gt;
-&lt;p&gt;Unlike that guy, however, there is no way I’ll notice if you just close the tab now!&lt;/blockquote&gt;&lt;/p&gt;
-&lt;hr&gt;
-
-&lt;p&gt;This has come up because I’ve been increasingly enjoying &lt;a href=&quot;https://bandcamp.com/&quot;&gt;Bandcamp&lt;/a&gt; over the last few years, but now I’m all in on them.&lt;/p&gt;
-&lt;p&gt;I’ve usually used their streaming service, but lately I’ve been downloading albums from them and importing them into &lt;a href=&quot;https://plex.tv/&quot;&gt;Plex&lt;/a&gt; to play. (I like it because lets me stream from my Raspberry Pi at home to my phone. The Bandcamp app also lets you stream to your phone but only with music you’ve bought on Bandcamp.)&lt;/p&gt;
-&lt;p&gt;At first, I thought I’d dump all of my files into one directory and let Plex use ID3 tags to organize them, but you still have to get into the files sometimes, and a 4,000-file directory is total hell. Via Bandcamp purchases and CD rips (weird, I know), this pile is growing again after being frozen for half a decade and needs a little structure.&lt;/p&gt;
-&lt;p&gt;I think I like this way of listening to and acquiring music, as backwards as it sounds, because I tend to consider each album more fully and give each one more of a chance, either because I bought it directly or I once bought it long ago and now have put in the work to rip a CD. And in the cases when I buy from a label-less artist, I provide magnitudes more financial compensation to the artist than I would via any streaming service.&lt;/p&gt;
-</description>
-    </item>
-    <item>
       <title>The web actually breathing usability into old tools</title>
       <link>http://jimkang.com/weblog/articles/web-creating-usability/</link>
       <pubDate>Wed, 17 Feb 2021 19:00:00 -0500</pubDate>
@@ -2370,6 +2582,39 @@ For years, I’ve used &lt;a href=&quot;https://graphviz.org/&quot;&gt;Graphviz&
 &lt;p&gt;But that would reduce profits, and Milton Friedman has famously proclaimed that corporations’ sole responsibility is to maximize profit. (And as we all know, Milton Friedman is a god-pharaoh that issues forth waves that &lt;em&gt;compel all to obey&lt;/em&gt; from his sarcophagus underneath the University of Chicago.)&lt;/p&gt;
 &lt;p&gt;For smaller companies, indie developers, and people who just want to make something nice for others, it’s hard to imagine better alternatives, except perhaps offline web apps (which aren’t easy for a lot of users to wrap their heads around &amp;mdash; the association between the web and internet connections is strong) or putting all of their proverbial eggs on a specific platform.&lt;/p&gt;
 &lt;p&gt;I guess all I’m saying is: Web browsers are (sadly?) the closest we’ve ever gotten to a universal app platform, so I hope we can cut away their many excesses and abuses while keeping that part.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Civilized Bandcamp file unzipping</title>
+      <link>http://jimkang.com/weblog/articles/bandcamp-unzip/</link>
+      <pubDate>Wed, 17 Feb 2021 19:00:00 -0500</pubDate>
+      <guid isPermaLink="true">http://jimkang.com/weblog/articles/bandcamp-unzip/</guid>
+      <author></author>
+      <description>&lt;p&gt;Here’s a script that’s handy for unzipping stuff you download from Bandcamp.
+&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Bandcamp gives you zip files that contain no directory structure. So, the files just unzip to whatever directory you’re in. I have found that to get messy, and I now like an &lt;code&gt;artist-dir/album-dir&lt;/code&gt; structure, like I’m in the year 2000.&lt;/p&gt;
+&lt;p&gt;Here’s a script I wrote to unzip Bandcamp zip files into such a structure. It uses the naming scheme of the zip file (&lt;code&gt;&amp;lt;artist name&amp;gt;&lt;/code&gt;-&lt;code&gt;&amp;lt;album name&amp;gt;&lt;/code&gt;) to determine the appropriate directory names.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#!/bin/bash
+
+for file in *.zip
+  do
+    filename=&amp;quot;${file%.*}&amp;quot;
+    # Filenames can&amp;#39;t contain /. So, I wonder
+    # what Bandcamp would do if they had AC/DC?
+    unzippath=$(echo &amp;quot;$filename&amp;quot; |sed -e &amp;#39;s/ - /\//&amp;#39;)
+    mkdir -p &amp;quot;$unzippath&amp;quot;
+    unzip &amp;quot;$filename&amp;quot; -d &amp;quot;$unzippath&amp;quot;
+  done
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;It will run on all of the zip files in the working directory. You’ll end up with your mp3 files in directory structures like &lt;code&gt;Chaucerian Myth/The Canterbury Tales&lt;/code&gt; now.&lt;/p&gt;
+&lt;p&gt;&lt;hr&gt;&lt;/p&gt;
+&lt;p&gt;&lt;blockquote&gt;Here, we’re about to drift away from that tiny script into background story space! I feel like a guy that responds to “Where is the nearest gas station?” with a long explanation of local zoning policy and their own personal journey away from fossil fuels to a house powered entirely with solar panels. (I actually would like solar panels, BTW.)&lt;/p&gt;
+&lt;p&gt;Unlike that guy, however, there is no way I’ll notice if you just close the tab now!&lt;/blockquote&gt;&lt;/p&gt;
+&lt;hr&gt;
+
+&lt;p&gt;This has come up because I’ve been increasingly enjoying &lt;a href=&quot;https://bandcamp.com/&quot;&gt;Bandcamp&lt;/a&gt; over the last few years, but now I’m all in on them.&lt;/p&gt;
+&lt;p&gt;I’ve usually used their streaming service, but lately I’ve been downloading albums from them and importing them into &lt;a href=&quot;https://plex.tv/&quot;&gt;Plex&lt;/a&gt; to play. (I like it because lets me stream from my Raspberry Pi at home to my phone. The Bandcamp app also lets you stream to your phone but only with music you’ve bought on Bandcamp.)&lt;/p&gt;
+&lt;p&gt;At first, I thought I’d dump all of my files into one directory and let Plex use ID3 tags to organize them, but you still have to get into the files sometimes, and a 4,000-file directory is total hell. Via Bandcamp purchases and CD rips (weird, I know), this pile is growing again after being frozen for half a decade and needs a little structure.&lt;/p&gt;
+&lt;p&gt;I think I like this way of listening to and acquiring music, as backwards as it sounds, because I tend to consider each album more fully and give each one more of a chance, either because I bought it directly or I once bought it long ago and now have put in the work to rip a CD. And in the cases when I buy from a label-less artist, I provide magnitudes more financial compensation to the artist than I would via any streaming service.&lt;/p&gt;
 </description>
     </item>
     <item>
