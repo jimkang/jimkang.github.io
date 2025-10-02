@@ -7,7 +7,8 @@ body {
 }
 
 .content-wrap {
-  width: 50rem;
+  width: 800px;
+  max-width: 50rem;
   margin: 0 auto;
 }
 

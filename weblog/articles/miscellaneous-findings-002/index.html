@@ -22,16 +22,15 @@
           <section class="content"><p><em>This is a roundup of miscellaneous things that I’ve found out about (or have rediscovered).<span class="more"></span> I take notes on findings regularly, and I put the findings that translate well to speech on my podcast, <span style="text-decoration: underline"><strong><a href="https://jimkang.com/smallfindings/">Small Findings</a></strong></span>. The rest (which are often technical findings), I put here. They’re not always written up for maximum comprehension as a blog post, but if anything is hard to understand, please <a href="mailto:jimkang@fastmail.com">email me</a> if you need&nbsp;clarification.</em></p>
 </section>
           <article class="finding">
-            <section class="content"><h1 id="-too-many-packets-ffmpeg-error">“Too many packets” ffmpeg&nbsp;error</h1>
-<p>When ffmpeg says “Too many packets buffered for output stream 0:1”, it means it literally. You can <a href="https://stackoverflow.com/questions/49686244/ffmpeg-too-many-packets-buffered-for-output-stream-01">increase the buffer size with this switch</a>:</p>
-<pre><code>-max_muxing_queue_size 1024
-</code></pre><p>(Substitute the size you need.) After that, it may be able to buffer all of the&nbsp;packets.</p>
-<p>That argument needs to go before the output file in the command, though, or there will be complaints. This works, for example, but it won’t work if you put <code>max_muxing_queue_size</code> before&nbsp;-i.</p>
-<pre><code>ffmpeg -i demo.ogv -max_muxing_queue_size 1024 demo.mp4 
-</code></pre><p>#video</p>
-<p>#ffmpeg</p>
-<p>#command</p>
-<p>#error</p>
+            <section class="content"><h1 id="extracting-audio-from-a-video">Extracting audio from a&nbsp;video</h1>
+<pre><code>ffmpeg -i undefined.ogv -vn -acodec copy out.ogg
+</code></pre><p>Another&nbsp;example:</p>
+<pre><code>ffmpeg -i unfortunate-day.mov -vn -acodec copy out.aac
+</code></pre><p><code>-vn</code> tells ffmpeg to skip video in the output.
+<code>-acodec</code> tells it to set the audio codec in the output, so that players know how to play it.
+<code>copy</code> tells it to copy the output to the following&nbsp;file.</p>
+<p>You can’t have it convert the audio format while it’s extracting the audio as far as I know. If the audio stream is encoded as ogg, then you can extract ogg. If it’s encoded as <span class="caps">AAC</span>, then you can extract&nbsp;AAC.</p>
+<p>#audio #video&nbsp;#ffmpeg</p>
 </section>
           </article>
           <article class="finding">
@@ -49,6 +48,19 @@
 </section>
           </article>
           <article class="finding">
+            <section class="content"><h1 id="-too-many-packets-ffmpeg-error">“Too many packets” ffmpeg&nbsp;error</h1>
+<p>When ffmpeg says “Too many packets buffered for output stream 0:1”, it means it literally. You can <a href="https://stackoverflow.com/questions/49686244/ffmpeg-too-many-packets-buffered-for-output-stream-01">increase the buffer size with this switch</a>:</p>
+<pre><code>-max_muxing_queue_size 1024
+</code></pre><p>(Substitute the size you need.) After that, it may be able to buffer all of the&nbsp;packets.</p>
+<p>That argument needs to go before the output file in the command, though, or there will be complaints. This works, for example, but it won’t work if you put <code>max_muxing_queue_size</code> before&nbsp;-i.</p>
+<pre><code>ffmpeg -i demo.ogv -max_muxing_queue_size 1024 demo.mp4 
+</code></pre><p>#video</p>
+<p>#ffmpeg</p>
+<p>#command</p>
+<p>#error</p>
+</section>
+          </article>
+          <article class="finding">
             <section class="content"><h1 id="extracting-a-still-from-a-video">Extracting a still from a&nbsp;video</h1>
 <p>Use ffmpeg with the <code>-frames:v 1</code> switch to tell it to grab a single frome and a jpg filename as the output to tell it to write it to an image&nbsp;file.</p>
 <p>You can add <code>-ss &lt;seconds into the video&gt;</code> to tell it where in the video to get the frame from. You can specify jpeg quality <code>-qscale:v &lt;2-31&gt;</code>, with 2 being the highest&nbsp;quality.</p>
@@ -61,18 +73,6 @@
 <p>#video</p>
 <p>#editing</p>
 <p>#ffmpeg</p>
-</section>
-          </article>
-          <article class="finding">
-            <section class="content"><h1 id="extracting-audio-from-a-video">Extracting audio from a&nbsp;video</h1>
-<pre><code>ffmpeg -i undefined.ogv -vn -acodec copy out.ogg
-</code></pre><p>Another&nbsp;example:</p>
-<pre><code>ffmpeg -i unfortunate-day.mov -vn -acodec copy out.aac
-</code></pre><p><code>-vn</code> tells ffmpeg to skip video in the output.
-<code>-acodec</code> tells it to set the audio codec in the output, so that players know how to play it.
-<code>copy</code> tells it to copy the output to the following&nbsp;file.</p>
-<p>You can’t have it convert the audio format while it’s extracting the audio as far as I know. If the audio stream is encoded as ogg, then you can extract ogg. If it’s encoded as <span class="caps">AAC</span>, then you can extract&nbsp;AAC.</p>
-<p>#audio #video&nbsp;#ffmpeg</p>
 </section>
           </article>
         </article>
